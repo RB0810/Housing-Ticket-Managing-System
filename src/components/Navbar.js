@@ -4,7 +4,8 @@ export default function Navbar() {
   return (
     <nav className="nav">
       <Link to="/" className="site-title">
-        Housing Portal
+        <img src="/housingportallogo.png"></img>
+        <h1 className="site-title">Housing Portal</h1>
       </Link>
 
       <ul>
