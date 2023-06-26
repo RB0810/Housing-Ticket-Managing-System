@@ -1,24 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Navbar from "./components/Navbar";
+import LandlordLogin from "./pages/login/landlordlogin";
+import TenantLogin from "./pages/login/tenantlogin";
+import LandingPage from "./pages/landingpage";
+import AdminLogin from "./pages/login/adminlogin";
+import { Route, Routes } from "react-router-dom";
 
 function App() {
+  // Routing
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Navbar />
+      <div className="container">
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/tenantlogin" element={<TenantLogin />} />
+          <Route path="/landlordlogin" element={<LandlordLogin />} />
+          <Route path="/adminlogin" element={<AdminLogin />} />
+        </Routes>
+      </div>
+    </>
   );
 }
 
