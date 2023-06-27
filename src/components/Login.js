@@ -30,23 +30,27 @@ class Login extends React.Component{
         return (
             <div>
               {console.log(this.state)}
-                <form action=''>
+                <form className='loginForm'>
 
                   <div>
-                    <h1>{this.state.Type} Portal <br/> Login</h1>
+                    <h1 className='wlcText'>{this.state.Type} Portal <br/> Login</h1>
                   </div>
 
                   <div>
-                      <label htmlFor=''></label>
-                      <input type = 'text' onChange={this.getValue} name='ID'/>
+                    <p>Create and Manage tickets!</p>
                   </div>
 
                   <div>
-                      <label htmlFor=''></label>
-                      <input type = 'password' onChange={this.getValue} name='password'/>
+                      <label></label>
+                      <input className='loginInput' type = 'text' onChange={this.getValue} name='ID'/>
+                  </div>
+                
+                  <div>
+                      <label></label>
+                      <input className='loginInput' type = 'password' onChange={this.getValue} name='password'/>
                   </div>
 
-                  <button onClick = {this.handleLogin}>Login</button>
+                  <button className='loginBtn' onClick = {this.handleLogin}>Login</button>
                 </form>
             </div>
         )
