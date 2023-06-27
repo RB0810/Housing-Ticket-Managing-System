@@ -1,3 +1,7 @@
+import Login from "../../components/Login";
+
 export default function AdminLogin() {
-  return <h1>Admin Login Page</h1>;
+  return (
+    <Login type='Admin'/>
+  );
 }
