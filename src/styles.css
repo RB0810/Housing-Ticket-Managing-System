@@ -23,7 +23,7 @@ body {
 }
 
 .site-title { 
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: bold;
     padding: 10px;
 }
@@ -44,7 +44,7 @@ body {
     display: flex;
     align-items: center;
     padding: 0rem 2rem;
-    font-size: 2rem;
+    font-size: 1.5rem;
     position: relative;
 
 
@@ -76,3 +76,27 @@ body {
 .nav img {
     height: 75px;
 }
+
+/* All Portals */
+.ticket-card {
+    display: flex;
+}
+
+.ticket-card h3 {
+    padding: 10px;
+}
+
+.ticket-card p {
+    padding: 10px;
+}
+
+/* Tenant Portal */
+.tenant-portal-header {
+    display: flex;
+}
+
+.tenant-portal-header p {
+    padding : 10px;
+    font-weight: bold;
+}
+
