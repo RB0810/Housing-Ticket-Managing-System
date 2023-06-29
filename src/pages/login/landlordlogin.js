@@ -1,3 +1,7 @@
+import Login from "../../components/Login";
+
 export default function LandlordLogin() {
-  return <h1>Landlord Login Page</h1>;
+  return (
+    <Login type='Landlord'/>
+  );
 }
