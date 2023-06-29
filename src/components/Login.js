@@ -20,22 +20,16 @@ class Login extends React.Component{
 
     handleLogin = (event)=>{
         event.preventDefault(); //stops the reloading everytime the button is clicked
-        const email = this.state.email;
-        const password = this.state.password;
-
         console.log(this.state)
     }
     
     render(){
         return (
             <div>
-              {console.log(this.state)}
                 <form className='loginForm'>
-
                   <div>
                     <h1 className='wlcText'>{this.state.Type} Portal <br/> Login</h1>
                   </div>
-
                   <div>
                     <p>Create and Manage tickets!</p>
                   </div>
