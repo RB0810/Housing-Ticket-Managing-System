@@ -1,0 +1,16 @@
+.landing-page-table {
+    margin: 0 auto;
+    border-spacing: 10px 2rem;
+  }
+  
+  td {
+    padding: 80px;
+    border: 1px solid #333;
+  }
+  
+  thead,
+  tfoot {
+    background-color: transparent;
+    color: #fff;
+  }
+  

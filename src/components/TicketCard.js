@@ -1,3 +1,4 @@
+import React from 'react';
 const TicketCard = ({ ticket }) => {
   return (
     <div className="ticket-card">
