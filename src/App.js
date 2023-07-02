@@ -7,6 +7,7 @@ import AdminLogin from "./pages/login/adminlogin";
 import TenantPortal from "./pages/portal/tenantportal";
 import LandlordPortal from "./pages/portal/landlordportal";
 import AdminLandingPage from "./pages/adminportal/adminlandingpage";
+import CreateLandlordAccount from "./pages/adminportal/createlandlordacc.jsx";
 import { Route, Routes } from "react-router-dom";
 import React from "react";
 
@@ -24,6 +25,7 @@ function App() {
           <Route path="/tenantportal" element={<TenantPortal />} />
           <Route path="/landlordportal" element={<LandlordPortal />} />
           <Route path="/adminlandingpage" element={<AdminLandingPage />} />
+          <Route path="/createlandlordacc" element={<CreateLandlordAccount />} />
         </Routes>
       </div>
     </div>

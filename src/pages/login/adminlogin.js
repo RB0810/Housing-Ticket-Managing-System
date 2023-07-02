@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import supabase from '../../config/supabaseClient';
+import Login from "../../components/Login";
 
 const AdminLogin = () => {
-  const [email, setEmail] = useState('');
+  const [ID, setID] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const adminEmail = 'admin@gmail.com';
+  const adminID = 'admin';
   const adminPassword = 'admin';
 
-  const handleLogin = () => {
-    if (email === adminEmail && password === adminPassword) {
+  const handleLogin = (event) => {
+    event.preventDefault(); // Prevent form submission
+    if (ID === adminID && password === adminPassword) {
       console.log('Logged in successfully!');
       // Redirect to the admin portal landing page
-      navigate('/adminlandingpage')
+      navigate('/adminlandingpage');
     } else {
       console.error('Invalid credentials');
       // Handle invalid credentials, such as displaying an error message to the user.
@@ -21,22 +22,14 @@ const AdminLogin = () => {
   };
 
   return (
-    <div>
-      <h2>Admin Login</h2>
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-      />
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-      />
-      <button onClick={handleLogin}>Login</button>
-    </div>
+    <Login
+      type='Admin'
+      handleLogin={handleLogin}
+      ID={ID}
+      setID={setID}
+      password={password}
+      setPassword={setPassword}
+    />
   );
 };
 
