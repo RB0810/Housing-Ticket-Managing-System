@@ -20,8 +20,8 @@ function App() {
           <Route path="/tenantlogin" element={<TenantLogin />} />
           <Route path="/landlordlogin" element={<LandlordLogin />} />
           <Route path="/adminlogin" element={<AdminLogin />} />
-          <Route path="/tenantportal" element={<TenantPortal />} />
-          <Route path="/landlordportal" element={<LandlordPortal />} />
+          <Route path="/tenantportal/:id" element={<TenantPortal />} />
+          <Route path="/landlordportal/:id" element={<LandlordPortal />} />
         </Routes>
       </div>
     </>
