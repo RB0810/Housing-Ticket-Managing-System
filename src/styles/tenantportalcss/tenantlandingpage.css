@@ -1,9 +1,18 @@
-    .card-container {
+.centered-card {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    margin-left: 25rem;
+    margin-right: 25rem;
+  }
+  
+  .card-container {
     display: flex;
     justify-content: center;
     margin-bottom: 3rem;
-    margin-left: 10rem;
-    margin-right: 10rem;
+    margin-left: 3rem;
+    margin-right: 3rem;
   }
   
   .card {
@@ -36,6 +45,7 @@
     max-height: 100%;
     width: 200px;
     height: 200px;
+
   }
 
   button {
@@ -48,6 +58,7 @@
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 1.5rem;
     margin-bottom: 1rem;
+
   }
 
 
