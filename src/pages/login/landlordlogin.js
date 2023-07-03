@@ -5,7 +5,7 @@ const LandlordLogin = () => {
   return (
     <div>
       <h1>Landlord Login</h1>
-      <Login type="landlord" />
+      <Login type="Landlord" />
     </div>
   );
 };

@@ -6,18 +6,18 @@ export default function TenantLandingPage() {
   const navigate = useNavigate();
 
   const handleButtonClickPending = () => {
-    navigate('../../pages/adminportal/pendingtickets.js');
+    navigate('/pendingtickets.js');
   };
 
   const handleButtonClickActive = () => {
-    navigate('../../pages/adminportal/activetickets.js');
+    navigate('/activetickets.js');
   };
 
   const handleButtonClickClosed = () => {
-    navigate('../../pages/adminportal/closedtickets.js');
+    navigate('/closedtickets.js');
   };
   const handleButtonClickNew = () => {
-    navigate('../../pages/adminportal/createticket.js');
+    navigate('/createticket.js');
   };
 
   return (

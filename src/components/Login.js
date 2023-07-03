@@ -18,9 +18,9 @@ const Login = ({ type }) => {
         console.error('Login error:', error.message);
       } else {
         // If login is successful, navigate to the desired page based on the type
-        if (type === 'landlord') {
+        if (type === 'Landlord') {
           navigate('/landlordlandingpage'); // Replace '/landlordlandingpage' with the desired route for the landlord
-        } else if (type === 'tenant') {
+        } else if (type === 'Tenant') {
           navigate('/tenantlandingpage'); // Replace '/tenantlandingpage' with the desired route for the tenant
         }
       }
