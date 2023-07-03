@@ -14,3 +14,11 @@ tfoot {
     background-color: #333;
     color: #fff;
 }
+
+.loginButton {
+    background-color: #0780FE;
+    color: white;
+    font-size: 20px;
+    padding: 15px 30px;
+    border-radius: 12px;
+}
