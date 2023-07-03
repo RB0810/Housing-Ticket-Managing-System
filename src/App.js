@@ -7,7 +7,7 @@ import AdminLogin from "./pages/login/adminlogin";
 import TenantPortal from "./pages/portal/tenantportal";
 import LandlordPortal from "./pages/portal/landlordportal";
 import AdminLandingPage from "./pages/adminportal/adminlandingpage";
-import CreateLandlordAccount from "./pages/adminportal/createlandlordacc.jsx";
+import CreateLandlordAccount from "./pages/adminportal/createlandlordacc";
 import { Route, Routes } from "react-router-dom";
 import React from "react";
 

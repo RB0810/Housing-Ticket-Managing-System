@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../styles/adminportalcss/adminlandingpage.css';
+import '../../styles/landlordportalcss/landlordlandingpage.css';
 import { useNavigate } from 'react-router-dom';
 
 export default function AdminLandingPage() {

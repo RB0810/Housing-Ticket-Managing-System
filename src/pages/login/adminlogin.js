@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Login from "../../components/Login";
+import { useNavigate } from 'react-router-dom'
 
 const AdminLogin = () => {
-  const [ID, setID] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const adminID = 'admin';
+  const adminEmail = 'admin@gmail.com';
   const adminPassword = 'admin';
 
   const handleLogin = (event) => {
     event.preventDefault(); // Prevent form submission
-    if (ID === adminID && password === adminPassword) {
+    if (email === adminEmail && password === adminPassword) {
       console.log('Logged in successfully!');
       // Redirect to the admin portal landing page
       navigate('/adminlandingpage');
@@ -22,14 +21,44 @@ const AdminLogin = () => {
   };
 
   return (
-    <Login
-      type='Admin'
-      handleLogin={handleLogin}
-      ID={ID}
-      setID={setID}
-      password={password}
-      setPassword={setPassword}
-    />
+    <div>
+      <form className='loginForm'>
+        <div>
+          <h1 className='wlcText'>
+            Admin Portal Login
+          </h1>
+        </div>
+        <div>
+          <p>Create and Manage tickets!</p>
+        </div>
+
+        <div>
+          <label>Email:</label>
+          <input
+            className='loginInput'
+            type='email'
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            name='email'
+          />
+        </div>
+
+        <div>
+          <label>Password:</label>
+          <input
+            className='loginInput'
+            type='password'
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            name='password'
+          />
+        </div>
+
+        <button className='loginBtn' onClick={handleLogin}>
+          Login
+        </button>
+      </form>
+    </div>
   );
 };
 

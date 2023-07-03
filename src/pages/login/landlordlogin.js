@@ -1,8 +1,13 @@
 import Login from "../../components/Login";
 import React from 'react';
 
-export default function TenantLogin() {
+const LandlordLogin = () => {
   return (
-    <Login type='Landlord'/>
+    <div>
+      <h1>Landlord Login</h1>
+      <Login type="landlord" />
+    </div>
   );
-}
+};
+
+export default LandlordLogin;
