@@ -8,7 +8,6 @@ body {
 .container {
     margin: 1rem;
     text-align: center;
-
 }
 
 .nav {
@@ -100,28 +99,4 @@ body {
 .tenant-portal-header p {
     padding : 10px;
     font-weight: bold;
-}
-
-.loginForm {
-    /* background-color: aqua; */
-    margin-top: 5rem;
-    border-radius: 1rem;
-}
-
-.loginBtn {
-    background-color: royalblue;
-    color: white;
-    width: 100px;
-    border-radius: 0.4rem;
-    font-size: medium;
-    padding: 3px 10px;
-    margin: 0.5px;
-}
-
-.loginInput {
-    height: 20px;
-    width: 250px;
-    border-radius: 0.4rem;
-    padding: 10px 10px;
-    margin: 0.5px;
 }
