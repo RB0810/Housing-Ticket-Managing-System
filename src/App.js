@@ -11,6 +11,7 @@ import AdminLandingPage from "./pages/landingpages/adminlandingpage"
 import { Route, Routes } from "react-router-dom";
 import LandlordLandingPage from "./pages/landingpages/landlordlandingpage";
 import TenantLandingPage from "./pages/landingpages/tenantlandingpage";
+import CreateTicket from "./pages/tenant/createticket"
 
 function App() {
   // Routing
@@ -25,12 +26,13 @@ function App() {
           <Route path="/landlordlogin" element={<LandlordLogin />} />
           <Route path="/adminlogin" element={<AdminLogin />} />
           <Route path="/ticket/:ServiceRequestID" component={TicketDetails} />
-          <Route path="/tenantportal/:id" element={<TenantPortal />} />
-          <Route path="/landlordportal/:id" element={<LandlordPortal />} />
+          <Route path="/tenantportal/:id/:status" element={<TenantPortal />} />
+          <Route path="/landlordportal/:id/:status" element={<LandlordPortal />} />
+          <Route path="/createticket/:id" element={<CreateTicket />} />
           <Route path="/landlordlandingpage/:id" element={<LandlordLandingPage />} />
           <Route path="/tenantlandingpage/:id" element={<TenantLandingPage />} />
           <Route path="/adminlandingpage/:id" element={<AdminLandingPage />} />
-        </Routes>
+        </Routes> 
       </div>
     </>
   );

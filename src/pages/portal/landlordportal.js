@@ -35,8 +35,6 @@ export default function LandlordPortal() {
             {serviceTickets.map((ticket) => (
               <TicketCard key={ticket.ServiceRequestID} ticket={ticket} />
             ))}
-            <button className="btn">Add Ticket</button>
-            <button className="btn">Remove Ticket</button>
           </div>
         </div>
       )}

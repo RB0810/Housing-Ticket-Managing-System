@@ -1,55 +1,60 @@
 import React from 'react';
 import '../../styles/tenantlandingpage.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function TenantLandingPage() {
   const navigate = useNavigate();
+  const { id } = useParams();
+  var status = "";
 
   const handleButtonClickPending = () => {
-    navigate('/pendingtickets.js');
+    status = "pending";
+    navigate(`/tenantportal/${id}/${status}`);
   };
 
   const handleButtonClickActive = () => {
-    navigate('/activetickets.js');
+    status = "active";
+    navigate(`/tenantportal/${id}/${status}`);
   };
 
   const handleButtonClickClosed = () => {
-    navigate('/closedtickets.js');
+    status = "closed";
+    navigate(`/tenantportal/${id}/${status}`);
   };
   const handleButtonClickNew = () => {
-    navigate('/createticket.js');
+    navigate(`/createticket/${id}`);
   };
 
   return (
     <div>
       <div className="centered-card">
-        <div className="card">
+        <button className="card" onClick={handleButtonClickNew}>
           <img src="/addticket.png" alt="Card" className="card-image" />
           <div>
-            <button onClick={handleButtonClickNew}>Create Ticket</button>
+            <button>Create Ticket</button>
           </div>
-        </div>
+        </button>
         
       </div>
       <div className="card-container">
-        <div className="card">
+        <button className="card" onClick={handleButtonClickActive}>
           <img src="/pendingticket.png" alt="Card" className="card-image" />
           <div>
-            <button onClick={handleButtonClickActive}>Active Tickets</button>
+            <button>Active Tickets</button>
           </div>
-        </div>
-        <div className="card">
+        </button>
+        <button className="card" onClick={handleButtonClickPending}>
           <img src="/activeticket.png" alt="Card" className="card-image" />
           <div>
-            <button onClick={handleButtonClickPending}>Pending Tickets</button>
+            <button>Pending Tickets</button>
           </div>
-        </div>
-        <div className="card">
+        </button>
+        <button className="card" onClick={handleButtonClickClosed}>
           <img src="/closedticket.png" alt="Card" className="card-image" />
           <div>
-            <button onClick={handleButtonClickClosed}>Closed Tickets</button>
+            <button>Closed Tickets</button>
           </div>
-        </div>
+        </button>
       </div>
     </div>
   );
