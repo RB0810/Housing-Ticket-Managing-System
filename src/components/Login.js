@@ -1,4 +1,5 @@
 import React from 'react';
+import supabase from "../config/supabaseClient";
 
 class Login extends React.Component{
 
@@ -18,10 +19,38 @@ class Login extends React.Component{
         this.setState({[name]: value})
     }
 
-    handleLogin = (event)=>{
-        event.preventDefault(); //stops the reloading everytime the button is clicked
-        console.log(this.state)
-    }
+
+    handleLogin = async (event) => {
+      event.preventDefault();
+      const { ID, password, Type } = this.state;
+    
+      try {
+        const { data, error } = await supabase
+          .from(`${Type}Users`)
+          .select('*')
+          .eq(`${Type}Email`, ID);
+    
+        if (error) {
+          throw error;
+        }
+    
+        const user = data[0];
+        console.log(user);
+
+        if (user && user[`${Type}Password`] === password) {
+          const redirectUrl = `/${Type.toLowerCase()}portal/${user[`${Type}ID`]}`;
+          window.location.href = redirectUrl;
+        } else {
+          throw new Error('Invalid credentials');
+        }
+    
+      } catch (error) {
+        console.error('Login error:', error);
+        window.alert(`Error: ${error.message}`);
+      }
+    };
+    
+
     
     render(){
         return (
