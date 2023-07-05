@@ -2,8 +2,8 @@ import supabase from "../config/supabaseClient";
 import { useEffect, useState } from "react";
 
 class TicketManager {
-  constructor(supabaseUrl, supabaseKey) {
-    this.supabase = createClient(supabaseUrl, supabaseKey);
+  constructor() {
+    this.supabase = supabase;
   }
 
   async addTicket(ticket) {
