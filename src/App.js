@@ -1,4 +1,4 @@
-import "./App.css";
+import "./styles/App.css";
 import Navbar from "./components/Navbar";
 import LandlordLogin from "./pages/login/landlordlogin";
 import TenantLogin from "./pages/login/tenantlogin";
