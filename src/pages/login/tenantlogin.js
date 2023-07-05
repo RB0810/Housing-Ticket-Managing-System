@@ -1,3 +1,7 @@
+import Login from "../../components/Login";
+
 export default function TenantLogin() {
-  return <h1>Tenant Login Page</h1>;
+  return (
+    <Login type='Tenant'/>
+  );
 }
