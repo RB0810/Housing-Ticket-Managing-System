@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const TicketCard = ({ ticket }) => {
   return (
     <div className="ticket-card">
@@ -8,7 +10,11 @@ const TicketCard = ({ ticket }) => {
       <p>{ticket.SubmittedDateTime}</p>
       <p>{ticket.RequestType}</p>
       <p>{ticket.RequestDescription}</p>
+      <p>{ticket.PARCStatus}</p>
       <p>{ticket.Status}</p>
+      <Link to={`/ticket/${ticket.ServiceRequestID}`}>
+        <button className="btn">View Ticket</button>
+      </Link>
     </div>
   );
 };

@@ -6,6 +6,7 @@ import LandingPage from "./pages/landingpage";
 import AdminLogin from "./pages/login/adminlogin";
 import TenantPortal from "./pages/portal/tenantportal";
 import LandlordPortal from "./pages/portal/landlordportal";
+import TicketDetails from "./components/TicketDetails";
 import { Route, Routes } from "react-router-dom";
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path="/tenantlogin" element={<TenantLogin />} />
           <Route path="/landlordlogin" element={<LandlordLogin />} />
           <Route path="/adminlogin" element={<AdminLogin />} />
+          <Route path="/ticket/:ServiceRequestID" component={TicketDetails} />
           <Route path="/tenantportal/:id" element={<TenantPortal />} />
           <Route path="/landlordportal/:id" element={<LandlordPortal />} />
         </Routes>
