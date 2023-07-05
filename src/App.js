@@ -7,7 +7,10 @@ import AdminLogin from "./pages/login/adminlogin";
 import TenantPortal from "./pages/portal/tenantportal";
 import LandlordPortal from "./pages/portal/landlordportal";
 import TicketDetails from "./components/TicketDetails";
+import AdminLandingPage from "./pages/landingpages/adminlandingpage"
 import { Route, Routes } from "react-router-dom";
+import LandlordLandingPage from "./pages/landingpages/landlordlandingpage";
+import TenantLandingPage from "./pages/landingpages/tenantlandingpage";
 
 function App() {
   // Routing
@@ -24,6 +27,9 @@ function App() {
           <Route path="/ticket/:ServiceRequestID" component={TicketDetails} />
           <Route path="/tenantportal/:id" element={<TenantPortal />} />
           <Route path="/landlordportal/:id" element={<LandlordPortal />} />
+          <Route path="/landlordlandingpage/:id" element={<LandlordLandingPage />} />
+          <Route path="/tenantlandingpage/:id" element={<TenantLandingPage />} />
+          <Route path="/adminlandingpage/:id" element={<AdminLandingPage />} />
         </Routes>
       </div>
     </>

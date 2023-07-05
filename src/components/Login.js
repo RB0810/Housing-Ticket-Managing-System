@@ -38,7 +38,7 @@ class Login extends React.Component{
         console.log(user);
 
         if (user && user[`${Type}Password`] === password) {
-          const redirectUrl = `/${Type.toLowerCase()}portal/${user[`${Type}ID`]}`;
+          const redirectUrl = `/${Type.toLowerCase()}landingpage/${user[`${Type}ID`]}`;
           window.location.href = redirectUrl;
         } else {
           throw new Error('Invalid credentials');
