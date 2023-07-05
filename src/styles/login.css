@@ -1,0 +1,38 @@
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #e3e3e2;
+    align-items: center;
+}
+
+.loginForm{
+    border-radius: 1rem;
+}
+
+.wlcText{
+    font-size: xxx-large;
+}
+
+.logindiv{
+    margin:auto;
+    vertical-align: middle;
+    margin-top: 10%;
+}
+
+.loginBtn{
+    background-color: royalblue;
+    color: white;
+    width: 225px;
+    border-radius: 0.4rem;
+    font-size: medium;
+    padding: 3px 10px;
+    margin: 10px;
+}
+
+.loginInput{
+    height: 20px;
+    width: 250px;
+    border-radius: 0.4rem;
+    padding: 10px 10px;
+    margin: 10px;
+}

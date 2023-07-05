@@ -1,5 +1,6 @@
 import React from 'react';
 import supabase from "../config/supabaseClient";
+import "./../../src/styles/login.css";
 
 class Login extends React.Component{
 
@@ -54,7 +55,7 @@ class Login extends React.Component{
     
     render(){
         return (
-            <div>
+            <div className='logindiv'>
                 <form className='loginForm'>
                   <div>
                     <h1 className='wlcText'>{this.state.Type} Portal <br/> Login</h1>
@@ -65,12 +66,12 @@ class Login extends React.Component{
 
                   <div>
                       <label></label>
-                      <input className='loginInput' type = 'text' onChange={this.getValue} name='ID'/>
+                      <input className='loginInput' type = 'text' onChange={this.getValue} name='ID' placeholder='ID Number/Email'/>
                   </div>
                 
                   <div>
                       <label></label>
-                      <input className='loginInput' type = 'password' onChange={this.getValue} name='password'/>
+                      <input className='loginInput' type = 'password' onChange={this.getValue} name='password' placeholder='Password'/>
                   </div>
 
                   <button className='loginBtn' onClick = {this.handleLogin}>Login</button>
