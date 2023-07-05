@@ -7,7 +7,9 @@ const AccountColumn = ({ imageSrc, altText, heading, path }) => {
   
       <img src={imageSrc} alt={altText} />
       <h2>{heading}</h2>
-      <button className="loginButton">Login</button>
+      <button className="loginButton">
+      <Link to={path} style={{ textDecoration: 'none' }}>Login</Link>
+        </button>
     </td>
   );
 };
@@ -19,9 +21,9 @@ export default function LandingPage() {
         <thead></thead>
         <tbody>
           <tr>
-            <AccountColumn imageSrc="Tenantimage.jpg" altText="Tenant" heading="Tenant Account" />
-            <AccountColumn imageSrc="Landlordimage.jpg" altText="Landlord" heading="Landlord Account" />
-            <AccountColumn imageSrc="Adminimage.jpg" altText="Admin" heading="Admin Account" />
+            <AccountColumn imageSrc="Tenantimage.jpg" altText="Tenant" heading="Tenant Account" path="/tenantlogin" />
+            <AccountColumn imageSrc="Landlordimage.jpg" altText="Landlord" heading="Landlord Account" path="/landlordlogin" />
+            <AccountColumn imageSrc="Adminimage.jpg" altText="Admin" heading="Admin Account" path="/adminlogin" />
           </tr>
         </tbody>
       </table>
