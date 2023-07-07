@@ -2,24 +2,24 @@ import React from 'react';
 import '../../styles/landlordlandingpage.css';
 import { useNavigate, useParams } from 'react-router-dom';
 
-export default function LandlordLandingPage() {
+export default function SupervisorLandingPage() {
   const navigate = useNavigate();
   const { id } = useParams();
   var status = "";
 
   const handleButtonClickPending = () => {
     status = "pending";
-    navigate(`/landlordportal/${id}/${status}`);
+    navigate(`/supervisorportal/${id}/${status}`);
   };
 
   const handleButtonClickActive = () => {
     status = "active"
-    navigate(`/landlordportal/${id}/${status}`);
+    navigate(`/supervisorportal/${id}/${status}`);
   };
 
   const handleButtonClickClosed = () => {
     status = "closed"
-    navigate(`/landlordportal/${id}/${status}`);
+    navigate(`/supervisorportal/${id}/${status}`);
   };
   const handleButtonClickNew = () => {
     navigate(`/createtennantacc/${id}`);
