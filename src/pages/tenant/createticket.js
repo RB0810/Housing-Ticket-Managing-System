@@ -20,7 +20,7 @@ const CreateTicket = () => {
     const { data, error } = await supabase.from("Service Request").insert([
       {
         TenantID: 1,
-        LandlordID: 1,
+        SupervisorID: 1,
         Name: name,
         RequestType: requestType,
         RequestDescription: description,
