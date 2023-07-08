@@ -1,57 +1,217 @@
-import { useState } from "react";
-import "../../styles/createaccount.css"
+import React, { useState } from "react";
+import { useParams } from 'react-router-dom';
+import { CreateTenantAccount } from "../../managers/accountmanager";
 
-const CreateTenant = () => {
-  const [name, setName] = useState("");
-  const [requestType, setRequestType] = useState("Toilet"); // Set default value
-  const [description, setDescription] = useState("");
+const CreateTenantAcc = () => {
+  const [tenantUsername, setTenantUsername] = useState("");
+  const [tenantEmail, setTenantEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [reEnterPassword, setReEnterPassword] = useState("");
+  const [tenantPhone, setTenantPhone] = useState("");
+  const [tradeType, setTradeType] = useState("");
+  const [monthlyRental, setMonthlyRental] = useState("");
+  const [leaseCommencementDate, setLeaseCommencementDate] = useState("");
+  const [leaseTerminationDate, setLeaseTerminationDate] = useState("");
+  const [areaOfUnit, setAreaOfUnit] = useState("");
+  const [numberOfUnits, setNumberOfUnits] = useState(1);
+  const [unitFields, setUnitFields] = useState([]);
   const [formError, setFormError] = useState(null);
+  const { id } = useParams();
 
-  const handleSubmit = async (e) => {
+  const handleUnitFieldChange = (index, value) => {
+    const updatedUnitFields = [...unitFields];
+    updatedUnitFields[index] = value;
+    setUnitFields(updatedUnitFields);
+  };
+
+  const handleNumberOfUnitsChange = (e) => {
+    const value = parseInt(e.target.value, 10);
+    setNumberOfUnits(value);
+    setUnitFields(Array(value).fill(""));
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!name || !requestType || !description) {
+    if (password !== reEnterPassword) {
+      setFormError("Passwords do not match");
+      return;
+    }
+
+    if (
+      !tenantUsername ||
+      !tenantEmail ||
+      !password ||
+      !reEnterPassword ||
+      !tenantPhone ||
+      !tradeType ||
+      !monthlyRental ||
+      !leaseCommencementDate ||
+      !leaseTerminationDate ||
+      !areaOfUnit ||
+      !unitFields.every((unit) => unit !== "")
+    ) {
       setFormError("Please fill out all fields");
       return;
     }
 
+    // Prepare tenant data
+    const tenantData = {
+      TenantUsername: tenantUsername,
+      TenantEmail: tenantEmail,
+      TenantPassword: password,
+      TenantPhone: tenantPhone,
+      UnderSupervisor: id,
+      Lease: null
+    };
+
+    const leaseData = {
+      CommenceDate: leaseCommencementDate,
+      TerminationDate: leaseTerminationDate,
+      Status: "Active",
+      AreaInSqMeters: areaOfUnit,
+      TradeType: tradeType,
+      MonthlyRental: monthlyRental
+    };
+
+    const units = {
+      number: numberOfUnits,
+      unit: unitFields
+    };
+
+    console.log(tenantData);
+    console.log(leaseData);
+    console.log(units);
+
+    try {
+      CreateTenantAccount(tenantData, leaseData, units);
+      setFormError("Tenant Account Created!");
+    } catch (error) {
+      console.error(error);
+      setFormError("Database Error");
+    }
+  };
+
+  const renderUnitFields = () => {
+    const fields = [];
+    for (let i = 0; i < numberOfUnits; i++) {
+      fields.push(
+        <input
+          key={i}
+          type="text"
+          value={unitFields[i] || ""}
+          onChange={(e) => handleUnitFieldChange(i, e.target.value)}
+        />
+      );
+    }
+    return fields;
   };
 
   return (
-    <div className="tenant-account-creation-page">
-    <h1 className='wlcText'>Create Tenant Account</h1>
+    <div>
+      <h1>Create Tenant Account</h1>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="name">Name</label>
+        <label>Tenant Username:</label>
         <input
           type="text"
-          id="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={tenantUsername}
+          onChange={(e) => setTenantUsername(e.target.value)}
         />
-        <label htmlFor="dropdown">Request Type</label>
-        <select
-          id="dropdown"
-          value={"requestType"}
-          onChange={(e) => setRequestType(e.target.value)}
-        >
-          <option value="Toilet">Toilet</option>
-          <option value="Plumbing">Plumbing</option>
-          <option value="Pest">Pest</option>
-        </select>
+        <br />
 
-        <label htmlFor="description">Description</label>
+        <label>Tenant Email:</label>
+        <input
+          type="email"
+          value={tenantEmail}
+          onChange={(e) => setTenantEmail(e.target.value)}
+        />
+        <br />
+
+        <label>Password:</label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <br />
+
+        <label>Re-enter Password:</label>
+        <input
+          type="password"
+          value={reEnterPassword}
+          onChange={(e) => setReEnterPassword(e.target.value)}
+        />
+        <br />
+
+        <label>Tenant Phone:</label>
+        <input
+          type="tel"
+          value={tenantPhone}
+          onChange={(e) => setTenantPhone(e.target.value)}
+        />
+        <br />
+
+        <label>Trade Type:</label>
         <input
           type="text"
-          id="description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          value={tradeType}
+          onChange={(e) => setTradeType(e.target.value)}
         />
+        <br />
 
-        <button>Create Service Ticket</button>
+        <label>Monthly Rental:</label>
+        <input
+          type="text"
+          value={monthlyRental}
+          onChange={(e) => setMonthlyRental(e.target.value)}
+        />
+        <br />
+
+        <label>Lease Commencement Date:</label>
+        <input
+          type="date"
+          value={leaseCommencementDate}
+          onChange={(e) => setLeaseCommencementDate(e.target.value)}
+        />
+        <br />
+
+        <label>Lease Termination Date:</label>
+        <input
+          type="date"
+          value={leaseTerminationDate}
+          onChange={(e) => setLeaseTerminationDate(e.target.value)}
+        />
+        <br />
+
+        <label>Area (in Sq Meters):</label>
+        <input
+          type="text"
+          value={areaOfUnit}
+          onChange={(e) => setAreaOfUnit(e.target.value)}
+        />
+        <br />
+
+        <label>Number of Units:</label>
+        <input
+          type="number"
+          value={numberOfUnits}
+          onChange={handleNumberOfUnitsChange}
+          min="1"
+          onKeyDown={(e) => e.preventDefault()}
+        />
+        <br />
+
+
+        <label>Unit:</label>
+        {renderUnitFields()}
+        <br />
+
+        <button type="submit">Create Account</button>
+
         {formError && <p className="create-ticket-error">{formError}</p>}
       </form>
     </div>
   );
 };
 
-export default CreateTenant;
+export default CreateTenantAcc;

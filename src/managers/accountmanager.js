@@ -37,6 +37,27 @@ export async function getBuildings() {
 export async function CreateStaffAccount(staff){
     await supabase.from("StaffUsers").insert(staff);
 }
+
+export async function CreateTenantAccount(tenant, lease, units){
+    const {data} = await supabase.from("Lease").insert(lease).select();
+    const leaseID = data[0].LeaseID;
+    tenant.Lease = leaseID;
+    await supabase.from("TenantUsers").insert(tenant);
+    const supervisorID = tenant.UnderSupervisor;
+    console.log(supervisorID);
+    const { data: dataBuilding } = await supabase.from("SupervisorUsers").select("*").eq("SupervisorID", parseInt(supervisorID));
+    console.log(dataBuilding[0].BuildingID);
+    var unitInsert = {
+        LeaseID: leaseID,
+        BuildingID: dataBuilding[0].BuildingID,
+        UnitNumber: null
+    }
+    for(var i=0; i<units.number; i++){
+        unitInsert.UnitNumber = units.unit[i];
+        console.log(unitInsert);
+        await supabase.from("Unit").insert(unitInsert);
+    }
+}
   
   
   

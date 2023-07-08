@@ -109,7 +109,7 @@ const CreateSupervisor = () => {
         <div className="form-group">
           <label htmlFor="phone">Supervisor Phone</label>
           <input
-            type="number"
+            type="tel"
             id="phone"
             className="form-control"
             value={phone}

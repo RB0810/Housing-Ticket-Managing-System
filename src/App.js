@@ -16,6 +16,7 @@ import StaffLandingPage from "./pages/landingpages/stafflandingpage";
 import CreateTicket from "./pages/tenant/createticket";
 import CreateSupervisor from "./pages/admin/createsupervisoracc";
 import CreateStaffAcc from "./pages/admin/createstaffacc";
+import CreateTenantAcc from "./pages/supervisor/createtenantacc";
 
 function App() {
   // Routing
@@ -33,6 +34,7 @@ function App() {
           <Route path="/tenantportal/:id/:status" element={<TenantPortal />} />
           <Route path="/staffportal/:id/:status" element={<StaffPortal />} />
           <Route path="/supervisorportal/:id/:status" element={<SupervisorPortal />} />
+          <Route path="/createtennantacc/:id" element={<CreateTenantAcc />} />
           <Route path="/createticket/:id" element={<CreateTicket />} />
           <Route path="/supervisorlandingpage/:id" element={<SupervisorLandingPage />} />
           <Route path="/stafflandingpage/:id" element={<StaffLandingPage />} />
