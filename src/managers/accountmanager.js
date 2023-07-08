@@ -18,7 +18,15 @@ export async function LoginAuth(event){
         window.location.href = redirectUrl;
     } else {
         throw new Error('Invalid credentials');
-    }
-        
+    }        
 }
 
+export async function CreateSupervisorAcc(building, supervisor) {
+    const {data} = await supabase.from("Buildings").insert(building).select();
+    const buildingID = data[0].BuildingID;
+    console.log(buildingID);
+    supervisor.BuildingID = buildingID;
+    await supabase.from("SupervisorUsers").insert(supervisor);
+} 
+  
+  

@@ -13,7 +13,8 @@ import { Route, Routes } from "react-router-dom";
 import SupervisorLandingPage from "./pages/landingpages/supervisorlandingpage";
 import TenantLandingPage from "./pages/landingpages/tenantlandingpage";
 import StaffLandingPage from "./pages/landingpages/stafflandingpage";
-import CreateTicket from "./pages/tenant/createticket"
+import CreateTicket from "./pages/tenant/createticket";
+import CreateSupervisor from "./pages/admin/createsupervisoracc";
 
 function App() {
   // Routing
@@ -36,6 +37,7 @@ function App() {
           <Route path="/stafflandingpage/:id" element={<StaffLandingPage />} />
           <Route path="/tenantlandingpage/:id" element={<TenantLandingPage />} />
           <Route path="/adminlandingpage/:id" element={<AdminLandingPage />} />
+          <Route path="/createsupervisoracc" element={<CreateSupervisor />} />
         </Routes> 
       </div>
     </>
