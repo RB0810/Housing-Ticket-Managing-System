@@ -15,6 +15,7 @@ import TenantLandingPage from "./pages/landingpages/tenantlandingpage";
 import StaffLandingPage from "./pages/landingpages/stafflandingpage";
 import CreateTicket from "./pages/tenant/createticket";
 import CreateSupervisor from "./pages/admin/createsupervisoracc";
+import CreateStaffAcc from "./pages/admin/createstaffacc";
 
 function App() {
   // Routing
@@ -38,6 +39,7 @@ function App() {
           <Route path="/tenantlandingpage/:id" element={<TenantLandingPage />} />
           <Route path="/adminlandingpage/:id" element={<AdminLandingPage />} />
           <Route path="/createsupervisoracc" element={<CreateSupervisor />} />
+          <Route path="/createstaffacc" element={<CreateStaffAcc />} />
         </Routes> 
       </div>
     </>

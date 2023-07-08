@@ -28,5 +28,15 @@ export async function CreateSupervisorAcc(building, supervisor) {
     supervisor.BuildingID = buildingID;
     await supabase.from("SupervisorUsers").insert(supervisor);
 } 
+
+export async function getBuildings() {
+    const { data } = await supabase.from("Buildings").select("*");
+    return data;
+  }
+
+export async function CreateStaffAccount(staff){
+    await supabase.from("StaffUsers").insert(staff);
+}
+  
   
   
