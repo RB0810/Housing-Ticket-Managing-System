@@ -5,12 +5,14 @@ import TenantLogin from "./pages/login/tenantlogin";
 import LandingPage from "./pages/landingpage";
 import AdminLogin from "./pages/login/adminlogin";
 import TenantPortal from "./pages/portal/tenantportal";
-import LandlordPortal from "./pages/portal/landlordportal";
+import SupervisorPortal from "./pages/portal/supervisorportal";
+import StaffPortal from "./pages/portal/staffportal";
 import TicketDetails from "./components/TicketDetails";
 import AdminLandingPage from "./pages/landingpages/adminlandingpage"
 import { Route, Routes } from "react-router-dom";
 import SupervisorLandingPage from "./pages/landingpages/supervisorlandingpage";
 import TenantLandingPage from "./pages/landingpages/tenantlandingpage";
+import StaffLandingPage from "./pages/landingpages/stafflandingpage";
 import CreateTicket from "./pages/tenant/createticket"
 
 function App() {
@@ -27,9 +29,11 @@ function App() {
           <Route path="/adminlogin" element={<AdminLogin />} />
           <Route path="/ticket/:ServiceRequestID" component={TicketDetails} />
           <Route path="/tenantportal/:id/:status" element={<TenantPortal />} />
-          <Route path="/supervisorportal/:id/:status" element={<LandlordPortal />} />
+          <Route path="/staffportal/:id/:status" element={<StaffPortal />} />
+          <Route path="/supervisorportal/:id/:status" element={<SupervisorPortal />} />
           <Route path="/createticket/:id" element={<CreateTicket />} />
           <Route path="/supervisorlandingpage/:id" element={<SupervisorLandingPage />} />
+          <Route path="/stafflandingpage/:id" element={<StaffLandingPage />} />
           <Route path="/tenantlandingpage/:id" element={<TenantLandingPage />} />
           <Route path="/adminlandingpage/:id" element={<AdminLandingPage />} />
         </Routes> 

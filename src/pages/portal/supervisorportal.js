@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 // components
 import TicketCard from "../../components/TicketCard";
 
-export default function LandlordPortal() {
+export default function SupervisorPortal() {
   const [serviceTickets, setServiceTickets] = useState([]);
   const [fetchError, setFetchError] = useState([]);
 

@@ -40,13 +40,13 @@ export default function TenantLandingPage() {
         <button className="card" onClick={handleButtonClickActive}>
           <img src="/pendingticket.png" alt="Card" className="card-image" />
           <div>
-            <button>Active Tickets</button>
+            <button>Pending Tickets</button>
           </div>
         </button>
         <button className="card" onClick={handleButtonClickPending}>
           <img src="/activeticket.png" alt="Card" className="card-image" />
           <div>
-            <button>Pending Tickets</button>
+            <button>Active Tickets</button>
           </div>
         </button>
         <button className="card" onClick={handleButtonClickClosed}>
