@@ -1,9 +1,15 @@
-import supabase from "../config/supabaseClient";
+import { createClient } from "@supabase/supabase-js";
 
-export default class TicketManager {
+const supabaseUrl = "https://mnfsjgaziftztwiarlys.supabase.co";
+const supabaseKey =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1uZnNqZ2F6aWZ0enR3aWFybHlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODY4MjkwODgsImV4cCI6MjAwMjQwNTA4OH0.Mrvmdish7OlO5-m1WIZTNwVFUnEcF7aoHE53ZVwiOY8";
+
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+class TicketManager {
   /**
    * Creates Ticket object
-   * @param {Ticket} - Ticket Object to be instantiated 
+   * @param {Ticket} - Ticket Object to be instantiated
    *
    * @returns None - Ticket object is now loaded to Database.
    */
@@ -50,7 +56,7 @@ export default class TicketManager {
    * @param {string} - Column name to update
    * @param {string} - Value to update
    *
-   * @returns None
+   * @returns True if successful, False if unsuccessful
    */
 
   async updateTicket(ticketId, column_name, value) {
@@ -62,52 +68,214 @@ export default class TicketManager {
 
     if (error) {
       console.error("Error updating ticket:", error);
+      return true;
     } else {
       console.log("Ticket updated successfully:", data);
+      return false;
     }
   }
+
+  /**
+   * Updates Ticket entry in Supabase based on Ticket object's ID attribute
+   * @param {int} - Ticket ID to get
+   *
+   * @returns JSON
+   */
 
   async getTicket(ticketId) {
     const { data, error } = await supabase
       .from("Service Request")
       .select()
-      .eq("id", ticketId);
+      .eq("ServiceRequestID", ticketId);
 
     if (error) {
       console.error("Error fetching ticket:", error);
     } else {
       console.log("Ticket fetched successfully:", data);
     }
+
+    return data;
   }
 
+  /**
+   * Updates Ticket entry in Supabase based on Ticket object's ID attribute
+   * @param {int} - Ticket ID to get
+   *
+   * @returns True if successful, False if unsuccessful
+   */
+
   async deleteTicket(ticketId) {
-    const { data, error } = await this.supabase
+    const { data, error } = await supabase
       .from("Service Request")
       .delete()
-      .eq("id", ticketId);
+      .eq("ServiceRequestID", ticketId);
 
     if (error) {
       console.error("Error deleting ticket:", error);
+      return false;
     } else {
       console.log("Ticket deleted successfully:", data);
+      return true;
     }
   }
 
-  async getAllTickets() {}
+  /**
+   * Updates Ticket entry in Supabase based on Ticket object's ID attribute
+   *
+   * @returns List od dictionaries if successful, else returns null
+   */
 
-  async getTicketsByTenant(tenantId) {}
+  async getAllTickets() {
+    let { data, error } = await supabase.from("Service Request").select("*");
 
-  async getTicketsByStaff(staffId) {}
+    if (error) {
+      console.error("Error getting all tickets:", error);
+    } else {
+      console.log("Tickets fetched successfully:", data);
+    }
 
-  async getTicketsBySupervisor(supervisorId) {}
+    return data;
+  }
 
-  async getTicketsByStatus(status) {}
+  /**
+   * @param {int} - Tenant ID to get tickets of
+   *
+   * @returns List od dictionaries if successful, else returns null
+   */
 
-  async getTicketsByPARCStatus(PARCStatus) {}
+  async getTicketsByTenant(tenantId) {
+    let { data, error } = await supabase
+      .from("Service Request")
+      .select("*")
+      .eq("TenantID", tenantId);
+
+    if (error) {
+      console.error("Error getting all tickets by TenantID:", error);
+    } else {
+      console.log(
+        `"Tickets of Tenant ID :${tenantId} fetched successfully:"`,
+        data
+      );
+    }
+
+    return data;
+  }
+
+  /**
+   * @param {int} - Staff ID to get tickets of
+   *
+   * @returns List od dictionaries if successful, else returns null
+   */
+  async getTicketsByStaff(staffId) {
+    let { data, error } = await supabase
+      .from("Service Request")
+      .select("*")
+      .eq("StaffID", tenantId);
+
+    if (error) {
+      console.error("Error getting all tickets by StaffID:", error);
+    } else {
+      console.log(
+        `"Tickets of Staff ID :${staffId} fetched successfully:"`,
+        data
+      );
+    }
+
+    return data;
+  }
+
+  /**
+   * @param {int} - Supervisor ID to get tickets of
+   *
+   * @returns List od dictionaries if successful, else returns null
+   */
+
+  async getTicketsBySupervisor(supervisorId) {
+    let { data, error } = await supabase
+      .from("Service Request")
+      .select("*")
+      .eq("SupervisorID", tenantId);
+
+    if (error) {
+      console.error("Error getting all tickets by SupervisorID:", error);
+    } else {
+      console.log(
+        `"Tickets of Supervisor ID :${supervisorId} fetched successfully:"`,
+        data
+      );
+    }
+
+    return data;
+  }
+
+  /**
+   * @param {string} - Status to get tickets of
+   *
+   * @returns List od dictionaries if successful, else returns null
+   */
+
+  async getTicketsByStatus(status) {
+    let { data, error } = await supabase
+      .from("Service Request")
+      .select("*")
+      .eq("Status", status);
+
+    if (error) {
+      console.error("Error getting all tickets by status:", error);
+    } else {
+      console.log(`"Tickets of Status :${status} fetched successfully:"`, data);
+    }
+
+    return data;
+  }
+
+  /**
+   * @param {string} - PARCStatus to get tickets of
+   *
+   * @returns List od dictionaries if successful, else returns null
+   */
+
+  async getTicketsByPARCStatus(PARCStatus) {
+    let { data, error } = await supabase
+      .from("Service Request")
+      .select("*")
+      .eq("PARCStatus", PARCStatus);
+
+    if (error) {
+      console.error("Error getting all tickets by PARCStatus:", error);
+    } else {
+      console.log(
+        `"Tickets of PARCStatus :${PARCStatus} fetched successfully:"`,
+        data
+      );
+    }
+
+    return data;
+  }
+
+  /**
+   * @param {string} - Category to get tickets of
+   *
+   * @returns List od dictionaries if successful, else returns null
+   */
+
+  async getTicketsByCategory(category) {
+    let { data, error } = await supabase
+      .from("Service Request")
+      .select("*")
+      .eq("Category", category);
+
+    if (error) {
+      console.error("Error getting all tickets by category:", error);
+    } else {
+      console.log(
+        `"Tickets of Category :${category} fetched successfully:"`,
+        data
+      );
+    }
+
+    return data;
+  }
 }
 
-// Component Testing Code and Use Cases
-if (require.main === module) {
-  // This code will only run if the file is the main module
-  TicketManager.addTicket;
-}
+export default new TicketManager();

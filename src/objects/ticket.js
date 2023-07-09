@@ -1,5 +1,5 @@
 /**
- * Creates Ticket object
+ * Ticket Object
  * @param {string} name - Name of the ticket (short summary).
  * @param {number} tenantID - Tenant ID that submitted ticket.
  * @param {number} submittedDateTime - Date and Time of Ticket submission
@@ -73,4 +73,3 @@ export default class Ticket {
     };
   }
 }
-
