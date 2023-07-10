@@ -285,4 +285,34 @@ export default class TicketManager {
 
     return data;
   }
+
+  /**
+   * @param {string} - PARCStatus to get tickets of
+   * @param {string} - TenantID to get tickets of
+   *
+   * @returns List od dictionaries if successful, else returns false
+   */
+
+  async getTicketsByPARCStatusForTenantID(PARCStatus, tenantID) {
+    let { data, error } = await supabase
+      .from("Service Request")
+      .select("*")
+      .eq("PARCStatus", PARCStatus)
+      .eq("TenantID", tenantID);
+
+    if (error) {
+      console.error(
+        "Error getting all tickets by PARCStatus and TenantID:",
+        error
+      );
+      return false;
+    } else {
+      console.log(
+        `"Tickets of PARCStatus :${PARCStatus} and TenantID :${tenantID} fetched successfully:"`,
+        data
+      );
+    }
+
+    return data;
+  }
 }

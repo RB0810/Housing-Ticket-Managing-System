@@ -8,14 +8,15 @@ import TicketCard from "../../components/TicketCard";
 
 export default function TenantPortal() {
   const ticketManager = new TicketManager();
-  let { status } = useParams();
+  let { status, id } = useParams();
   const [serviceTickets, setServiceTickets] = useState([]);
   const [fetchError, setFetchError] = useState([]);
 
   useEffect(() => {
     const getTickets = async () => {
-      let data = await ticketManager.getTicketsByPARCStatus(
-        status.toUpperCase()
+      let data = await ticketManager.getTicketsByPARCStatusForTenantID(
+        status.toUpperCase(),
+        parseInt(id)
       );
 
       if (data != false) {

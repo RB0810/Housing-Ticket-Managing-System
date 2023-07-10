@@ -1,9 +1,11 @@
-import { useState, useParams } from "react";
+import { useEffect, useState } from "react";
+import { Routes, Route, useParams } from "react-router-dom";
 import Ticket from "../../objects/Ticket";
 import TicketManager from "../../managers/TicketManager";
 
 const CreateTicket = () => {
   const ticketManager = new TicketManager();
+  let { id } = useParams();
   const [name, setName] = useState("");
   const [requestType, setRequestType] = useState("Toilet"); // Set default value
   const [description, setDescription] = useState("");
@@ -21,7 +23,7 @@ const CreateTicket = () => {
     // Create Ticket object
     const ticket = new Ticket(
       name,
-      1,
+      parseInt(id),
       submittedDateTime,
       requestType,
       description
