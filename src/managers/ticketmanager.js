@@ -1,17 +1,16 @@
 import { createClient } from "@supabase/supabase-js";
-
 const supabaseUrl = "https://mnfsjgaziftztwiarlys.supabase.co";
 const supabaseKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1uZnNqZ2F6aWZ0enR3aWFybHlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODY4MjkwODgsImV4cCI6MjAwMjQwNTA4OH0.Mrvmdish7OlO5-m1WIZTNwVFUnEcF7aoHE53ZVwiOY8";
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-class TicketManager {
+export default class TicketManager {
   /**
    * Creates Ticket object
    * @param {Ticket} - Ticket Object to be instantiated
    *
-   * @returns None - Ticket object is now loaded to Database.
+   * @returns True - Ticket object is now loaded to Database, else False.
    */
 
   async addTicket(ticket) {
@@ -19,7 +18,7 @@ class TicketManager {
       .from("Service Request")
       .insert([
         {
-          Name: ticket.Name,
+          Name: ticket.name,
           TenantID: ticket.tenantID,
           SubmittedDateTime: ticket.submittedDateTime,
           Category: ticket.category,
@@ -31,7 +30,7 @@ class TicketManager {
           Status: ticket.status,
           QuotationRequired: ticket.quotationRequired,
           QuotationAmount: ticket.quotationAmount,
-          QuotationUploadedBy: ticket.quotationUploadedBy,
+          QuotationUploadedToBy: ticket.quotationUploadedBy,
           QuotationAcceptedByTenant: ticket.quotationAccepted,
           QuotationAcceptanceDate: ticket.quotationAcceptanceDate,
           QuotationAttachmentPath: ticket.quotationAttachmentPath,
@@ -45,8 +44,10 @@ class TicketManager {
 
     if (error) {
       console.error("Error adding ticket:", error);
+      return false;
     } else {
       console.log("Ticket added successfully:", data);
+      return true;
     }
   }
 
@@ -68,10 +69,10 @@ class TicketManager {
 
     if (error) {
       console.error("Error updating ticket:", error);
-      return true;
+      return false;
     } else {
       console.log("Ticket updated successfully:", data);
-      return false;
+      return true;
     }
   }
 
@@ -79,7 +80,7 @@ class TicketManager {
    * Updates Ticket entry in Supabase based on Ticket object's ID attribute
    * @param {int} - Ticket ID to get
    *
-   * @returns JSON
+   * @returns JSON of ticket, else return false if error
    */
 
   async getTicket(ticketId) {
@@ -90,6 +91,7 @@ class TicketManager {
 
     if (error) {
       console.error("Error fetching ticket:", error);
+      return false;
     } else {
       console.log("Ticket fetched successfully:", data);
     }
@@ -122,7 +124,7 @@ class TicketManager {
   /**
    * Updates Ticket entry in Supabase based on Ticket object's ID attribute
    *
-   * @returns List od dictionaries if successful, else returns null
+   * @returns List od dictionaries if successful, else returns false
    */
 
   async getAllTickets() {
@@ -130,6 +132,7 @@ class TicketManager {
 
     if (error) {
       console.error("Error getting all tickets:", error);
+      return false;
     } else {
       console.log("Tickets fetched successfully:", data);
     }
@@ -140,7 +143,7 @@ class TicketManager {
   /**
    * @param {int} - Tenant ID to get tickets of
    *
-   * @returns List od dictionaries if successful, else returns null
+   * @returns List of dictionaries if successful, else returns false
    */
 
   async getTicketsByTenant(tenantId) {
@@ -151,6 +154,7 @@ class TicketManager {
 
     if (error) {
       console.error("Error getting all tickets by TenantID:", error);
+      return false;
     } else {
       console.log(
         `"Tickets of Tenant ID :${tenantId} fetched successfully:"`,
@@ -164,16 +168,17 @@ class TicketManager {
   /**
    * @param {int} - Staff ID to get tickets of
    *
-   * @returns List od dictionaries if successful, else returns null
+   * @returns List of dictionaries if successful, else returns false
    */
   async getTicketsByStaff(staffId) {
     let { data, error } = await supabase
       .from("Service Request")
       .select("*")
-      .eq("StaffID", tenantId);
+      .eq("StaffID", staffId);
 
     if (error) {
       console.error("Error getting all tickets by StaffID:", error);
+      return false;
     } else {
       console.log(
         `"Tickets of Staff ID :${staffId} fetched successfully:"`,
@@ -187,17 +192,18 @@ class TicketManager {
   /**
    * @param {int} - Supervisor ID to get tickets of
    *
-   * @returns List od dictionaries if successful, else returns null
+   * @returns List od dictionaries if successful, else returns false
    */
 
   async getTicketsBySupervisor(supervisorId) {
     let { data, error } = await supabase
       .from("Service Request")
       .select("*")
-      .eq("SupervisorID", tenantId);
+      .eq("SupervisorID", supervisorId);
 
     if (error) {
       console.error("Error getting all tickets by SupervisorID:", error);
+      return false;
     } else {
       console.log(
         `"Tickets of Supervisor ID :${supervisorId} fetched successfully:"`,
@@ -211,7 +217,7 @@ class TicketManager {
   /**
    * @param {string} - Status to get tickets of
    *
-   * @returns List od dictionaries if successful, else returns null
+   * @returns List od dictionaries if successful, else returns false
    */
 
   async getTicketsByStatus(status) {
@@ -222,6 +228,7 @@ class TicketManager {
 
     if (error) {
       console.error("Error getting all tickets by status:", error);
+      return false;
     } else {
       console.log(`"Tickets of Status :${status} fetched successfully:"`, data);
     }
@@ -232,7 +239,7 @@ class TicketManager {
   /**
    * @param {string} - PARCStatus to get tickets of
    *
-   * @returns List od dictionaries if successful, else returns null
+   * @returns List of dictionaries if successful, else returns false
    */
 
   async getTicketsByPARCStatus(PARCStatus) {
@@ -243,6 +250,7 @@ class TicketManager {
 
     if (error) {
       console.error("Error getting all tickets by PARCStatus:", error);
+      return false;
     } else {
       console.log(
         `"Tickets of PARCStatus :${PARCStatus} fetched successfully:"`,
@@ -256,7 +264,7 @@ class TicketManager {
   /**
    * @param {string} - Category to get tickets of
    *
-   * @returns List od dictionaries if successful, else returns null
+   * @returns List od dictionaries if successful, else returns false
    */
 
   async getTicketsByCategory(category) {
@@ -267,6 +275,7 @@ class TicketManager {
 
     if (error) {
       console.error("Error getting all tickets by category:", error);
+      return false;
     } else {
       console.log(
         `"Tickets of Category :${category} fetched successfully:"`,
@@ -277,5 +286,3 @@ class TicketManager {
     return data;
   }
 }
-
-export default new TicketManager();

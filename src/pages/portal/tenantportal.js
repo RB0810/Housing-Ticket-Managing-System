@@ -1,26 +1,47 @@
 import supabase from "../../config/supabaseClient";
 import { useEffect, useState } from "react";
+import { Routes, Route, useParams } from "react-router-dom";
+import TicketManager from "../../managers/TicketManager";
 
 // components
 import TicketCard from "../../components/TicketCard";
 
 export default function TenantPortal() {
+  const ticketManager = new TicketManager();
+  let { status } = useParams();
   const [serviceTickets, setServiceTickets] = useState([]);
   const [fetchError, setFetchError] = useState([]);
 
   useEffect(() => {
     const getTickets = async () => {
-      let { data, error } = await supabase.from("Service Request").select("*");
-      if (error) {
-        setFetchError(error.message);
-        setServiceTickets(null);
-        console.log(error);
-      }
+      let data = await ticketManager.getTicketsByPARCStatus(
+        status.toUpperCase()
+      );
 
-      if (data) {
+      if (data != false) {
+        console.log(data);
         setServiceTickets(data);
         setFetchError(null);
+      } else if (data.length == 0) {
+        console.log(data);
+        setFetchError("Empty!");
+        setServiceTickets();
+      } else {
+        setFetchError("Error!");
+        setServiceTickets();
       }
+
+      // let { data, error } = await supabase.from("Service Request").select("*");
+      // if (error) {
+      //   setFetchError(error.message);
+      //   setServiceTickets(null);
+      //   console.log(error);
+      // }
+
+      // if (data) {
+      //   setServiceTickets(data);
+      //   setFetchError(null);
+      // }
     };
 
     getTickets();

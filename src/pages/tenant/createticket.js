@@ -1,11 +1,12 @@
-import { useState } from "react";
-import supabase from "../../config/supabaseClient";
+import { useState, useParams } from "react";
+import Ticket from "../../objects/Ticket";
+import TicketManager from "../../managers/TicketManager";
 
 const CreateTicket = () => {
+  const ticketManager = new TicketManager();
   const [name, setName] = useState("");
   const [requestType, setRequestType] = useState("Toilet"); // Set default value
   const [description, setDescription] = useState("");
-  const [submittedDateTime, setSubmittedDateTime] = useState("");
   const [formError, setFormError] = useState(null);
 
   const handleSubmit = async (e) => {
@@ -17,24 +18,22 @@ const CreateTicket = () => {
     }
 
     let submittedDateTime = new Date().toLocaleString();
-    const { data, error } = await supabase.from("Service Request").insert([
-      {
-        TenantID: 1,
-        SupervisorID: 1,
-        Name: name,
-        RequestType: requestType,
-        RequestDescription: description,
-        SubmittedDateTime: submittedDateTime,
-        PARCStatus: "PENDING",
-      },
-    ]);
+    // Create Ticket object
+    const ticket = new Ticket(
+      name,
+      1,
+      submittedDateTime,
+      requestType,
+      description
+    );
 
-    if (error) {
-      console.log(error);
-      setFormError("Database Error");
-    } else {
+    // Add ticket to Supabase
+    let success = ticketManager.addTicket(ticket);
+
+    if (success) {
       setFormError("Successfully added ticket");
-      console.log(data);
+    } else {
+      setFormError("Error adding ticket");
     }
   };
 

@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
 
 const TicketCard = ({ ticket }) => {
+  const handleViewTicket = () => {
+    console.log(ticket.ServiceRequestID);
+  };
+
   return (
     <div className="ticket-card">
       <p>{ticket.Name}</p>
@@ -13,7 +17,9 @@ const TicketCard = ({ ticket }) => {
       <p>{ticket.PARCStatus}</p>
       <p>{ticket.Status}</p>
       <Link to={`/ticket/${ticket.ServiceRequestID}`}>
-        <button className="btn">View Ticket</button>
+        <button className="btn" onClick={handleViewTicket}>
+          View Ticket
+        </button>
       </Link>
     </div>
   );
