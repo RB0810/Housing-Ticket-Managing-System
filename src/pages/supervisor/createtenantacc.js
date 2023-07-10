@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useParams } from 'react-router-dom';
-import { CreateTenantAccount } from "../../managers/accountmanager";
+import TenantAccount from "../../objects/TenantAccount";
 
 const CreateTenantAcc = () => {
   const [tenantUsername, setTenantUsername] = useState("");
@@ -30,65 +30,29 @@ const CreateTenantAcc = () => {
     setUnitFields(Array(value).fill(""));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (password !== reEnterPassword) {
-      setFormError("Passwords do not match");
-      return;
-    }
-
-    if (
-      !tenantUsername ||
-      !tenantEmail ||
-      !password ||
-      !reEnterPassword ||
-      !tenantPhone ||
-      !tradeType ||
-      !monthlyRental ||
-      !leaseCommencementDate ||
-      !leaseTerminationDate ||
-      !areaOfUnit ||
-      !unitFields.every((unit) => unit !== "")
-    ) {
-      setFormError("Please fill out all fields");
-      return;
-    }
-
-    // Prepare tenant data
-    const tenantData = {
-      TenantUsername: tenantUsername,
-      TenantEmail: tenantEmail,
-      TenantPassword: password,
-      TenantPhone: tenantPhone,
-      UnderSupervisor: id,
-      Lease: null
-    };
-
-    const leaseData = {
-      CommenceDate: leaseCommencementDate,
-      TerminationDate: leaseTerminationDate,
-      Status: "Active",
-      AreaInSqMeters: areaOfUnit,
-      TradeType: tradeType,
-      MonthlyRental: monthlyRental
-    };
-
-    const units = {
-      number: numberOfUnits,
-      unit: unitFields
-    };
-
-    console.log(tenantData);
-    console.log(leaseData);
-    console.log(units);
+    const tenantAccount = new TenantAccount();
+    tenantAccount.username = tenantUsername;
+    tenantAccount.email = tenantEmail;
+    tenantAccount.password = password;
+    tenantAccount.rePassword = reEnterPassword;
+    tenantAccount.phone = tenantPhone;
+    tenantAccount.supervisor = id;
+    tenantAccount.commenceDate = leaseCommencementDate;
+    tenantAccount.terminationDate = leaseTerminationDate;
+    tenantAccount.AreaInSqMeters = areaOfUnit;
+    tenantAccount.tradetype = tradeType;
+    tenantAccount.monthlyrental = monthlyRental;
+    tenantAccount.numberofunits = numberOfUnits;
+    tenantAccount.units = unitFields;
 
     try {
-      CreateTenantAccount(tenantData, leaseData, units);
-      setFormError("Tenant Account Created!");
+      const message = await tenantAccount.createAccount();
+      setFormError(message);
     } catch (error) {
-      console.error(error);
-      setFormError("Database Error");
+      setFormError(error.message);
     }
   };
 

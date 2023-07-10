@@ -1,8 +1,9 @@
 import { useState } from "react";
 import "../../styles/createaccount.css";
-import { CreateSupervisorAcc } from "../../managers/accountmanager";
+import SupervisorAccount from "../../objects/SupervisorAccount";
 
 const CreateSupervisor = () => {
+  const [formError, setFormError] = useState(null);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -11,50 +12,25 @@ const CreateSupervisor = () => {
   const [buildingName, setBuildingName] = useState("");
   const [buildingAddress, setBuildingAddress] = useState("");
   const [postalCode, setPostalCode] = useState("");
-  const [formError, setFormError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      !username ||
-      !email ||
-      !password ||
-      !rePassword ||
-      !buildingName ||
-      !buildingAddress ||
-      !phone ||
-      !postalCode
-    ) {
-      setFormError("Please fill out all fields");
-      return;
-    }
-
-    if (password !== rePassword) {
-      setFormError("Passwords do not match");
-      return;
-    }
-
-    const Building = {
-      BuildingName: buildingName,
-      Address: buildingAddress,
-      PostalCode: postalCode,
-    };
-
-    const Supervisor = {
-      SupervisorUsername: username,
-      SupervisorEmail: email,
-      SupervisorPassword: password,
-      SupervisorPhone: phone,
-      BuildingID: null,
-    };
+    const supervisorAccount = new SupervisorAccount();
+    supervisorAccount.username = username;
+    supervisorAccount.email = email;
+    supervisorAccount.password = password;
+    supervisorAccount.rePassword = rePassword;
+    supervisorAccount.phone = phone;
+    supervisorAccount.buildingName = buildingName;
+    supervisorAccount.buildingAddress = buildingAddress;
+    supervisorAccount.postalCode = postalCode;
 
     try {
-      await CreateSupervisorAcc(Building, Supervisor);
-      setFormError("Supervisor Account Created!");
+      const message = await supervisorAccount.createAccount();
+      setFormError(message);
     } catch (error) {
-      console.error(error);
-      setFormError("Database Error");
+      setFormError(error.message);
     }
   };
 
@@ -142,7 +118,7 @@ const CreateSupervisor = () => {
         <div className="form-group">
           <label htmlFor="postalCode">Postal Code</label>
           <input
-            type="number"
+            type="tel"
             id="postalCode"
             className="form-control"
             value={postalCode}

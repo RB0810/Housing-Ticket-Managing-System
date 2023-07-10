@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "../../styles/createaccount.css";
-import { CreateStaffAccount, getBuildings } from "../../managers/accountmanager";
+import StaffAccount from "../../objects/StaffAccount";
 
 const CreateStaffAcc = () => {
+  const [formError, setFormError] = useState(null);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -11,65 +12,32 @@ const CreateStaffAcc = () => {
   const [ticketCategory, setTicketCategory] = useState("Cleaning"); // Set default value
   const [buildingID, setBuildingID] = useState("");
   const [buildingOptions, setBuildingOptions] = useState([]);
-  const [formError, setFormError] = useState(null);
 
+  const handleFetchBuildingOptions = async () => {
+    const staffAccount = new StaffAccount();
+    await staffAccount.fetchBuildingOptions();
+    setBuildingOptions(staffAccount.buildingOptions);
+  };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const buildings = await getBuildings();
-      if (Array.isArray(buildings)) {
-        const options = buildings.map((building) => ({
-          id: building.BuildingID,
-          name: building.BuildingName,
-          address: building.Address
-        }));
-        setBuildingOptions(options);
-      }
-    };
-  
-    fetchData();
-  }, []);
-  
-
+  handleFetchBuildingOptions();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      !username ||
-      !email ||
-      !password ||
-      !rePassword ||
-      !phone ||
-      !ticketCategory ||
-      !buildingID
-    ) {
-      setFormError("Please fill out all fields");
-      return;
-    }
-
-    if (password !== rePassword) {
-      setFormError("Passwords do not match");
-      return;
-    }
-
-    const staff = {
-      StaffUsername: username,
-      StaffEmail: email,
-      StaffPassword: password,
-      StaffPhone: phone,
-      TicketCategory: ticketCategory,
-      BuildingID: buildingID,
-    };
-    
-    console.log(staff);
+    const staffAccount = new StaffAccount();
+    staffAccount.username = username;
+    staffAccount.email = email;
+    staffAccount.password = password;
+    staffAccount.rePassword = rePassword;
+    staffAccount.phone = phone;
+    staffAccount.ticketCategory = ticketCategory;
+    staffAccount.buildingID = buildingID;
 
     try {
-      await CreateStaffAccount(staff);
-      setFormError("Staff Account Created!");
+      const message = await staffAccount.createAccount();
+      setFormError(message);
     } catch (error) {
-      console.error(error);
-      setFormError("Database Error");
+      setFormError(error.message);
     }
   };
 
