@@ -17,6 +17,8 @@ import CreateTicket from "./pages/tenant/createticket";
 import CreateSupervisor from "./pages/admin/createsupervisoracc";
 import CreateStaffAcc from "./pages/admin/createstaffacc";
 import CreateTenantAcc from "./pages/supervisor/createtenantacc";
+import ManageAccount from "./pages/admin/manageacc";
+import BuildingDetailsPage from "./pages/admin/BuildingDetailsPage";
 
 function App() {
   // Routing
@@ -42,6 +44,8 @@ function App() {
           <Route path="/adminlandingpage/:id" element={<AdminLandingPage />} />
           <Route path="/createsupervisoracc" element={<CreateSupervisor />} />
           <Route path="/createstaffacc" element={<CreateStaffAcc />} />
+          <Route path="/manageacc" element={<ManageAccount />} />
+          <Route path="/manageacc/building/:id" element={<BuildingDetailsPage />} />
         </Routes> 
       </div>
     </>

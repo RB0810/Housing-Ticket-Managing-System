@@ -1,6 +1,7 @@
 import supabase from "../config/supabaseClient";
 
 class AccountManager {
+  
   async loginAuth(event) {
     const { data, error } = await supabase
       .from(`${event.Type}Users`)
@@ -33,6 +34,50 @@ class AccountManager {
     const { data } = await supabase.from("Buildings").select("*");
     return data;
   }
+
+  async getBuildingsandSupervisors() {
+    const { data: buildings } = await supabase.from('Buildings').select('*');
+  
+    const buildingsWithSupervisor = await Promise.all(
+      buildings.map(async (building) => {
+        const { data: supervisor } = await supabase
+          .from('SupervisorUsers')
+          .select('*')
+          .eq('BuildingID', parseInt(building.BuildingID));
+  
+        return { ...building, supervisor: supervisor[0] || null };
+      })
+    );
+  
+    return buildingsWithSupervisor;
+  }
+
+  async getBuildingDetails(buildingId) {
+    const {data : buildingData} = await supabase.from("Buildings").select("*").eq("BuildingID", parseInt(buildingId));
+    const { data: supervisor } = await supabase.from("SupervisorUsers").select("SupervisorID").eq("BuildingID", parseInt(buildingId));
+    const { data: staffData } = await supabase.from("StaffUsers").select("*").eq("BuildingID", parseInt(buildingId)); 
+    const { data: tenantData } = await supabase.from("TenantUsers").select("*").eq("UnderSupervisor", parseInt(supervisor[0].SupervisorID));
+    const leaseIds = tenantData.map((tenant) => tenant.Lease);
+    const { data: leaseData } = await supabase.from("Lease").select("*").in("LeaseID", leaseIds);
+    const unitDataPromises = leaseData.map((lease) => 
+        supabase.from("Unit").select("UnitNumber").eq("LeaseID", lease.LeaseID)
+        .then((response) => response.data)
+    );
+    const unitData = await Promise.all(unitDataPromises);
+    const buildingDetails = {
+      Building: buildingData[0],
+      staff: staffData,
+      tenant: tenantData.map((tenant, index) => ({
+        ...tenant,
+        LeaseDetails: leaseData.find((lease) => lease.LeaseID === tenant.Lease),
+        Units: unitData[index],
+      })),
+    };
+  
+    return buildingDetails;
+  }
+  
+  
 
   async createStaffAccount(staff) {
     await supabase.from("StaffUsers").insert(staff);

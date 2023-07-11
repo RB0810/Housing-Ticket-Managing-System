@@ -7,11 +7,12 @@ class StaffAccount extends Account {
     this.ticketCategory = "Cleaning";
     this.buildingID = "";
     this.buildingOptions = [];
+    this.accountManager = new AccountManager();
+
   }
 
   async fetchBuildingOptions() {
-    const accountManager = new AccountManager();
-    const buildings = await accountManager.getBuildings();
+    const buildings = await this.accountManager.getBuildings();
     if (Array.isArray(buildings)) {
       const options = buildings.map((building) => ({
         id: building.BuildingID,
@@ -43,9 +44,6 @@ class StaffAccount extends Account {
   }
 
   async createAccount() {
-    const accountManager = new AccountManager();
-    await this.fetchBuildingOptions();
-
     const validationError = this.validateFields();
     if (validationError) {
       throw new Error(validationError);
@@ -61,7 +59,7 @@ class StaffAccount extends Account {
     };
 
     try {
-      await accountManager.createStaffAccount(staff);
+      await this.accountManager.createStaffAccount(staff);
       return "Staff Account Created!";
     } catch (error) {
       console.error(error);
