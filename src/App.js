@@ -33,7 +33,6 @@ function App() {
           <Route path="/viewticket/pendingtickets" element={<PendingTickets />} />
           <Route path="/viewticket/activetickets" element={<ActiveTickets />} />
           <Route path="/viewticket/closedtickets" element={<ClosedTickets />} />
-          <Route path="/createticket" element={<CreateTicket />} />
         </Routes>
       </div>
     </>
