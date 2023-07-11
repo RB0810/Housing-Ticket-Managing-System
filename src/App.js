@@ -2,7 +2,7 @@ import "./styles/App.css";
 import Navbar from "./components/Navbar";
 import LandlordLogin from "./pages/login/landlordlogin";
 import TenantLogin from "./pages/login/tenantlogin";
-import LandingPage from "./pages/landingpage";
+import LandingPage from "./pages/landingpages/landingpage";
 import AdminLogin from "./pages/login/adminlogin";
 import TenantPortal from "./pages/portal/tenantportal";
 import SupervisorPortal from "./pages/portal/supervisorportal";
