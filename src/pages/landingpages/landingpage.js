@@ -4,11 +4,12 @@ import { Route, Link } from 'react-router-dom';
 const LandingPageCard = ({ imageSrc, altText, heading, path }) => {
   return (
     <div className="page-card">
-      <img class="card-image" src={imageSrc} alt={altText} />
-      <div class="page-card-container">
-        <h3 class="card-heading">{heading}</h3>
-        <button className="loginButton">
-          <Link to={path}>Login</Link>
+      <img className="card-image" src={imageSrc} alt={altText} />
+      <div className="page-card-container">
+        <h3 className="card-heading">{heading}</h3>
+        <button className="login-button">
+          <Link className="login-button-text" to={path}>Login</Link>
+          {/* i need to make this such that the user can click any part of the button */}
         </button>
       </div>
     </div>
