@@ -1,4 +1,5 @@
 import "./landingpage.css";
+import { Route, Link } from 'react-router-dom';
 
 const AccountColumn = ({ imageSrc, altText, heading, path }) => {
   return (
