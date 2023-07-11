@@ -1,4 +1,3 @@
-import supabase from "../../config/supabaseClient";
 import { useEffect, useState } from "react";
 import { Routes, Route, useParams } from "react-router-dom";
 import TicketManager from "../../managers/TicketManager";
@@ -8,15 +7,15 @@ import TicketCard from "../../components/TicketCard";
 
 export default function TenantPortal() {
   const ticketManager = new TicketManager();
-  let { status, id } = useParams();
+  let { PARCStatus, TenantID } = useParams();
   const [serviceTickets, setServiceTickets] = useState([]);
   const [fetchError, setFetchError] = useState([]);
 
   useEffect(() => {
     const getTickets = async () => {
       let data = await ticketManager.getTicketsByPARCStatusForTenantID(
-        status.toUpperCase(),
-        parseInt(id)
+        PARCStatus.toUpperCase(),
+        parseInt(TenantID)
       );
 
       if (data != false) {
@@ -52,8 +51,9 @@ export default function TenantPortal() {
     <div className="page tenantportal">
       <div className="tenant-portal-header">
         <p>Ticket ID</p>
-        <p>Request</p>
-        <p>Date</p>
+        <p>SubmittedBy</p>
+        <p>AssignedTo</p>
+        <p>SubmittedDate</p>
         <p>Property</p>
         <p>Status</p>
       </div>
@@ -62,7 +62,7 @@ export default function TenantPortal() {
         <div className="service-tickets">
           <div className="service-ticket-row">
             {serviceTickets.map((ticket) => (
-              <TicketCard key={ticket.ServiceRequestID} ticket={ticket} />
+              <TicketCard key={ticket.ServiceRequestID} ticket={ticket} userRole={"tenant"} />
             ))}
           </div>
         </div>

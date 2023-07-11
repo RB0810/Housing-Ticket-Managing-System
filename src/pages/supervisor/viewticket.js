@@ -3,7 +3,7 @@ import TicketManager from "../../managers/TicketManager";
 import TicketDetails from "../../components/TicketDetails";
 import { useParams } from "react-router-dom";
 
-const ViewTicketTenant = () => {
+const ViewTicketSupervisor = () => {
   const ticketManager = new TicketManager();
   let { ServiceRequestID } = useParams();
   const [serviceTicket, setServiceTicket] = useState([]);
@@ -34,7 +34,7 @@ const ViewTicketTenant = () => {
 
   return (
     <div className="page tenantportal">
-      <p>Tenant</p>
+        <p>Supervisor</p>
       {fetchError && <p>{fetchError}</p>}
       <div className="service-tickets">
         <div className="service-ticket-row">
@@ -50,7 +50,7 @@ const ViewTicketTenant = () => {
   );
 };
 
-export default ViewTicketTenant;
+export default ViewTicketSupervisor;
 //import React, { useState, useEffect } from 'react';
 //import "./../../../src/styles/viewticket.css";
 //import BasicTabs from '../../components/TicketTabs';

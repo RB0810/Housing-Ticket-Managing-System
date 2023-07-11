@@ -33,7 +33,7 @@ export default function SupervisorPortal() {
         <div className="service-tickets">
           <div className="service-ticket-row">
             {serviceTickets.map((ticket) => (
-              <TicketCard key={ticket.ServiceRequestID} ticket={ticket} />
+              <TicketCard key={ticket.ServiceRequestID} ticket={ticket} userRole={"supervisor"}/>
             ))}
           </div>
         </div>

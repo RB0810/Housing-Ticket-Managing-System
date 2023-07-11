@@ -4,28 +4,28 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 export default function SupervisorLandingPage() {
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { SupervisorID } = useParams();
   var status = "";
 
   const handleButtonClickPending = () => {
     status = "pending";
-    navigate(`/supervisorportal/${id}/${status}`);
+    navigate(`/supervisorportal/${SupervisorID}/${status}`);
   };
 
   const handleButtonClickActive = () => {
     status = "active"
-    navigate(`/supervisorportal/${id}/${status}`);
+    navigate(`/supervisorportal/${SupervisorID}/${status}`);
   };
 
   const handleButtonClickClosed = () => {
     status = "closed"
-    navigate(`/supervisorportal/${id}/${status}`);
+    navigate(`/supervisorportal/${SupervisorID}/${status}`);
   };
   const handleButtonClickNew = () => {
-    navigate(`/createtennantacc/${id}`);
+    navigate(`/createtennantacc/${SupervisorID}`);
   };
   const handleButtonClickAssign = () => {
-    navigate(`/assignticket/${id}`);
+    navigate(`/assignticket/${SupervisorID}`);
   };
 
   return (

@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { LoginAuth } from "../../managers/AccountManager";
-import React, { useState } from 'react';
 import  AccountManager  from '../../managers/AccountManager';
 import "../../styles/login.css";
 

@@ -5,13 +5,13 @@ import BuildingDetails from '../../components/BuildingDetails';
 
 const BuildingDetailsPage = () => {
   const [buildingDetails, setBuildingDetails] = useState(null);
-  const { id } = useParams();
+  const { BuildingID } = useParams();
   const accountManager = new AccountManager();
 
   useEffect(() => {
     const fetchBuildingDetails = async () => {
       try {
-        const buildingData = await accountManager.getBuildingDetails(id);
+        const buildingData = await accountManager.getBuildingDetails(BuildingID);
         setBuildingDetails(buildingData);
       } catch (error) {
         console.error('Error fetching building details:', error);
@@ -19,7 +19,7 @@ const BuildingDetailsPage = () => {
     };
 
     fetchBuildingDetails();
-  }, [id]);
+  }, [BuildingID]);
 
   return (
     <div>

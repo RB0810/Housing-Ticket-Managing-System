@@ -16,7 +16,7 @@ const CreateTenantAcc = () => {
   const [numberOfUnits, setNumberOfUnits] = useState(1);
   const [unitFields, setUnitFields] = useState([]);
   const [formError, setFormError] = useState(null);
-  const { id } = useParams();
+  const { SupervisorID } = useParams();
 
   const handleUnitFieldChange = (index, value) => {
     const updatedUnitFields = [...unitFields];
@@ -39,7 +39,7 @@ const CreateTenantAcc = () => {
     tenantAccount.password = password;
     tenantAccount.rePassword = reEnterPassword;
     tenantAccount.phone = tenantPhone;
-    tenantAccount.supervisor = id;
+    tenantAccount.supervisor = SupervisorID;
     tenantAccount.commenceDate = leaseCommencementDate;
     tenantAccount.terminationDate = leaseTerminationDate;
     tenantAccount.AreaInSqMeters = areaOfUnit;

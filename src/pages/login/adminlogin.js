@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "../../styles/login.css";
-import { LoginAuth } from "../../managers/AccountManager";
 import AccountManager from "../../managers/AccountManager";
 
 export default function AdminLogin() {
