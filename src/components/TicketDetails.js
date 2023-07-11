@@ -1,7 +1,4 @@
-import { useParams } from "react-router-dom";
-
 const TicketDetails = ({ ticket }) => {
-  const { ServiceRequestID } = useParams();
   return (
     <div>
       <h2>Ticket Details</h2>
