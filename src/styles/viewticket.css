@@ -73,7 +73,7 @@ label {
 }
   
 input[type=submit] {
-    background-color: #04AA6D;
+    background-color: royalblue;
     color: white;
     padding: 12px 20px;
     margin-top: 20px;
@@ -84,7 +84,7 @@ input[type=submit] {
 }
 
 input[type=submit]:hover {
-    background-color: #45a049;
+    background-color: royalblue;
 }
 
 .con-25{
