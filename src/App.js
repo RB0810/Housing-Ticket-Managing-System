@@ -38,7 +38,7 @@ function App() {
           <Route path="/tenantlogin" element={<TenantLogin />} />
           <Route path="/landlordlogin" element={<LandlordLogin />} />
           <Route path="/adminlogin" element={<AdminLogin />} />
-          <Route path="/ticket/:ServiceRequestID" component={<ViewTicket />} />
+          <Route path="/ticket/:ServiceRequestID" element={<ViewTicket />} />
           <Route path="/tenantportal/:id/:status" element={<TenantPortal />} />
           <Route path="/staffportal/:id/:status" element={<StaffPortal />} />
           <Route path="/supervisorportal/:id/:status" element={<SupervisorPortal />} />

@@ -1,6 +1,7 @@
-import { useState, useParams, useEffect } from "react";
+import { useState, useEffect } from "react";
 import TicketManager from "../../managers/TicketManager";
 import TicketDetails from "../../components/TicketDetails";
+import { useParams } from "react-router-dom";
 
 const ViewTicket = () => {
   const ticketManager = new TicketManager();
@@ -10,11 +11,13 @@ const ViewTicket = () => {
 
   useEffect(() => {
     const getTicket = async () => {
-      let data = await ticketManager.getTicket(ServiceRequestID);
+      let new_data = await ticketManager.getTicketsByPARCStatusForTenantID();
+
+      let data = await ticketManager.getTicket(parseInt(ServiceRequestID));
+      console.log("Ticket gote!");
 
       if (data != false) {
-        console.log(data);
-        setServiceTicket(data);
+        setServiceTicket(data[0]);
         setFetchError(null);
       } else if (data.length == 0) {
         console.log(data);
@@ -41,10 +44,12 @@ const ViewTicket = () => {
       {fetchError && <p>{fetchError}</p>}
       <div className="service-tickets">
         <div className="service-ticket-row">
-          <TicketDetails
-            key={serviceTicket.ServiceRequestID}
-            ticket={serviceTicket}
-          />
+          {serviceTicket && (
+            <TicketDetails
+              key={serviceTicket.ServiceRequestID}
+              ticket={serviceTicket}
+            />
+          )}
         </div>
       </div>
     </div>
