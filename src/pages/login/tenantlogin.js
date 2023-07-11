@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import AccountManager from '../../managers/AccountManager';
 import "../../styles/login.css";
-import {LoginAuth} from "../../managers/accountmanager";
 
 export default function AdminLogin() {
   const [ID, setID] = useState('');
@@ -9,6 +9,8 @@ export default function AdminLogin() {
   const handleLogin = async (event) => {
     event.preventDefault();
 
+    const accountManager = new AccountManager();
+
     const eventData = {
       ID,
       Type: 'Tenant',
@@ -16,7 +18,7 @@ export default function AdminLogin() {
     };
 
     try {
-      await LoginAuth(eventData);
+      await accountManager.loginAuth(eventData);
     } catch (error) {
       console.error('Login error:', error);
       window.alert(`Error: ${error.message}`);
@@ -25,7 +27,7 @@ export default function AdminLogin() {
 
   return (
     <div className='logindiv'>
-      <form className='loginForm'>
+      <form className='loginForm' onSubmit={handleLogin}>
         <div>
           <h1 className='wlcText'>Tenant Portal <br/> Login</h1>
         </div>
@@ -35,15 +37,15 @@ export default function AdminLogin() {
 
         <div>
           <label></label>
-          <input className='loginInput' type='text' onChange={(e) => setID(e.target.value)} name='ID' placeholder='ID Number/Email'/>
+          <input className='loginInput' type='text' value={ID} onChange={(e) => setID(e.target.value)} name='ID' placeholder='ID Number/Email'/>
         </div>
 
         <div>
           <label></label>
-          <input className='loginInput' type='password' onChange={(e) => setPassword(e.target.value)} name='password' placeholder='Password'/>
+          <input className='loginInput' type='password' value={password} onChange={(e) => setPassword(e.target.value)} name='password' placeholder='Password'/>
         </div>
 
-        <button className='loginBtn' onClick={handleLogin}>Login</button>
+        <button className='loginBtn' type="submit">Login</button>
       </form>
     </div>
   );

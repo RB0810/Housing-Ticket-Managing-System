@@ -13,7 +13,12 @@ import { Route, Routes } from "react-router-dom";
 import SupervisorLandingPage from "./pages/landingpages/supervisorlandingpage";
 import TenantLandingPage from "./pages/landingpages/tenantlandingpage";
 import StaffLandingPage from "./pages/landingpages/stafflandingpage";
-import CreateTicket from "./pages/tenant/createticket"
+import CreateTicket from "./pages/tenant/createticket";
+import CreateSupervisor from "./pages/admin/createsupervisoracc";
+import CreateStaffAcc from "./pages/admin/createstaffacc";
+import CreateTenantAcc from "./pages/supervisor/createtenantacc";
+import ManageAccount from "./pages/admin/manageacc";
+import BuildingDetailsPage from "./pages/admin/BuildingDetailsPage";
 
 function App() {
   // Routing
@@ -31,11 +36,16 @@ function App() {
           <Route path="/tenantportal/:id/:status" element={<TenantPortal />} />
           <Route path="/staffportal/:id/:status" element={<StaffPortal />} />
           <Route path="/supervisorportal/:id/:status" element={<SupervisorPortal />} />
+          <Route path="/createtennantacc/:id" element={<CreateTenantAcc />} />
           <Route path="/createticket/:id" element={<CreateTicket />} />
           <Route path="/supervisorlandingpage/:id" element={<SupervisorLandingPage />} />
           <Route path="/stafflandingpage/:id" element={<StaffLandingPage />} />
           <Route path="/tenantlandingpage/:id" element={<TenantLandingPage />} />
           <Route path="/adminlandingpage/:id" element={<AdminLandingPage />} />
+          <Route path="/createsupervisoracc" element={<CreateSupervisor />} />
+          <Route path="/createstaffacc" element={<CreateStaffAcc />} />
+          <Route path="/manageacc" element={<ManageAccount />} />
+          <Route path="/manageacc/building/:id" element={<BuildingDetailsPage />} />
         </Routes> 
       </div>
     </>
