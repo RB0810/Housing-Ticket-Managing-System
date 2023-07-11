@@ -12,7 +12,7 @@ class Notification {
   sendMail(emailContent) {
     const { to, subject, text } = emailContent;
     const message = {
-      from: 'Excited User <me@samples.mailgun.org>',
+      from: 'Excited User <>',
       to: to,
       subject: subject,
       text: text,
