@@ -62,6 +62,7 @@ export default class Ticket {
       status: this.status,
       quotationRequired: this.quotationRequired,
       quotationAmount: this.quotationAmount,
+      quotationUploadedBy: this.quotationUploadedBy,
       quotationAccepted: this.quotationAccepted,
       quotationAcceptanceDate: this.quotationAcceptanceDate,
       quotationAttachmentPath: this.quotationAttachmentPath,

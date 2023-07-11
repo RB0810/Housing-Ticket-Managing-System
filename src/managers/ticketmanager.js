@@ -26,7 +26,7 @@ export default class TicketManager {
     // }
 
     // console.log(data1);
-
+    console.log("I came here");
     const { data2, error2 } = await supabase
       .from("Service Request")
       .insert([
@@ -42,17 +42,16 @@ export default class TicketManager {
           Status: ticket.status,
           QuotationRequired: ticket.quotationRequired,
           QuotationAmount: ticket.quotationAmount,
-          QuotationUploadedToBy: ticket.quotationUploadedBy,
           QuotationAcceptedByTenant: ticket.quotationAccepted,
           QuotationAcceptanceDate: ticket.quotationAcceptanceDate,
           QuotationAttachmentPath: ticket.quotationAttachmentPath,
-          CompletedBy: ticket.completedBy,
           CompletedDateTime: ticket.completionDateTime,
           FeedbackRating: ticket.feedbackRating,
           FeedbackComments: ticket.feedbackComments,
         },
       ])
       .select();
+    console.log(data2);
 
     if (error2) {
       console.error("Error adding ticket:", error2);

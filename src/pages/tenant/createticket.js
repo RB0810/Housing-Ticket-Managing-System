@@ -10,7 +10,6 @@ const CreateTicket = () => {
   const [name, setName] = useState("");
   const [requestType, setRequestType] = useState(""); // Set default value
   const [description, setDescription] = useState("");
-  const [propertyID, setPID] = useState("");
   const [submittedDateTime, setSubmittedDateTime] = useState("");
   const [formError, setFormError] = useState(null);
 
@@ -22,7 +21,7 @@ const CreateTicket = () => {
       return;
     }
 
-    let submittedDateTime = new Date().toLocaleString();
+    setSubmittedDateTime(new Date().toLocaleString());
     // Create Ticket object
     const ticket = new Ticket(
       name,
@@ -32,6 +31,7 @@ const CreateTicket = () => {
       description
     );
 
+    console.log(ticket);
     // Add ticket to Supabase
     let success = ticketManager.addTicket(ticket);
 
@@ -63,34 +63,21 @@ const CreateTicket = () => {
           onChange={(e) => setName(e.target.value)}
           />
         </div>
-
-        <div className="con-25">
-          <label htmlFor="property ID">Property ID</label>
-        </div>
-        <div className="con-75">
-          <input
-          type="text"
-          id="property ID"
-          placeholder="Property ID"
-          value={propertyID}
-          onChange={(e) => setPID(e.target.value)}
-          />
-        </div>
         
         <div className="con-25"> 
           <label htmlFor="dropdown">Request Type</label>
         </div>
         <div className="con-75">
-          <select
+        <select
           id="dropdown"
-          value={"requestType"}
-
+          value={requestType} 
           onChange={(e) => setRequestType(e.target.value)}
-          >
+        >
           <option value="Toilet">Toilet</option>
           <option value="Plumbing">Plumbing</option>
           <option value="Pest">Pest</option>
         </select>
+
         </div>
 
         <div className="con-25">
