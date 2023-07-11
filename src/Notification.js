@@ -1,10 +1,5 @@
-const API_KEY = '';
-const DOMAIN = '';
-import formData from 'form-data';
-import Mailgun from 'mailgun.js';
 
-const mailgun = new Mailgun(formData);
-const client = mailgun.client({ username: 'api', key: API_KEY });
+import formData from 'form-data';
 
 class Notification {
   constructor() {}
