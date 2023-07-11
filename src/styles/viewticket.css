@@ -33,7 +33,21 @@ h3{
     font-size: 70%;
 }
 
-.ticketlist{
+.ticketlabel{
+    background-color: lightgray;
+    color: black;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 2rem;
+    padding: 0.5rem 2rem;
+}
+
+.Top Nav Bar{
+    margin-top: 0;
+}
+
+.Tabs{
     background-color: whitesmoke;
     color: black;
     display: flex;
@@ -44,9 +58,3 @@ h3{
     margin-left: 5rem;
     margin-right: 5rem;
 }
-
-.Top Nav Bar{
-    margin-top: 0;
-}
-
-

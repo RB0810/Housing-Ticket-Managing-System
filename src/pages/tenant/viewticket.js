@@ -1,10 +1,6 @@
-import React from 'react';
-import ViewTicketNavbar from '../../components/viewticketnavbar';
-import PendingTickets from '../../components/PendingTickets';
-import ActiveTickets from '../../components/ActiveTickets';
-import ClosedTickets from '../../components/ClosedTickets';
-import { Route, Routes } from "react-router-dom";
-import "./../../../src/styles/viewticket.css"
+import React, { useState, useEffect } from 'react';
+import "./../../../src/styles/viewticket.css";
+import BasicTabs from '../../components/TicketTabs';
 
 class viewticket extends React.Component{
 
@@ -14,18 +10,15 @@ class viewticket extends React.Component{
         }
       }
 
-
     render(){
         return(
             <div>
-                <ViewTicketNavbar/>
-                <section>
-                    <Routes>
-                        <Route path="/viewticket/pendingtickets" element={<PendingTickets />}/>
-                        <Route path="/viewticket/activetickets" element={<ActiveTickets />} />
-                        <Route path="/viewticket/closedtickets" element={<ClosedTickets />} />
-                    </Routes>
-                </section> 
+                <div className='viewtixh1'>
+                    <h1>View Tickets</h1>
+                </div>
+                <div className='Tabs'>
+                  <BasicTabs/>
+                </div>
             </div>
         )
     }
