@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 // components
 import TicketCard from "../../components/TicketCard";
 
-export default function LandlordPortal() {
+export default function SupervisorPortal() {
   const [serviceTickets, setServiceTickets] = useState([]);
   const [fetchError, setFetchError] = useState([]);
 
@@ -35,8 +35,6 @@ export default function LandlordPortal() {
             {serviceTickets.map((ticket) => (
               <TicketCard key={ticket.ServiceRequestID} ticket={ticket} />
             ))}
-            <button className="btn">Add Ticket</button>
-            <button className="btn">Remove Ticket</button>
           </div>
         </div>
       )}

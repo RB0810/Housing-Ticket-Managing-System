@@ -1,0 +1,55 @@
+.card-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 3rem;
+    margin-left: 10rem;
+    margin-right: 10rem;
+  }
+  
+  .card {
+    background-color: whitesmoke;
+    flex: 1;
+    border: 2px solid #ccc;
+    border-radius: 1rem;
+    margin: 0 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-image {
+    width: 100%;
+    height: auto;
+  }
+  
+  .card-title {
+    font-size: 20px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  
+  .card-text {
+    font-size: 16px;
+  }
+
+  .card img {
+    max-width: 100%;
+    max-height: 100%;
+    width: 200px;
+    height: 200px;
+  }
+
+  button {
+    padding: 10px 20px;
+    color:black;
+    background-color: whitesmoke;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+
+  
+  
