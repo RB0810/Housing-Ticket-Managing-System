@@ -1,17 +1,18 @@
 import { Link } from "react-router-dom";
+import "../styles/TicketCard.css";
 
 const TicketCard = ({ ticket }) => {
   return (
     <div className="ticket-card">
-      <p>{ticket.Name}</p>
-      <p>{ticket.LandlordID}</p>
-      <p>{ticket.TenantID}</p>
-      <p>{ticket.Contact}</p>
-      <p>{ticket.SubmittedDateTime}</p>
-      <p>{ticket.RequestType}</p>
-      <p>{ticket.RequestDescription}</p>
-      <p>{ticket.PARCStatus}</p>
-      <p>{ticket.Status}</p>
+      <p className="ticket-name">{ticket.Name}</p>
+      <p className="ticket-LandlordID">{ticket.LandlordID}</p>
+      <p className="ticket-TenantID">{ticket.TenantID}</p>
+      <p className="ticket-Contact">{ticket.Contact}</p>
+      <p className="ticket-SubmittedDateTime">{ticket.SubmittedDateTime}</p>
+      <p className="ticket-RequestType">{ticket.RequestType}</p>
+      <p className="ticket-RequestDescription">{ticket.RequestDescription}</p>
+      <p className="ticket-PARCStatus">{ticket.PARCStatus}</p>
+      <p className="ticket-Status">{ticket.Status}</p>
       <Link to={`/ticket/${ticket.ServiceRequestID}`}>
         <button className="btn">View Ticket</button>
       </Link>
