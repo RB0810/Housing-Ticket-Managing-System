@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { LoginAuth } from "../../managers/AccountManager";
+import React, { useState } from 'react';
+import  AccountManager  from '../../managers/AccountManager';
 import "../../styles/login.css";
 
 export default function LandlordLogin() {
@@ -9,6 +11,8 @@ export default function LandlordLogin() {
   const handleLogin = async (event) => {
     event.preventDefault();
 
+    const accountManager = new AccountManager();
+
     const eventDataSupervisor = {
       ID,
       Type: "Supervisor",
@@ -16,7 +20,7 @@ export default function LandlordLogin() {
     };
 
     try {
-      await LoginAuth(eventDataSupervisor);
+      await accountManager.loginAuth(eventDataSupervisor);
     } catch (error) {
       if (error.message === "Invalid credentials") {
         const eventDataStaff = {
@@ -26,7 +30,7 @@ export default function LandlordLogin() {
         };
 
         try {
-          await LoginAuth(eventDataStaff);
+          await accountManager.loginAuth(eventDataStaff);
         } catch (error) {
           console.error("Login error:", error);
           window.alert(`Error: ${error.message}`);
