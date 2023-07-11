@@ -9,7 +9,25 @@ export default class TicketManager {
    */
 
   async addTicket(ticket) {
-    const { data, error } = await supabase
+    // // Find Supervisor ID for that TenantID in the ticket
+    // let { data1, error1 } = await supabase
+    //   .from("TenantUsers")
+    //   .select("UnderSupervisor")
+    //   .eq("TenantID", ticket.tenantID);
+
+    // if (error1) {
+    //   console.error(
+    //     `"Error getting SupervisorID from TenantID ${ticket.tenantID}"`,
+    //     error1
+    //   );
+    //   return false;
+    // } else {
+    //   console.log("Found SupervisorID from TenantID", data1);
+    // }
+
+    // console.log(data1);
+
+    const { data2, error2 } = await supabase
       .from("Service Request")
       .insert([
         {
@@ -36,11 +54,11 @@ export default class TicketManager {
       ])
       .select();
 
-    if (error) {
-      console.error("Error adding ticket:", error);
+    if (error2) {
+      console.error("Error adding ticket:", error2);
       return false;
     } else {
-      console.log("Ticket added successfully:", data);
+      console.log("Ticket added successfully:", data2);
       return true;
     }
   }
