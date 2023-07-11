@@ -58,3 +58,64 @@ h3{
     margin-left: 5rem;
     margin-right: 5rem;
 }
+
+input[type=text],select,textarea{
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+label {
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+}
+  
+input[type=submit] {
+    background-color: #04AA6D;
+    color: white;
+    padding: 12px 20px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: right;
+}
+
+input[type=submit]:hover {
+    background-color: #45a049;
+}
+
+.con-25{
+    float: left;
+    width: 25%;
+    margin-top: 6px;
+}
+
+.con-75 {
+    float: left;
+    width: 75%;
+    margin-top: 6px;
+  }
+
+.ticket-creation-form{
+    align-items: center;
+    width: 80%;
+}
+
+.submit-button::after{
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.description-input{
+    height: 5rem;
+}
+
+.ticket-creation-title{
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    font-size: xxx-large;
+}
