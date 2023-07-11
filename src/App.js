@@ -7,6 +7,8 @@ import AdminLogin from "./pages/login/adminlogin";
 import TenantPortal from "./pages/portal/tenantportal";
 import SupervisorPortal from "./pages/portal/supervisorportal";
 import StaffPortal from "./pages/portal/staffportal";
+import ViewTicket from "./pages/tenant/viewticket";
+import AdminLandingPage from "./pages/landingpages/adminlandingpage";
 import TicketDetails from "./components/TicketDetails";
 import ViewTicket from "./pages/tenant/viewticket";
 import PendingTickets from "./components/PendingTickets";
@@ -36,6 +38,10 @@ function App() {
           <Route path="/tenantlogin" element={<TenantLogin />} />
           <Route path="/landlordlogin" element={<LandlordLogin />} />
           <Route path="/adminlogin" element={<AdminLogin />} />
+          <Route path="/ticket/:ServiceRequestID" component={<ViewTicket />} />
+          <Route path="/tenantportal/:id/:status" element={<TenantPortal />} />
+          <Route path="/staffportal/:id/:status" element={<StaffPortal />} />
+          <Route path="/supervisorportal/:id/:status" element={<SupervisorPortal />} />
           <Route path="/ticket/:ServiceRequestID" component={TicketDetails} />
           <Route path="/viewticket" element={<ViewTicket />} />
           <Route path="/viewticket/pendingtickets" element={<PendingTickets />} />
@@ -48,13 +54,12 @@ function App() {
           <Route path="/createticket/:id" element={<CreateTicket />} />
           <Route path="/supervisorlandingpage/:id" element={<SupervisorLandingPage />} />
           <Route path="/stafflandingpage/:id" element={<StaffLandingPage />} />
-          <Route path="/tenantlandingpage/:id" element={<TenantLandingPage />} />
+          <Route path="/tenantlandingpage/:id" element={<TenantLandingPage /> />
           <Route path="/adminlandingpage/:id" element={<AdminLandingPage />} />
           <Route path="/createsupervisoracc" element={<CreateSupervisor />} />
           <Route path="/createstaffacc" element={<CreateStaffAcc />} />
           <Route path="/manageacc" element={<ManageAccount />} />
           <Route path="/manageacc/building/:id" element={<BuildingDetailsPage />} />
-        </Routes> 
       </div>
     </>
   );

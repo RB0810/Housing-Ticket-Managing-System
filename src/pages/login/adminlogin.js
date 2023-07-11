@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import "../../styles/login.css";
+import { LoginAuth } from "../../managers/AccountManager";
 import AccountManager from "../../managers/AccountManager";
 
 export default function AdminLogin() {
-  const [ID, setID] = useState('');
-  const [password, setPassword] = useState('');
+  const [ID, setID] = useState("");
+  const [password, setPassword] = useState("");
 
   const accountManager = new AccountManager();
 
@@ -13,23 +14,25 @@ export default function AdminLogin() {
 
     const eventData = {
       ID,
-      Type: 'Admin',
-      password
+      Type: "Admin",
+      password,
     };
 
     try {
       await accountManager.loginAuth(eventData);
     } catch (error) {
-      console.error('Login error:', error);
+      console.error("Login error:", error);
       window.alert(`Error: ${error.message}`);
     }
   };
 
   return (
-    <div className='logindiv'>
-      <form className='loginForm'>
+    <div className="logindiv">
+      <form className="loginForm">
         <div>
-          <h1 className='wlcText'>Admin Portal <br/> Login</h1>
+          <h1 className="wlcText">
+            Admin Portal <br /> Login
+          </h1>
         </div>
         <div>
           <p>Manage Landlords and Properties!</p>
@@ -37,15 +40,29 @@ export default function AdminLogin() {
 
         <div>
           <label></label>
-          <input className='loginInput' type='text' onChange={(e) => setID(e.target.value)} name='ID' placeholder='ID Number/Email'/>
+          <input
+            className="loginInput"
+            type="text"
+            onChange={(e) => setID(e.target.value)}
+            name="ID"
+            placeholder="ID Number/Email"
+          />
         </div>
 
         <div>
           <label></label>
-          <input className='loginInput' type='password' onChange={(e) => setPassword(e.target.value)} name='password' placeholder='Password'/>
+          <input
+            className="loginInput"
+            type="password"
+            onChange={(e) => setPassword(e.target.value)}
+            name="password"
+            placeholder="Password"
+          />
         </div>
 
-        <button className='loginBtn' onClick={handleLogin}>Login</button>
+        <button className="loginBtn" onClick={handleLogin}>
+          Login
+        </button>
       </form>
     </div>
   );
