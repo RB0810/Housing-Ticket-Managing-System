@@ -1,5 +1,4 @@
-const API_KEY = 'key-1c565527fdb57baaf8e207f0f0f88132';
-const DOMAIN = 'sandbox0030cea2ea9e4001a5a0c71b0a64ab88.mailgun.org';
+const { API_KEY, DOMAIN } = require('./secrets');
 import formData from 'form-data';
 import Mailgun from 'mailgun.js';
 
@@ -29,3 +28,5 @@ class Notification {
 }
 
 export default Notification;
+
+
