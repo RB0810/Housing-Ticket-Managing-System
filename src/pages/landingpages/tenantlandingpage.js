@@ -9,20 +9,20 @@ export default function TenantLandingPage() {
 
   const handleButtonClickPending = () => {
     status = "pending";
-    navigate(`/tenantportal/${TenantID}/${status}`);
+    navigate(`/tenantportal/tickets/${TenantID}/${status}`);
   };
 
   const handleButtonClickActive = () => {
     status = "active";
-    navigate(`/tenantportal/${TenantID}/${status}`);
+    navigate(`/tenantportal/tickets/${TenantID}/${status}`);
   };
 
   const handleButtonClickClosed = () => {
     status = "closed";
-    navigate(`/tenantportal/${TenantID}/${status}`);
+    navigate(`/tenantportal/tickets/${TenantID}/${status}`);
   };
   const handleButtonClickNew = () => {
-    navigate(`/createticket/${TenantID}`);
+    navigate(`/tenantportal/createticket/${TenantID}`);
   };
 
   return (

@@ -9,23 +9,23 @@ export default function SupervisorLandingPage() {
 
   const handleButtonClickPending = () => {
     status = "pending";
-    navigate(`/supervisorportal/${SupervisorID}/${status}`);
+    navigate(`/supervisorportal/tickets/${SupervisorID}/${status}`);
   };
 
   const handleButtonClickActive = () => {
     status = "active"
-    navigate(`/supervisorportal/${SupervisorID}/${status}`);
+    navigate(`/supervisorportal/tickets/${SupervisorID}/${status}`);
   };
 
   const handleButtonClickClosed = () => {
     status = "closed"
-    navigate(`/supervisorportal/${SupervisorID}/${status}`);
+    navigate(`/supervisorportal/tickets/${SupervisorID}/${status}`);
   };
   const handleButtonClickNew = () => {
-    navigate(`/createtennantacc/${SupervisorID}`);
+    navigate(`/supervisorportal/createtennantacc/${SupervisorID}`);
   };
   const handleButtonClickAssign = () => {
-    navigate(`/assignticket/${SupervisorID}`);
+    navigate(`/supervisorportal/assignticket/${SupervisorID}`);
   };
 
   return (

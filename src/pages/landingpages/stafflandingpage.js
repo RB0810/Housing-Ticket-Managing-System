@@ -9,17 +9,17 @@ export default function StaffLandingPage() {
 
   const handleButtonClickPending = () => {
     status = "pending";
-    navigate(`/staffportal/${StaffID}/${status}`);
+    navigate(`/staffportal/tickets/${StaffID}/${status}`);
   };
 
   const handleButtonClickActive = () => {
     status = "active"
-    navigate(`/staffportal/${StaffID}/${status}`);
+    navigate(`/staffportal/tickets/${StaffID}/${status}`);
   };
 
   const handleButtonClickClosed = () => {
     status = "closed"
-    navigate(`/staffportal/${StaffID}/${status}`);
+    navigate(`/staffportal/tickets/${StaffID}/${status}`);
   };
 
   return (

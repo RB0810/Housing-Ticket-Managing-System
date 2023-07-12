@@ -1,5 +1,6 @@
 import supabase from "../../config/supabaseClient";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 // components
 import TicketCard from "../../components/TicketCard";
@@ -7,6 +8,7 @@ import TicketCard from "../../components/TicketCard";
 export default function StaffPortal() {
   const [serviceTickets, setServiceTickets] = useState([]);
   const [fetchError, setFetchError] = useState([]);
+  let {StaffID, PARCStatus} = useParams();
 
   useEffect(() => {
     const getTickets = async () => {
@@ -33,7 +35,7 @@ export default function StaffPortal() {
         <div className="service-tickets">
           <div className="service-ticket-row">
             {serviceTickets.map((ticket) => (
-              <TicketCard key={ticket.ServiceRequestID} ticket={ticket} userRole={"staff"} />
+              <TicketCard key={ticket.ServiceRequestID} ticket={ticket} userRole={"staff"} user={StaffID} />
             ))}
           </div>
         </div>

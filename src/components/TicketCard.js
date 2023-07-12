@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import "../styles/TicketCard.css";
 
-const TicketCard = ({ ticket, userRole }) => {
+const TicketCard = ({ ticket, userRole, user }) => {
   const handleViewTicket = () => {
     console.log(ticket.ServiceRequestID);
   };
@@ -26,7 +26,7 @@ const TicketCard = ({ ticket, userRole }) => {
       <p className="ticket-RequestType">{ticket.RequestType}</p>
       <p className="ticket-PARCStatus">{ticket.PARCStatus}</p>
       <p className="ticket-Status">{ticket.Status}</p>
-      <Link to={`${getViewTicketsRoute()}/${ticket.ServiceRequestID}`}>
+      <Link to={`${getViewTicketsRoute()}/${user}/${ticket.ServiceRequestID}`}>
         <button className="btn" onClick={handleViewTicket}>
           View Ticket
         </button>

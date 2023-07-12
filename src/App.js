@@ -1,6 +1,10 @@
 import "./styles/App.css";
 import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import TenantNavbar from "./components/TenantNavbar";
+import SupervisorNavbar from "./components/SupervisorNavbar";
+import StaffNavbar from "./components/StaffNavbar";
+import AdminNavbar from "./components/AdminNavbar";
 import LandlordLogin from "./pages/login/landlordlogin";
 import TenantLogin from "./pages/login/tenantlogin";
 import LandingPage from "./pages/landingpages/landingpage";
@@ -27,29 +31,39 @@ function App() {
 
   return (
     <>
-      <Navbar />
+      <Routes>
+        <Route path="/*" element={<Navbar />} />
+        <Route path="/tenantportal/*" element={<TenantNavbar />} />
+        <Route path="/supervisorportal/*" element={<SupervisorNavbar />} />
+        <Route path="/staffportal/*" element={<StaffNavbar />} />
+        <Route path="/adminportal/*" element={<AdminNavbar />} />
+      </Routes>
+
       <div className="container">
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/tenantlogin" element={<TenantLogin />} />
           <Route path="/landlordlogin" element={<LandlordLogin />} />
           <Route path="/adminlogin" element={<AdminLogin />} />
-          <Route path="/tenantportal/ticket/:ServiceRequestID" element={<ViewTicketTenant />} />
-          <Route path="/supervisorportal/ticket/:ServiceRequestID" element={<ViewTicketSupervisor />} />
-          <Route path="/staffportal/ticket/:ServiceRequestID" element={<ViewTicketStaff />} />
-          <Route path="/tenantportal/:TenantID/:PARCStatus" element={<TenantPortal />} />
-          <Route path="/staffportal/:StaffID/:PARCStatus" element={<StaffPortal />} />
-          <Route path="/supervisorportal/:SupervisorID/:PARCStatus" element={<SupervisorPortal />} />
-          <Route path="/createtennantacc/:SupervisorID" element={<CreateTenantAcc />} />
-          <Route path="/createticket/:TenantID" element={<CreateTicket />} />
-          <Route path="/supervisorlandingpage/:SupervisorID" element={<SupervisorLandingPage />} />
-          <Route path="/stafflandingpage/:StaffID" element={<StaffLandingPage />} />
-          <Route path="/tenantlandingpage/:TenantID" element={<TenantLandingPage />} />
-          <Route path="/adminlandingpage/:AdminID" element={<AdminLandingPage />} />
-          <Route path="/createsupervisoracc" element={<CreateSupervisor />} />
-          <Route path="/createstaffacc" element={<CreateStaffAcc />} />
-          <Route path="/manageacc" element={<ManageAccount />} />
-          <Route path="/manageacc/building/:BuildingID" element={<BuildingDetailsPage />} />
+          <Route path="/tenantportal/ticket/:TenantID/:ServiceRequestID" element={<ViewTicketTenant />} />
+          <Route path="/supervisorportal/ticket/:SupervisorID/:ServiceRequestID" element={<ViewTicketSupervisor />} />
+          <Route path="/staffportal/ticket/:StaffID/:ServiceRequestID" element={<ViewTicketStaff />} />
+          <Route path="/tenantportal/tickets/:TenantID/:PARCStatus" element={<TenantPortal />} />
+          <Route path="/staffportal/tickets/:StaffID/:PARCStatus" element={<StaffPortal />} />
+          <Route path="/supervisorportal/tickets/:SupervisorID/:PARCStatus" element={<SupervisorPortal />} />
+          <Route path="/supervisorportal/createtennantacc/:SupervisorID" element={<CreateTenantAcc />} />
+          <Route path="/tenantportal/createticket/:TenantID" element={<CreateTicket />} />
+          <Route path="/supervisorportal/landingpage/:SupervisorID" element={<SupervisorLandingPage />} />
+          <Route path="/staffportal/landingpage/:StaffID" element={<StaffLandingPage />} />
+          <Route path="/tenantportal/landingpage/:TenantID" element={<TenantLandingPage />} />
+          <Route path="/adminportal/landingpage/:AdminID" element={<AdminLandingPage />} />
+          <Route path="/adminportal/createsupervisoracc/:AdminID" element={<CreateSupervisor />} />
+          <Route path="/adminportal/createstaffacc/:AdminID" element={<CreateStaffAcc />} />
+          <Route path="/adminportal/manageacc/:AdminID" element={<ManageAccount />} />
+          <Route path="/adminportal/manageacc/:AdminID/building/:BuildingID" element={<BuildingDetailsPage />} />
+          <Route path="/tenantportal/profile/:TenantID" element={<BuildingDetailsPage />} />
+          <Route path="/supervisorportal/profile/:SupervisorID" element={<BuildingDetailsPage />} />
+          <Route path="/staffportal/profile/:StaffID" element={<BuildingDetailsPage />} />
           </Routes>
       </div>
     </>

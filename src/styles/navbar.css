@@ -1,0 +1,30 @@
+.dropdown-menu.vertical {
+    display: block;
+    position: absolute;
+    z-index: 1000;
+    width: 160px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background-color: #fff;
+  }
+  
+  .dropdown-menu.vertical li {
+    display: block;
+  }
+  
+  .dropdown-menu.vertical li a {
+    display: block;
+    padding: 10px;
+    color: #333;
+    text-decoration: none;
+  }
+  
+  .dropdown-menu.vertical li a:hover {
+    background-color: #f0f0f0;
+  }
+
+  label{
+    text-decoration: none;
+  }
+  

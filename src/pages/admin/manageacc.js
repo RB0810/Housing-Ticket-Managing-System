@@ -5,7 +5,7 @@ import BuildingCard from "../../components/BuildingCard";
 
 const ManageAccount = () => {
   const [buildings, setBuildings] = useState([]);
-  const { id } = useParams();
+  const { AdminID } = useParams();
   const accountManager = new AccountManager();
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const ManageAccount = () => {
       {buildings.map((building) => (
         <Link
           key={building.BuildingID}
-          to={`/manageacc/building/${building.BuildingID}`}
+          to={`/adminportal/manageacc/${AdminID}/building/${building.BuildingID}`}
         >
           <BuildingCard building={building} />
         </Link>

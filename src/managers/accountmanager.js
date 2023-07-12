@@ -15,7 +15,7 @@ class AccountManager {
     const user = data[0];
 
     if (user && user[`${event.Type}Password`] === event.password) {
-      const redirectUrl = `/${event.Type.toLowerCase()}landingpage/${user[`${event.Type}ID`]}`;
+      const redirectUrl = `/${event.Type.toLowerCase()}portal/landingpage/${user[`${event.Type}ID`]}`;
       window.location.href = redirectUrl;
     } else {
       throw new Error("Invalid credentials");
