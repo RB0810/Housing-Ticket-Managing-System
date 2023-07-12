@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import TicketManager from "../../managers/TicketManager";
+import TicketManager from "../../managers/ticketmanager";
 import TicketDetails from "../../components/TicketDetails";
 import { useParams } from "react-router-dom";
 
@@ -34,7 +34,7 @@ const ViewTicketStaff = () => {
 
   return (
     <div className="page tenantportal">
-    <p>Staff</p>
+      <p>Staff</p>
       {fetchError && <p>{fetchError}</p>}
       <div className="service-tickets">
         <div className="service-ticket-row">
@@ -76,4 +76,3 @@ export default ViewTicketStaff;
 //         )
 //     }
 // }
-

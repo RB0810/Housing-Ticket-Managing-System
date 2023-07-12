@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, useParams } from "react-router-dom";
-import TicketManager from "../../managers/TicketManager";
+import TicketManager from "../../managers/ticketmanager";
 
 // components
 import TicketCard from "../../components/TicketCard";
@@ -62,7 +62,11 @@ export default function TenantPortal() {
         <div className="service-tickets">
           <div className="service-ticket-row">
             {serviceTickets.map((ticket) => (
-              <TicketCard key={ticket.ServiceRequestID} ticket={ticket} userRole={"tenant"} />
+              <TicketCard
+                key={ticket.ServiceRequestID}
+                ticket={ticket}
+                userRole={"tenant"}
+              />
             ))}
           </div>
         </div>

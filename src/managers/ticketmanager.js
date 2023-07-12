@@ -3,31 +3,35 @@ import supabase from "../config/supabaseClient";
 export default class TicketManager {
   /**
    * Creates Ticket object
-   * @param {Ticket} - Ticket Object to be instantiated
+   * @Ticket {Ticket} - Ticket Object to be instantiated
    *
    * @returns True - Ticket object is now loaded to Database, else False.
    */
 
   async addTicket(ticket) {
-    // // Find Supervisor ID for that TenantID in the ticket
-    // let { data1, error1 } = await supabase
-    //   .from("TenantUsers")
-    //   .select("UnderSupervisor")
-    //   .eq("TenantID", ticket.tenantID);
+    // Find Supervisor ID for that TenantID in the ticket
+    let { data: supervisorID, error } = await supabase
+      .from("TenantUsers")
+      .select("UnderSupervisor")
+      .eq("TenantID", ticket.tenantID);
 
-    // if (error1) {
-    //   console.error(
-    //     `"Error getting SupervisorID from TenantID ${ticket.tenantID}"`,
-    //     error1
-    //   );
-    //   return false;
-    // } else {
-    //   console.log("Found SupervisorID from TenantID", data1);
-    // }
+    supervisorID = supervisorID[0].UnderSupervisor;
+
+    if (error) {
+      console.error(
+        `"Error getting SupervisorID from TenantID ${ticket.tenantID}"`,
+        error
+      );
+      return false;
+    } else {
+      console.log(
+        `"Found SupervisorID ${supervisorID} from TenantID ${ticket.tenantID}"`
+      );
+      ticket.supervisorID = supervisorID;
+    }
 
     // console.log(data1);
-    console.log("I came here");
-    const { data2, error2 } = await supabase
+    const { data2: serviceTicket, error2 } = await supabase
       .from("Service Request")
       .insert([
         {
@@ -51,22 +55,21 @@ export default class TicketManager {
         },
       ])
       .select();
-    console.log(data2);
 
     if (error2) {
       console.error("Error adding ticket:", error2);
       return false;
     } else {
-      console.log("Ticket added successfully:", data2);
+      console.log("Ticket added successfully:", serviceTicket);
       return true;
     }
   }
 
   /**
    * Updates Ticket entry in Supabase based on Ticket object's ID attribute
-   * @param {int} - Ticket ID to update
-   * @param {string} - Column name to update
-   * @param {string} - Value to update
+   * @TicketID {int} - Ticket ID to update
+   * @ColumnName {string} - Column name to update
+   * @Value {string} - Value to update
    *
    * @returns True if successful, False if unsuccessful
    */
@@ -89,7 +92,7 @@ export default class TicketManager {
 
   /**
    * Updates Ticket entry in Supabase based on Ticket object's ID attribute
-   * @param {int} - Ticket ID to get
+   * @TicketID {int} - Ticket ID to get
    *
    * @returns JSON of ticket, else return false if error
    */
@@ -112,7 +115,7 @@ export default class TicketManager {
 
   /**
    * Updates Ticket entry in Supabase based on Ticket object's ID attribute
-   * @param {int} - Ticket ID to get
+   * @TicketID {int} - Ticket ID to get
    *
    * @returns True if successful, False if unsuccessful
    */
@@ -177,7 +180,7 @@ export default class TicketManager {
   }
 
   /**
-   * @param {int} - Staff ID to get tickets of
+   * @StaffID {int} - Staff ID to get tickets of
    *
    * @returns List of dictionaries if successful, else returns false
    */
@@ -201,7 +204,7 @@ export default class TicketManager {
   }
 
   /**
-   * @param {int} - Supervisor ID to get tickets of
+   * @SupervisorID {int} - Supervisor ID to get tickets of
    *
    * @returns List od dictionaries if successful, else returns false
    */
@@ -226,7 +229,7 @@ export default class TicketManager {
   }
 
   /**
-   * @param {string} - Status to get tickets of
+   * @Status {string} - Status to get tickets of
    *
    * @returns List od dictionaries if successful, else returns false
    */
@@ -248,7 +251,7 @@ export default class TicketManager {
   }
 
   /**
-   * @param {string} - PARCStatus to get tickets of
+   * @PARCStatus {string} - PARCStatus to get tickets of
    *
    * @returns List of dictionaries if successful, else returns false
    */
@@ -273,7 +276,7 @@ export default class TicketManager {
   }
 
   /**
-   * @param {string} - Category to get tickets of
+   * @Category {string} - Category to get tickets of
    *
    * @returns List od dictionaries if successful, else returns false
    */
@@ -298,10 +301,10 @@ export default class TicketManager {
   }
 
   /**
-   * @param {string} - PARCStatus to get tickets of
-   * @param {string} - TenantID to get tickets of
+   * @PARCStatus {string} - PARCStatus to get tickets of
+   * @TenantID {string} - TenantID to get tickets of
    *
-   * @returns List od dictionaries if successful, else returns false
+   * @returns List of dictionaries if successful, else returns false
    */
 
   async getTicketsByPARCStatusForTenantID(PARCStatus, tenantID) {
@@ -325,5 +328,86 @@ export default class TicketManager {
     }
 
     return data;
+  }
+
+  /**
+   * @PARCStatus {string} - PARCStatus to get tickets of
+   * @SupervisorID {string} - SupervisorID to get tickets of
+   *
+   * @returns List of dictionaries if successful, else returns false
+   */
+
+  async getTicketsByPARCStatusForSupervisorID(PARCStatus, supervisorID) {
+    let { data, error } = await supabase
+      .from("Service Request")
+      .select("*")
+      .eq("PARCStatus", PARCStatus)
+      .eq("SupervisorID", supervisorID);
+
+    if (error) {
+      console.error(
+        "Error getting all tickets by PARCStatus and SupervisorID:",
+        error
+      );
+      return false;
+    } else {
+      console.log(
+        `"Tickets of PARCStatus :${PARCStatus} and TenantID :${supervisorID} fetched successfully:"`,
+        data
+      );
+    }
+  }
+
+  /**
+   * @PARCStatus {string} - PARCStatus to get tickets of
+   * @SupervisorID {string} - StaffID to get tickets of
+   *
+   * @returns List of dictionaries if successful, else returns false
+   */
+
+  async getTicketsByPARCStatusForStaffID(PARCStatus, staffID) {
+    let { data, error } = await supabase
+      .from("Service Request")
+      .select("*")
+      .eq("PARCStatus", PARCStatus)
+      .eq("StaffID", staffID);
+
+    if (error) {
+      console.error(
+        "Error getting all tickets by PARCStatus and StaffID:",
+        error
+      );
+      return false;
+    } else {
+      console.log(
+        `"Tickets of PARCStatus :${PARCStatus} and TenantID :${staffID} fetched successfully:"`,
+        data
+      );
+    }
+  }
+
+  // ASSIGN
+  /**
+   * @TicketID {int} - PARCStatus to get tickets of
+   *
+   * @returns True if assigned already, else False, null if error
+   */
+  async isTicketAssigned(ticketId) {
+    let { data, error } = await supabase
+      .from("Service Request")
+      .select("StaffID")
+      .eq("ServiceRequestID", ticketId);
+
+    if (error) {
+      console.error("Error getting StaffID of ticket:", error);
+      return null;
+    } else {
+      console.log(
+        `"StaffID of ticket :${ticketId} fetched successfully:"`,
+        data
+      );
+    }
+
+    return data[0].StaffID == null;
   }
 }

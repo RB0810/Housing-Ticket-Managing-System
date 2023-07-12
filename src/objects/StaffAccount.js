@@ -1,4 +1,4 @@
-import AccountManager from "../managers/AccountManager";
+import AccountManager from "../managers/accountmanager";
 import Account from "./Account";
 
 class StaffAccount extends Account {
@@ -8,7 +8,6 @@ class StaffAccount extends Account {
     this.buildingID = "";
     this.buildingOptions = [];
     this.accountManager = new AccountManager();
-
   }
 
   async fetchBuildingOptions() {

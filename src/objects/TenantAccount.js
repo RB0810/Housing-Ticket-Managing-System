@@ -1,4 +1,4 @@
-import AccountManager from "../managers/AccountManager";
+import AccountManager from "../managers/accountmanager";
 import Account from "./Account";
 
 class TenantAccount extends Account {
@@ -32,23 +32,22 @@ class TenantAccount extends Account {
     ) {
       return "Please fill out all fields";
     }
-  
+
     if (this.password !== this.rePassword) {
       return "Passwords do not match";
     }
-  
+
     return null;
   }
-  
 
   async createAccount() {
     const validationError = this.validateFields();
     if (validationError) {
       throw new Error(validationError);
     }
-  
+
     const accountManager = new AccountManager();
-  
+
     const tenantData = {
       TenantUsername: this.username,
       TenantEmail: this.email,
@@ -57,7 +56,7 @@ class TenantAccount extends Account {
       UnderSupervisor: this.supervisor,
       Lease: null,
     };
-  
+
     const leaseData = {
       CommenceDate: this.commenceDate,
       TerminationDate: this.terminationDate,
@@ -66,12 +65,12 @@ class TenantAccount extends Account {
       TradeType: this.tradetype,
       MonthlyRental: this.monthlyrental,
     };
-  
+
     const units = {
       number: this.numberofunits,
       unit: this.units,
     };
-  
+
     try {
       await accountManager.createTenantAccount(tenantData, leaseData, units);
       return "Tenant Account Created!";
@@ -80,7 +79,6 @@ class TenantAccount extends Account {
       throw new Error("Database Error");
     }
   }
-  
 }
 
 export default TenantAccount;

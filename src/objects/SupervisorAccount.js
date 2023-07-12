@@ -1,4 +1,4 @@
-import AccountManager from "../managers/AccountManager";
+import AccountManager from "../managers/accountmanager";
 import Account from "./Account";
 
 class SupervisorAccount extends Account {
