@@ -17,7 +17,8 @@ export default class Ticket {
     submitteddatetime,
     category,
     description,
-    PARCstatus = "PENDING"
+    PARCstatus = "PENDING",
+    status = "Awaiting Review"
   ) {
     // ID will be from Supabase to be filled in when fetched
     this.id = null;
@@ -30,18 +31,16 @@ export default class Ticket {
     this.description = description;
     this.PARCstatus = PARCstatus;
     this.supervisorID = null;
+    this.status = status;
 
     // Other attributes to be filled in later
     this.staffID = null;
     this.contact = null;
-    this.status = null;
     this.quotationRequired = null;
     this.quotationAmount = null;
-    this.quotationUploadedBy = null;
     this.quotationAccepted = null;
     this.quotationAcceptanceDate = null;
     this.quotationAttachmentPath = null;
-    this.completedBy = null;
     this.completionDateTime = null;
     this.feedbackRating = null;
     this.feedbackComments = null;

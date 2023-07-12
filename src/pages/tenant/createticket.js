@@ -8,10 +8,11 @@ const CreateTicket = () => {
   const ticketManager = new TicketManager();
   let { TenantID } = useParams();
   const [name, setName] = useState("");
-  const [requestType, setRequestType] = useState(""); // Set default value
+  const [requestType, setRequestType] = useState("");
   const [description, setDescription] = useState("");
   const [submittedDateTime, setSubmittedDateTime] = useState("");
   const [formError, setFormError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,8 +22,8 @@ const CreateTicket = () => {
       return;
     }
 
-    setSubmittedDateTime(new Date().toLocaleString());
-    // Create Ticket object
+    let submittedDateTime = new Date().toLocaleString();
+
     const ticket = new Ticket(
       name,
       parseInt(TenantID),
@@ -32,13 +33,21 @@ const CreateTicket = () => {
     );
 
     console.log(ticket);
-    // Add ticket to Supabase
-    let success = ticketManager.addTicket(ticket);
 
-    if (success) {
-      setFormError("Successfully added ticket");
-    } else {
-      setFormError("Error adding ticket");
+    setLoading(true);
+
+    try {
+      let success = await ticketManager.addTicket(ticket);
+
+      if (success) {
+        setFormError("Successfully added ticket");
+      } else {
+        setFormError("Error adding ticket");
+      }
+    } catch (error) {
+      setFormError("An error occurred while adding the ticket");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -48,36 +57,35 @@ const CreateTicket = () => {
         <h1 className="ticket-creation-title">Create Ticket</h1>
       </div>
 
-
       <form onSubmit={handleSubmit} className="ticket-creation-form">
         <div className="con-25">
           <label htmlFor="name">Name</label>
         </div>
         <div className="con-75">
           <input
-          type="text"
-          id="name"
-          className="Name_input"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+            type="text"
+            id="name"
+            className="Name_input"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
         </div>
-        
+
         <div className="con-25"> 
           <label htmlFor="dropdown">Request Type</label>
         </div>
         <div className="con-75">
-        <select
-          id="dropdown"
-          value={requestType} 
-          onChange={(e) => setRequestType(e.target.value)}
-        >
-          <option value="Toilet">Toilet</option>
-          <option value="Plumbing">Plumbing</option>
-          <option value="Pest">Pest</option>
-        </select>
-
+          <select
+            id="dropdown"
+            value={requestType} 
+            onChange={(e) => setRequestType(e.target.value)}
+          >
+            <option value="">Please Select Request Type</option>
+            <option value="Toilet">Toilet</option>
+            <option value="Plumbing">Plumbing</option>
+            <option value="Pest">Pest</option>
+          </select>
         </div>
 
         <div className="con-25">
@@ -85,19 +93,22 @@ const CreateTicket = () => {
         </div>
         <div className="con-75">
           <input
-          type="text"
-          id="description"
-          className="description-input"
-          placeholder="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+            type="text"
+            id="description"
+            className="description-input"
+            placeholder="Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
           />
         </div>
 
-        
-        
+        <input
+          type="submit"
+          value="Create Service Ticket"
+          className="submit-button"
+          disabled={loading}
+        />
 
-        <input type="submit" value="Create Service Ticket" className="submit-button"></input>
         {formError && <p className="create-ticket-error">{formError}</p>}
       </form>
     </div>
