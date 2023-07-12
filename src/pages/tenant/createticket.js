@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, useParams } from "react-router-dom";
-import Ticket from "../../objects/Ticket";
-import TicketManager from "../../managers/TicketManager";
-import './../../styles/viewticket.css'; 
+import Ticket from "../../objects/ticket";
+import TicketManager from "../../managers/ticketmanager";
+import "./../../styles/viewticket.css";
 
 const CreateTicket = () => {
   const ticketManager = new TicketManager();
@@ -72,13 +72,13 @@ const CreateTicket = () => {
           />
         </div>
 
-        <div className="con-25"> 
+        <div className="con-25">
           <label htmlFor="dropdown">Request Type</label>
         </div>
         <div className="con-75">
           <select
             id="dropdown"
-            value={requestType} 
+            value={requestType}
             onChange={(e) => setRequestType(e.target.value)}
           >
             <option value="">Please Select Request Type</option>

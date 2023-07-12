@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import  AccountManager  from '../../managers/AccountManager';
+import  AccountManager  from '../../managers/accountmanager';
 import "../../styles/login.css";
 
 export default function LandlordLogin() {

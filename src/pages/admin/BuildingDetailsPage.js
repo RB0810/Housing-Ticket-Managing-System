@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import AccountManager from '../../managers/AccountManager';
-import BuildingDetails from '../../components/BuildingDetails';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import AccountManager from "../../managers/accountmanager";
+import BuildingDetails from "../../components/BuildingDetails";
 
 const BuildingDetailsPage = () => {
   const [buildingDetails, setBuildingDetails] = useState(null);
@@ -11,10 +11,12 @@ const BuildingDetailsPage = () => {
   useEffect(() => {
     const fetchBuildingDetails = async () => {
       try {
-        const buildingData = await accountManager.getBuildingDetails(BuildingID);
+        const buildingData = await accountManager.getBuildingDetails(
+          BuildingID
+        );
         setBuildingDetails(buildingData);
       } catch (error) {
-        console.error('Error fetching building details:', error);
+        console.error("Error fetching building details:", error);
       }
     };
 

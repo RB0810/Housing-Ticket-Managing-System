@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../../styles/login.css";
-import AccountManager from '../../managers/AccountManager';
+import AccountManager from "../../managers/accountmanager";
 import "../../styles/login.css";
 
 export default function AdminLogin() {
@@ -27,8 +27,8 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className='logindiv'>
-      <form className='loginForm' onSubmit={handleLogin}>
+    <div className="logindiv">
+      <form className="loginForm" onSubmit={handleLogin}>
         <div>
           <h1 className="wlcText">
             Tenant Portal <br /> Login
@@ -39,13 +39,29 @@ export default function AdminLogin() {
         </div>
         <div>
           <label></label>
-          <input className='loginInput' type='text' value={ID} onChange={(e) => setID(e.target.value)} name='ID' placeholder='ID Number/Email'/>
+          <input
+            className="loginInput"
+            type="text"
+            value={ID}
+            onChange={(e) => setID(e.target.value)}
+            name="ID"
+            placeholder="ID Number/Email"
+          />
         </div>
         <div>
           <label></label>
-          <input className='loginInput' type='password' value={password} onChange={(e) => setPassword(e.target.value)} name='password' placeholder='Password'/>
+          <input
+            className="loginInput"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            name="password"
+            placeholder="Password"
+          />
         </div>
-        <button className='loginBtn' type="submit">Login</button>
+        <button className="loginBtn" type="submit">
+          Login
+        </button>
       </form>
     </div>
   );

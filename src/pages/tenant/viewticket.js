@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import TicketManager from "../../managers/TicketManager";
+import TicketManager from "../../managers/ticketmanager";
 import TicketDetails from "../../components/TicketDetails";
 import { useParams } from "react-router-dom";
 
@@ -76,4 +76,3 @@ export default ViewTicketTenant;
 //         )
 //     }
 // }
-

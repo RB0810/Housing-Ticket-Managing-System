@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../../styles/login.css";
-import AccountManager from "../../managers/AccountManager";
+import AccountManager from "../../managers/accountmanager";
 
 export default function AdminLogin() {
   const [ID, setID] = useState("");
