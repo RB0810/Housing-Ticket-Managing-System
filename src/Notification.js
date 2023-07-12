@@ -11,7 +11,7 @@ class Notification {
   sendMail(emailContent) {
     const { to, subject, text } = emailContent;
     const message = {
-      from: 'Excited User <>',
+      from: 'Housing Management System',
       to: to,
       subject: subject,
       text: text,

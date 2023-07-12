@@ -30,7 +30,6 @@ class NotificationManager {
   }
 
   generateEmailContent(action, record, emailParameters) {
-    // Replace with your own logic to generate the email content based on the action and record
     const to = emailParameters.to || record.email;
     const subject = emailParameters.subject || `${action}: ${record.id}`;
     const text = emailParameters.text || `Record ID ${record.id} has been ${action.toLowerCase()}.`;
@@ -43,12 +42,90 @@ class NotificationManager {
     };
   }
 
-  initializeListeners() {
-    // Call startListening with appropriate parameters for each table
-    this.startListening('Service Requests', { to: 'email1@example.com', subject: 'Table 1 Update' });
-    this.startListening('table2', { text: 'A record has been modified in Table 2' });
-    // Add more startListening calls for additional tables as needed with their respective emailParameters
+  async initializeListeners() {
+    // Fetch staff user emails from the 'StaffUsers' table
+    const { data: staff, error } = await this.supabase
+      .from('StaffUsers')
+      .select('StaffEmail');
+
+    if (error) {
+      console.log('Error fetching user emails:', error);
+      return;
+    }
+
+    staff.forEach(({ email }) => {
+      const tables = [
+        { tableName: 'Service Requests', emailParameters: { to: email, subject: 'Ticket Update' } },
+        // Add more tables and their corresponding email parameters as needed
+      ];
+
+      tables.forEach(({ tableName, emailParameters }) => {
+        this.startListening(tableName, email, emailParameters);
+      });
+    });
+
+    //fetch supervisor user emails from the 'SupervisorUsers' table
+    const { data: supervisor, error: supervisorError } = await this.supabase
+    .from('SupervisorUsers')
+    .select('SupervisorEmail');
+    if (supervisorError) {
+      console.log('Error fetching user emails:', supervisorError);
+      return;
+    }
+
+    supervisor.forEach(({ email }) => {
+      const tables = [
+        { tableName: 'Service Requests', emailParameters: { to: email, subject: 'Ticket Update' } },
+        // Add more tables and their corresponding email parameters as needed
+      ];
+
+      tables.forEach(({ tableName, emailParameters }) => {
+        this.startListening(tableName, email, emailParameters);
+      });
+    });
+
+    //fetch tenant user emails from the TenantUsers table
+    const { data: tenant, error: tenantError } = await this.supabase
+    .from('TenantUsers')
+    .select('TenantEmail');
+    if (tenantError) {
+      console.log('Error fetching user emails:', tenantError);
+      return;
+      }
+
+    tenant.forEach(({ email }) => {
+      const tables = [
+        { tableName: 'Service Requests', emailParameters: { to: email, subject: 'Ticket Update' } },
+        // Add more tables and their corresponding email parameters as needed
+      ];
+
+      tables.forEach(({ tableName, emailParameters }) => {
+        this.startListening(tableName, email, emailParameters);
+      });
+    });
+    
+    //fetch admin user emails from the AdminUsers table
+    const { data: admin, error: adminError } = await this.supabase
+    .from('AdminUsers')
+    .select('AdminEmail');
+    if (adminError) {
+      console.log('Error fetching user emails:', adminError);
+      return;
+      }
+
+    admin.forEach(({ email }) => {
+      const tables = [
+        { tableName: 'Service Requests', emailParameters: { to: email, subject: 'Ticket Update' } },
+        // Add more tables and their corresponding email parameters as needed
+      ];
+
+      tables.forEach(({ tableName, emailParameters }) => {
+        this.startListening(tableName, email, emailParameters);
+      });
+    });
+
   }
+  
 }
 
 module.exports = NotificationManager;
