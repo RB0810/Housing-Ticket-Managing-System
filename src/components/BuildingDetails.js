@@ -6,7 +6,6 @@ const BuildingDetails = ({ building }) => {
 
   return (
     <div className="building-details">
-      <h2>{building.Building.BuildingName}, {building.Building.Address}</h2>
       <div className="section">
         <h3>Staff</h3>
         {staff.map((staffMember) => (

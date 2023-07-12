@@ -25,6 +25,9 @@ import CreateStaffAcc from "./pages/admin/createstaffacc";
 import CreateTenantAcc from "./pages/supervisor/createtenantacc";
 import ManageAccount from "./pages/admin/manageacc";
 import BuildingDetailsPage from "./pages/admin/BuildingDetailsPage";
+import TenantProfile from "./pages/tenant/profile";
+import SupervisorProfile from "./pages/supervisor/profile";
+import StaffProfile from "./pages/staff/profile";
 
 function App() {
   // Routing
@@ -61,9 +64,9 @@ function App() {
           <Route path="/adminportal/createstaffacc/:AdminID" element={<CreateStaffAcc />} />
           <Route path="/adminportal/manageacc/:AdminID" element={<ManageAccount />} />
           <Route path="/adminportal/manageacc/:AdminID/building/:BuildingID" element={<BuildingDetailsPage />} />
-          <Route path="/tenantportal/profile/:TenantID" element={<BuildingDetailsPage />} />
-          <Route path="/supervisorportal/profile/:SupervisorID" element={<BuildingDetailsPage />} />
-          <Route path="/staffportal/profile/:StaffID" element={<BuildingDetailsPage />} />
+          <Route path="/tenantportal/profile/:TenantID" element={<TenantProfile />} />
+          <Route path="/supervisorportal/profile/:SupervisorID" element={<SupervisorProfile />} />
+          <Route path="/staffportal/profile/:StaffID" element={<StaffProfile />} />
           </Routes>
       </div>
     </>
