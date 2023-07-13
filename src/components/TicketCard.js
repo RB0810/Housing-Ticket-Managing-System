@@ -22,7 +22,9 @@ const TicketCard = ({ ticket, userRole }) => {
       <p className="ticket-name">{ticket.Name}</p>
       <p className="ticket-SubmittedBy">Tenant ID: {ticket.TenantID}</p>
       <p className="ticket-AssignedTo">{ticket.StaffID}</p>
-      <p className="ticket-SubmittedDateTime">{new Date(ticket.SubmittedDateTime).toLocaleDateString}</p>
+      <p className="ticket-SubmittedDateTime">
+        {new Date(ticket.SubmittedDateTime).toLocaleDateString}
+      </p>
       <p className="ticket-RequestType">{ticket.RequestType}</p>
       <p className="ticket-PARCStatus">{ticket.PARCStatus}</p>
       <p className="ticket-Status">{ticket.Status}</p>
