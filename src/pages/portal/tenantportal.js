@@ -30,20 +30,7 @@ export default function TenantPortal() {
         setFetchError("Error!");
         setServiceTickets();
       }
-
-      // let { data, error } = await supabase.from("Service Request").select("*");
-      // if (error) {
-      //   setFetchError(error.message);
-      //   setServiceTickets(null);
-      //   console.log(error);
-      // }
-
-      // if (data) {
-      //   setServiceTickets(data);
-      //   setFetchError(null);
-      // }
     };
-
     getTickets();
   }, []);
 

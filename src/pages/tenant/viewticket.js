@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import TicketManager from "../../managers/ticketmanager";
 import TicketDetails from "../../components/TicketDetails";
 import { useParams } from "react-router-dom";
+import FeedbackComponent from "../../components/FeedbackComponent";
 
 const ViewTicketTenant = () => {
   const ticketManager = new TicketManager();
@@ -11,8 +12,6 @@ const ViewTicketTenant = () => {
 
   useEffect(() => {
     const getTicket = async () => {
-      let new_data = await ticketManager.getTicketsByPARCStatusForTenantID();
-
       let data = await ticketManager.getTicket(parseInt(ServiceRequestID));
       console.log("Ticket gote!");
 
