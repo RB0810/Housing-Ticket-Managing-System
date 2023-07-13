@@ -1,6 +1,6 @@
 import supabase from "../../config/supabaseClient";
 import { useEffect, useState } from "react";
-import "../../styles/pages/portal/landlordportal.scss";
+import "../../styles/pages/portal/landlordportal.css";
 
 // components
 import TicketCard from "../../components/TicketCard";
