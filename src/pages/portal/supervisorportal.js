@@ -1,5 +1,6 @@
 import supabase from "../../config/supabaseClient";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import "../../styles/pages/portal/landlordportal.css";
 
 // components
@@ -8,6 +9,7 @@ import TicketCard from "../../components/TicketCard";
 export default function SupervisorPortal() {
   const [serviceTickets, setServiceTickets] = useState([]);
   const [fetchError, setFetchError] = useState([]);
+  let { PARCStatus, SupervisorID } = useParams();
 
   useEffect(() => {
     const getTickets = async () => {
@@ -34,7 +36,7 @@ export default function SupervisorPortal() {
         <div className="service-tickets">
           <div className="service-ticket-row">
             {serviceTickets.map((ticket) => (
-              <TicketCard key={ticket.ServiceRequestID} ticket={ticket} />
+              <TicketCard key={ticket.ServiceRequestID} ticket={ticket} userRole={"supervisor"} user={SupervisorID}/>
             ))}
           </div>
         </div>

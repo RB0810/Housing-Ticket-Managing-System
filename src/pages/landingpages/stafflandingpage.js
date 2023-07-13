@@ -4,22 +4,22 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 export default function StaffLandingPage() {
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { StaffID } = useParams();
   var status = "";
 
   const handleButtonClickPending = () => {
     status = "pending";
-    navigate(`/staffportal/${id}/${status}`);
+    navigate(`/staffportal/tickets/${StaffID}/${status}`);
   };
 
   const handleButtonClickActive = () => {
     status = "active"
-    navigate(`/staffportal/${id}/${status}`);
+    navigate(`/staffportal/tickets/${StaffID}/${status}`);
   };
 
   const handleButtonClickClosed = () => {
     status = "closed"
-    navigate(`/staffportal/${id}/${status}`);
+    navigate(`/staffportal/tickets/${StaffID}/${status}`);
   };
 
   return (

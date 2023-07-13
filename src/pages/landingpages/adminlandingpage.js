@@ -1,20 +1,21 @@
 import React from 'react';
 import '../../styles/adminlandingpage.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useParams } from 'react-router-dom';
 
 export default function AdminLandingPage() {
   const navigate = useNavigate();
+  const { AdminID } = useParams();
 
   const handleButtonClickCreate = () => {
-    navigate('/createsupervisoracc');
+    navigate(`/adminportal/createsupervisoracc/${AdminID}`);
   };
 
   const handleButtonClickDelete = () => {
-    navigate('/createstaffacc');
+    navigate(`/adminportal/createstaffacc/${AdminID}`);
   };
 
   const handleButtonClickManage = () => {
-    navigate('/manageacc');
+    navigate(`/adminportal/manageacc/${AdminID}`);
   };
 
   return (

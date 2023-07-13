@@ -4,25 +4,25 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 export default function TenantLandingPage() {
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { TenantID } = useParams();
   var status = "";
 
   const handleButtonClickPending = () => {
     status = "pending";
-    navigate(`/tenantportal/${id}/${status}`);
+    navigate(`/tenantportal/tickets/${TenantID}/${status}`);
   };
 
   const handleButtonClickActive = () => {
     status = "active";
-    navigate(`/tenantportal/${id}/${status}`);
+    navigate(`/tenantportal/tickets/${TenantID}/${status}`);
   };
 
   const handleButtonClickClosed = () => {
     status = "closed";
-    navigate(`/tenantportal/${id}/${status}`);
+    navigate(`/tenantportal/tickets/${TenantID}/${status}`);
   };
   const handleButtonClickNew = () => {
-    navigate(`/createticket/${id}`);
+    navigate(`/tenantportal/createticket/${TenantID}`);
   };
 
   return (
