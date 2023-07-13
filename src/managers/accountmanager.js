@@ -67,6 +67,14 @@ class AccountManager {
     return tenantDetails;
   }
 
+  async getUnits(tenantID){
+    const { data: tenantData } = await supabase.from("TenantUsers").select("*").eq("TenantID", parseInt(tenantID));
+    const leaseID = tenantData[0].Lease;
+    const { data: unitData } = await supabase.from("Unit").select("UnitNumber").eq("LeaseID", leaseID);
+    console.log(unitData);
+    return unitData;
+  }
+
   async createSupervisorAcc(building, supervisor) {
     const { data } = await supabase.from("Buildings").insert(building).select();
     const buildingID = data[0].BuildingID;

@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Routes, Route, useParams } from "react-router-dom";
 import Ticket from "../../objects/ticket";
 import TicketManager from "../../managers/ticketmanager";
+import AccountManager from "../../managers/accountmanager";
 import "./../../styles/viewticket.css";
 
 const CreateTicket = () => {
@@ -10,29 +11,47 @@ const CreateTicket = () => {
   const [name, setName] = useState("");
   const [requestType, setRequestType] = useState("");
   const [description, setDescription] = useState("");
-  const [submittedDateTime, setSubmittedDateTime] = useState("");
   const [formError, setFormError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [properties, setProperties] = useState([]);
+  const [property, setProperty] = useState("");
+
+  const accountManager = useMemo(() => new AccountManager(), []);
+
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        const tenantProperties = await accountManager.getUnits(TenantID);
+        setProperties(tenantProperties);
+      } catch (error) {
+        console.error("Error fetching properties:", error);
+      }
+    };
+
+    fetchProperties();
+  }, [TenantID, accountManager]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!name || !requestType || !description) {
+    if (!name || !requestType || !description || !property) {
       setFormError("Please fill out all fields");
       return;
     }
 
-    let submittedDateTime = new Date().toLocaleString();
+    let currentDate = new Date();
+    let timezoneOffset = currentDate.getTimezoneOffset() * 60000;
+    let localTime = new Date(currentDate - timezoneOffset);
+    let submittedDateTime = localTime.toISOString().replace("T", " ").slice(0, -5);
 
     const ticket = new Ticket(
       name,
       parseInt(TenantID),
       submittedDateTime,
       requestType,
-      description
+      description,
+      property
     );
-
-    console.log(ticket);
 
     setLoading(true);
 
@@ -100,6 +119,24 @@ const CreateTicket = () => {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
+        </div>
+
+        <div className="con-25">
+          <label htmlFor="property">Property</label>
+        </div>
+        <div className="con-75">
+          <select
+            id="property"
+            value={property}
+            onChange={(e) => setProperty(e.target.value)}
+          >
+            <option value="">Please Select Property</option>
+            {properties.map((property) => (
+              <option key={property.UnitNumber} value={property.UnitNumber}>
+                {property.UnitNumber}
+              </option>
+            ))}
+          </select>
         </div>
 
         <input
