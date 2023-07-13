@@ -353,9 +353,10 @@ export default class TicketManager {
       return false;
     } else {
       console.log(
-        `"Tickets of PARCStatus :${PARCStatus} and TenantID :${supervisorID} fetched successfully:"`,
+        `"Tickets of PARCStatus :${PARCStatus} and SupervisorID :${supervisorID} fetched successfully:"`,
         data
       );
+      return data;
     }
   }
 
@@ -384,7 +385,8 @@ export default class TicketManager {
         `"Tickets of PARCStatus :${PARCStatus} and TenantID :${staffID} fetched successfully:"`,
         data
       );
-    }
+      return data;
+    } 
   }
 
   // ASSIGN

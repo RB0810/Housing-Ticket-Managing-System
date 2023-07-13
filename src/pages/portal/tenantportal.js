@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
-import { Routes, Route, useParams } from "react-router-dom";
+import { Routes, Route, useParams, Link } from "react-router-dom";
 import TicketManager from "../../managers/ticketmanager";
-
-// components
-import TicketCard from "../../components/TicketCard";
+import "../../styles/ticketportal.css";
 
 export default function TenantPortal() {
   const ticketManager = new TicketManager();
   let { PARCStatus, TenantID } = useParams();
   const [serviceTickets, setServiceTickets] = useState([]);
-  const [fetchError, setFetchError] = useState([]);
+  const [fetchError, setFetchError] = useState(null);
 
   useEffect(() => {
     const getTickets = async () => {
@@ -18,47 +16,68 @@ export default function TenantPortal() {
         parseInt(TenantID)
       );
 
-      if (data != false) {
+      if (data !== false) {
         console.log(data);
         setServiceTickets(data);
         setFetchError(null);
-      } else if (data.length == 0) {
-        console.log(data);
-        setFetchError("Empty!");
-        setServiceTickets();
       } else {
         setFetchError("Error!");
-        setServiceTickets();
+        setServiceTickets([]);
       }
     };
     getTickets();
   }, []);
 
+  const getViewTicketsRoute = () => {
+    return "/tenantportal/ticket";
+  };
+
   return (
     <div className="page tenantportal">
-      <div className="tenant-portal-header">
-        <p>Ticket ID</p>
-        <p>SubmittedBy</p>
-        <p>AssignedTo</p>
-        <p>SubmittedDate</p>
-        <p>Property</p>
-        <p>Status</p>
-      </div>
-      {fetchError && <p>{fetchError}</p>}
-      {serviceTickets && (
-        <div className="service-tickets">
-          <div className="service-ticket-row">
-            {serviceTickets.map((ticket) => (
-              <TicketCard
-                key={ticket.ServiceRequestID}
-                ticket={ticket}
-                user={TenantID}
-                userRole={"tenant"}
-              />
-            ))}
-          </div>
-        </div>
-      )}
+      <table className="ticket-portal-table">
+        <thead>
+          <tr className="table-row">
+            <th className="header-cell text-center">S No.</th>
+            <th className="header-cell text-center">Request</th>
+            <th className="header-cell text-center">Category</th>
+            <th className="header-cell text-center">Unit</th>
+            <th className="header-cell text-center">Status</th>
+            <th className="header-cell text-center">Submitted Date</th>
+            <th className="header-cell text-center">Assigned To</th>
+            <th className="header-cell text-center"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {fetchError ? (
+            <tr>
+              <td colSpan="8" className="text-center">{fetchError}</td>
+            </tr>
+          ) : serviceTickets.length === 0 ? (
+            <tr>
+              <td colSpan="8" className="text-center">Empty!</td>
+            </tr>
+          ) : (
+            serviceTickets.map((ticket, index) => (
+              <tr key={ticket.ServiceRequestID} className="table-row">
+                <td className="text-center">{index + 1}</td>
+                <td className="text-center">{ticket.Name}</td>
+                <td className="text-center">{ticket.Category}</td>
+                <td className="text-center">{ticket.Property}</td>
+                <td className="text-center">{ticket.Status}</td>
+                <td className="text-center">{new Date(ticket.SubmittedDateTime).toLocaleDateString()}</td>
+                <td className="text-center">{ticket.StaffID}</td>
+                <td className="text-center">
+                  <Link to={`${getViewTicketsRoute()}/${TenantID}/${ticket.ServiceRequestID}`}>
+                    <button className="btn">
+                      View Ticket
+                    </button>
+                  </Link>
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
     </div>
   );
 }
