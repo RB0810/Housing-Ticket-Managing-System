@@ -59,20 +59,30 @@ h3{
     margin-right: 5rem;
 }
 
-input[type=text],select,textarea{
+.create-ticket-input{
     width: 100%;
     padding: 12px;
     border: 1px solid #ccc;
     border-radius: 4px;
     resize: vertical;
 }
-
-label {
-    padding: 12px 12px 12px 0;
-    display: inline-block;
+.create-ticket-select{
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
 }
-  
-input[type=submit] {
+.create-ticket-description{
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+    height: 5rem;
+}
+
+.create-ticket-button{
     background-color: royalblue;
     color: white;
     padding: 12px 20px;
@@ -83,8 +93,9 @@ input[type=submit] {
     float: right;
 }
 
-input[type=submit]:hover {
-    background-color: royalblue;
+.create-ticket-label{
+    padding: 12px 12px 12px 0;
+    display: inline-block;
 }
 
 .con-25{
@@ -102,16 +113,6 @@ input[type=submit]:hover {
 .ticket-creation-form{
     align-items: center;
     width: 80%;
-}
-
-.submit-button::after{
-    content: "";
-    display: table;
-    clear: both;
-}
-
-.description-input{
-    height: 5rem;
 }
 
 .ticket-creation-title{

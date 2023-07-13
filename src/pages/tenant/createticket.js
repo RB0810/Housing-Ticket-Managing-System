@@ -78,13 +78,13 @@ const CreateTicket = () => {
 
       <form onSubmit={handleSubmit} className="ticket-creation-form">
         <div className="con-25">
-          <label htmlFor="name">Name</label>
+          <label htmlFor="name" className="create-ticket-label">Name</label>
         </div>
         <div className="con-75">
           <input
             type="text"
             id="name"
-            className="Name_input"
+            className="create-ticket-input"
             placeholder="Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -92,11 +92,12 @@ const CreateTicket = () => {
         </div>
 
         <div className="con-25">
-          <label htmlFor="dropdown">Request Type</label>
+          <label htmlFor="dropdown" className="create-ticket-label">Request Type</label>
         </div>
         <div className="con-75">
           <select
             id="dropdown"
+            className="create-ticket-select"
             value={requestType}
             onChange={(e) => setRequestType(e.target.value)}
           >
@@ -112,25 +113,26 @@ const CreateTicket = () => {
         </div>
 
         <div className="con-25">
-          <label htmlFor="description">Description</label>
+          <label htmlFor="description" className="create-ticket-label">Description</label>
         </div>
         <div className="con-75">
-          <input
-            type="text"
+          <textarea
             id="description"
-            className="description-input"
+            className="create-ticket-description"
             placeholder="Description"
+            rows='5'
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
 
         <div className="con-25">
-          <label htmlFor="property">Property</label>
+          <label htmlFor="property" className="create-ticket-label">Property</label>
         </div>
         <div className="con-75">
           <select
             id="property"
+            className="create-ticket-select"
             value={property}
             onChange={(e) => setProperty(e.target.value)}
           >
@@ -146,7 +148,7 @@ const CreateTicket = () => {
         <input
           type="submit"
           value="Create Service Ticket"
-          className="submit-button"
+          className="create-ticket-button"
           disabled={loading}
         />
 
