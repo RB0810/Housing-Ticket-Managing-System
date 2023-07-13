@@ -4,7 +4,6 @@ import Account from "./Account";
 class StaffAccount extends Account {
   constructor() {
     super();
-    this.ticketCategory = "Cleaning";
     this.buildingID = "";
     this.buildingOptions = [];
     this.accountManager = new AccountManager();
@@ -29,7 +28,6 @@ class StaffAccount extends Account {
       !this.password ||
       !this.rePassword ||
       !this.phone ||
-      !this.ticketCategory ||
       !this.buildingID
     ) {
       return "Please fill out all fields";
@@ -53,7 +51,6 @@ class StaffAccount extends Account {
       StaffEmail: this.email,
       StaffPassword: this.password,
       StaffPhone: this.phone,
-      TicketCategory: this.ticketCategory,
       BuildingID: this.buildingID,
     };
 

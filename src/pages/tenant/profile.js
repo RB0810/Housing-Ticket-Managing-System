@@ -7,7 +7,6 @@ const TenantProfile = () => {
   const [tenant, setTenant] = useState(null);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [showSetPassword, setShowSetPassword] = useState(false);
   const [formError, setFormError] = useState(null);
 
   useEffect(() => {
@@ -26,10 +25,6 @@ const TenantProfile = () => {
 
   const handleConfirmPasswordChange = (e) => {
     setConfirmPassword(e.target.value);
-  };
-
-  const handleToggleSetPassword = () => {
-    setShowSetPassword(!showSetPassword);
   };
 
   const handleSetPassword = async () => {
@@ -76,16 +71,11 @@ const TenantProfile = () => {
       <Link to={`/`}><button>Logout</button></Link>
 
       <div>
-        <button onClick={handleToggleSetPassword}>Change Password</button>
-        {showSetPassword && (
-          <div>
             <h4>Set New Password</h4>
             <input type="password" placeholder="New Password" value={newPassword} onChange={handleNewPasswordChange} />
             <input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={handleConfirmPasswordChange} />
             {formError && <p className="set-password-error">{formError}</p>}
             <button onClick={handleSetPassword}>Set Password</button>
-          </div>
-        )}
       </div>
     </div>
   );

@@ -8,7 +8,6 @@ const SupervisorProfile = () => {
   const [supervisor, setSupervisor] = useState(null);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [showSetPassword, setShowSetPassword] = useState(false);
   const [formError, setFormError] = useState(null);
   const [buildingDetails, setBuildingDetails] = useState(null);
   const accountManager = new AccountManager();
@@ -49,9 +48,6 @@ const SupervisorProfile = () => {
     setConfirmPassword(e.target.value);
   };
 
-  const handleToggleSetPassword = () => {
-    setShowSetPassword(!showSetPassword);
-  };
 
   const handleSetPassword = async () => {
     if (newPassword === confirmPassword) {
@@ -87,9 +83,6 @@ const SupervisorProfile = () => {
       </Link>
 
       <div>
-        <button onClick={handleToggleSetPassword}>Change Password</button>
-        {showSetPassword && (
-          <div>
             <h4>Set New Password</h4>
             <input
               type="password"
@@ -105,8 +98,6 @@ const SupervisorProfile = () => {
             />
             {formError && <p className="set-password-error">{formError}</p>}
             <button onClick={handleSetPassword}>Set Password</button>
-          </div>
-        )}
       </div>
     </div>
   );
