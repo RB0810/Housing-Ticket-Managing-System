@@ -12,7 +12,6 @@ const BuildingDetails = ({ building }) => {
           <div className="staff-item" key={staffMember.StaffID}>
             <p>Name: {staffMember.StaffUsername}</p>
             <p>Contact: {staffMember.StaffEmail}, {staffMember.StaffPhone}</p>
-            <p>Ticket Category: {staffMember.TicketCategory}</p>
           </div>
         ))}
       </div>

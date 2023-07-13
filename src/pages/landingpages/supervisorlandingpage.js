@@ -24,21 +24,14 @@ export default function SupervisorLandingPage() {
   const handleButtonClickNew = () => {
     navigate(`/supervisorportal/createtennantacc/${SupervisorID}`);
   };
-  const handleButtonClickAssign = () => {
-    navigate(`/supervisorportal/assignticket/${SupervisorID}`);
-  };
 
   return (
     <div>
-      <div className="card-container">
+      <div className="centered-card">
           <button className="card" onClick={handleButtonClickNew}>
             <img src="/createtenant.png" alt="Card" className="card-image" />
             <div><button>Create Tenant Account</button></div>
-          </button>     
-          <button className="card" onClick={handleButtonClickAssign}>
-            <img src="/assignticket.png" alt="Card" className="card-image" />
-            <div><button>Assign Tickets</button></div>
-          </button>     
+          </button>         
       </div>  
       <div className="card-container">
         <button className="card" onClick={handleButtonClickPending}>
