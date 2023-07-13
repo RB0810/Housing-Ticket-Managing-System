@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../../styles/createaccount.css";
 import StaffAccount from "../../objects/StaffAccount";
 
@@ -9,7 +9,6 @@ const CreateStaffAcc = () => {
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
   const [phone, setPhone] = useState("");
-  const [ticketCategory, setTicketCategory] = useState("Cleaning"); // Set default value
   const [buildingID, setBuildingID] = useState("");
   const [buildingOptions, setBuildingOptions] = useState([]);
 
@@ -19,7 +18,9 @@ const CreateStaffAcc = () => {
     setBuildingOptions(staffAccount.buildingOptions);
   };
 
-  handleFetchBuildingOptions();
+  useEffect(() => {
+    handleFetchBuildingOptions();
+  }, []); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,7 +31,6 @@ const CreateStaffAcc = () => {
     staffAccount.password = password;
     staffAccount.rePassword = rePassword;
     staffAccount.phone = phone;
-    staffAccount.ticketCategory = ticketCategory;
     staffAccount.buildingID = buildingID;
 
     try {
@@ -98,24 +98,6 @@ const CreateStaffAcc = () => {
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
           />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="ticketCategory">Ticket Category</label>
-          <select
-            id="ticketCategory"
-            className="form-control"
-            value={ticketCategory}
-            onChange={(e) => setTicketCategory(e.target.value)}
-          >
-            <option value="Cleaning">Cleaning</option>
-            <option value="Toilet">Toilet</option>
-            <option value="Plumbing">Plumbing</option>
-            <option value="Pest">Pest</option>
-            <option value="Electric">Electric</option>
-            <option value="Aircon">Aircon</option>
-            <option value="Others">Others</option>
-          </select>
         </div>
 
         <div className="form-group">

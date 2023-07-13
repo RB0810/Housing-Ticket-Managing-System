@@ -7,7 +7,6 @@ const StaffProfile = () => {
   const [staff, setStaff] = useState(null);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [showSetPassword, setShowSetPassword] = useState(false);
   const [formError, setFormError] = useState(null);
 
   useEffect(() => {
@@ -26,10 +25,6 @@ const StaffProfile = () => {
 
   const handleConfirmPasswordChange = (e) => {
     setConfirmPassword(e.target.value);
-  };
-
-  const handleToggleSetPassword = () => {
-    setShowSetPassword(!showSetPassword);
   };
 
   const handleSetPassword = async () => {
@@ -59,7 +54,6 @@ const StaffProfile = () => {
       <p>Username: {staff.StaffUsername}</p>
       <p>Email: {staff.StaffEmail}</p>
       <p>Phone: {staff.StaffPhone}</p>
-      <p>Ticket Category: {staff.TicketCategory}</p>
       <p>Supervisor Details</p>
       <p>Supervisor Name: {staff.SupervisorDetails.SupervisorUsername}</p>
       <p>Supervisor Email: {staff.SupervisorDetails.SupervisorEmail}</p>
@@ -68,16 +62,11 @@ const StaffProfile = () => {
       <Link to={`/`}><button>Logout</button></Link>
 
       <div>
-        <button onClick={handleToggleSetPassword}>Change Password</button>
-        {showSetPassword && (
-          <div>
             <h4>Set New Password</h4>
             <input type="password" placeholder="New Password" value={newPassword} onChange={handleNewPasswordChange} />
             <input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={handleConfirmPasswordChange} />
             {formError && <p className="set-password-error">{formError}</p>}
             <button onClick={handleSetPassword}>Set Password</button>
-          </div>
-        )}
       </div>
     </div>
   );

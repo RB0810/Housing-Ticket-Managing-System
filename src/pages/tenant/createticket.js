@@ -104,6 +104,10 @@ const CreateTicket = () => {
             <option value="Toilet">Toilet</option>
             <option value="Plumbing">Plumbing</option>
             <option value="Pest">Pest</option>
+            <option value="Electric">Electric</option>
+            <option value="Aircon">Aircon</option>
+            <option value="Cleaning">Cleaning</option>
+            <option value="Others">Others</option>
           </select>
         </div>
 
