@@ -25,7 +25,13 @@ const BuildingDetailsPage = () => {
 
   return (
     <div>
-      {buildingDetails && <BuildingDetails building={buildingDetails} />}
+      {buildingDetails && (
+        <>
+          <h2>{buildingDetails.Building.BuildingName}</h2>
+          <h2>{buildingDetails.Building.Address}, {buildingDetails.Building.PostalCode}</h2>
+          <BuildingDetails building={buildingDetails} />
+        </>
+      )}
     </div>
   );
 };

@@ -44,6 +44,7 @@ export default class TicketManager {
           SupervisorID: ticket.supervisorID,
           StaffID: ticket.staffID,
           Status: ticket.status,
+          Property: ticket.property,
           QuotationRequired: ticket.quotationRequired,
           QuotationAmount: ticket.quotationAmount,
           QuotationAcceptedByTenant: ticket.quotationAccepted,

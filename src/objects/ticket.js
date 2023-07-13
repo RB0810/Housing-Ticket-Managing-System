@@ -17,6 +17,7 @@ export default class Ticket {
     submitteddatetime,
     category,
     description,
+    property,
     PARCstatus = "PENDING",
     status = "Awaiting Review"
   ) {
@@ -32,6 +33,7 @@ export default class Ticket {
     this.PARCstatus = PARCstatus;
     this.supervisorID = null;
     this.status = status;
+    this.property = property;
 
     // Other attributes to be filled in later
     this.staffID = null;

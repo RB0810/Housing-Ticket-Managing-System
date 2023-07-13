@@ -65,6 +65,7 @@ export default function TenantPortal() {
               <TicketCard
                 key={ticket.ServiceRequestID}
                 ticket={ticket}
+                user={TenantID}
                 userRole={"tenant"}
               />
             ))}
