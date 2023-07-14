@@ -69,16 +69,38 @@ export default class TicketManager {
   /**
    * Updates Ticket entry in Supabase based on Ticket object's ID attribute
    * @TicketID {int} - Ticket ID to update
-   * @ColumnName {string} - Column name to update
    * @Value {string} - Value to update
    *
    * @returns True if successful, False if unsuccessful
    */
 
-  async updateTicket(ticketId, column_name, value) {
+  async updateFeedbackRating(ticketId, value) {
     const { data, error } = await supabase
       .from("Service Request")
-      .update({ column_name: value })
+      .update({ FeedbackRating: value })
+      .eq("ServiceRequestID", ticketId)
+      .select();
+
+    if (error) {
+      console.error("Error updating ticket:", error);
+      return false;
+    } else {
+      console.log("Ticket updated successfully:", data);
+      return true;
+    }
+  }
+
+  /**
+   * Updates Ticket entry in Supabase based on Ticket object's ID attribute
+   * @TicketID {int} - Ticket ID to update
+   * @Comments {string} - Value to update
+   *
+   * @returns True if successful, False if unsuccessful
+   */
+  async updateFeedbackComments(ticketId, comments) {
+    const { data, error } = await supabase
+      .from("Service Request")
+      .update({ FeedbackComments: comments })
       .eq("ServiceRequestID", ticketId)
       .select();
 
@@ -97,7 +119,6 @@ export default class TicketManager {
    *
    * @returns JSON of ticket, else return false if error
    */
-
   async getTicket(ticketId) {
     const { data, error } = await supabase
       .from("Service Request")
@@ -410,5 +431,37 @@ export default class TicketManager {
     }
 
     return data[0].StaffID == null;
+  }
+
+  async closeTicket(ticketId) {
+    const { data, error } = await supabase
+      .from("Service Request")
+      .update({ PARCStatus: "CLOSED" })
+      .eq("ServiceRequestID", ticketId)
+      .select();
+
+    if (error) {
+      console.error("Error closing ticket:", error);
+      return false;
+    } else {
+      console.log("Ticket closed successfully:", data);
+      return true;
+    }
+  }
+
+  async rejectTicket(ticketId) {
+    const { data, error } = await supabase
+      .from("Service Request")
+      .update({ Status: "Works Rejected" })
+      .eq("ServiceRequestID", ticketId)
+      .select();
+
+    if (error) {
+      console.error("Error rejecting ticket:", error);
+      return false;
+    } else {
+      console.log("Ticket rejected successfully:", data);
+      return true;
+    }
   }
 }

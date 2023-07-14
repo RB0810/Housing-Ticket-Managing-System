@@ -42,6 +42,7 @@ const ViewTicketStaff = () => {
             <TicketDetails
               key={serviceTicket.ServiceRequestID}
               ticket={serviceTicket}
+              portal="staff"
             />
           )}
         </div>

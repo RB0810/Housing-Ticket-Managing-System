@@ -42,6 +42,8 @@ const ViewTicketSupervisor = () => {
             <TicketDetails
               key={serviceTicket.ServiceRequestID}
               ticket={serviceTicket}
+              portal="supervisor"
+              status={serviceTicket.Status}
             />
           )}
         </div>

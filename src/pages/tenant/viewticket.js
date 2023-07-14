@@ -1,25 +1,32 @@
 import { useState, useEffect } from "react";
 import TicketManager from "../../managers/ticketmanager";
+import AccountManager from "../../managers/accountmanager";
 import TicketDetails from "../../components/TicketDetails";
 import { useParams } from "react-router-dom";
-import FeedbackComponent from "../../components/FeedbackComponent";
 
 const ViewTicketTenant = () => {
   const ticketManager = new TicketManager();
+  const accountManager = new AccountManager();
   let { ServiceRequestID } = useParams();
   const [serviceTicket, setServiceTicket] = useState([]);
+  const [staff, setStaff] = useState([]);
   const [fetchError, setFetchError] = useState([]);
 
   useEffect(() => {
-    const getTicket = async () => {
-      let data = await ticketManager.getTicket(parseInt(ServiceRequestID));
-      console.log("Ticket gote!");
+    const getStaffAndTicket = async () => {
+      let ticketData = await ticketManager.getTicket(
+        parseInt(ServiceRequestID)
+      );
 
-      if (data != false) {
-        setServiceTicket(data[0]);
+      let staffData = await accountManager.getAssignedStaffDetails(
+        ticketData[0].StaffID
+      );
+
+      if (ticketData !== false) {
+        setServiceTicket(ticketData[0]);
+        setStaff(staffData);
         setFetchError(null);
-      } else if (data.length == 0) {
-        console.log(data);
+      } else if (ticketData.length === 0) {
         setFetchError("This ticket is EMPTY!");
         setServiceTicket();
       } else {
@@ -28,7 +35,7 @@ const ViewTicketTenant = () => {
       }
     };
 
-    getTicket();
+    getStaffAndTicket();
   }, []);
 
   return (
@@ -41,6 +48,9 @@ const ViewTicketTenant = () => {
             <TicketDetails
               key={serviceTicket.ServiceRequestID}
               ticket={serviceTicket}
+              staff={staff}
+              portal="tenant"
+              status={serviceTicket.Status}
             />
           )}
         </div>
@@ -50,28 +60,3 @@ const ViewTicketTenant = () => {
 };
 
 export default ViewTicketTenant;
-//import React, { useState, useEffect } from 'react';
-//import "./../../../src/styles/viewticket.css";
-//import BasicTabs from '../../components/TicketTabs';
-//
-//class viewticket extends React.Component{
-//
-//    constructor(props){
-//        super(props);
-//        this.state = {
-//        }
-//      }
-//
-//    render(){
-//        return(
-//            <div>
-//                <div className='viewtixh1'>
-//                     <h1>View Tickets</h1>
-//                 </div>
-//                 <div className='Tabs'>
-//                   <BasicTabs/>
-//                 </div>
-//             </div>
-//         )
-//     }
-// }

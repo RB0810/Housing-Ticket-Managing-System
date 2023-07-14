@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import FeedbackCard from "./FeedbackCard";
+import RejectCard from "./RejectCard";
 import { useNavigate } from "react-router-dom";
 
 const FeedbackComponent = (ticket) => {
@@ -23,9 +24,12 @@ const FeedbackComponent = (ticket) => {
       );
     }
 
-    if (feedbackType === "notSatisfied") {
-      let rejectURL = `/tenantportal/${ticket.ticket["TenantID"]}/pending`;
-      navigate(rejectURL);
+    if (feedbackType === "reject") {
+      return (
+        <div>
+          <RejectCard ticket={ticket} />
+        </div>
+      );
     }
 
     return (
@@ -33,7 +37,7 @@ const FeedbackComponent = (ticket) => {
         <button onClick={() => handleFeedbackClick("feedback")}>
           Give Feedback
         </button>
-        <button onClick={() => handleFeedbackClick("notSatisfied")}>
+        <button onClick={() => handleFeedbackClick("reject")}>
           Not Satisfied
         </button>
       </div>

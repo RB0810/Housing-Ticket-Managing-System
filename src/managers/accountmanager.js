@@ -1,7 +1,6 @@
 import supabase from "../config/supabaseClient";
 
 class AccountManager {
-
   async loginAuth(event) {
     const { data, error } = await supabase
       .from(`${event.Type}Users`)
@@ -15,7 +14,9 @@ class AccountManager {
     const user = data[0];
 
     if (user && user[`${event.Type}Password`] === event.password) {
-      const redirectUrl = `/${event.Type.toLowerCase()}portal/landingpage/${user[`${event.Type}ID`]}`;
+      const redirectUrl = `/${event.Type.toLowerCase()}portal/landingpage/${
+        user[`${event.Type}ID`]
+      }`;
       window.location.href = redirectUrl;
     } else {
       throw new Error("Invalid credentials");
@@ -27,50 +28,109 @@ class AccountManager {
       .from(`${Type}Users`)
       .update({ [`${Type}Password`]: password })
       .eq(`${Type}ID`, parseInt(ID));
-  
+
     if (error) {
       console.error("Failed to set password");
-    } else{
+    } else {
       console.log("Password set successfully!");
     }
   }
-  
-  async getSupervisorDetails(supervisorID){
-    const {data: supervisor} = await supabase.from("SupervisorUsers").select("*").eq("SupervisorID", parseInt(supervisorID));
-    const buildingID = supervisor[0].BuildingID;
-    const { data: Building } = await supabase.from("Buildings").select("*").eq("BuildingID",buildingID);
-    const supervisorDetails = {...supervisor[0], BuildingDetails: Building[0]}
-    return supervisorDetails;
 
+  async getSupervisorDetails(supervisorID) {
+    const { data: supervisor } = await supabase
+      .from("SupervisorUsers")
+      .select("*")
+      .eq("SupervisorID", parseInt(supervisorID));
+    const buildingID = supervisor[0].BuildingID;
+    const { data: Building } = await supabase
+      .from("Buildings")
+      .select("*")
+      .eq("BuildingID", buildingID);
+    const supervisorDetails = {
+      ...supervisor[0],
+      BuildingDetails: Building[0],
+    };
+    return supervisorDetails;
   }
 
-  async getStaffDetails(staffID){
-    const {data:staffData} = await supabase.from("StaffUsers").select("*").eq("StaffID", parseInt(staffID));
+  async getStaffDetails(staffID) {
+    const { data: staffData } = await supabase
+      .from("StaffUsers")
+      .select("*")
+      .eq("StaffID", parseInt(staffID));
     const buildingID = staffData[0].BuildingID;
-    const {data:buildingData} = await supabase.from("Buildings").select("*").eq("BuildingID",buildingID);
-    const {data:supervisorData} = await supabase.from("SupervisorUsers").select("*").eq("BuildingID",buildingID);
-    const staffDetails = {...staffData[0], BuildingDetails: buildingData[0], SupervisorDetails: supervisorData[0]};
+    const { data: buildingData } = await supabase
+      .from("Buildings")
+      .select("*")
+      .eq("BuildingID", buildingID);
+    const { data: supervisorData } = await supabase
+      .from("SupervisorUsers")
+      .select("*")
+      .eq("BuildingID", buildingID);
+    const staffDetails = {
+      ...staffData[0],
+      BuildingDetails: buildingData[0],
+      SupervisorDetails: supervisorData[0],
+    };
     return staffDetails;
   }
 
-  async getTenantDetails(tenantID){
-    const { data: tenantData } = await supabase.from("TenantUsers").select("*").eq("TenantID", parseInt(tenantID));
+  async getAssignedStaffDetails(staffID) {
+    if (staffID == null) {
+      return false;
+    }
+    const { data: staffData } = await supabase
+      .from("StaffUsers")
+      .select("*")
+      .eq("StaffID", parseInt(staffID));
+    return staffData[0];
+  }
+
+  async getTenantDetails(tenantID) {
+    const { data: tenantData } = await supabase
+      .from("TenantUsers")
+      .select("*")
+      .eq("TenantID", parseInt(tenantID));
     const leaseID = tenantData[0].Lease;
     const supervisorID = tenantData[0].UnderSupervisor;
-    const {data: supervisor} = await supabase.from("SupervisorUsers").select("*").eq("SupervisorID", supervisorID);
-    const { data: leaseData } = await supabase.from("Lease").select("*").eq("LeaseID", leaseID);
-    const { data: unitData } = await supabase.from("Unit").select("*").eq("LeaseID", leaseID);
+    const { data: supervisor } = await supabase
+      .from("SupervisorUsers")
+      .select("*")
+      .eq("SupervisorID", supervisorID);
+    const { data: leaseData } = await supabase
+      .from("Lease")
+      .select("*")
+      .eq("LeaseID", leaseID);
+    const { data: unitData } = await supabase
+      .from("Unit")
+      .select("*")
+      .eq("LeaseID", leaseID);
     const buildingID = unitData[0].BuildingID;
-    const { data: Building } = await supabase.from("Buildings").select("*").eq("BuildingID",buildingID);
-    const tenantDetails = {...tenantData[0], LeaseDetails: leaseData[0], Units: unitData, BuildingDetails: Building[0], SupervisorDetails: supervisor[0]};
+    const { data: Building } = await supabase
+      .from("Buildings")
+      .select("*")
+      .eq("BuildingID", buildingID);
+    const tenantDetails = {
+      ...tenantData[0],
+      LeaseDetails: leaseData[0],
+      Units: unitData,
+      BuildingDetails: Building[0],
+      SupervisorDetails: supervisor[0],
+    };
 
     return tenantDetails;
   }
 
-  async getUnits(tenantID){
-    const { data: tenantData } = await supabase.from("TenantUsers").select("*").eq("TenantID", parseInt(tenantID));
+  async getUnits(tenantID) {
+    const { data: tenantData } = await supabase
+      .from("TenantUsers")
+      .select("*")
+      .eq("TenantID", parseInt(tenantID));
     const leaseID = tenantData[0].Lease;
-    const { data: unitData } = await supabase.from("Unit").select("UnitNumber").eq("LeaseID", leaseID);
+    const { data: unitData } = await supabase
+      .from("Unit")
+      .select("UnitNumber")
+      .eq("LeaseID", leaseID);
     console.log(unitData);
     return unitData;
   }
@@ -89,31 +149,49 @@ class AccountManager {
   }
 
   async getBuildingsandSupervisors() {
-    const { data: buildings } = await supabase.from('Buildings').select('*');
-  
+    const { data: buildings } = await supabase.from("Buildings").select("*");
+
     const buildingsWithSupervisor = await Promise.all(
       buildings.map(async (building) => {
         const { data: supervisor } = await supabase
-          .from('SupervisorUsers')
-          .select('*')
-          .eq('BuildingID', parseInt(building.BuildingID));
-  
+          .from("SupervisorUsers")
+          .select("*")
+          .eq("BuildingID", parseInt(building.BuildingID));
+
         return { ...building, supervisor: supervisor[0] || null };
       })
     );
-  
+
     return buildingsWithSupervisor;
   }
 
   async getBuildingDetails(buildingId) {
-    const {data : buildingData} = await supabase.from("Buildings").select("*").eq("BuildingID", parseInt(buildingId));
-    const { data: supervisor } = await supabase.from("SupervisorUsers").select("SupervisorID").eq("BuildingID", parseInt(buildingId));
-    const { data: staffData } = await supabase.from("StaffUsers").select("*").eq("BuildingID", parseInt(buildingId)); 
-    const { data: tenantData } = await supabase.from("TenantUsers").select("*").eq("UnderSupervisor", parseInt(supervisor[0].SupervisorID));
+    const { data: buildingData } = await supabase
+      .from("Buildings")
+      .select("*")
+      .eq("BuildingID", parseInt(buildingId));
+    const { data: supervisor } = await supabase
+      .from("SupervisorUsers")
+      .select("SupervisorID")
+      .eq("BuildingID", parseInt(buildingId));
+    const { data: staffData } = await supabase
+      .from("StaffUsers")
+      .select("*")
+      .eq("BuildingID", parseInt(buildingId));
+    const { data: tenantData } = await supabase
+      .from("TenantUsers")
+      .select("*")
+      .eq("UnderSupervisor", parseInt(supervisor[0].SupervisorID));
     const leaseIds = tenantData.map((tenant) => tenant.Lease);
-    const { data: leaseData } = await supabase.from("Lease").select("*").in("LeaseID", leaseIds);
-    const unitDataPromises = leaseData.map((lease) => 
-        supabase.from("Unit").select("UnitNumber").eq("LeaseID", lease.LeaseID)
+    const { data: leaseData } = await supabase
+      .from("Lease")
+      .select("*")
+      .in("LeaseID", leaseIds);
+    const unitDataPromises = leaseData.map((lease) =>
+      supabase
+        .from("Unit")
+        .select("UnitNumber")
+        .eq("LeaseID", lease.LeaseID)
         .then((response) => response.data)
     );
     const unitData = await Promise.all(unitDataPromises);
@@ -126,11 +204,9 @@ class AccountManager {
         Units: unitData[index],
       })),
     };
-  
+
     return buildingDetails;
   }
-  
-  
 
   async createStaffAccount(staff) {
     await supabase.from("StaffUsers").insert(staff);
