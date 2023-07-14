@@ -1,5 +1,5 @@
 import supabase from "../config/supabaseClient";
-import Notification from "./Notification";
+import Notification from "../public/Notification";
 
 class NotificationManager {
   constructor() {
@@ -44,41 +44,42 @@ class NotificationManager {
   async initializeListeners() {
     // Notify tenant when quotation is added
     const { data: tenants, error: tenantError } = await this.supabase
-      .from('Tenants')
-      .select('email');
+      .from('TenantUsers')
+      .select('TenantEmail');
 
     if (tenantError) {
       console.log('Error fetching tenant emails:', tenantError);
     } else {
       tenants.forEach(({ email }) => {
-        this.startListening('Tickets', email, {
+        this.startListening('Service Requests', email, {
           to: email,
           subject: 'Quotation Added',
-          validate: (record) => record.quotation_added === true
+          validate: (record) => record.QuotationNeeded === Yes
         });
       });
     }
 
     // Notify supervisor when ticket has been deleted
     const { data: supervisors, error: supervisorError } = await this.supabase
-      .from('Supervisors')
-      .select('email');
+      .from('SupervisorUsers')
+      .select('SupervisorEmail');
 
     if (supervisorError) {
       console.log('Error fetching supervisor emails:', supervisorError);
     } else {
       supervisors.forEach(({ email }) => {
-        this.startListening('Tickets', email, {
+        this.startListening('Service Requests', email, {
           to: email,
           subject: 'Ticket Deleted',
-          validate: (record) => record.is_deleted === true
+          //validate whether the record is not in the Service Requests table
+          validate: (record) => (record, event) => event === 'DELETE' && payload.old === null,
         });
       });
     }
 
     // Notify tenant that ticket has been rejected
     tenants.forEach(({ email }) => {
-      this.startListening('Tickets', email, {
+      this.startListening('Service Requests', email, {
         to: email,
         subject: 'Ticket Rejected',
         validate: (record) => record.status === 'rejected'
@@ -90,7 +91,7 @@ class NotificationManager {
       this.startListening('Tickets', email, {
         to: email,
         subject: 'Ticket Status Update',
-        validate: (record) => record.status !== 'pending'
+        validate: (record) => record.PARCstatus !== 'PENDING'
       });
     });
 
@@ -99,42 +100,42 @@ class NotificationManager {
       this.startListening('Tickets', email, {
         to: email,
         subject: 'New Ticket Created',
-        validate: (record) => record.status === 'pending'
+        validate: (record) => record.PARCstatus === 'PENDING'
       });
     });
 
     // Notify staff that ticket has been assigned
     const { data: staff, error: staffError } = await this.supabase
-      .from('Staff')
-      .select('email');
+      .from('StaffUsers')
+      .select('StaffEmail, StaffID');
 
     if (staffError) {
       console.log('Error fetching staff emails:', staffError);
     } else {
-      staff.forEach(({ email }) => {
-        this.startListening('Tickets', email, {
+      staff.forEach(({ email, id }) => {
+        this.startListening('Service Requests', email, {
           to: email,
           subject: 'Ticket Assigned',
-          validate: (record) => record.assigned_to === email
+          validate: (record) => record.StaffID === id
         });
       });
     }
 
     // Notify supervisor that quotation has been approved
     supervisors.forEach(({ email }) => {
-      this.startListening('Tickets', email, {
+      this.startListening('Service Requests', email, {
         to: email,
         subject: 'Quotation Approved',
-        validate: (record) => record.quotation_approved === true
+        validate: (record) => record.QuotationAcceptedByTenant === true
       });
     });
 
     // Notify supervisor that tenant has submitted a feedback survey
     supervisors.forEach(({ email }) => {
-      this.startListening('FeedbackSurveys', email, {
+      this.startListening('Service Requests', email, {
         to: email,
         subject: 'Feedback Survey Submitted',
-        validate: (record) => record.submitted_by === 'tenant@example.com'
+        validate: (record) => record.FeedbackRating !== null,
       });
     });
   }
