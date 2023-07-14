@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 body {
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
@@ -99,4 +100,105 @@ body {
 .tenant-portal-header p {
     padding : 10px;
     font-weight: bold;
+=======
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #e3e3e2;
+    align-items: center;
+}
+
+.container {
+    margin: 1rem;
+    text-align: center;
+}
+
+.nav {
+    background-color: whitesmoke;
+    color: black;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 2rem;
+    padding: 2rem;
+}
+
+.site-title { 
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.nav ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+}
+
+
+.nav a {
+    color: inherit;
+    text-decoration: none;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0rem 2rem;
+    font-size: 1.5rem;
+    position: relative;
+
+
+}
+
+.nav a::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    border-radius: 4px;
+    background-color: black;
+    bottom: 0;
+    left: 0;
+    transform-origin: right;
+    transform: scaleX(0);
+    transition: transform .3s ease-in-out;
+  }
+
+.nav a:hover::before {
+    transform-origin: left;
+    transform: scaleX(1);
+  }
+
+.nav li.active {
+    font-weight: bold;
+  }
+
+.nav img {
+    height: 75px;
+}
+
+
+/* All Portals */
+.ticket-card {
+    display: flex;
+}
+
+.ticket-card h3 {
+    padding: 10px;
+}
+
+.ticket-card p {
+    padding: 10px;
+}
+
+/* Tenant Portal */
+.tenant-portal-header {
+    display: flex;
+}
+
+.tenant-portal-header p {
+    padding : 10px;
+    font-weight: bold;
+>>>>>>> a68d74b2e817c7184e70c9d65d952e983e357804
 }

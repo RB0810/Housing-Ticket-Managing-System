@@ -2,9 +2,8 @@ import { useState, useEffect } from "react";
 import TicketManager from "../../managers/ticketmanager";
 import TicketDetails from "../../components/TicketDetails";
 import { useParams } from "react-router-dom";
-import FeedbackComponent from "../../components/FeedbackComponent";
 
-const ViewTicketTenant = () => {
+const ViewTicketStaff = () => {
   const ticketManager = new TicketManager();
   let { ServiceRequestID } = useParams();
   const [serviceTicket, setServiceTicket] = useState([]);
@@ -12,6 +11,8 @@ const ViewTicketTenant = () => {
 
   useEffect(() => {
     const getTicket = async () => {
+      let new_data = await ticketManager.getTicketsByPARCStatusForTenantID();
+
       let data = await ticketManager.getTicket(parseInt(ServiceRequestID));
       console.log("Ticket gote!");
 
@@ -33,7 +34,7 @@ const ViewTicketTenant = () => {
 
   return (
     <div className="page tenantportal">
-      <p>Tenant</p>
+      <p>Staff</p>
       {fetchError && <p>{fetchError}</p>}
       <div className="service-tickets">
         <div className="service-ticket-row">
@@ -49,7 +50,7 @@ const ViewTicketTenant = () => {
   );
 };
 
-export default ViewTicketTenant;
+export default ViewTicketStaff;
 //import React, { useState, useEffect } from 'react';
 //import "./../../../src/styles/viewticket.css";
 //import BasicTabs from '../../components/TicketTabs';
