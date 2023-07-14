@@ -247,6 +247,23 @@ class AccountManager {
       await supabase.from("Unit").insert(unitInsert);
     }
   }
+
+  async getAllStaffForSupervisorID(supervisorID) {
+    // Get building ID of supervisor
+    const { data: buildingID } = await supabase
+      .from("SupervisorUsers")
+      .select("BuildingID")
+      .eq("SupervisorID", parseInt(supervisorID));
+
+    // Get all staff
+    const { data: staffData } = await supabase
+      .from("StaffUsers")
+      .select("*")
+      .eq("BuildingID", buildingID[0].BuildingID);
+
+    console.log(staffData);
+    return staffData;
+  }
 }
 
 export default AccountManager;

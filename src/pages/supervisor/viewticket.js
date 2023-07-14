@@ -1,26 +1,39 @@
 import { useState, useEffect } from "react";
 import TicketManager from "../../managers/ticketmanager";
-import TicketDetails from "../../components/TenantTicketDetails";
+import AccountManager from "../../managers/accountmanager";
+import SupervisorTicketDetails from "../../components/SupervisorTicketDetails";
 import { useParams } from "react-router-dom";
+import { Accordion } from "@mui/material";
 
 const ViewTicketSupervisor = () => {
+  const accountManager = new AccountManager();
   const ticketManager = new TicketManager();
   let { ServiceRequestID } = useParams();
   const [serviceTicket, setServiceTicket] = useState([]);
+  const [tenant, setTenant] = useState([]);
+  const [staff, setStaff] = useState([]);
   const [fetchError, setFetchError] = useState([]);
 
   useEffect(() => {
-    const getTicket = async () => {
-      let new_data = await ticketManager.getTicketsByPARCStatusForTenantID();
+    const getStaffAndTenantAndTicket = async () => {
+      let ticketData = await ticketManager.getTicket(
+        parseInt(ServiceRequestID)
+      );
 
-      let data = await ticketManager.getTicket(parseInt(ServiceRequestID));
-      console.log("Ticket gote!");
+      let tenantData = await accountManager.getSubmittedByTenantDetails(
+        ticketData[0].TenantID
+      );
 
-      if (data != false) {
-        setServiceTicket(data[0]);
+      let staffData = await accountManager.getAssignedStaffDetails(
+        ticketData[0].StaffID
+      );
+
+      if (ticketData !== false) {
+        setServiceTicket(ticketData[0]);
+        setTenant(tenantData);
+        setStaff(staffData);
         setFetchError(null);
-      } else if (data.length == 0) {
-        console.log(data);
+      } else if (ticketData.length === 0) {
         setFetchError("This ticket is EMPTY!");
         setServiceTicket();
       } else {
@@ -29,7 +42,7 @@ const ViewTicketSupervisor = () => {
       }
     };
 
-    getTicket();
+    getStaffAndTenantAndTicket();
   }, []);
 
   return (
@@ -39,10 +52,12 @@ const ViewTicketSupervisor = () => {
       <div className="service-tickets">
         <div className="service-ticket-row">
           {serviceTicket && (
-            <TicketDetails
+            <SupervisorTicketDetails
               key={serviceTicket.ServiceRequestID}
               ticket={serviceTicket}
               portal="supervisor"
+              tenant={tenant}
+              staff={staff}
               status={serviceTicket.Status}
             />
           )}

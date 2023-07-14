@@ -8,7 +8,7 @@ const AssignedToCard = ({ staff }) => {
       </div>
     );
   } catch (error) {
-    return <div>NO STAFF</div>;
+    return <div>STAFF ERROR</div>;
   }
 };
 

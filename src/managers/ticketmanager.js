@@ -66,9 +66,10 @@ export default class TicketManager {
     }
   }
 
+  // FEEDBACK
   /**
    * Updates Ticket entry in Supabase based on Ticket object's ID attribute
-   * @TicketID {int} - Ticket ID to update
+   * @TicketID {int} - Ticket ID to update feedback rating of
    * @Value {string} - Value to update
    *
    * @returns True if successful, False if unsuccessful
@@ -414,7 +415,7 @@ export default class TicketManager {
 
   // ASSIGN
   /**
-   * @TicketID {int} - PARCStatus to get tickets of
+   * @TicketID {int} - Ticket ID
    *
    * @returns True if assigned already, else False, null if error
    */
@@ -435,6 +436,27 @@ export default class TicketManager {
     }
 
     return data[0].StaffID == null;
+  }
+
+  /**
+   * @TicketID {int} - Ticket ID
+   *
+   * @returns True if assigned already, else False, null if error
+   */
+  async assignTicket(ticketId, staffId) {
+    const { data, error } = await supabase
+      .from("Service Request")
+      .update({ StaffID: staffId })
+      .eq("ServiceRequestID", ticketId)
+      .select();
+
+    if (error) {
+      console.error("Error assigning ticket:", error);
+      return false;
+    } else {
+      console.log("Ticket assigned successfully:", data);
+      return true;
+    }
   }
 
   async closeTicket(ticketId) {
