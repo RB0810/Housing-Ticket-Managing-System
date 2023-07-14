@@ -490,4 +490,36 @@ export default class TicketManager {
       return true;
     }
   }
+
+  async updateTicketStatus(ticketId, status) {
+    const { data, error } = await supabase
+      .from("Service Request")
+      .update({ Status: status })
+      .eq("ServiceRequestID", parseInt(ticketId))
+      .select();
+
+    if (error) {
+      console.error("Error updating ticket status:", error);
+      return false;
+    } else {
+      console.log("Ticket status updated successfully:", data);
+      return true;
+    }
+  }
+
+  async updateTicket(ticketId, column_name, value) {
+    const { data, error } = await supabase
+      .from("Service Request")
+      .update({ [column_name]: value })
+      .eq("ServiceRequestID", parseInt(ticketId))
+      .select();
+
+    if (error) {
+      console.error("Error updating ticket:", error);
+      return false;
+    } else {
+      console.log("Ticket updated successfully:", data);
+      return true;
+    }
+  }
 }

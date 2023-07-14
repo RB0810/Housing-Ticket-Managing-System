@@ -7,6 +7,7 @@ export default function TicketAssigner({ ticket }) {
   const accountManager = new AccountManager();
   const [staffMembers, setStaffMembers] = useState([]);
   const [selectedStaff, setSelectedStaff] = useState("");
+  const [assignStatus, setAssignStatus] = useState("");
 
   useEffect(() => {
     // Fetch the staff members for the supervisor from your TicketManager
@@ -28,10 +29,18 @@ export default function TicketAssigner({ ticket }) {
   const handleAssign = async () => {
     try {
       await ticketManager.assignTicket(ticket.ServiceRequestID, selectedStaff);
+      await ticketManager.updateTicket(
+        ticket.ServiceRequestID,
+        "Status",
+        "Ticket Assigned"
+      );
+      setAssignStatus("Assigning succeeded");
 
       // Perform any additional actions or display a success message
     } catch (error) {
       // Handle errors appropriately
+      console.log(error);
+      setAssignStatus("Assigning failed");
     }
   };
 
@@ -51,6 +60,8 @@ export default function TicketAssigner({ ticket }) {
           ))}
         </select>
       </label>
+
+      {assignStatus && <p>{assignStatus}</p>}
 
       <button onClick={handleAssign}>Assign</button>
     </div>
