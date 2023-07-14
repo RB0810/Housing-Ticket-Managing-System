@@ -257,22 +257,6 @@ export default class TicketManager {
    * @returns List od dictionaries if successful, else returns false
    */
 
-  async getTicketsByStatus(status) {
-    let { data, error } = await supabase
-      .from("Service Request")
-      .select("*")
-      .eq("Status", status);
-
-    if (error) {
-      console.error("Error getting all tickets by status:", error);
-      return false;
-    } else {
-      console.log(`"Tickets of Status :${status} fetched successfully:"`, data);
-    }
-
-    return data;
-  }
-
   /**
    * @PARCStatus {string} - PARCStatus to get tickets of
    *

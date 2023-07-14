@@ -27,6 +27,20 @@ export default function QuotationSection({ ticket }) {
         quotationRequired
       );
 
+      if (quotationRequired === "YES") {
+        await ticketManager.updateTicket(
+          ticket.ServiceRequestID,
+          "Status",
+          "Quotation Uploaded"
+        );
+      } else {
+        await ticketManager.updateTicket(
+          ticket.ServiceRequestID,
+          "Status",
+          "Works Started"
+        );
+      }
+
       // Perform any additional actions or display a success message
       setUpdateStatus("Update successful");
     } catch (error) {
