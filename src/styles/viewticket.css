@@ -112,7 +112,8 @@ h3{
 
 .ticket-creation-form{
     align-items: center;
-    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
 }
 
 .ticket-creation-title{

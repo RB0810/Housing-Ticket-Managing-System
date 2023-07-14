@@ -44,67 +44,114 @@ const CreateStaffAcc = () => {
   return (
     <div className="ticket-creation-page">
       <h1 className="wlcText">Create Staff Account</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="username">Staff Username</label>
-          <input
+      <form onSubmit={handleSubmit} className="create-staff-acc-form">
+        <div className="create-staff-acc-row">
+          <div className="create-staff-acc-col25">
+            <label 
+            htmlFor="username"
+            className="create-staff-acc-label"
+            >Staff Username</label>
+          </div>
+          
+          <div className="create-staff-acc-col75">
+            <input
             type="text"
             id="username"
-            className="form-control"
+            className="create-staff-acc-input-text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
+          </div>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="email">Staff Email</label>
-          <input
-            type="email"
-            id="email"
-            className="form-control"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+        <div className="create-staff-acc-row">
+          <div className="create-staff-acc-col25">
+            <label 
+            htmlFor="email"
+            className="create-staff-acc-label"
+            >Staff Email</label>
+          </div>
+          
+          <div className="create-staff-acc-col75">
+            <input
+              type="email"
+              id="email"
+              className="create-staff-acc-input-text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="password">Enter Password</label>
-          <input
+        <div className="create-staff-acc-row">
+          <div className="create-staff-acc-col25">
+            <label 
+            htmlFor="password"
+            className="create-staff-acc-label"
+            >Enter Password</label>
+          </div>
+          
+          <div className="create-staff-acc-col75">
+            <input
             type="password"
             id="password"
-            className="form-control"
+            className="create-staff-acc-input-text"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          </div>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="rePassword">Re-enter Password</label>
-          <input
+        <div className="create-staff-acc-row">
+          <div className="create-staff-acc-col25">
+            <label 
+            htmlFor="rePassword"
+            className="create-staff-acc-label"
+            >Re-enter Password</label>
+          </div>
+          
+          <div className="create-staff-acc-col75">
+            <input
             type="password"
             id="rePassword"
-            className="form-control"
+            className="create-staff-acc-input-text"
             value={rePassword}
             onChange={(e) => setRePassword(e.target.value)}
           />
+          </div>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="phone">Staff Phone</label>
-          <input
+        <div className="create-staff-acc-row">
+          <div className="create-staff-acc-col25">
+            <label 
+            htmlFor="phone"
+            className="create-staff-acc-label"
+            >Staff Phone</label>
+          </div>
+          
+          <div className="create-staff-acc-col75">
+            <input
             type="tel"
             id="phone"
-            className="form-control"
+            className="create-staff-acc-input-text"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
           />
+          </div>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="buildingID">Building ID</label>
-          <select
+        <div className="create-staff-acc-row">
+          <div className="create-staff-acc-col25">
+            <label 
+            htmlFor="buildingID"
+            className="create-staff-acc-label"
+            >Building ID</label>
+          </div>
+          
+          <div className="create-staff-acc-col75">
+            <select
             id="buildingID"
-            className="form-control"
+            className="create-staff-acc-input-text"
             value={buildingID}
             onChange={(e) => setBuildingID(e.target.value)}
           >
@@ -115,9 +162,17 @@ const CreateStaffAcc = () => {
               </option>
             ))}
           </select>
+          </div>
         </div>
 
-        <button type="submit">Create Staff Account</button>
+        <div className="create-staff-acc-row">
+          <input
+            type="submit"
+            value="Create Staff Account"
+            className="create-staff-acc-input-submit"
+          />
+        </div>     
+        
 
         {formError && <p className="create-ticket-error">{formError}</p>}
       </form>
