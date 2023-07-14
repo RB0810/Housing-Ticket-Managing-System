@@ -4,6 +4,7 @@ import { Rating } from "@mui/material";
 import { Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import TicketManager from "../managers/ticketmanager";
+import Ticket from "../objects/ticket";
 
 const FeedbackCard = (ticket) => {
   let ticketManager = new TicketManager();
@@ -18,16 +19,25 @@ const FeedbackCard = (ticket) => {
     try {
       // Update in Database
       await ticketManager.updateFeedbackRating(
-        parseInt(ticket.ticket.ServiceRequestID),
+        parseInt(ServiceRequestID),
         rating
       );
       await ticketManager.updateFeedbackComments(
-        parseInt(ticket.ticket.ServiceRequestID),
+        parseInt(ServiceRequestID),
         comments
       );
 
       // Close ticket
-      await ticketManager.closeTicket(parseInt(ServiceRequestID));
+      await ticketManager.updateTicket(
+        ServiceRequestID,
+        "PARCStatus",
+        "CLOSED"
+      );
+      await ticketManager.updateTicket(
+        ServiceRequestID,
+        "Status",
+        "Feedback Submitted"
+      );
 
       console.log("Feedback submitted!");
       navigate(`/tenantportal/tickets/${TenantID}/pending`);

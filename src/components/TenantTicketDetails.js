@@ -79,6 +79,17 @@ const TenantTicketDetails = ({ ticket, staff, portal, status }) => {
       </div>
     );
   }
+
+  if (portal === "tenant" && status === "Feedback Submitted") {
+    return (
+      <div>
+        <BasicTicketDetails ticket={ticket} />
+
+        <h1>Feedback Given: {ticket.FeedbackComments}</h1>
+        <AssignedToCard staff={staff} />
+      </div>
+    );
+  }
 };
 
 export default TenantTicketDetails;

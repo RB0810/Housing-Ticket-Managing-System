@@ -40,6 +40,11 @@ export default function QuotationSection({ ticket }) {
           "Works Started"
         );
       }
+      await ticketManager.updateTicket(
+        ticket.ServiceRequestID,
+        "PARCStatus",
+        "ACTIVE"
+      );
 
       // Perform any additional actions or display a success message
       setUpdateStatus("Update successful");
