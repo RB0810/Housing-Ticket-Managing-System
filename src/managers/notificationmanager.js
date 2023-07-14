@@ -1,5 +1,5 @@
 import supabase from "../config/supabaseClient";
-import Notification from "../Notification";
+import Notification from "./Notification";
 
 class NotificationManager {
   constructor() {
@@ -7,10 +7,10 @@ class NotificationManager {
     this.notification = new Notification();
   }
 
-  startListening(tableName, emailParameters) {
+  startListening(tableName, email, emailParameters) {
     // Set up the database listener for INSERT, UPDATE, and DELETE events
-    this.tableName
-      .from(this.ServiceRequest)
+    this.supabase
+      .from(tableName)
       .on('INSERT', payload => {
         const newRecord = payload.new;
         const emailContent = this.generateEmailContent('New Record Added', newRecord, emailParameters);
@@ -18,7 +18,7 @@ class NotificationManager {
       })
       .on('UPDATE', payload => {
         const updatedRecord = payload.new;
-        const emailContent = this.generateEmailContent('New Record Updated', updatedRecord, emailParameters);
+        const emailContent = this.generateEmailContent('Record Updated', updatedRecord, emailParameters);
         this.notification.sendMail(emailContent);
       })
       .on('DELETE', payload => {
@@ -34,7 +34,6 @@ class NotificationManager {
     const subject = emailParameters.subject || `${action}: ${record.id}`;
     const text = emailParameters.text || `Record ID ${record.id} has been ${action.toLowerCase()}.`;
 
-
     return {
       to,
       subject,
@@ -43,89 +42,102 @@ class NotificationManager {
   }
 
   async initializeListeners() {
-    // Fetch staff user emails from the 'StaffUsers' table
-    const { data: staff, error } = await this.supabase
-      .from('StaffUsers')
-      .select('StaffEmail');
+    // Notify tenant when quotation is added
+    const { data: tenants, error: tenantError } = await this.supabase
+      .from('Tenants')
+      .select('email');
 
-    if (error) {
-      console.log('Error fetching user emails:', error);
-      return;
-    }
-
-    staff.forEach(({ email }) => {
-      const tables = [
-        { tableName: 'Service Requests', emailParameters: { to: email, subject: 'Ticket Update' } },
-        // Add more tables and their corresponding email parameters as needed
-      ];
-
-      tables.forEach(({ tableName, emailParameters }) => {
-        this.startListening(tableName, email, emailParameters);
-      });
-    });
-
-    //fetch supervisor user emails from the 'SupervisorUsers' table
-    const { data: supervisor, error: supervisorError } = await this.supabase
-    .from('SupervisorUsers')
-    .select('SupervisorEmail');
-    if (supervisorError) {
-      console.log('Error fetching user emails:', supervisorError);
-      return;
-    }
-
-    supervisor.forEach(({ email }) => {
-      const tables = [
-        { tableName: 'Service Requests', emailParameters: { to: email, subject: 'Ticket Update' } },
-        // Add more tables and their corresponding email parameters as needed
-      ];
-
-      tables.forEach(({ tableName, emailParameters }) => {
-        this.startListening(tableName, email, emailParameters);
-      });
-    });
-
-    //fetch tenant user emails from the TenantUsers table
-    const { data: tenant, error: tenantError } = await this.supabase
-    .from('TenantUsers')
-    .select('TenantEmail');
     if (tenantError) {
-      console.log('Error fetching user emails:', tenantError);
-      return;
-      }
+      console.log('Error fetching tenant emails:', tenantError);
+    } else {
+      tenants.forEach(({ email }) => {
+        this.startListening('Tickets', email, {
+          to: email,
+          subject: 'Quotation Added',
+          validate: (record) => record.quotation_added === true
+        });
+      });
+    }
 
-    tenant.forEach(({ email }) => {
-      const tables = [
-        { tableName: 'Service Requests', emailParameters: { to: email, subject: 'Ticket Update' } },
-        // Add more tables and their corresponding email parameters as needed
-      ];
+    // Notify supervisor when ticket has been deleted
+    const { data: supervisors, error: supervisorError } = await this.supabase
+      .from('Supervisors')
+      .select('email');
 
-      tables.forEach(({ tableName, emailParameters }) => {
-        this.startListening(tableName, email, emailParameters);
+    if (supervisorError) {
+      console.log('Error fetching supervisor emails:', supervisorError);
+    } else {
+      supervisors.forEach(({ email }) => {
+        this.startListening('Tickets', email, {
+          to: email,
+          subject: 'Ticket Deleted',
+          validate: (record) => record.is_deleted === true
+        });
+      });
+    }
+
+    // Notify tenant that ticket has been rejected
+    tenants.forEach(({ email }) => {
+      this.startListening('Tickets', email, {
+        to: email,
+        subject: 'Ticket Rejected',
+        validate: (record) => record.status === 'rejected'
       });
     });
-    
-    //fetch admin user emails from the AdminUsers table
-    const { data: admin, error: adminError } = await this.supabase
-    .from('AdminUsers')
-    .select('AdminEmail');
-    if (adminError) {
-      console.log('Error fetching user emails:', adminError);
-      return;
-      }
 
-    admin.forEach(({ email }) => {
-      const tables = [
-        { tableName: 'Service Requests', emailParameters: { to: email, subject: 'Ticket Update' } },
-        // Add more tables and their corresponding email parameters as needed
-      ];
-
-      tables.forEach(({ tableName, emailParameters }) => {
-        this.startListening(tableName, email, emailParameters);
+    // Notify tenant that status of ticket has been updated
+    tenants.forEach(({ email }) => {
+      this.startListening('Tickets', email, {
+        to: email,
+        subject: 'Ticket Status Update',
+        validate: (record) => record.status !== 'pending'
       });
     });
 
+    // Notify supervisor that new ticket has been created
+    supervisors.forEach(({ email }) => {
+      this.startListening('Tickets', email, {
+        to: email,
+        subject: 'New Ticket Created',
+        validate: (record) => record.status === 'pending'
+      });
+    });
+
+    // Notify staff that ticket has been assigned
+    const { data: staff, error: staffError } = await this.supabase
+      .from('Staff')
+      .select('email');
+
+    if (staffError) {
+      console.log('Error fetching staff emails:', staffError);
+    } else {
+      staff.forEach(({ email }) => {
+        this.startListening('Tickets', email, {
+          to: email,
+          subject: 'Ticket Assigned',
+          validate: (record) => record.assigned_to === email
+        });
+      });
+    }
+
+    // Notify supervisor that quotation has been approved
+    supervisors.forEach(({ email }) => {
+      this.startListening('Tickets', email, {
+        to: email,
+        subject: 'Quotation Approved',
+        validate: (record) => record.quotation_approved === true
+      });
+    });
+
+    // Notify supervisor that tenant has submitted a feedback survey
+    supervisors.forEach(({ email }) => {
+      this.startListening('FeedbackSurveys', email, {
+        to: email,
+        subject: 'Feedback Survey Submitted',
+        validate: (record) => record.submitted_by === 'tenant@example.com'
+      });
+    });
   }
-  
 }
 
 module.exports = NotificationManager;
