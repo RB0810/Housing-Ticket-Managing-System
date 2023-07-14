@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import TicketManager from "../../managers/ticketmanager";
 import AccountManager from "../../managers/accountmanager";
-import TicketDetails from "../../components/TicketDetails";
+import TenantTicketDetails from "../../components/TenantTicketDetails";
 import { useParams } from "react-router-dom";
 
 const ViewTicketTenant = () => {
@@ -45,7 +45,7 @@ const ViewTicketTenant = () => {
       <div className="service-tickets">
         <div className="service-ticket-row">
           {serviceTicket && (
-            <TicketDetails
+            <TenantTicketDetails
               key={serviceTicket.ServiceRequestID}
               ticket={serviceTicket}
               staff={staff}

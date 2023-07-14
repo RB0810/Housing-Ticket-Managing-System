@@ -1,26 +1,32 @@
 import { useState, useEffect } from "react";
 import TicketManager from "../../managers/ticketmanager";
-import TicketDetails from "../../components/TicketDetails";
+import AccountManager from "../../managers/accountmanager";
+import StaffTicketDetails from "../../components/StaffTicketDetails";
 import { useParams } from "react-router-dom";
 
 const ViewTicketStaff = () => {
   const ticketManager = new TicketManager();
+  const accountManager = new AccountManager();
   let { ServiceRequestID } = useParams();
   const [serviceTicket, setServiceTicket] = useState([]);
+  const [tenant, setTenant] = useState([]);
   const [fetchError, setFetchError] = useState([]);
 
   useEffect(() => {
-    const getTicket = async () => {
-      let new_data = await ticketManager.getTicketsByPARCStatusForTenantID();
+    const getTenantAndTicket = async () => {
+      let ticketData = await ticketManager.getTicket(
+        parseInt(ServiceRequestID)
+      );
 
-      let data = await ticketManager.getTicket(parseInt(ServiceRequestID));
-      console.log("Ticket gote!");
+      let tenantData = await accountManager.getSubmittedByTenantDetails(
+        ticketData[0].TenantID
+      );
 
-      if (data != false) {
-        setServiceTicket(data[0]);
+      if (ticketData !== false) {
+        setServiceTicket(ticketData[0]);
+        setTenant(tenantData);
         setFetchError(null);
-      } else if (data.length == 0) {
-        console.log(data);
+      } else if (ticketData.length === 0) {
         setFetchError("This ticket is EMPTY!");
         setServiceTicket();
       } else {
@@ -29,7 +35,7 @@ const ViewTicketStaff = () => {
       }
     };
 
-    getTicket();
+    getTenantAndTicket();
   }, []);
 
   return (
@@ -39,10 +45,12 @@ const ViewTicketStaff = () => {
       <div className="service-tickets">
         <div className="service-ticket-row">
           {serviceTicket && (
-            <TicketDetails
+            <StaffTicketDetails
               key={serviceTicket.ServiceRequestID}
               ticket={serviceTicket}
               portal="staff"
+              status={serviceTicket.Status}
+              tenant={tenant}
             />
           )}
         </div>
@@ -52,28 +60,3 @@ const ViewTicketStaff = () => {
 };
 
 export default ViewTicketStaff;
-//import React, { useState, useEffect } from 'react';
-//import "./../../../src/styles/viewticket.css";
-//import BasicTabs from '../../components/TicketTabs';
-//
-//class viewticket extends React.Component{
-//
-//    constructor(props){
-//        super(props);
-//        this.state = {
-//        }
-//      }
-//
-//    render(){
-//        return(
-//            <div>
-//                <div className='viewtixh1'>
-//                     <h1>View Tickets</h1>
-//                 </div>
-//                 <div className='Tabs'>
-//                   <BasicTabs/>
-//                 </div>
-//             </div>
-//         )
-//     }
-// }

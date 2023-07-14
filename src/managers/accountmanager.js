@@ -86,6 +86,17 @@ class AccountManager {
     return staffData[0];
   }
 
+  async getSubmittedByTenantDetails(tenantID) {
+    if (tenantID == null) {
+      return false;
+    }
+    const { data: tenantData } = await supabase
+      .from("TenantUsers")
+      .select("*")
+      .eq("TenantID", parseInt(tenantID));
+    return tenantData[0];
+  }
+
   async getTenantDetails(tenantID) {
     const { data: tenantData } = await supabase
       .from("TenantUsers")

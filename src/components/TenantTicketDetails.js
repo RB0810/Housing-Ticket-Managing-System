@@ -3,7 +3,7 @@ import FeedbackComponent from "./FeedbackComponent";
 import AssignedToCard from "./AssignedToCard";
 import BasicTicketDetails from "./BasicTicketDetails";
 
-const TicketDetails = ({ ticket, staff, portal, status }) => {
+const TenantTicketDetails = ({ ticket, staff, tenant, portal, status }) => {
   // Ticket Details is Changed Based on Portal and Status
 
   if (portal === "tenant" && status === "Awaiting Review") {
@@ -78,23 +78,9 @@ const TicketDetails = ({ ticket, staff, portal, status }) => {
         <AssignedToCard staff={staff} />
       </div>
     );
-  }
-
-  if (portal === "staff") {
-    return (
-      <div>
-        <BasicTicketDetails ticket={ticket} />
-      </div>
-    );
-  }
-
-  if (portal === "supervisor") {
-    return (
-      <div>
-        <BasicTicketDetails ticket={ticket} />
-      </div>
-    );
+  } else {
+    return <div>STATUS ERROR</div>;
   }
 };
 
-export default TicketDetails;
+export default TenantTicketDetails;

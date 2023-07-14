@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import TicketManager from "../../managers/ticketmanager";
-import TicketDetails from "../../components/TicketDetails";
+import TicketDetails from "../../components/TenantTicketDetails";
 import { useParams } from "react-router-dom";
 
 const ViewTicketSupervisor = () => {
