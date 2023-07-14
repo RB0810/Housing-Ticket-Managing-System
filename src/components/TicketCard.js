@@ -17,6 +17,7 @@ const TicketCard = ({ ticket, userRole, user }) => {
     // Default route if user role is not recognized
     return "/ticket";
   };
+
   return (
     <div className="ticket-card">
       <p className="ticket-name">{ticket.Name}</p>

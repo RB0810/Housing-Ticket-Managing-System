@@ -1,30 +1,37 @@
 import supabase from "../../config/supabaseClient";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import TicketManager from "../../managers/ticketmanager";
 
 // components
 import TicketCard from "../../components/TicketCard";
 
 export default function StaffPortal() {
+  const ticketManager = new TicketManager();
   const [serviceTickets, setServiceTickets] = useState([]);
   const [fetchError, setFetchError] = useState([]);
-  let {StaffID, PARCStatus} = useParams();
+  let { StaffID, PARCStatus } = useParams();
 
   useEffect(() => {
     const getTickets = async () => {
-      let { data, error } = await supabase.from("Service Request").select("*");
-      if (error) {
-        setFetchError(error.message);
-        setServiceTickets(null);
-        console.log(error);
-      }
+      let data = await ticketManager.getTicketsByPARCStatusForStaffID(
+        PARCStatus.toUpperCase(),
+        parseInt(StaffID)
+      );
 
-      if (data) {
+      if (data != false) {
+        console.log(data);
         setServiceTickets(data);
         setFetchError(null);
+      } else if (data.length == 0) {
+        console.log(data);
+        setFetchError("Empty!");
+        setServiceTickets();
+      } else {
+        setFetchError("Error!");
+        setServiceTickets();
       }
     };
-
     getTickets();
   }, []);
 
@@ -35,7 +42,12 @@ export default function StaffPortal() {
         <div className="service-tickets">
           <div className="service-ticket-row">
             {serviceTickets.map((ticket) => (
-              <TicketCard key={ticket.ServiceRequestID} ticket={ticket} userRole={"staff"} user={StaffID} />
+              <TicketCard
+                key={ticket.ServiceRequestID}
+                ticket={ticket}
+                user={StaffID}
+                userRole={"staff"}
+              />
             ))}
           </div>
         </div>

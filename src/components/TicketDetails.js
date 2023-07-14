@@ -38,17 +38,7 @@ const TicketDetails = ({ ticket, staff, portal, status }) => {
   if (portal === "tenant" && status === "Quotation Accepted") {
     return (
       <div>
-        <h1>THIS IS THE TENANT PORTAL</h1>
-        <h2>Ticket Details</h2>
-        <p>PARC Status: {ticket.PARCStatus}</p>
-        <p>Status: {ticket.Status}</p>
-        <p>Name: {ticket.Name}</p>
-        <p>Category: {ticket.Category}</p>
-        <p>Description : {ticket.Description}</p>
-        <p>
-          Submitted: {new Date(ticket.SubmittedDateTime).toLocaleDateString()}
-        </p>
-        <p>Request Type: {ticket.Category}</p>
+        <BasicTicketDetails ticket={ticket} />
         <AssignedToCard ticket={ticket} />
         <p>Quotation Needed: {ticket.QuotationRequired}</p>
         UPLOADED QUOTATION HERE
@@ -90,41 +80,10 @@ const TicketDetails = ({ ticket, staff, portal, status }) => {
     );
   }
 
-  if (portal === "tenant" && status === "Feedback Submitted") {
-    return (
-      <div>
-        <h1>THIS IS THE TENANT PORTAL</h1>
-        <h2>Ticket Details</h2>
-        <p>PARC Status: {ticket.PARCStatus}</p>
-        <p>Status: {ticket.Status}</p>
-        <p>Name: {ticket.Name}</p>
-        <p>Category: {ticket.Category}</p>
-        <p>Description : {ticket.Description}</p>
-        <p>
-          Submitted: {new Date(ticket.SubmittedDateTime).toLocaleDateString()}
-        </p>
-        <p>Request Type: {ticket.Category}</p>
-        <AssignedToCard ticket={ticket} />
-        <p>Quotation Needed: {ticket.QuotationRequired}</p>
-        UPLOADED QUOTATION HERE
-      </div>
-    );
-  }
-
   if (portal === "staff") {
     return (
       <div>
-        <h1>THIS IS THE STAFF PORTAL</h1>
-        <h2>Ticket Details</h2>
-        <p>PARC Status: {ticket.PARCStatus}</p>
-        <p>Name: {ticket.Name}</p>
-        <p>SubmittedBy: Tenant ID - {ticket.TenantID}</p>
-        <p>
-          Submitted: {new Date(ticket.SubmittedDateTime).toLocaleDateString()}
-        </p>
-        <p>Request Type: {ticket.Category}</p>
-        <p>Request Description: {ticket.Description}</p>
-        <p>PARC Status: {ticket.PARCStatus}</p>
+        <BasicTicketDetails ticket={ticket} />
       </div>
     );
   }
@@ -132,17 +91,7 @@ const TicketDetails = ({ ticket, staff, portal, status }) => {
   if (portal === "supervisor") {
     return (
       <div>
-        <h1>THIS IS THE SUPERVISOR PORTAL</h1>
-        <h2>Ticket Details</h2>
-        <p>PARC Status: {ticket.PARCStatus}</p>
-        <p>Name: {ticket.Name}</p>
-        <p>SubmittedBy: Tenant ID - {ticket.TenantID}</p>
-        <p>
-          Submitted: {new Date(ticket.SubmittedDateTime).toLocaleDateString()}
-        </p>
-        <p>Request Type: {ticket.Category}</p>
-        <p>Request Description: {ticket.Description}</p>
-        <p>PARC Status: {ticket.PARCStatus}</p>
+        <BasicTicketDetails ticket={ticket} />
       </div>
     );
   }

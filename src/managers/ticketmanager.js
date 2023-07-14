@@ -378,6 +378,8 @@ export default class TicketManager {
         data
       );
     }
+
+    return data;
   }
 
   /**
@@ -402,10 +404,12 @@ export default class TicketManager {
       return false;
     } else {
       console.log(
-        `"Tickets of PARCStatus :${PARCStatus} and TenantID :${staffID} fetched successfully:"`,
+        `"Tickets of PARCStatus :${PARCStatus} and StaffID :${staffID} fetched successfully:"`,
         data
       );
     }
+
+    return data;
   }
 
   // ASSIGN
