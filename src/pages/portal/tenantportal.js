@@ -7,26 +7,31 @@ export default function TenantPortal() {
   const ticketManager = new TicketManager();
   let { PARCStatus, TenantID } = useParams();
   const [serviceTickets, setServiceTickets] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [fetchError, setFetchError] = useState(null);
 
   useEffect(() => {
     const getTickets = async () => {
-      let data = await ticketManager.getTicketsByPARCStatusForTenantID(
-        PARCStatus.toUpperCase(),
-        parseInt(TenantID)
-      );
+      try {
+        let data = await ticketManager.getTicketsByPARCStatusForTenantID(
+          PARCStatus.toUpperCase(),
+          parseInt(TenantID)
+        );
 
-      if (data !== false) {
         console.log(data);
         setServiceTickets(data);
         setFetchError(null);
-      } else {
+      } catch (error) {
+        console.error("Error fetching tickets:", error);
         setFetchError("Error!");
         setServiceTickets([]);
+      } finally {
+        setIsLoading(false);
       }
     };
+
     getTickets();
-  }, []);
+  }, [PARCStatus, TenantID]);
 
   const getViewTicketsRoute = () => {
     return "/tenantportal/ticket";
@@ -48,7 +53,11 @@ export default function TenantPortal() {
           </tr>
         </thead>
         <tbody>
-          {fetchError ? (
+        {isLoading ? (
+            <tr>
+              <td colSpan="8" className="text-center">Loading...</td>
+            </tr>
+          ) : fetchError ? (
             <tr>
               <td colSpan="8" className="text-center">{fetchError}</td>
             </tr>
@@ -65,7 +74,7 @@ export default function TenantPortal() {
                 <td className="text-center">{ticket.Property}</td>
                 <td className="text-center">{ticket.Status}</td>
                 <td className="text-center">{new Date(ticket.SubmittedDateTime).toLocaleDateString()}</td>
-                <td className="text-center">{ticket.StaffID}</td>
+                <td className="text-center">{ticket.staffDetails ? ticket.staffDetails.StaffName : null}</td>
                 <td className="text-center">
                   <Link to={`${getViewTicketsRoute()}/${TenantID}/${ticket.ServiceRequestID}`}>
                     <button className="btn">

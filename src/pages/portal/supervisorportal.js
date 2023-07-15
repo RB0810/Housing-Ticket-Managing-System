@@ -8,23 +8,27 @@ export default function SupervisorPortal() {
   let { PARCStatus, SupervisorID } = useParams();
   const [serviceTickets, setServiceTickets] = useState([]);
   const [fetchError, setFetchError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
 
   useEffect(() => {
     const getTickets = async () => {
-      let data = await ticketManager.getTicketsByPARCStatusForSupervisorID(
-        PARCStatus.toUpperCase(),
-        parseInt(SupervisorID)
-      );
-
-      console.log("data" + data);
-
-      if (data !== false && data !== undefined && data !== null) {
-        console.log(data);
-        setServiceTickets(data);
-        setFetchError(null);
-      } else {
+      try{
+        let data = await ticketManager.getTicketsByPARCStatusForSupervisorID(
+          PARCStatus.toUpperCase(),
+          parseInt(SupervisorID)
+        );  
+        console.log("data" + data);
+        if (data !== false && data !== undefined && data !== null) {
+          console.log(data);
+          setServiceTickets(data);
+          setFetchError(null);
+      }  
+      } catch {
         setFetchError("Error!");
         setServiceTickets([]);
+      } finally {
+        setIsLoading(false);
       }
     };
     getTickets();
@@ -51,7 +55,11 @@ export default function SupervisorPortal() {
           </tr>
         </thead>
         <tbody>
-          {fetchError ? (
+          { isLoading ? (
+            <tr>
+              <td colSpan="8" className="text-center">Loading...</td>
+            </tr>
+          ) : fetchError ? (
             <tr>
               <td colSpan="9" className="text-center">{fetchError}</td>
             </tr>
@@ -67,9 +75,9 @@ export default function SupervisorPortal() {
                 <td className="text-center">{ticket.Category}</td>
                 <td className="text-center">{ticket.Property}</td>
                 <td className="text-center">{ticket.Status}</td>
-                <td className="text-center">{ticket.TenantID}</td>
+                <td className="text-center">{ticket.tenantDetails ? ticket.tenantDetails.TenantName : null}</td>
                 <td className="text-center">{new Date(ticket.SubmittedDateTime).toLocaleDateString()}</td>
-                <td className="text-center">{ticket.StaffID}</td>
+                <td className="text-center">{ticket.staffDetails ? ticket.staffDetails.StaffName : null}</td>
                 <td className="text-center">
                   <Link to={`${getViewTicketsRoute()}/${SupervisorID}/${ticket.ServiceRequestID}`}>
                     <button className="btn">
