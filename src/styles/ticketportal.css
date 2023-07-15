@@ -23,3 +23,17 @@
 .text-center {
   text-align: center;
 }
+
+.filter-arrow {
+  background-image: url(../../public/downarrow.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+.filter-arrow.up {
+  transform: rotate(180deg);
+}
+
