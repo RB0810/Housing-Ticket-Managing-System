@@ -8,7 +8,6 @@ const RejectCard = (ticket) => {
   let navigate = useNavigate();
   const { TenantID, ServiceRequestID } = useParams();
   const [comments, setComments] = useState("");
-  const [rating, setRating] = useState(0);
 
   const handleRejectFeedback = async (e) => {
     e.preventDefault();

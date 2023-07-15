@@ -475,22 +475,6 @@ export default class TicketManager {
     }
   }
 
-  async updateTicketStatus(ticketId, status) {
-    const { data, error } = await supabase
-      .from("Service Request")
-      .update({ Status: status })
-      .eq("ServiceRequestID", parseInt(ticketId))
-      .select();
-
-    if (error) {
-      console.error("Error updating ticket status:", error);
-      return false;
-    } else {
-      console.log("Ticket status updated successfully:", data);
-      return true;
-    }
-  }
-
   async updateTicket(ticketId, column_name, value) {
     const { data, error } = await supabase
       .from("Service Request")
@@ -505,5 +489,21 @@ export default class TicketManager {
       console.log("Ticket updated successfully:", data);
       return true;
     }
+  }
+
+  async getTicketByColumn(ticketId, column_name) {
+    const { data, error } = await supabase
+      .from("Service Request")
+      .select(column_name)
+      .eq("ServiceRequestID", parseInt(ticketId));
+
+    if (error) {
+      console.error("Error getting ticket:", error);
+      return false;
+    } else {
+      console.log("Ticket fetched successfully:", data);
+    }
+
+    return data[0][column_name];
   }
 }
