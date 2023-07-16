@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import AccountManager from "../../managers/accountmanager";
 import { Link, useParams } from "react-router-dom";
 import BuildingDetails from "../../components/BuildingDetails";
+import './../../styles/profile.css'
 
 const SupervisorProfile = () => {
   const { SupervisorID } = useParams();
@@ -71,34 +72,53 @@ const SupervisorProfile = () => {
 
   return (
     <div>
-      <p>Username: {supervisor.SupervisorUsername}</p>
-      <p>Email: {supervisor.SupervisorEmail}</p>
-      <p>Phone: {supervisor.SupervisorPhone}</p>
-      <p>
-        {supervisor.BuildingDetails.BuildingName}, {supervisor.BuildingDetails.Address}, {supervisor.BuildingDetails.PostalCode}
-      </p>
+      <div className="supervisor-profile-row">
+        <div className="supervisor-profile-col25">
+          <p className="supervisor-profile-label">Personal Details</p>
+        </div>
+        
+        <div className="supervisor-profile-col75">
+          <p><b>Username:</b> {supervisor.SupervisorUsername}</p>
+          <p><b>Email:</b> {supervisor.SupervisorEmail}</p>
+          <p><b>Phone:</b> {supervisor.SupervisorPhone}</p>
+          <p>
+            <b>Building Details: </b>{supervisor.BuildingDetails.BuildingName}, {supervisor.BuildingDetails.Address}, {supervisor.BuildingDetails.PostalCode}
+          </p>
+
+          <h4>Set New Password: </h4>
+          <input
+            type="password"
+            placeholder="New Password"
+            value={newPassword}
+            onChange={handleNewPasswordChange}
+          />
+          <br/>
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            onChange={handleConfirmPasswordChange}
+          />
+          {formError && <p className="set-password-error">{formError}</p>}
+
+          <br/>
+
+          <button onClick={handleSetPassword}>Set Password</button>
+        </div>
+      </div>
+      
+        
+      <hr></hr>
+
       <BuildingDetails building={buildingDetails} />
+
+      <hr></hr>
+
       <Link to={`/`}>
         <button>Logout</button>
       </Link>
 
-      <div>
-            <h4>Set New Password</h4>
-            <input
-              type="password"
-              placeholder="New Password"
-              value={newPassword}
-              onChange={handleNewPasswordChange}
-            />
-            <input
-              type="password"
-              placeholder="Confirm Password"
-              value={confirmPassword}
-              onChange={handleConfirmPasswordChange}
-            />
-            {formError && <p className="set-password-error">{formError}</p>}
-            <button onClick={handleSetPassword}>Set Password</button>
-      </div>
+      
     </div>
   );
 };

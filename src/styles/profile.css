@@ -1,0 +1,49 @@
+.tenant-profile-page{
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.tenant-profile-label{
+    font-size: xx-large;
+}
+
+.tenant-profile-col25{
+    float: left;
+    width: 25%;
+}
+
+.tenant-profile-col75{
+    float: left;
+    width: 70%;
+    font-size: large;
+    text-align: left;
+    margin-left: 5%;
+}
+
+.tenant-profile-row::after{
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.supervisor-profile-label{
+    font-size: xx-large;
+}
+.supervisor-profile-details{
+    text-align: left;
+    width: 30%;
+    margin-left: 35%;
+}
+
+.supervisor-profile-col25{
+    float: left;
+    width: 25%;
+}
+
+.supervisor-profile-col75{
+    float: left;
+    width: 70%;
+    font-size: large;
+    text-align: left;
+    margin-left: 5%;
+}
