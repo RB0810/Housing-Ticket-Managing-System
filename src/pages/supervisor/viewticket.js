@@ -4,9 +4,7 @@ import AccountManager from "../../managers/accountmanager";
 import { useParams } from "react-router-dom";
 import BasicTicketDetails from "../../components/BasicTicketDetails";
 import SubmittedByCard from "../../components/SubmittedByCard";
-import TicketAssigner from "../../components/TicketAssigner";
 import AssignedToCard from "../../components/AssignedToCard";
-import ViewRejectDetails from "../../components/ViewRejectDetails";
 import ViewFinalFeedbackDetails from "../../components/ViewFinalFeedbackDetails";
 
 const ViewTicketSupervisor = () => {
@@ -63,9 +61,9 @@ const ViewTicketSupervisor = () => {
 
   const handleAssign = async () => {
     try {
-      await ticketManager.assignTicket(ticket.ServiceRequestID, selectedStaff);
+      await ticketManager.assignTicket(ServiceRequestID, selectedStaff);
       await ticketManager.updateTicket(
-        ticket.ServiceRequestID,
+        ServiceRequestID,
         "Status",
         "Ticket Assigned"
       );
@@ -166,8 +164,7 @@ const ViewTicketSupervisor = () => {
         <SubmittedByCard tenant={tenant} />
         ____________________________________
         <AssignedToCard staff={staff} />
-        _______________________________________
-        <ViewRejectDetails ticket={serviceTicket} />
+       
       </div>
     );
   }
