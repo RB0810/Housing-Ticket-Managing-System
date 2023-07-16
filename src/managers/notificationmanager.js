@@ -54,7 +54,7 @@ class NotificationManager {
         this.startListening('Service Requests', email, {
           to: email,
           subject: 'Quotation Added',
-          validate: (record) => record.QuotationNeeded === Yes
+          validate: (record) => record.QuotationNeeded === 'Yes'
         });
       });
     }
@@ -72,7 +72,7 @@ class NotificationManager {
           to: email,
           subject: 'Ticket Deleted',
           //validate whether the record is not in the Service Requests table
-          validate: (record) => (record, event) => event === 'DELETE' && payload.old === null,
+          validate: (record, event) => event === 'DELETE' && record === null,
         });
       });
     }
@@ -97,7 +97,7 @@ class NotificationManager {
 
     // Notify supervisor that new ticket has been created
     supervisors.forEach(({ email }) => {
-      this.startListening('Tickets', email, {
+      this.startListening('Service Requests', email, {
         to: email,
         subject: 'New Ticket Created',
         validate: (record) => record.PARCstatus === 'PENDING'
