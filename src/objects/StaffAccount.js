@@ -47,7 +47,7 @@ class StaffAccount extends Account {
     }
 
     const staff = {
-      StaffUsername: this.username,
+      StaffName: this.username,
       StaffEmail: this.email,
       StaffPassword: this.password,
       StaffPhone: this.phone,

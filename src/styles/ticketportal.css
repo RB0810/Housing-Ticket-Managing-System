@@ -1,0 +1,39 @@
+.ticket-portal-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 5);
+}
+
+.header-cell,
+.ticket-portal-table td {
+  padding: 8px;
+  text-align: center;
+}
+
+.ticket-portal-table td {
+  padding: 12px;
+}
+
+.ticket-portal-table .table-row {
+  background-color: #ffffffa5;
+  border-bottom: 1px solid #d3d3d3;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 5);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.filter-arrow {
+  background-image: url(../../public/downarrow.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+.filter-arrow.up {
+  transform: rotate(180deg);
+}
+

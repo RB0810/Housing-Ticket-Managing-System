@@ -45,7 +45,7 @@ class SupervisorAccount extends Account {
     };
 
     const supervisor = {
-      SupervisorUsername: this.username,
+      SupervisorName: this.username,
       SupervisorEmail: this.email,
       SupervisorPassword: this.password,
       SupervisorPhone: this.phone,

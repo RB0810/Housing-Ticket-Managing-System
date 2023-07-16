@@ -10,7 +10,7 @@ const BuildingDetails = ({ building }) => {
         <h3>Staff</h3>
         {staff.map((staffMember) => (
           <div className="staff-item" key={staffMember.StaffID}>
-            <p>Name: {staffMember.StaffUsername}</p>
+            <p>Name: {staffMember.StaffName}</p>
             <p>Contact: {staffMember.StaffEmail}, {staffMember.StaffPhone}</p>
           </div>
         ))}
@@ -20,7 +20,7 @@ const BuildingDetails = ({ building }) => {
         {tenant.map((tenantData) => (
           <div className="tenant-item" key={tenantData.TenantID}>
             <div className="tenant-details">
-              <p>Name: {tenantData.TenantUsername}</p>
+              <p>Name: {tenantData.TenantName}</p>
               <p>Contact: {tenantData.TenantEmail}, {tenantData.TenantPhone}</p>
             </div>
             <div className="lease-details">
