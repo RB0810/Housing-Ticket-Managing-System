@@ -5,6 +5,9 @@ import TicketManager from "../../managers/ticketmanager";
 import AccountManager from "../../managers/accountmanager";
 import "./../../styles/viewticket.css";
 
+// material UI
+import TextField from '@mui/material/TextField';
+
 const CreateTicket = () => {
   const ticketManager = new TicketManager();
   let { TenantID } = useParams();
@@ -76,8 +79,12 @@ const CreateTicket = () => {
         <h1 className="ticket-creation-title">Create Ticket</h1>
       </div>
 
+
+
       <form onSubmit={handleSubmit} className="ticket-creation-form">
-        <div className="con-25">
+
+        {/* old Name TextField */}
+        {/* <div className="con-25">
           <label htmlFor="name">Name</label>
         </div>
         <div className="con-75">
@@ -89,29 +96,40 @@ const CreateTicket = () => {
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
+        </div> */}
+        <div className="name-textfield">
+          <img className="create-ticket-icons" src={"/userAccountBox.png"} />
+          <TextField
+            id="name"
+            label="Name"
+            placeholder="Enter your name"
+            variant="filled"
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <div className="request-field">
+          <div className="con-25">
+            <label htmlFor="dropdown">Request Type</label>
+          </div>
+          <div className="con-75">
+            <select
+              id="dropdown"
+              value={requestType}
+              onChange={(e) => setRequestType(e.target.value)}
+            >
+              <option value="">Please Select Request Type</option>
+              <option value="Toilet">Toilet</option>
+              <option value="Plumbing">Plumbing</option>
+              <option value="Pest">Pest</option>
+              <option value="Electric">Electric</option>
+              <option value="Aircon">Aircon</option>
+              <option value="Cleaning">Cleaning</option>
+              <option value="Others">Others</option>
+            </select>
+          </div>
         </div>
 
-        <div className="con-25">
-          <label htmlFor="dropdown">Request Type</label>
-        </div>
-        <div className="con-75">
-          <select
-            id="dropdown"
-            value={requestType}
-            onChange={(e) => setRequestType(e.target.value)}
-          >
-            <option value="">Please Select Request Type</option>
-            <option value="Toilet">Toilet</option>
-            <option value="Plumbing">Plumbing</option>
-            <option value="Pest">Pest</option>
-            <option value="Electric">Electric</option>
-            <option value="Aircon">Aircon</option>
-            <option value="Cleaning">Cleaning</option>
-            <option value="Others">Others</option>
-          </select>
-        </div>
-
-        <div className="con-25">
+        {/* <div className="con-25">
           <label htmlFor="description">Description</label>
         </div>
         <div className="con-75">
@@ -121,6 +139,18 @@ const CreateTicket = () => {
             className="description-input"
             placeholder="Description"
             value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div> */}
+
+        <div className="description-textfield">
+          <TextField
+            id="description"
+            label="Description"
+            multiline
+            rows={4}
+            placeholder="Enter your description of the problem"
+            variant="filled"
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
