@@ -1,6 +1,7 @@
 import supabase from "../../config/supabaseClient";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import "../../styles/supervisorportal.css";
 
 // components
 import TicketCard from "../../components/TicketCard";
