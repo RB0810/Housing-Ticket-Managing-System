@@ -29,6 +29,16 @@ body {
     margin: 10px;
 }
 
+.login-email {
+    background-color: white;
+    color: black;
+    width: 225px;
+    border-radius: 0.4rem;
+    font-size: medium;
+    padding: 3px 10px;
+    margin: 10px;
+}
+
 .loginInput{
     height: 20px;
     width: 250px;

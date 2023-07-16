@@ -5,6 +5,9 @@ import TicketManager from "../../managers/ticketmanager";
 import AccountManager from "../../managers/accountmanager";
 import "./../../styles/viewticket.css";
 
+// material UI
+import TextField from '@mui/material/TextField';
+
 const CreateTicket = () => {
   const ticketManager = new TicketManager();
   let { TenantID } = useParams();
@@ -76,9 +79,12 @@ const CreateTicket = () => {
         <h1 className="ticket-creation-title">Create Ticket</h1>
       </div>
 
+
+
       <form onSubmit={handleSubmit} className="ticket-creation-form">
         <div className="con-25">
           <label htmlFor="name" className="create-ticket-label">Name</label>
+
         </div>
         <div className="con-75">
           <input
@@ -87,6 +93,16 @@ const CreateTicket = () => {
             className="create-ticket-input"
             placeholder="Name"
             value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div> */}
+        <div className="name-textfield">
+          <img className="create-ticket-icons" src={"/userAccountBox.png"} />
+          <TextField
+            id="name"
+            label="Name"
+            placeholder="Enter your name"
+            variant="filled"
             onChange={(e) => setName(e.target.value)}
           />
         </div>
@@ -114,6 +130,7 @@ const CreateTicket = () => {
 
         <div className="con-25">
           <label htmlFor="description" className="create-ticket-label">Description</label>
+
         </div>
         <div className="con-75">
           <textarea
@@ -122,6 +139,18 @@ const CreateTicket = () => {
             placeholder="Description"
             rows='5'
             value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div> */}
+
+        <div className="description-textfield">
+          <TextField
+            id="description"
+            label="Description"
+            multiline
+            rows={4}
+            placeholder="Enter your description of the problem"
+            variant="filled"
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
