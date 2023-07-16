@@ -37,96 +37,143 @@ const CreateSupervisor = () => {
   return (
     <div className="ticket-creation-page">
       <h1 className="wlcText">Create Supervisor Account</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="username">Supervisor Username</label>
-          <input
-            type="text"
-            id="username"
-            className="form-control"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
+      <form onSubmit={handleSubmit} className="create-supervisor-acc-form">
+        <div className="create-supervisor-acc-row">
+          <div className="create-supervisor-acc-col25">
+            <label htmlFor="username">Supervisor Username:</label>
+          </div>
+          
+          <div className="create-supervisor-acc-col75">
+            <input
+              type="text"
+              id="username"
+              className="create-supervisor-acc-input-text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="email">Supervisor Email</label>
-          <input
-            type="email"
-            id="email"
-            className="form-control"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+        <div className="create-supervisor-acc-row">
+          <div className="create-supervisor-acc-col25">
+            <label htmlFor="email">Supervisor Email:</label>
+          </div>
+          
+          <div className="create-supervisor-acc-col75">
+            <input
+              type="email"
+              id="email"
+              className="create-supervisor-acc-input-text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="password">Enter Password</label>
-          <input
-            type="password"
-            id="password"
-            className="form-control"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+        <div className="create-supervisor-acc-row">
+          <div className="create-supervisor-acc-col25">
+            <label htmlFor="password">Enter Password:</label>
+          </div>
+          
+          <div className="create-supervisor-acc-col75">
+            <input
+              type="password"
+              id="password"
+              className="create-supervisor-acc-input-text"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          
         </div>
 
-        <div className="form-group">
-          <label htmlFor="rePassword">Re-enter Password</label>
-          <input
-            type="password"
-            id="rePassword"
-            className="form-control"
-            value={rePassword}
-            onChange={(e) => setRePassword(e.target.value)}
-          />
+        <div className="create-supervisor-acc-row">
+          <div className="create-supervisor-acc-col25">
+            <label htmlFor="rePassword">Re-enter Password:</label>
+          </div>
+          
+          <div className="create-supervisor-acc-col75">
+            <input
+              type="password"
+              id="rePassword"
+              className="create-supervisor-acc-input-text"
+              value={rePassword}
+              onChange={(e) => setRePassword(e.target.value)}
+            />
+          </div>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="phone">Supervisor Phone</label>
-          <input
-            type="tel"
-            id="phone"
-            className="form-control"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-          />
+        <div className="create-supervisor-acc-row">
+          <div className="create-supervisor-acc-col25">
+            <label htmlFor="phone">Supervisor Phone:</label>
+          </div>
+          
+          <div className="create-supervisor-acc-col75">
+            <input
+              type="tel"
+              id="phone"
+              className="create-supervisor-acc-input-text"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
+          </div>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="buildingName">Building Name</label>
-          <input
-            type="text"
-            id="buildingName"
-            className="form-control"
-            value={buildingName}
-            onChange={(e) => setBuildingName(e.target.value)}
-          />
+        <div className="create-supervisor-acc-row">
+          <div className="create-supervisor-acc-col25">
+            <label htmlFor="buildingName">Building Name:</label>
+          </div>
+          
+          <div className="create-supervisor-acc-col75">
+            <input
+              type="text"
+              id="buildingName"
+              className="create-supervisor-acc-input-text"
+              value={buildingName}
+              onChange={(e) => setBuildingName(e.target.value)}
+            />
+          </div>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="buildingAddress">Building Address</label>
-          <input
-            type="text"
-            id="buildingAddress"
-            className="form-control"
-            value={buildingAddress}
-            onChange={(e) => setBuildingAddress(e.target.value)}
-          />
+        <div className="create-supervisor-acc-row">
+          <div className="create-supervisor-acc-col25">
+            <label htmlFor="buildingAddress">Building Address:</label>
+          </div>
+          
+          <div className="create-supervisor-acc-col75">
+            <input
+              type="text"
+              id="buildingAddress"
+              className="create-supervisor-acc-input-text"
+              value={buildingAddress}
+              onChange={(e) => setBuildingAddress(e.target.value)}
+            />
+          </div>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="postalCode">Postal Code</label>
-          <input
-            type="tel"
-            id="postalCode"
-            className="form-control"
-            value={postalCode}
-            onChange={(e) => setPostalCode(e.target.value)}
-          />
+        <div className="create-supervisor-acc-row">
+          <div className="create-supervisor-acc-col25">
+            <label htmlFor="postalCode">Postal Code:</label>
+          </div>
+          
+          <div className="create-supervisor-acc-col75">
+            <input
+              type="tel"
+              id="postalCode"
+              className="create-supervisor-acc-input-text"
+              value={postalCode}
+              onChange={(e) => setPostalCode(e.target.value)}
+            />
+          </div>
         </div>
 
-        <button type="submit">Create Supervisor Account</button>
+        <div className="create-supervisor-acc-row">
+          <input
+            type="submit"
+            value="Create Supervisor Account"
+            className="create-supervisor-acc-input-submit"
+          />
+        </div> 
 
         {formError && <p className="create-ticket-error">{formError}</p>}
       </form>
