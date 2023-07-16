@@ -121,3 +121,8 @@ h3{
     margin-bottom: 3rem;
     font-size: xxx-large;
 }
+
+.create-ticket-icons {
+    width: 50px;
+    transform: translateX(-50%);
+}

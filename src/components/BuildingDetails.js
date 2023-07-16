@@ -12,7 +12,7 @@ const BuildingDetails = ({ building }) => {
         {staff.map((staffMember) => (
           <div className='building-details-row'>
             <div className="building-details-col75" key={staffMember.StaffID}>
-              <p><b>Name:</b> {staffMember.StaffUsername}</p>
+              <p><b>Name:</b> {staffMember.StaffName}</p>
               <p><b>Contact:</b> {staffMember.StaffEmail}, {staffMember.StaffPhone}</p>
             </div>
           </div>
@@ -25,9 +25,10 @@ const BuildingDetails = ({ building }) => {
 
         {tenant.map((tenantData) => (
           <div className="tenant-item" key={tenantData.TenantID}>
+
             <div className="building-details-col50">
               <p className='building-details-sub-label'>Personal Details:</p>
-              <p><b>Name:</b> {tenantData.TenantUsername}</p>
+              <p><b>Name:</b> {tenantData.TenantName}</p>
               <p><b>Email:</b> {tenantData.TenantEmail}</p>
               <p><b>Phone Number:</b> {tenantData.TenantPhone}</p>
             </div>

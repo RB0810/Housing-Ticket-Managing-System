@@ -28,22 +28,26 @@ const StaffProfile = () => {
   };
 
   const handleSetPassword = async () => {
-    if (newPassword === confirmPassword) {
-      const accountManager = new AccountManager();
-
-      try{
-        await accountManager.setPassword("Staff", StaffID, newPassword);
-        setNewPassword("");
-        setConfirmPassword("");
-        setFormError("Password Changed Successfully!");
-      }catch(error){
-        setFormError("Database Error");
+    if (newPassword && confirmPassword) {
+      if (newPassword === confirmPassword) {
+        const accountManager = new AccountManager();
+  
+        try {
+          await accountManager.setPassword("Staff", StaffID, newPassword);
+          setNewPassword("");
+          setConfirmPassword("");
+          setFormError("Password Changed Successfully!");
+        } catch (error) {
+          setFormError("Database Error");
+        }
+      } else {
+        setFormError("Passwords do not match!");
       }
-        
     } else {
-      setFormError("Passwords do not match!");
+      setFormError("Please fill in all fields!");
     }
   };
+  
 
   if (!staff) {
     return <p>Loading staff details...</p>;
@@ -51,11 +55,11 @@ const StaffProfile = () => {
 
   return (
     <div>
-      <p>Username: {staff.StaffUsername}</p>
+      <p>Name: {staff.StaffName}</p>
       <p>Email: {staff.StaffEmail}</p>
       <p>Phone: {staff.StaffPhone}</p>
       <p>Supervisor Details</p>
-      <p>Supervisor Name: {staff.SupervisorDetails.SupervisorUsername}</p>
+      <p>Supervisor Name: {staff.SupervisorDetails.SupervisorName}</p>
       <p>Supervisor Email: {staff.SupervisorDetails.SupervisorEmail}</p>
       <p>Supervisor Phone: {staff.SupervisorDetails.SupervisorPhone}</p>
       <p>{staff.BuildingDetails.BuildingName}, {staff.BuildingDetails.Address}, {staff.BuildingDetails.PostalCode} </p>

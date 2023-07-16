@@ -51,20 +51,26 @@ const SupervisorProfile = () => {
 
 
   const handleSetPassword = async () => {
-    if (newPassword === confirmPassword) {
-      try {
-        await accountManager.setPassword("Supervisor", SupervisorID, newPassword);
-        setNewPassword("");
-        setConfirmPassword("");
-        setFormError("Password Changed Successfully!");
-      } catch (error) {
-        console.error("Error setting password:", error);
-        setFormError("Database Error");
+    if (newPassword && confirmPassword) {
+      if (newPassword === confirmPassword) {
+        const accountManager = new AccountManager();
+  
+        try {
+          await accountManager.setPassword("Supervisor", SupervisorID, newPassword);
+          setNewPassword("");
+          setConfirmPassword("");
+          setFormError("Password Changed Successfully!");
+        } catch (error) {
+          setFormError("Database Error");
+        }
+      } else {
+        setFormError("Passwords do not match!");
       }
     } else {
-      setFormError("Passwords do not match!");
+      setFormError("Please fill in all fields!");
     }
   };
+  
 
   if (!supervisor || !buildingDetails) {
     return <p>Loading supervisor details...</p>;
@@ -78,7 +84,7 @@ const SupervisorProfile = () => {
         </div>
         
         <div className="supervisor-profile-col75">
-          <p><b>Username:</b> {supervisor.SupervisorUsername}</p>
+          <p><b>Username:</b> {supervisor.SupervisorName}</p>
           <p><b>Email:</b> {supervisor.SupervisorEmail}</p>
           <p><b>Phone:</b> {supervisor.SupervisorPhone}</p>
           <p>

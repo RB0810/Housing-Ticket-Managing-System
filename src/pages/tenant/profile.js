@@ -29,22 +29,26 @@ const TenantProfile = () => {
   };
 
   const handleSetPassword = async () => {
-    if (newPassword === confirmPassword) {
-      const accountManager = new AccountManager();
-
-      try{
-        await accountManager.setPassword("Tenant", TenantID, newPassword);
-        setNewPassword("");
-        setConfirmPassword("");
-        setFormError("Password Changed Successfully!");
-      }catch(error){
-        setFormError("Database Error");
+    if (newPassword && confirmPassword) {
+      if (newPassword === confirmPassword) {
+        const accountManager = new AccountManager();
+  
+        try {
+          await accountManager.setPassword("Tenant", TenantID, newPassword);
+          setNewPassword("");
+          setConfirmPassword("");
+          setFormError("Password Changed Successfully!");
+        } catch (error) {
+          setFormError("Database Error");
+        }
+      } else {
+        setFormError("Passwords do not match!");
       }
-        
     } else {
-      setFormError("Passwords do not match!");
+      setFormError("Please fill in all fields!");
     }
   };
+  
 
   if (!tenant) {
     return <p>Loading tenant details...</p>;
@@ -60,7 +64,7 @@ const TenantProfile = () => {
         </div>
         
         <div className="tenant-profile-col75">
-          <p><b>Username:</b> {tenant.TenantUsername}</p>
+          <p><b>Username:</b> {tenant.TenantName}</p>
           <p><b>Email:</b> {tenant.TenantEmail}</p>
           <p><b>Phone:</b> {tenant.TenantPhone}</p>
 
@@ -86,7 +90,7 @@ const TenantProfile = () => {
         </div>
         
         <div className="tenant-profile-col75">
-          <p><b>Supervisor Name:</b> {tenant.SupervisorDetails.SupervisorUsername}</p>
+          <p><b>Supervisor Name:</b> {tenant.SupervisorDetails.SupervisorName}</p>
           <p><b>Supervisor Email:</b> {tenant.SupervisorDetails.SupervisorEmail}</p>
           <p><b>Supervisor Phone:</b> {tenant.SupervisorDetails.SupervisorPhone}</p>
         </div>
