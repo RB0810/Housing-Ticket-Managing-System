@@ -1,7 +1,5 @@
 import nodemailer from 'nodemailer';
 
-const mailgun = new Mailgun(formData);
-const client = mailgun.client({ username: 'api', key: API_KEY });
 class Notification {
   constructor() {}
 
@@ -24,15 +22,6 @@ class Notification {
       to: to,
       subject: subject,
       text: text,
-    });
-
-    client.messages
-      .create(DOMAIN, message)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.error(err);
     });
 
     console.log("Message sent: %s", info.messageId);
