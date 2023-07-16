@@ -49,7 +49,7 @@ class TenantAccount extends Account {
     const accountManager = new AccountManager();
 
     const tenantData = {
-      TenantUsername: this.username,
+      TenantName: this.username,
       TenantEmail: this.email,
       TenantPassword: this.password,
       TenantPhone: this.phone,

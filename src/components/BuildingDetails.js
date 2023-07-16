@@ -6,37 +6,45 @@ const BuildingDetails = ({ building }) => {
 
   return (
     <div className="building-details">
-      <div className="section">
-        <h3>Staff</h3>
+          <p className='building-details-label'>Staff</p>
+       
+        
         {staff.map((staffMember) => (
-          <div className="staff-item" key={staffMember.StaffID}>
-            <p>Name: {staffMember.StaffUsername}</p>
-            <p>Contact: {staffMember.StaffEmail}, {staffMember.StaffPhone}</p>
+          <div className='building-details-row'>
+            <div className="building-details-col75" key={staffMember.StaffID}>
+              <p><b>Name:</b> {staffMember.StaffName}</p>
+              <p><b>Contact:</b> {staffMember.StaffEmail}, {staffMember.StaffPhone}</p>
+            </div>
           </div>
         ))}
-      </div>
+
+      <hr></hr>
+
       <div className="section">
-        <h3>Tenants</h3>
+        <p className='building-details-label'>Tenants</p>
+
         {tenant.map((tenantData) => (
           <div className="tenant-item" key={tenantData.TenantID}>
-            <div className="tenant-details">
-              <p>Name: {tenantData.TenantUsername}</p>
-              <p>Contact: {tenantData.TenantEmail}, {tenantData.TenantPhone}</p>
+
+            <div className="building-details-col50">
+              <p className='building-details-sub-label'>Personal Details:</p>
+              <p><b>Name:</b> {tenantData.TenantName}</p>
+              <p><b>Email:</b> {tenantData.TenantEmail}</p>
+              <p><b>Phone Number:</b> {tenantData.TenantPhone}</p>
             </div>
-            <div className="lease-details">
-              <p>Lease Details:</p>
+
+            <div className="building-details-col50">
+              <p className='building-details-sub-label'>Lease Details:</p>
               {tenantData.LeaseDetails && (
                 <div>
-                  <p>Commence Date: {new Date(tenantData.LeaseDetails.CommenceDate).toLocaleDateString()}</p>
-                  <p>Termination Date: {new Date(tenantData.LeaseDetails.TerminationDate).toLocaleDateString()}</p>
-                  <p>Monthly Rental: {tenantData.LeaseDetails.MonthlyRental}</p>
-                  <p>Business Type: {tenantData.LeaseDetails.TradeType}</p>
-                  <p>Area: {tenantData.LeaseDetails.AreaInSqMeters}</p>
+                  <p><b>Commence Date:</b> {new Date(tenantData.LeaseDetails.CommenceDate).toLocaleDateString()}</p>
+                  <p><b>Termination Date:</b> {new Date(tenantData.LeaseDetails.TerminationDate).toLocaleDateString()}</p>
+                  <p><b>Monthly Rental:</b> {tenantData.LeaseDetails.MonthlyRental}</p>
+                  <p><b>Business Type:</b> {tenantData.LeaseDetails.TradeType}</p>
+                  <p><b>Area:</b> {tenantData.LeaseDetails.AreaInSqMeters}</p>
+                  <p><b>Units:</b> {tenantData.Units.map((unit) => unit.UnitNumber).join(', ')}</p>
                 </div>
               )}
-            </div>
-            <div className="units">
-              <p>Units: {tenantData.Units.map((unit) => unit.UnitNumber).join(', ')}</p>
             </div>
           </div>
         ))}

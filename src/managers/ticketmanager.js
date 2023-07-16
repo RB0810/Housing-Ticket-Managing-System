@@ -321,6 +321,17 @@ export default class TicketManager {
       .eq("PARCStatus", PARCStatus)
       .eq("TenantID", tenantID);
 
+    for (let i = 0; i < data.length; i++) {
+      if(data[i].StaffID != null){
+        let staffDetails = await supabase
+        .from("StaffUsers")
+        .select("*")
+        .eq("StaffID", data[i].StaffID);
+  
+      data[i].staffDetails = staffDetails.data[0];
+      }  
+    }
+
     if (error) {
       console.error(
         "Error getting all tickets by PARCStatus and TenantID:",
@@ -351,6 +362,25 @@ export default class TicketManager {
       .eq("PARCStatus", PARCStatus)
       .eq("SupervisorID", supervisorID);
 
+      for (let i = 0; i < data.length; i++) {
+        if(data[i].StaffID != null){
+          let staffDetails = await supabase
+          .from("StaffUsers")
+          .select("*")
+          .eq("StaffID", data[i].StaffID);
+    
+        data[i].staffDetails = staffDetails.data[0];
+        }  
+
+        let tenantDetails = await supabase
+        .from("TenantUsers")
+        .select("*")
+        .eq("TenantID", data[i].TenantID);
+    
+        data[i].tenantDetails = tenantDetails.data[0];
+
+      }
+
     if (error) {
       console.error(
         "Error getting all tickets by PARCStatus and SupervisorID:",
@@ -359,9 +389,10 @@ export default class TicketManager {
       return false;
     } else {
       console.log(
-        `"Tickets of PARCStatus :${PARCStatus} and TenantID :${supervisorID} fetched successfully:"`,
+        `"Tickets of PARCStatus :${PARCStatus} and SupervisorID :${supervisorID} fetched successfully:"`,
         data
       );
+      return data;
     }
 
     return data;
@@ -381,6 +412,15 @@ export default class TicketManager {
       .eq("PARCStatus", PARCStatus)
       .eq("StaffID", staffID);
 
+    for (let i = 0; i < data.length; i++) {
+      let tenantDetails = await supabase
+        .from("TenantUsers")
+        .select("*")
+        .eq("TenantID", data[i].TenantID);
+    
+        data[i].tenantDetails = tenantDetails.data[0];
+    }
+
     if (error) {
       console.error(
         "Error getting all tickets by PARCStatus and StaffID:",
@@ -392,9 +432,8 @@ export default class TicketManager {
         `"Tickets of PARCStatus :${PARCStatus} and StaffID :${staffID} fetched successfully:"`,
         data
       );
-    }
-
-    return data;
+      return data;
+    } 
   }
 
   // ASSIGN

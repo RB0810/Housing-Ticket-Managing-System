@@ -37,6 +37,7 @@ export default function AdminLogin() {
         <div>
           <p>Create and Manage Tickets!</p>
         </div>
+
         <div>
           <label></label>
           <input
@@ -48,6 +49,7 @@ export default function AdminLogin() {
             placeholder="ID Number/Email"
           />
         </div>
+
         <div>
           <label></label>
           <input
@@ -59,6 +61,7 @@ export default function AdminLogin() {
             placeholder="Password"
           />
         </div>
+
         <button className="loginBtn" type="submit">
           Login
         </button>
