@@ -2,11 +2,8 @@ import { useEffect, useState } from "react";
 import { Routes, Route, useParams, Link } from "react-router-dom";
 import TicketManager from "../../managers/ticketmanager";
 import "../../styles/ticketportal.css";
-import { useParams } from "react-router-dom";
 import "../../styles/supervisorportal.css";
 
-// components
-import TicketCard from "../../components/TicketCard";
 
 export default function SupervisorPortal() {
   const ticketManager = new TicketManager();
