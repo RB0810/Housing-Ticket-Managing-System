@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from 'react-router-dom';
 import TenantAccount from "../../objects/TenantAccount";
+import "./../../../src/styles/createtenantacc.css"
 
 const CreateTenantAcc = () => {
   const [tenantUsername, setTenantUsername] = useState("");
@@ -64,6 +65,7 @@ const CreateTenantAcc = () => {
           key={i}
           type="text"
           value={unitFields[i] || ""}
+          className="create-tenant-acc-input-text"
           onChange={(e) => handleUnitFieldChange(i, e.target.value)}
         />
       );
@@ -72,105 +74,197 @@ const CreateTenantAcc = () => {
   };
 
   return (
-    <div>
+    <div className="create-tenant-acc-div">
       <h1>Create Tenant Account</h1>
-      <form onSubmit={handleSubmit}>
-        <label>Tenant Username:</label>
-        <input
-          type="text"
-          value={tenantUsername}
-          onChange={(e) => setTenantUsername(e.target.value)}
-        />
-        <br />
-
-        <label>Tenant Email:</label>
-        <input
-          type="email"
-          value={tenantEmail}
-          onChange={(e) => setTenantEmail(e.target.value)}
-        />
-        <br />
-
-        <label>Password:</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <br />
-
-        <label>Re-enter Password:</label>
-        <input
-          type="password"
-          value={reEnterPassword}
-          onChange={(e) => setReEnterPassword(e.target.value)}
-        />
-        <br />
-
-        <label>Tenant Phone:</label>
-        <input
-          type="tel"
-          value={tenantPhone}
-          onChange={(e) => setTenantPhone(e.target.value)}
-        />
-        <br />
-
-        <label>Trade Type:</label>
-        <input
-          type="text"
-          value={tradeType}
-          onChange={(e) => setTradeType(e.target.value)}
-        />
-        <br />
-
-        <label>Monthly Rental:</label>
-        <input
-          type="text"
-          value={monthlyRental}
-          onChange={(e) => setMonthlyRental(e.target.value)}
-        />
-        <br />
-
-        <label>Lease Commencement Date:</label>
-        <input
-          type="date"
-          value={leaseCommencementDate}
-          onChange={(e) => setLeaseCommencementDate(e.target.value)}
-        />
-        <br />
-
-        <label>Lease Termination Date:</label>
-        <input
-          type="date"
-          value={leaseTerminationDate}
-          onChange={(e) => setLeaseTerminationDate(e.target.value)}
-        />
-        <br />
-
-        <label>Area (in Sq Meters):</label>
-        <input
-          type="text"
-          value={areaOfUnit}
-          onChange={(e) => setAreaOfUnit(e.target.value)}
-        />
-        <br />
-
-        <label>Number of Units:</label>
-        <input
-          type="number"
-          value={numberOfUnits}
-          onChange={handleNumberOfUnitsChange}
-          min="1"
-          onKeyDown={(e) => e.preventDefault()}
-        />
-        <br />
-
-
-        <label>Unit:</label>
-        {renderUnitFields()}
-        <br />
-
-        <button type="submit">Create Account</button>
+      <form onSubmit={handleSubmit} className="create-tenant-acc-form">
+        <div className="create-tenant-acc-row">
+          <div className="create-tenant-acc-col-25">
+            <label className="create-tenant-acc-label">Tenant Username:</label>
+          </div>
+          
+          <div className="create-tenant-acc-col-75">
+            <input
+            type="text"
+            value={tenantUsername}
+            className="create-tenant-acc-input-text"
+            onChange={(e) => setTenantUsername(e.target.value)}
+          />
+          </div>
+        </div>
+        
+        
+        <div className="create-tenant-acc-row">
+          <div className="create-tenant-acc-col-25">
+            <label className="create-tenant-acc-label">Tenant Email:</label>
+          </div>
+          
+          <div className="create-tenant-acc-col-75">
+            <input
+            type="email"
+            value={tenantEmail}
+            className="create-tenant-acc-input-text"
+            onChange={(e) => setTenantEmail(e.target.value)}
+          />
+          </div>
+        </div>
+        
+        
+        <div className="create-tenant-acc-row">
+          <div className="create-tenant-acc-col-25">
+            <label className="create-tenant-acc-label">Password:</label>
+          </div>
+          
+          <div className="create-tenant-acc-col-75">
+            <input
+            type="password"
+            value={password}
+            className="create-tenant-acc-input-text"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          </div>
+        </div>
+        
+        
+        <div className="create-tenant-acc-row">
+          <div className="create-tenant-acc-col-25">
+            <label className="create-tenant-acc-label">Re-enter Password:</label>
+          </div>
+          
+          <div className="create-tenant-acc-col-75">
+            <input
+            type="password"
+            value={reEnterPassword}
+            className="create-tenant-acc-input-text"
+            onChange={(e) => setReEnterPassword(e.target.value)}
+          />
+          </div>
+        </div>
+        
+        <div className="create-tenant-acc-row">
+          <div className="create-tenant-acc-col-25">
+            <label className="create-tenant-acc-label">Tenant Phone:</label>
+          </div>
+          
+          <div className="create-tenant-acc-col-75">
+            <input
+            type="tel"
+            value={tenantPhone}
+            className="create-tenant-acc-input-text"
+            onChange={(e) => setTenantPhone(e.target.value)}
+          />
+          </div>
+        </div>
+        
+        <div className="create-tenant-acc-row">
+          <div className="create-tenant-acc-col-25">
+            <label className="create-tenant-acc-label">Trade Type:</label>
+          </div>
+          
+          <div className="create-tenant-acc-col-75">
+            <input
+            type="text"
+            value={tradeType}
+            className="create-tenant-acc-input-text"
+            onChange={(e) => setTradeType(e.target.value)}
+          />
+          </div>
+        </div>
+        
+        <div className="create-tenant-acc-row">
+          <div className="create-tenant-acc-col-25">
+            <label className="create-tenant-acc-label">Monthly Rental:</label>
+          </div>
+          
+          <div className="create-tenant-acc-col-75">
+            <input
+            type="text"
+            value={monthlyRental}
+            className="create-tenant-acc-input-text"
+            onChange={(e) => setMonthlyRental(e.target.value)}
+          />
+          </div>
+        </div>
+        
+        <div className="create-tenant-acc-row">
+          <div className="create-tenant-acc-col-25">
+            <label className="create-tenant-acc-label">Lease Commencement Date:</label>
+          </div>
+          
+          <div className="create-tenant-acc-col-75">
+            <input
+            type="date"
+            value={leaseCommencementDate}
+            className="create-tenant-acc-input-date"
+            onChange={(e) => setLeaseCommencementDate(e.target.value)}
+          />
+          </div>
+        </div>
+        
+        <div className="create-tenant-acc-row">
+          <div className="create-tenant-acc-col-25">
+            <label className="create-tenant-acc-label">Lease Termination Date:</label>
+          </div>
+          
+          <div className="create-tenant-acc-col-75">
+            <input
+            type="date"
+            value={leaseTerminationDate}
+            className="create-tenant-acc-input-date"
+            onChange={(e) => setLeaseTerminationDate(e.target.value)}
+          />
+          </div>
+        </div>
+        
+        <div className="create-tenant-acc-row">
+          <div className="create-tenant-acc-col-25">
+            <label className="create-tenant-acc-label">Area (in Sq Meters):</label>
+          </div>
+          
+          <div className="create-tenant-acc-col-75">
+            <input
+            type="text"
+            value={areaOfUnit}
+            className="create-tenant-acc-input-text"
+            onChange={(e) => setAreaOfUnit(e.target.value)}
+          />
+          </div>
+        </div>
+        
+        <div className="create-tenant-acc-row">
+          <div className="create-tenant-acc-col-25">
+            <label className="create-tenant-acc-label">Number of Units:</label>
+          </div>
+          
+          <div className="create-tenant-acc-col-75">
+            <input
+            type="number"
+            value={numberOfUnits}
+            onChange={handleNumberOfUnitsChange}
+            min="1"
+            className="create-tenant-acc-input-text"
+            onKeyDown={(e) => e.preventDefault()}
+          />
+          </div>
+        </div>
+        
+        <div className="create-tenant-acc-row">
+          <div className="create-tenant-acc-col-25">
+          <label className="create-tenant-acc-label">Unit:</label>
+        </div>
+        
+        <div className="create-tenant-acc-col-75">
+          {renderUnitFields()}
+        </div>
+        </div>
+        
+        <div className="create-tenant-acc-row">
+          <input
+            type="submit"
+            value="Create Account"
+            className="create-tenant-acc-input-submit"
+          />
+        </div>
+        
 
         {formError && <p className="create-ticket-error">{formError}</p>}
       </form>

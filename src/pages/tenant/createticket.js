@@ -5,6 +5,9 @@ import TicketManager from "../../managers/ticketmanager";
 import AccountManager from "../../managers/accountmanager";
 import "./../../styles/viewticket.css";
 
+// material UI
+import TextField from '@mui/material/TextField';
+
 const CreateTicket = () => {
   const ticketManager = new TicketManager();
   let { TenantID } = useParams();
@@ -76,27 +79,41 @@ const CreateTicket = () => {
         <h1 className="ticket-creation-title">Create Ticket</h1>
       </div>
 
+
+
       <form onSubmit={handleSubmit} className="ticket-creation-form">
         <div className="con-25">
-          <label htmlFor="name">Name</label>
+          <label htmlFor="name" className="create-ticket-label">Name</label>
+
         </div>
         <div className="con-75">
           <input
             type="text"
             id="name"
-            className="Name_input"
+            className="create-ticket-input"
             placeholder="Name"
             value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div> */}
+        <div className="name-textfield">
+          <img className="create-ticket-icons" src={"/userAccountBox.png"} />
+          <TextField
+            id="name"
+            label="Name"
+            placeholder="Enter your name"
+            variant="filled"
             onChange={(e) => setName(e.target.value)}
           />
         </div>
 
         <div className="con-25">
-          <label htmlFor="dropdown">Request Type</label>
+          <label htmlFor="dropdown" className="create-ticket-label">Request Type</label>
         </div>
         <div className="con-75">
           <select
             id="dropdown"
+            className="create-ticket-select"
             value={requestType}
             onChange={(e) => setRequestType(e.target.value)}
           >
@@ -112,25 +129,39 @@ const CreateTicket = () => {
         </div>
 
         <div className="con-25">
-          <label htmlFor="description">Description</label>
+          <label htmlFor="description" className="create-ticket-label">Description</label>
+
         </div>
         <div className="con-75">
-          <input
-            type="text"
+          <textarea
             id="description"
-            className="description-input"
+            className="create-ticket-description"
             placeholder="Description"
+            rows='5'
             value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div> */}
+
+        <div className="description-textfield">
+          <TextField
+            id="description"
+            label="Description"
+            multiline
+            rows={4}
+            placeholder="Enter your description of the problem"
+            variant="filled"
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
 
         <div className="con-25">
-          <label htmlFor="property">Property</label>
+          <label htmlFor="property" className="create-ticket-label">Property</label>
         </div>
         <div className="con-75">
           <select
             id="property"
+            className="create-ticket-select"
             value={property}
             onChange={(e) => setProperty(e.target.value)}
           >
@@ -146,7 +177,7 @@ const CreateTicket = () => {
         <input
           type="submit"
           value="Create Service Ticket"
-          className="submit-button"
+          className="create-ticket-button"
           disabled={loading}
         />
 
