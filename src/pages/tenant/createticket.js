@@ -45,7 +45,10 @@ const CreateTicket = () => {
     let currentDate = new Date();
     let timezoneOffset = currentDate.getTimezoneOffset() * 60000;
     let localTime = new Date(currentDate - timezoneOffset);
-    let submittedDateTime = localTime.toISOString().replace("T", " ").slice(0, -5);
+    let submittedDateTime = localTime
+      .toISOString()
+      .replace("T", " ")
+      .slice(0, -5);
 
     const ticket = new Ticket(
       name,

@@ -66,19 +66,42 @@ export default class TicketManager {
     }
   }
 
+  // FEEDBACK
   /**
    * Updates Ticket entry in Supabase based on Ticket object's ID attribute
-   * @TicketID {int} - Ticket ID to update
-   * @ColumnName {string} - Column name to update
+   * @TicketID {int} - Ticket ID to update feedback rating of
    * @Value {string} - Value to update
    *
    * @returns True if successful, False if unsuccessful
    */
 
-  async updateTicket(ticketId, column_name, value) {
+  async updateFeedbackRating(ticketId, value) {
     const { data, error } = await supabase
       .from("Service Request")
-      .update({ column_name: value })
+      .update({ FeedbackRating: value })
+      .eq("ServiceRequestID", ticketId)
+      .select();
+
+    if (error) {
+      console.error("Error updating ticket:", error);
+      return false;
+    } else {
+      console.log("Ticket updated successfully:", data);
+      return true;
+    }
+  }
+
+  /**
+   * Updates Ticket entry in Supabase based on Ticket object's ID attribute
+   * @TicketID {int} - Ticket ID to update
+   * @Comments {string} - Value to update
+   *
+   * @returns True if successful, False if unsuccessful
+   */
+  async updateFeedbackComments(ticketId, comments) {
+    const { data, error } = await supabase
+      .from("Service Request")
+      .update({ FeedbackComments: comments })
       .eq("ServiceRequestID", ticketId)
       .select();
 
@@ -97,7 +120,6 @@ export default class TicketManager {
    *
    * @returns JSON of ticket, else return false if error
    */
-
   async getTicket(ticketId) {
     const { data, error } = await supabase
       .from("Service Request")
@@ -234,22 +256,6 @@ export default class TicketManager {
    *
    * @returns List od dictionaries if successful, else returns false
    */
-
-  async getTicketsByStatus(status) {
-    let { data, error } = await supabase
-      .from("Service Request")
-      .select("*")
-      .eq("Status", status);
-
-    if (error) {
-      console.error("Error getting all tickets by status:", error);
-      return false;
-    } else {
-      console.log(`"Tickets of Status :${status} fetched successfully:"`, data);
-    }
-
-    return data;
-  }
 
   /**
    * @PARCStatus {string} - PARCStatus to get tickets of
@@ -388,6 +394,8 @@ export default class TicketManager {
       );
       return data;
     }
+
+    return data;
   }
 
   /**
@@ -421,7 +429,7 @@ export default class TicketManager {
       return false;
     } else {
       console.log(
-        `"Tickets of PARCStatus :${PARCStatus} and TenantID :${staffID} fetched successfully:"`,
+        `"Tickets of PARCStatus :${PARCStatus} and StaffID :${staffID} fetched successfully:"`,
         data
       );
       return data;
@@ -430,7 +438,7 @@ export default class TicketManager {
 
   // ASSIGN
   /**
-   * @TicketID {int} - PARCStatus to get tickets of
+   * @TicketID {int} - Ticket ID
    *
    * @returns True if assigned already, else False, null if error
    */
@@ -451,5 +459,90 @@ export default class TicketManager {
     }
 
     return data[0].StaffID == null;
+  }
+
+  /**
+   * @TicketID {int} - Ticket ID
+   *
+   * @returns True if assigned already, else False, null if error
+   */
+  async assignTicket(ticketId, staffId) {
+    const { data, error } = await supabase
+      .from("Service Request")
+      .update({ StaffID: staffId })
+      .eq("ServiceRequestID", ticketId)
+      .select();
+
+    if (error) {
+      console.error("Error assigning ticket:", error);
+      return false;
+    } else {
+      console.log("Ticket assigned successfully:", data);
+      return true;
+    }
+  }
+
+  async closeTicket(ticketId) {
+    const { data, error } = await supabase
+      .from("Service Request")
+      .update({ PARCStatus: "CLOSED" })
+      .eq("ServiceRequestID", ticketId)
+      .select();
+
+    if (error) {
+      console.error("Error closing ticket:", error);
+      return false;
+    } else {
+      console.log("Ticket closed successfully:", data);
+      return true;
+    }
+  }
+
+  async rejectTicket(ticketId) {
+    const { data, error } = await supabase
+      .from("Service Request")
+      .update({ Status: "Works Rejected" })
+      .eq("ServiceRequestID", ticketId)
+      .select();
+
+    if (error) {
+      console.error("Error rejecting ticket:", error);
+      return false;
+    } else {
+      console.log("Ticket rejected successfully:", data);
+      return true;
+    }
+  }
+
+  async updateTicket(ticketId, column_name, value) {
+    const { data, error } = await supabase
+      .from("Service Request")
+      .update({ [column_name]: value })
+      .eq("ServiceRequestID", parseInt(ticketId))
+      .select();
+
+    if (error) {
+      console.error("Error updating ticket:", error);
+      return false;
+    } else {
+      console.log("Ticket updated successfully:", data);
+      return true;
+    }
+  }
+
+  async getTicketByColumn(ticketId, column_name) {
+    const { data, error } = await supabase
+      .from("Service Request")
+      .select(column_name)
+      .eq("ServiceRequestID", parseInt(ticketId));
+
+    if (error) {
+      console.error("Error getting ticket:", error);
+      return false;
+    } else {
+      console.log("Ticket fetched successfully:", data);
+    }
+
+    return data[0][column_name];
   }
 }

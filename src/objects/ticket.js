@@ -11,6 +11,29 @@
  */
 
 export default class Ticket {
+  contructor(ticket) {
+    this.id = ticket.ServiceRequestID;
+    this.name = ticket.Name;
+    this.tenantID = ticket.TenantID;
+    this.submittedDateTime = ticket.SubmittedDateTime;
+    this.category = ticket.Category;
+    this.description = ticket.Description;
+    this.PARCstatus = ticket.PARCstatus;
+    this.supervisorID = ticket.SupervisorID;
+    this.staffID = ticket.StaffID;
+    this.contact = ticket.Contact;
+    this.status = ticket.Status;
+    this.quotationRequired = ticket.QuotationRequired;
+    this.quotationAmount = ticket.QuotationAmount;
+    this.quotationUploadedBy = ticket.QotationUploadedBy;
+    this.quotationAccepted = ticket.QuotationAccepted;
+    this.quotationAcceptanceDate = ticket.QuotationAcceptanceDate;
+    this.quotationAttachmentPath = ticket.QuotationAttachmentPath;
+    this.completionDateTime = ticket.CompletionDateTime;
+    this.feedbackRating = ticket.FeedbackRating;
+    this.feedbackComments = ticket.FeedbackComments;
+  }
+
   constructor(
     name,
     tenantID,

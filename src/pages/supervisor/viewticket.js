@@ -1,26 +1,55 @@
 import { useState, useEffect } from "react";
 import TicketManager from "../../managers/ticketmanager";
-import TicketDetails from "../../components/TicketDetails";
+import AccountManager from "../../managers/accountmanager";
 import { useParams } from "react-router-dom";
+import BasicTicketDetails from "../../components/BasicTicketDetails";
+import SubmittedByCard from "../../components/SubmittedByCard";
+import TicketAssigner from "../../components/TicketAssigner";
+import AssignedToCard from "../../components/AssignedToCard";
+import ViewRejectDetails from "../../components/ViewRejectDetails";
+import ViewFinalFeedbackDetails from "../../components/ViewFinalFeedbackDetails";
 
 const ViewTicketSupervisor = () => {
+  const accountManager = new AccountManager();
   const ticketManager = new TicketManager();
   let { ServiceRequestID } = useParams();
   const [serviceTicket, setServiceTicket] = useState([]);
+  const [tenant, setTenant] = useState([]);
+  const [staff, setStaff] = useState([]);
+  const [status, setStatus] = useState("");
   const [fetchError, setFetchError] = useState([]);
 
+  // For Ticket Assignment
+  const [staffMembers, setStaffMembers] = useState([]);
+  const [selectedStaff, setSelectedStaff] = useState("");
+  const [assignStatus, setAssignStatus] = useState("");
+
   useEffect(() => {
-    const getTicket = async () => {
-      let new_data = await ticketManager.getTicketsByPARCStatusForTenantID();
+    const getStaffAndTenantAndTicket = async () => {
+      let ticketData = await ticketManager.getTicket(
+        parseInt(ServiceRequestID)
+      );
 
-      let data = await ticketManager.getTicket(parseInt(ServiceRequestID));
-      console.log("Ticket gote!");
+      let tenantData = await accountManager.getSubmittedByTenantDetails(
+        ticketData[0].TenantID
+      );
 
-      if (data != false) {
-        setServiceTicket(data[0]);
+      let staffData = await accountManager.getAssignedStaffDetails(
+        ticketData[0].StaffID
+      );
+
+      let staffMembers = await accountManager.getAllStaffForSupervisorID(
+        ticketData[0].SupervisorID
+      );
+
+      if (ticketData !== false) {
+        setServiceTicket(ticketData[0]);
+        setTenant(tenantData);
+        setStaff(staffData);
+        setStaffMembers(staffMembers);
+        setStatus(ticketData[0].Status);
         setFetchError(null);
-      } else if (data.length == 0) {
-        console.log(data);
+      } else if (ticketData.length === 0) {
         setFetchError("This ticket is EMPTY!");
         setServiceTicket();
       } else {
@@ -29,50 +58,136 @@ const ViewTicketSupervisor = () => {
       }
     };
 
-    getTicket();
+    getStaffAndTenantAndTicket();
   }, []);
 
-  return (
-    <div className="page tenantportal">
-      <p>Supervisor</p>
-      {fetchError && <p>{fetchError}</p>}
-      <div className="service-tickets">
-        <div className="service-ticket-row">
-          {serviceTicket && (
-            <TicketDetails
-              key={serviceTicket.ServiceRequestID}
-              ticket={serviceTicket}
-            />
-          )}
+  const handleAssign = async () => {
+    try {
+      await ticketManager.assignTicket(ticket.ServiceRequestID, selectedStaff);
+      await ticketManager.updateTicket(
+        ticket.ServiceRequestID,
+        "Status",
+        "Ticket Assigned"
+      );
+      setAssignStatus("Assigning succeeded");
+      // Perform any additional actions or display a success message
+    } catch (error) {
+      // Handle errors appropriately
+      console.log(error);
+      setAssignStatus("Assigning failed");
+    }
+  };
+
+  if (status === "Awaiting Review") {
+    return (
+      <div>
+        <BasicTicketDetails ticket={serviceTicket} />
+        _______________________________________
+        <SubmittedByCard tenant={tenant} />
+        ____________________________________
+        <div>
+          <label>
+            Assign Staff:
+            <select
+              value={selectedStaff}
+              onChange={(e) => setSelectedStaff(e.target.value)}
+            >
+              <option value="">-- Select Staff --</option>
+              {staffMembers.map((staff) => (
+                <option key={staff.StaffID} value={staff.StaffID}>
+                  {staff.StaffName}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          {assignStatus && <p>{assignStatus}</p>}
+
+          <button onClick={handleAssign}>Assign</button>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
+
+  if (status === "Ticket Assigned") {
+    return (
+      <div>
+        <BasicTicketDetails ticket={serviceTicket} />
+        _______________________________________
+        <SubmittedByCard tenant={tenant} />
+        ____________________________________
+        <AssignedToCard staff={serviceTicket} />
+      </div>
+    );
+  }
+
+  if (status === "Works Started") {
+    return (
+      <div>
+        <BasicTicketDetails ticket={serviceTicket} />
+        _______________________________________
+        <SubmittedByCard tenant={tenant} />
+        ____________________________________
+        <AssignedToCard staff={staff} />
+      </div>
+    );
+  }
+
+  if (status === "Works Ended") {
+    return (
+      <div>
+        <BasicTicketDetails ticket={serviceTicket} />
+        _______________________________________
+        <SubmittedByCard tenant={tenant} />
+        ____________________________________
+        <AssignedToCard staff={staff} />
+      </div>
+    );
+  }
+
+  if (status === "Works Rejected") {
+    return (
+      <div>
+        <BasicTicketDetails ticket={serviceTicket} />
+        _______________________________________
+        <SubmittedByCard tenant={tenant} />
+        ____________________________________
+        <AssignedToCard staff={staff} />
+        _______________________________________
+      </div>
+    );
+  }
+
+  if (status === "Works Rejected") {
+    return (
+      <div>
+        <BasicTicketDetails ticket={serviceTicket} />
+        _______________________________________
+        <SubmittedByCard tenant={tenant} />
+        ____________________________________
+        <AssignedToCard staff={staff} />
+        _______________________________________
+        <ViewRejectDetails ticket={serviceTicket} />
+      </div>
+    );
+  }
+
+  if (status === "Feedback Submitted") {
+    return (
+      <div>
+        <BasicTicketDetails ticket={serviceTicket} />
+        _______________________________________
+        <SubmittedByCard tenant={tenant} />
+        ____________________________________
+        <AssignedToCard staff={staff} />
+        _______________________________________
+        <ViewFinalFeedbackDetails
+          rating={serviceTicket.FeedbackRating}
+          comments={serviceTicket.FeedbackComments}
+        />
+      </div>
+    );
+  }
 };
 
 export default ViewTicketSupervisor;
-//import React, { useState, useEffect } from 'react';
-//import "./../../../src/styles/viewticket.css";
-//import BasicTabs from '../../components/TicketTabs';
-//
-//class viewticket extends React.Component{
-//
-//    constructor(props){
-//        super(props);
-//        this.state = {
-//        }
-//      }
-//
-//    render(){
-//        return(
-//            <div>
-//                <div className='viewtixh1'>
-//                     <h1>View Tickets</h1>
-//                 </div>
-//                 <div className='Tabs'>
-//                   <BasicTabs/>
-//                 </div>
-//             </div>
-//         )
-//     }
-// }
