@@ -19,6 +19,11 @@ const ViewTicketSupervisor = () => {
   const [status, setStatus] = useState("");
   const [fetchError, setFetchError] = useState([]);
 
+  // For Ticket Assignment
+  const [staffMembers, setStaffMembers] = useState([]);
+  const [selectedStaff, setSelectedStaff] = useState("");
+  const [assignStatus, setAssignStatus] = useState("");
+
   useEffect(() => {
     const getStaffAndTenantAndTicket = async () => {
       let ticketData = await ticketManager.getTicket(
@@ -33,10 +38,15 @@ const ViewTicketSupervisor = () => {
         ticketData[0].StaffID
       );
 
+      let staffMembers = await accountManager.getAllStaffForSupervisorID(
+        ticketData[0].SupervisorID
+      );
+
       if (ticketData !== false) {
         setServiceTicket(ticketData[0]);
         setTenant(tenantData);
         setStaff(staffData);
+        setStaffMembers(staffMembers);
         setStatus(ticketData[0].Status);
         setFetchError(null);
       } else if (ticketData.length === 0) {
@@ -51,6 +61,23 @@ const ViewTicketSupervisor = () => {
     getStaffAndTenantAndTicket();
   }, []);
 
+  const handleAssign = async () => {
+    try {
+      await ticketManager.assignTicket(ticket.ServiceRequestID, selectedStaff);
+      await ticketManager.updateTicket(
+        ticket.ServiceRequestID,
+        "Status",
+        "Ticket Assigned"
+      );
+      setAssignStatus("Assigning succeeded");
+      // Perform any additional actions or display a success message
+    } catch (error) {
+      // Handle errors appropriately
+      console.log(error);
+      setAssignStatus("Assigning failed");
+    }
+  };
+
   if (status === "Awaiting Review") {
     return (
       <div>
@@ -58,7 +85,26 @@ const ViewTicketSupervisor = () => {
         _______________________________________
         <SubmittedByCard tenant={tenant} />
         ____________________________________
-        <TicketAssigner ticket={serviceTicket} />
+        <div>
+          <label>
+            Assign Staff:
+            <select
+              value={selectedStaff}
+              onChange={(e) => setSelectedStaff(e.target.value)}
+            >
+              <option value="">-- Select Staff --</option>
+              {staffMembers.map((staff) => (
+                <option key={staff.StaffID} value={staff.StaffID}>
+                  {staff.StaffName}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          {assignStatus && <p>{assignStatus}</p>}
+
+          <button onClick={handleAssign}>Assign</button>
+        </div>
       </div>
     );
   }

@@ -3,7 +3,6 @@ import TicketManager from "../../managers/ticketmanager";
 import AccountManager from "../../managers/accountmanager";
 import BasicTicketDetails from "../../components/BasicTicketDetails";
 import SubmittedByCard from "../../components/SubmittedByCard";
-import ViewRejectDetails from "../../components/ViewRejectDetails";
 import ViewFinalFeedbackDetails from "../../components/ViewFinalFeedbackDetails";
 import QuotationUploader from "../../components/QuotationUploader";
 import { useParams } from "react-router-dom";
@@ -199,18 +198,6 @@ const ViewTicketStaff = () => {
 
           <button onClick={handleRestartWorks}>Restart Works</button>
         </div>
-      </div>
-    );
-  }
-
-  if (status === "Works Rejected") {
-    return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        _______________________________________
-        <SubmittedByCard tenant={tenant} />
-        _______________________________________
-        <ViewRejectDetails ticket={serviceTicket} />
       </div>
     );
   }
