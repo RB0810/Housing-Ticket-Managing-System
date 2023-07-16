@@ -1,10 +1,10 @@
 import supabase from "../config/supabaseClient";
-import Notification from "../public/Notification";
+import Notification from "../Notification";
 
 class NotificationManager {
   constructor() {
     this.supabase = supabase;
-    this.notification = new Notification();
+    this.notification = Notification;
   }
 
   startListening(tableName, email, emailParameters) {
