@@ -4,8 +4,8 @@ import AccountManager from "../../managers/accountmanager";
 import BasicTicketDetails from "../../components/BasicTicketDetails";
 import SubmittedByCard from "../../components/SubmittedByCard";
 import ViewFinalFeedbackDetails from "../../components/ViewFinalFeedbackDetails";
-import QuotationUploader from "../../components/QuotationUploader";
 import { useParams } from "react-router-dom";
+import UploadQuotation from "../../components/UploadQuotation";
 
 const ViewTicketStaff = () => {
   const ticketManager = new TicketManager();
@@ -151,7 +151,7 @@ const ViewTicketStaff = () => {
 
           {quotationRequired === "YES" && (
             <div>
-              <QuotationUploader onFileChange={handleFileChange} />
+              <UploadQuotation bucketName="quotation" ServiceRequestID={serviceTicket.ServiceRequestID} />
             </div>
           )}
 

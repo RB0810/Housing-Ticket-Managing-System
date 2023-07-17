@@ -1,0 +1,12 @@
+.pdf-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; 
+    margin-top: 20px;
+  }
+  
+  .pdf-viewer {
+    width: 50%;
+    height: 400px;
+  }
+  
