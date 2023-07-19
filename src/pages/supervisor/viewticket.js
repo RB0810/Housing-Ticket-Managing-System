@@ -6,6 +6,7 @@ import BasicTicketDetails from "../../components/BasicTicketDetails";
 import SubmittedByCard from "../../components/SubmittedByCard";
 import AssignedToCard from "../../components/AssignedToCard";
 import ViewFinalFeedbackDetails from "../../components/ViewFinalFeedbackDetails";
+import UploadQuotation from "../../components/UploadQuotation";
 
 const ViewTicketSupervisor = () => {
   const accountManager = new AccountManager();
@@ -103,6 +104,7 @@ const ViewTicketSupervisor = () => {
 
           <button onClick={handleAssign}>Assign</button>
         </div>
+        <UploadQuotation bucketName="quotation" ServiceRequestID={serviceTicket.ServiceRequestID} />
       </div>
     );
   }

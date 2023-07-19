@@ -6,6 +6,8 @@ import AssignedToCard from "../../components/AssignedToCard";
 import FeedbackCard from "../../components/FeedbackCard";
 import ViewFinalFeedbackDetails from "../../components/ViewFinalFeedbackDetails";
 import { useParams } from "react-router-dom";
+import DownloadQuotation from "../../components/DownloadQuotation";
+import DisplayQuotation from "../../components/DisplayQuotation";
 
 const ViewTicketTenant = () => {
   const ticketManager = new TicketManager();
@@ -102,6 +104,8 @@ const ViewTicketTenant = () => {
     return (
       <div>
         <BasicTicketDetails ticket={serviceTicket} />
+        <DownloadQuotation bucketName="quotation" ServiceRequestID={serviceTicket.ServiceRequestID} />
+        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
       </div>
     );
   }
@@ -122,7 +126,6 @@ const ViewTicketTenant = () => {
       <div>
         <BasicTicketDetails ticket={serviceTicket} />
         <AssignedToCard staff={staff} />
-        Quotation Component here
       </div>
     );
   }
@@ -133,7 +136,6 @@ const ViewTicketTenant = () => {
         <BasicTicketDetails ticket={serviceTicket} />
         <AssignedToCard ticket={serviceTicket} />
         <p>Quotation Needed: {serviceTicket.QuotationRequired}</p>
-        UPLOADED QUOTATION HERE
       </div>
     );
   }
@@ -144,7 +146,6 @@ const ViewTicketTenant = () => {
         <BasicTicketDetails ticket={serviceTicket} />
         <AssignedToCard staff={staff} />
         <p>Quotation Needed: {serviceTicket.QuotationRequired}</p>
-        QUOTATION OBJECT HERE
       </div>
     );
   }
