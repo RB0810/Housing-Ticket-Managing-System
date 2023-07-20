@@ -18,6 +18,7 @@ const ViewTicketTenant = () => {
   const [staff, setStaff] = useState([]);
   const [fetchError, setFetchError] = useState([]);
 
+  const [quotationRequired, setQuotationRequired] = useState(false);
   const [quotationState, setQuotationState] = useState(null);
   const [showQuotationButtons, setShowQuotationButtons] = useState(true);
 
@@ -43,6 +44,7 @@ const ViewTicketTenant = () => {
         setServiceTicket(ticketData[0]);
         setStaff(staffData);
         setStatus(ticketData[0].Status);
+        setQuotationRequired(ticketData[0].QuotationRequired);
         setFetchError(null);
       } else if (ticketData.length === 0) {
         setFetchError("This ticket is EMPTY!");
@@ -315,6 +317,13 @@ const ViewTicketTenant = () => {
         <BasicTicketDetails ticket={serviceTicket} />
         <AssignedToCard staff={staff} />
         <p>Quotation Needed: {serviceTicket.QuotationRequired}</p>
+        <div>
+          <DownloadQuotation
+            bucketName="quotation"
+            ServiceRequestID={serviceTicket.ServiceRequestID}
+          />
+          <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+        </div>
       </div>
     );
   }
@@ -324,12 +333,17 @@ const ViewTicketTenant = () => {
       <div>
         <BasicTicketDetails ticket={serviceTicket} />
         <AssignedToCard staff={staff} />
-        <p>Quotation Needed: {serviceTicket.QuotationRequired}</p>
-        <DownloadQuotation
-          bucketName="quotation"
-          ServiceRequestID={serviceTicket.ServiceRequestID}
-        />
-        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+        {quotationRequired && (
+          <div>
+            <DownloadQuotation
+              bucketName="quotation"
+              ServiceRequestID={serviceTicket.ServiceRequestID}
+            />
+            <DisplayQuotation
+              ServiceRequestID={serviceTicket.ServiceRequestID}
+            />
+          </div>
+        )}
       </div>
     );
   }
@@ -353,11 +367,18 @@ const ViewTicketTenant = () => {
         )}
         {renderContent()}
         _______________________________________
-        <DownloadQuotation
-          bucketName="quotation"
-          ServiceRequestID={serviceTicket.ServiceRequestID}
-        />
-        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+        ____________________________________
+        {quotationRequired && (
+          <div>
+            <DownloadQuotation
+              bucketName="quotation"
+              ServiceRequestID={serviceTicket.ServiceRequestID}
+            />
+            <DisplayQuotation
+              ServiceRequestID={serviceTicket.ServiceRequestID}
+            />
+          </div>
+        )}
         _______________________________________
       </div>
     );
@@ -370,11 +391,17 @@ const ViewTicketTenant = () => {
         <h1>Reason for Reject : {serviceTicket.FeedbackComments}</h1>
         <AssignedToCard staff={staff} />
         _______________________________________
-        <DownloadQuotation
-          bucketName="quotation"
-          ServiceRequestID={serviceTicket.ServiceRequestID}
-        />
-        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+        {quotationRequired && (
+          <div>
+            <DownloadQuotation
+              bucketName="quotation"
+              ServiceRequestID={serviceTicket.ServiceRequestID}
+            />
+            <DisplayQuotation
+              ServiceRequestID={serviceTicket.ServiceRequestID}
+            />
+          </div>
+        )}
       </div>
     );
   }
@@ -391,11 +418,17 @@ const ViewTicketTenant = () => {
           comments={serviceTicket.FeedbackComments}
         />
         _______________________________________
-        <DownloadQuotation
-          bucketName="quotation"
-          ServiceRequestID={serviceTicket.ServiceRequestID}
-        />
-        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+        {quotationRequired && (
+          <div>
+            <DownloadQuotation
+              bucketName="quotation"
+              ServiceRequestID={serviceTicket.ServiceRequestID}
+            />
+            <DisplayQuotation
+              ServiceRequestID={serviceTicket.ServiceRequestID}
+            />
+          </div>
+        )}
         _______________________________________
       </div>
     );

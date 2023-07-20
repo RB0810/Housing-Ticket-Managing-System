@@ -15,10 +15,11 @@ const ViewTicketStaff = () => {
   const [serviceTicket, setServiceTicket] = useState([]);
   const [tenant, setTenant] = useState([]);
   const [fetchError, setFetchError] = useState([]);
+
   const [status, setStatus] = useState("");
   const [feedbackComments, setFeedbackComments] = useState("");
-  const [file, setFile] = useState(null);
-  const [quotationRequired, setQuotationRequired] = useState("");
+
+  const [quotationRequired, setQuotationRequired] = useState("Select Option");
 
   useEffect(() => {
     const getTenantAndTicket = async () => {
@@ -50,10 +51,7 @@ const ViewTicketStaff = () => {
 
   const handleQuotationRequiredChange = (e) => {
     setQuotationRequired(e.target.value);
-  };
-
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
+    console.log(quotationRequired);
   };
 
   const handleContinue = async () => {
@@ -64,7 +62,7 @@ const ViewTicketStaff = () => {
         quotationRequired
       );
 
-      if (quotationRequired === "YES") {
+      if (quotationRequired === true) {
         await ticketManager.updateTicket(
           serviceTicket.ServiceRequestID,
           "Status",
@@ -83,6 +81,7 @@ const ViewTicketStaff = () => {
         "ACTIVE"
       );
       window.alert("QUOTATION UPDATE SUCCESSFUL!");
+      window.location.reload();
     } catch (error) {
       window.alert("ERROR IN CONTINUE FOR QUOTATION UPLOAD");
     }
@@ -117,9 +116,28 @@ const ViewTicketStaff = () => {
 
       // Perform any additional actions or display a success message
       window.alert("Update Successful!");
+      window.location.reload();
     } catch (error) {
       // Handle errors appropriately
       window.alert("Update Failed!");
+    }
+  };
+
+  const renderContent = () => {
+    // Quotation Feedback
+    if (quotationRequired === "true") {
+      return (
+        <div>
+          <UploadQuotation
+            bucketName="bucket"
+            ServiceRequestID={serviceTicket.ServiceRequestID}
+          />
+
+          
+        </div>
+      );
+    } else if (quotationRequired === false) {
+      return null;
     }
   };
 
@@ -147,22 +165,13 @@ const ViewTicketStaff = () => {
               value={quotationRequired}
               onChange={handleQuotationRequiredChange}
             >
-              <option value="">-- Select Option --</option>
-              <option value="YES">YES</option>
-              <option value="NO">NO</option>
+              <option value={true}>YES</option>
+              <option value={false}>NO</option>
             </select>
           </label>
+          {renderContent()}
 
-          {quotationRequired === "YES" && (
-            <div>
-              <UploadQuotation
-                bucketName="quotation"
-                ServiceRequestID={serviceTicket.ServiceRequestID}
-              />
-            </div>
-          )}
-
-          <button onClick={handleContinue}>Continue</button>
+          <button onClick={handleContinue}>Submit</button>
         </div>
       </div>
     );

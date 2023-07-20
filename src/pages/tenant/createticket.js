@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Ticket from "../../objects/ticket";
 import TicketManager from "../../managers/ticketmanager";
 import AccountManager from "../../managers/accountmanager";
@@ -9,6 +9,7 @@ import "./../../styles/viewticket.css";
 import TextField from "@mui/material/TextField";
 
 const CreateTicket = () => {
+  const navigate = useNavigate();
   const ticketManager = new TicketManager();
   let { TenantID } = useParams();
   const [name, setName] = useState("");
