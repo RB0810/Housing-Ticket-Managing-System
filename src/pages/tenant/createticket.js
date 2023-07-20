@@ -4,6 +4,7 @@ import Ticket from "../../objects/ticket";
 import TicketManager from "../../managers/ticketmanager";
 import AccountManager from "../../managers/accountmanager";
 import "./../../styles/viewticket.css";
+import NotificationManager from "../../managers/notificationmanager";
 
 // material UI
 import TextField from '@mui/material/TextField';
@@ -59,6 +60,11 @@ const CreateTicket = () => {
       property
     );
 
+    const body = `A new ticket has been created by Tenant ${TenantID}, unit ${property}.
+    Request: ${name} 
+    Ticket Category: ${requestType}
+    ${description}`;
+
     setLoading(true);
 
     try {
@@ -66,6 +72,13 @@ const CreateTicket = () => {
 
       if (success) {
         setFormError("Successfully added ticket");
+        const notificationmanager = new NotificationManager();
+        try {
+          await notificationmanager.sendMailtoSupervisorFromTenantID(TenantID, body);
+          console.log("Mail sent");
+        } catch (error) {
+          console.error("Mail sending error:", error);
+        }
       } else {
         setFormError("Error adding ticket");
       }
@@ -98,7 +111,7 @@ const CreateTicket = () => {
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
-        </div> */}
+        </div>
         <div className="name-textfield">
           <img className="create-ticket-icons" src={"/userAccountBox.png"} />
           <TextField
@@ -144,7 +157,7 @@ const CreateTicket = () => {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
-        </div> */}
+        </div> 
 
         <div className="description-textfield">
           <TextField
