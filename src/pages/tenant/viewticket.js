@@ -72,7 +72,7 @@ const ViewTicketTenant = () => {
               ></textarea>
             </label>
 
-            <button type="submit">Submit Feedback</button>
+            <button type="submit">Submit</button>
           </form>
         </div>
       );
@@ -151,6 +151,11 @@ const ViewTicketTenant = () => {
   const handleRejectQuotation = async () => {
     try {
       // Update in Database
+      await ticketManager.updateTicket(
+        parseInt(serviceTicket.ServiceRequestID),
+        "Status",
+        "Quotation Rejected"
+      );
 
       // Change QuotationAcceptedByTenant
       await ticketManager.updateTicket(
@@ -160,9 +165,8 @@ const ViewTicketTenant = () => {
       );
 
       // Add Reason for Rejecting Quotation (reuses FeedbackComments)
-      await ticketManager.updateTicket(
+      await ticketManager.updateFeedbackComments(
         parseInt(serviceTicket.ServiceRequestID),
-        "FeedbackComments",
         rejectComments
       );
 
@@ -239,6 +243,7 @@ const ViewTicketTenant = () => {
       );
 
       window.alert("Feedback submitted!");
+      window.location.reload();
     } catch (error) {
       window.alert("Error submitting feedback: " + error);
     }
@@ -307,23 +312,6 @@ const ViewTicketTenant = () => {
           ServiceRequestID={serviceTicket.ServiceRequestID}
         />
         <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
-      </div>
-    );
-  }
-
-  if (status === "Quotation Rejected") {
-    return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        <AssignedToCard staff={staff} />
-        <p>Quotation Needed: {serviceTicket.QuotationRequired}</p>
-        <div>
-          <DownloadQuotation
-            bucketName="quotation"
-            ServiceRequestID={serviceTicket.ServiceRequestID}
-          />
-          <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
-        </div>
       </div>
     );
   }

@@ -19,7 +19,7 @@ const ViewTicketStaff = () => {
   const [status, setStatus] = useState("");
   const [feedbackComments, setFeedbackComments] = useState("");
 
-  const [quotationRequired, setQuotationRequired] = useState("Select Option");
+  const [quotationRequired, setQuotationRequired] = useState("true");
 
   useEffect(() => {
     const getTenantAndTicket = async () => {
@@ -62,7 +62,7 @@ const ViewTicketStaff = () => {
         quotationRequired
       );
 
-      if (quotationRequired === true) {
+      if (quotationRequired === "true") {
         await ticketManager.updateTicket(
           serviceTicket.ServiceRequestID,
           "Status",
@@ -84,6 +84,20 @@ const ViewTicketStaff = () => {
       window.location.reload();
     } catch (error) {
       window.alert("ERROR IN CONTINUE FOR QUOTATION UPLOAD");
+    }
+  };
+
+  const handleReuploadQuotation = async () => {
+    try {
+      await ticketManager.updateTicket(
+        serviceTicket.ServiceRequestID,
+        "Status",
+        "Quotation Uploaded"
+      );
+      window.alert("QUOTATION UPDATE SUCCESSFUL!");
+      window.location.reload();
+    } catch (error) {
+      window.alert("ERROR IN REUPLOAD FOR QUOTATION UPLOAD");
     }
   };
 
@@ -129,14 +143,12 @@ const ViewTicketStaff = () => {
       return (
         <div>
           <UploadQuotation
-            bucketName="bucket"
+            bucketName="quotation"
             ServiceRequestID={serviceTicket.ServiceRequestID}
           />
-
-          
         </div>
       );
-    } else if (quotationRequired === false) {
+    } else if (quotationRequired === "false") {
       return null;
     }
   };
@@ -170,8 +182,9 @@ const ViewTicketStaff = () => {
             </select>
           </label>
           {renderContent()}
-
-          <button onClick={handleContinue}>Submit</button>
+          <div>
+            <button onClick={handleContinue}>Submit</button>
+          </div>
         </div>
       </div>
     );
@@ -213,7 +226,19 @@ const ViewTicketStaff = () => {
         <BasicTicketDetails ticket={serviceTicket} />
         _______________________________________
         <SubmittedByCard tenant={tenant} />
+        ____________________________________
+        <UploadQuotation
+          bucketName="quotation"
+          ServiceRequestID={serviceTicket.ServiceRequestID}
+        />
+        <div>
+          <button onClick={handleReuploadQuotation}>Reupload Quotation</button>
+        </div>
         _______________________________________
+        <div>
+          <h2>Rejection Details</h2>
+          <p>Reason for rejection: {feedbackComments}</p>
+        </div>
         <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
         _______________________________________
       </div>
@@ -230,6 +255,8 @@ const ViewTicketStaff = () => {
         <div>
           <button onClick={handleEndWorks}>End Works</button>
         </div>
+        ____________________________________
+        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
       </div>
     );
   }
