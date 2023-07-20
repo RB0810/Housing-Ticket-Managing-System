@@ -1,12 +1,12 @@
 import { useEffect, useState, useMemo } from "react";
-import { Routes, Route, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Ticket from "../../objects/ticket";
 import TicketManager from "../../managers/ticketmanager";
 import AccountManager from "../../managers/accountmanager";
 import "./../../styles/viewticket.css";
 
 // material UI
-import TextField from '@mui/material/TextField';
+import TextField from "@mui/material/TextField";
 
 const CreateTicket = () => {
   const ticketManager = new TicketManager();
@@ -65,12 +65,11 @@ const CreateTicket = () => {
       let success = await ticketManager.addTicket(ticket);
 
       if (success) {
-        setFormError("Successfully added ticket");
-      } else {
-        setFormError("Error adding ticket");
+        window.alert("Ticket Sucessfully Created");
+        window.location.reload();
       }
     } catch (error) {
-      setFormError("An error occurred while adding the ticket");
+      window.alert("Error submitting ticket");
     } finally {
       setLoading(false);
     }
@@ -82,12 +81,11 @@ const CreateTicket = () => {
         <h1 className="ticket-creation-title">Create Ticket</h1>
       </div>
 
-
-
       <form onSubmit={handleSubmit} className="ticket-creation-form">
         <div className="con-25">
-          <label htmlFor="name" className="create-ticket-label">Name</label>
-
+          <label htmlFor="name" className="create-ticket-label">
+            Name
+          </label>
         </div>
         <div className="con-75">
           <input
@@ -98,7 +96,8 @@ const CreateTicket = () => {
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
-        </div> */}
+        </div>{" "}
+        */}
         <div className="name-textfield">
           <img className="create-ticket-icons" src={"/userAccountBox.png"} />
           <TextField
@@ -109,9 +108,10 @@ const CreateTicket = () => {
             onChange={(e) => setName(e.target.value)}
           />
         </div>
-
         <div className="con-25">
-          <label htmlFor="dropdown" className="create-ticket-label">Request Type</label>
+          <label htmlFor="dropdown" className="create-ticket-label">
+            Request Type
+          </label>
         </div>
         <div className="con-75">
           <select
@@ -130,22 +130,22 @@ const CreateTicket = () => {
             <option value="Others">Others</option>
           </select>
         </div>
-
         <div className="con-25">
-          <label htmlFor="description" className="create-ticket-label">Description</label>
-
+          <label htmlFor="description" className="create-ticket-label">
+            Description
+          </label>
         </div>
         <div className="con-75">
           <textarea
             id="description"
             className="create-ticket-description"
             placeholder="Description"
-            rows='5'
+            rows="5"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
-        </div> */}
-
+        </div>{" "}
+        */}
         <div className="description-textfield">
           <TextField
             id="description"
@@ -157,9 +157,10 @@ const CreateTicket = () => {
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
-
         <div className="con-25">
-          <label htmlFor="property" className="create-ticket-label">Property</label>
+          <label htmlFor="property" className="create-ticket-label">
+            Property
+          </label>
         </div>
         <div className="con-75">
           <select
@@ -176,14 +177,12 @@ const CreateTicket = () => {
             ))}
           </select>
         </div>
-
         <input
           type="submit"
           value="Create Service Ticket"
           className="create-ticket-button"
           disabled={loading}
         />
-
         {formError && <p className="create-ticket-error">{formError}</p>}
       </form>
     </div>

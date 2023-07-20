@@ -6,6 +6,7 @@ import SubmittedByCard from "../../components/SubmittedByCard";
 import ViewFinalFeedbackDetails from "../../components/ViewFinalFeedbackDetails";
 import { useParams } from "react-router-dom";
 import UploadQuotation from "../../components/UploadQuotation";
+import DisplayQuotation from "../../components/DisplayQuotation";
 
 const ViewTicketStaff = () => {
   const ticketManager = new TicketManager();
@@ -87,8 +88,27 @@ const ViewTicketStaff = () => {
     }
   };
 
+  const handleStartWorks = async () => {
+    try {
+      // Change status
+      await ticketManager.updateTicket(
+        serviceTicket.ServiceRequestID,
+        "Status",
+        "Works Started"
+      );
+
+      // Perform any additional actions or display a success message
+      window.alert("Works Started!");
+      window.location.reload();
+    } catch (error) {
+      // Handle errors appropriately
+      window.alert("Update Failed!");
+    }
+  };
+
   const handleEndWorks = async () => {
     try {
+      // Change status
       await ticketManager.updateTicket(
         serviceTicket.ServiceRequestID,
         "Status",
@@ -100,22 +120,6 @@ const ViewTicketStaff = () => {
     } catch (error) {
       // Handle errors appropriately
       window.alert("Update Failed!");
-    }
-  };
-
-  const handleRestartWorks = async () => {
-    try {
-      await ticketManager.updateTicket(
-        ServiceRequestID,
-        "Status",
-        "Works Started"
-      );
-
-      // Perform any additional actions or display a success message
-      window.alert("SUCCESS RESTART WORKS!");
-    } catch (error) {
-      // Handle errors appropriately
-      window.alert("ERROR RESTARTING WORKS!");
     }
   };
 
@@ -151,12 +155,58 @@ const ViewTicketStaff = () => {
 
           {quotationRequired === "YES" && (
             <div>
-              <UploadQuotation bucketName="quotation" ServiceRequestID={serviceTicket.ServiceRequestID} />
+              <UploadQuotation
+                bucketName="quotation"
+                ServiceRequestID={serviceTicket.ServiceRequestID}
+              />
             </div>
           )}
 
           <button onClick={handleContinue}>Continue</button>
         </div>
+      </div>
+    );
+  }
+
+  if (status === "Quotation Uploaded") {
+    return (
+      <div>
+        <BasicTicketDetails ticket={serviceTicket} />
+        _______________________________________
+        <SubmittedByCard tenant={tenant} />
+        _______________________________________
+        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+        _______________________________________
+      </div>
+    );
+  }
+
+  if (status === "Quotation Accepted") {
+    return (
+      <div>
+        <BasicTicketDetails ticket={serviceTicket} />
+        _______________________________________
+        <SubmittedByCard tenant={tenant} />
+        _______________________________________
+        <div>
+          <button onClick={handleStartWorks}>Start Works</button>
+        </div>
+        _______________________________________
+        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+        _______________________________________
+      </div>
+    );
+  }
+
+  if (status === "Quotation Rejected") {
+    return (
+      <div>
+        <BasicTicketDetails ticket={serviceTicket} />
+        _______________________________________
+        <SubmittedByCard tenant={tenant} />
+        _______________________________________
+        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+        _______________________________________
       </div>
     );
   }
@@ -196,7 +246,7 @@ const ViewTicketStaff = () => {
           <h2>Rejection Details</h2>
           <p>Reason for rejection: {feedbackComments}</p>
 
-          <button onClick={handleRestartWorks}>Restart Works</button>
+          <button onClick={handleStartWorks}>Restart Works</button>
         </div>
       </div>
     );

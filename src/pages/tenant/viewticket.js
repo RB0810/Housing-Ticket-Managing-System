@@ -3,11 +3,12 @@ import TicketManager from "../../managers/ticketmanager";
 import AccountManager from "../../managers/accountmanager";
 import BasicTicketDetails from "../../components/BasicTicketDetails";
 import AssignedToCard from "../../components/AssignedToCard";
-import FeedbackCard from "../../components/FeedbackCard";
 import ViewFinalFeedbackDetails from "../../components/ViewFinalFeedbackDetails";
 import { useParams } from "react-router-dom";
 import DownloadQuotation from "../../components/DownloadQuotation";
 import DisplayQuotation from "../../components/DisplayQuotation";
+import { Rating } from "@mui/material";
+import { Typography } from "@mui/material";
 
 const ViewTicketTenant = () => {
   const ticketManager = new TicketManager();
@@ -16,10 +17,17 @@ const ViewTicketTenant = () => {
   const [serviceTicket, setServiceTicket] = useState([]);
   const [staff, setStaff] = useState([]);
   const [fetchError, setFetchError] = useState([]);
+
+  const [quotationState, setQuotationState] = useState(null);
+  const [showQuotationButtons, setShowQuotationButtons] = useState(true);
+
   const [status, setStatus] = useState("");
   const [feedbackType, setFeedbackType] = useState(null);
   const [showFeedbackButtons, setShowFeedbackButtons] = useState(true);
   const [rejectComments, setRejectComments] = useState("");
+
+  const [successComments, setSuccessComments] = useState("");
+  const [rating, setRating] = useState(0);
 
   useEffect(() => {
     const getStaffAndTicket = async () => {
@@ -49,10 +57,51 @@ const ViewTicketTenant = () => {
   }, []);
 
   const renderContent = () => {
+    // Quotation Feedback
+    if (quotationState === "reject") {
+      return (
+        <div>
+          <form onSubmit={handleRejectQuotation}>
+            <label>
+              Reason for Reject :
+              <textarea
+                value={rejectComments}
+                onChange={(e) => setRejectComments(e.target.value)}
+              ></textarea>
+            </label>
+
+            <button type="submit">Submit Feedback</button>
+          </form>
+        </div>
+      );
+    }
+
+    // Ticket Feedback
     if (feedbackType === "feedback") {
       return (
         <div>
-          <FeedbackCard ticket={serviceTicket} />
+          <form onSubmit={handleSuccessFeedback}>
+            <label>
+              <Typography component="legend">Rating</Typography>
+              <Rating
+                name="simple-controlled"
+                value={rating}
+                onChange={(event, newValue) => {
+                  setRating(newValue);
+                }}
+              />
+            </label>
+
+            <label>
+              Comments:
+              <textarea
+                value={successComments}
+                onChange={(e) => setSuccessComments(e.target.value)}
+              ></textarea>
+            </label>
+
+            <button type="submit">Submit Feedback</button>
+          </form>
         </div>
       );
     } else if (feedbackType === "reject") {
@@ -74,9 +123,102 @@ const ViewTicketTenant = () => {
     }
   };
 
+  const handleAcceptQuotation = async () => {
+    try {
+      // Update in Database
+      await ticketManager.updateTicket(
+        parseInt(serviceTicket.ServiceRequestID),
+        "QuotationAcceptedByTenant",
+        true
+      );
+
+      // Change Status
+      await ticketManager.updateTicket(
+        parseInt(serviceTicket.ServiceRequestID),
+        "Status",
+        "Quotation Accepted"
+      );
+
+      window.alert("Quotation accepted!");
+      window.location.reload();
+    } catch (error) {
+      window.alert("Error accepting quotation: " + error);
+    }
+  };
+
+  const handleRejectQuotation = async () => {
+    try {
+      // Update in Database
+
+      // Change QuotationAcceptedByTenant
+      await ticketManager.updateTicket(
+        parseInt(serviceTicket.ServiceRequestID),
+        "QuotationAcceptedByTenant",
+        false
+      );
+
+      // Add Reason for Rejecting Quotation (reuses FeedbackComments)
+      await ticketManager.updateTicket(
+        parseInt(serviceTicket.ServiceRequestID),
+        "FeedbackComments",
+        rejectComments
+      );
+
+      // Change Status
+      await ticketManager.updateTicket(
+        parseInt(serviceTicket.ServiceRequestID),
+        "Status",
+        "Quotation Rejected"
+      );
+
+      window.alert("Quotation rejected!");
+      window.location.reload();
+    } catch (error) {
+      window.alert("Error rejecting quotation: " + error);
+    }
+  };
+
   const handleFeedbackClick = (type) => {
     setShowFeedbackButtons(false);
     setFeedbackType(type);
+  };
+
+  const handleQuotationAcceptRejectClick = (type) => {
+    setShowQuotationButtons(false);
+    setQuotationState(type);
+  };
+
+  const handleSuccessFeedback = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Update in Database
+      await ticketManager.updateFeedbackRating(
+        parseInt(serviceTicket.ServiceRequestID),
+        rating
+      );
+      await ticketManager.updateFeedbackComments(
+        parseInt(serviceTicket.ServiceRequestID),
+        successComments
+      );
+
+      // Close ticket
+      await ticketManager.updateTicket(
+        ServiceRequestID,
+        "PARCStatus",
+        "CLOSED"
+      );
+      await ticketManager.updateTicket(
+        ServiceRequestID,
+        "Status",
+        "Feedback Submitted"
+      );
+
+      window.alert("Feedback submitted!");
+      window.location.reload();
+    } catch (error) {
+      window.alert("Error submitting feedback: " + error);
+    }
   };
 
   const handleRejectFeedback = async (e) => {
@@ -104,8 +246,6 @@ const ViewTicketTenant = () => {
     return (
       <div>
         <BasicTicketDetails ticket={serviceTicket} />
-        <DownloadQuotation bucketName="quotation" ServiceRequestID={serviceTicket.ServiceRequestID} />
-        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
       </div>
     );
   }
@@ -121,11 +261,35 @@ const ViewTicketTenant = () => {
     );
   }
 
-  if (status === "Quotation Upload") {
+  if (status === "Quotation Uploaded") {
     return (
       <div>
         <BasicTicketDetails ticket={serviceTicket} />
         <AssignedToCard staff={staff} />
+        ____________________________________
+        {showQuotationButtons && (
+          <div>
+            <button onClick={() => handleAcceptQuotation()}>
+              Accept Quotation
+            </button>
+            <button onClick={() => handleQuotationAcceptRejectClick("reject")}>
+              Reject Quotation
+            </button>
+          </div>
+        )}
+        {renderContent()}
+        ____________________________________
+        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+      </div>
+    );
+  }
+
+  if (status === "Quotation Rejected") {
+    return (
+      <div>
+        <BasicTicketDetails ticket={serviceTicket} />
+        <AssignedToCard staff={staff} />
+        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
       </div>
     );
   }
@@ -135,6 +299,21 @@ const ViewTicketTenant = () => {
       <div>
         <BasicTicketDetails ticket={serviceTicket} />
         <AssignedToCard ticket={serviceTicket} />
+        <p>Quotation Needed: {serviceTicket.QuotationRequired}</p>
+        <DownloadQuotation
+          bucketName="quotation"
+          ServiceRequestID={serviceTicket.ServiceRequestID}
+        />
+        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+      </div>
+    );
+  }
+
+  if (status === "Quotation Rejected") {
+    return (
+      <div>
+        <BasicTicketDetails ticket={serviceTicket} />
+        <AssignedToCard staff={staff} />
         <p>Quotation Needed: {serviceTicket.QuotationRequired}</p>
       </div>
     );
@@ -146,6 +325,11 @@ const ViewTicketTenant = () => {
         <BasicTicketDetails ticket={serviceTicket} />
         <AssignedToCard staff={staff} />
         <p>Quotation Needed: {serviceTicket.QuotationRequired}</p>
+        <DownloadQuotation
+          bucketName="quotation"
+          ServiceRequestID={serviceTicket.ServiceRequestID}
+        />
+        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
       </div>
     );
   }
@@ -168,6 +352,13 @@ const ViewTicketTenant = () => {
           </div>
         )}
         {renderContent()}
+        _______________________________________
+        <DownloadQuotation
+          bucketName="quotation"
+          ServiceRequestID={serviceTicket.ServiceRequestID}
+        />
+        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+        _______________________________________
       </div>
     );
   }
@@ -176,9 +367,14 @@ const ViewTicketTenant = () => {
     return (
       <div>
         <BasicTicketDetails ticket={serviceTicket} />
-
         <h1>Reason for Reject : {serviceTicket.FeedbackComments}</h1>
         <AssignedToCard staff={staff} />
+        _______________________________________
+        <DownloadQuotation
+          bucketName="quotation"
+          ServiceRequestID={serviceTicket.ServiceRequestID}
+        />
+        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
       </div>
     );
   }
@@ -189,11 +385,18 @@ const ViewTicketTenant = () => {
         <BasicTicketDetails ticket={serviceTicket} />
         _______________________________________
         <AssignedToCard staff={staff} />
-        _______________________________________
+        ____________________________________
         <ViewFinalFeedbackDetails
           rating={serviceTicket.FeedbackRating}
           comments={serviceTicket.FeedbackComments}
         />
+        _______________________________________
+        <DownloadQuotation
+          bucketName="quotation"
+          ServiceRequestID={serviceTicket.ServiceRequestID}
+        />
+        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+        _______________________________________
       </div>
     );
   }
