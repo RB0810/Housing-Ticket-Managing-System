@@ -7,6 +7,7 @@ import SubmittedByCard from "../../components/SubmittedByCard";
 import AssignedToCard from "../../components/AssignedToCard";
 import ViewFinalFeedbackDetails from "../../components/ViewFinalFeedbackDetails";
 import UploadQuotation from "../../components/UploadQuotation";
+import DisplayQuotation from "../../components/DisplayQuotation";
 
 const ViewTicketSupervisor = () => {
   const accountManager = new AccountManager();
@@ -62,13 +63,23 @@ const ViewTicketSupervisor = () => {
 
   const handleAssign = async () => {
     try {
-      await ticketManager.assignTicket(ServiceRequestID, selectedStaff);
-      await ticketManager.updateTicket(
+      // Get promises for each update
+      const assignTicketPromise = ticketManager.assignTicket(
+        ServiceRequestID,
+        selectedStaff
+      );
+
+      const updateStatusPromise = ticketManager.updateTicket(
         ServiceRequestID,
         "Status",
         "Ticket Assigned"
       );
-      setAssignStatus("Assigning succeeded");
+
+      // Execute all promises concurrently using Promise.all
+      await Promise.all([assignTicketPromise, updateStatusPromise]);
+
+      window.alert("Ticket Assigned");
+      window.location.reload();
       // Perform any additional actions or display a success message
     } catch (error) {
       // Handle errors appropriately
@@ -104,7 +115,6 @@ const ViewTicketSupervisor = () => {
 
           <button onClick={handleAssign}>Assign</button>
         </div>
-        <UploadQuotation bucketName="quotation" ServiceRequestID={serviceTicket.ServiceRequestID} />
       </div>
     );
   }
@@ -116,7 +126,49 @@ const ViewTicketSupervisor = () => {
         _______________________________________
         <SubmittedByCard tenant={tenant} />
         ____________________________________
-        <AssignedToCard staff={serviceTicket} />
+        <AssignedToCard staff={staff} />
+      </div>
+    );
+  }
+
+  if (status === "Quotation Uploaded") {
+    return (
+      <div>
+        <BasicTicketDetails ticket={serviceTicket} />
+        _______________________________________
+        <SubmittedByCard tenant={tenant} />
+        ____________________________________
+        <AssignedToCard staff={staff} />
+        _______________________________________
+        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+      </div>
+    );
+  }
+
+  if (status === "Quotation Accepted") {
+    return (
+      <div>
+        <BasicTicketDetails ticket={serviceTicket} />
+        _______________________________________
+        <SubmittedByCard tenant={tenant} />
+        ____________________________________
+        <AssignedToCard staff={staff} />
+        _______________________________________
+        <DisplayQuotation ticket={serviceTicket} />
+      </div>
+    );
+  }
+
+  if (status === "Quotation Rejected") {
+    return (
+      <div>
+        <BasicTicketDetails ticket={serviceTicket} />
+        _______________________________________
+        <SubmittedByCard tenant={tenant} />
+        ____________________________________
+        <AssignedToCard staff={staff} />
+        _______________________________________
+        <DisplayQuotation ticket={serviceTicket} />
       </div>
     );
   }
@@ -166,7 +218,6 @@ const ViewTicketSupervisor = () => {
         <SubmittedByCard tenant={tenant} />
         ____________________________________
         <AssignedToCard staff={staff} />
-       
       </div>
     );
   }

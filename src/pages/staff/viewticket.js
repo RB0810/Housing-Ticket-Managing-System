@@ -6,6 +6,7 @@ import SubmittedByCard from "../../components/SubmittedByCard";
 import ViewFinalFeedbackDetails from "../../components/ViewFinalFeedbackDetails";
 import { useParams } from "react-router-dom";
 import UploadQuotation from "../../components/UploadQuotation";
+import DisplayQuotation from "../../components/DisplayQuotation";
 
 const ViewTicketStaff = () => {
   const ticketManager = new TicketManager();
@@ -14,10 +15,11 @@ const ViewTicketStaff = () => {
   const [serviceTicket, setServiceTicket] = useState([]);
   const [tenant, setTenant] = useState([]);
   const [fetchError, setFetchError] = useState([]);
+
   const [status, setStatus] = useState("");
   const [feedbackComments, setFeedbackComments] = useState("");
-  const [file, setFile] = useState(null);
-  const [quotationRequired, setQuotationRequired] = useState("");
+
+  const [quotationRequired, setQuotationRequired] = useState("true");
 
   useEffect(() => {
     const getTenantAndTicket = async () => {
@@ -49,46 +51,86 @@ const ViewTicketStaff = () => {
 
   const handleQuotationRequiredChange = (e) => {
     setQuotationRequired(e.target.value);
-  };
-
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
+    console.log(quotationRequired);
   };
 
   const handleContinue = async () => {
     try {
-      await ticketManager.updateTicket(
+      // Get promises for each update
+      const updateQuotationRequiredPromise = ticketManager.updateTicket(
         serviceTicket.ServiceRequestID,
         "QuotationRequired",
         quotationRequired
       );
 
-      if (quotationRequired === "YES") {
-        await ticketManager.updateTicket(
-          serviceTicket.ServiceRequestID,
-          "Status",
-          "Quotation Uploaded"
-        );
-      } else {
-        await ticketManager.updateTicket(
-          serviceTicket.ServiceRequestID,
-          "Status",
-          "Works Started"
-        );
-      }
-      await ticketManager.updateTicket(
+      const updateStatusPromise =
+        quotationRequired === "true"
+          ? ticketManager.updateTicket(
+              serviceTicket.ServiceRequestID,
+              "Status",
+              "Quotation Uploaded"
+            )
+          : ticketManager.updateTicket(
+              serviceTicket.ServiceRequestID,
+              "Status",
+              "Works Started"
+            );
+
+      const updatePARCStatusPromise = ticketManager.updateTicket(
         serviceTicket.ServiceRequestID,
         "PARCStatus",
         "ACTIVE"
       );
+
+      // Execute all promises concurrently using Promise.all
+      await Promise.all([
+        updateQuotationRequiredPromise,
+        updateStatusPromise,
+        updatePARCStatusPromise,
+      ]);
+
       window.alert("QUOTATION UPDATE SUCCESSFUL!");
+      window.location.reload();
     } catch (error) {
       window.alert("ERROR IN CONTINUE FOR QUOTATION UPLOAD");
     }
   };
 
+  const handleReuploadQuotation = async () => {
+    try {
+      await ticketManager.updateTicket(
+        serviceTicket.ServiceRequestID,
+        "Status",
+        "Quotation Uploaded"
+      );
+      window.alert("QUOTATION UPDATE SUCCESSFUL!");
+      window.location.reload();
+    } catch (error) {
+      window.alert("ERROR IN REUPLOAD FOR QUOTATION UPLOAD");
+    }
+  };
+
+  const handleStartWorks = async () => {
+    try {
+      // Change status
+      await ticketManager.updateTicket(
+        serviceTicket.ServiceRequestID,
+        "Status",
+        "Works Started"
+      );
+
+      // Perform any additional actions or display a success message
+      window.alert("Works Started!");
+      window.location.reload();
+    } catch (error) {
+      // Handle errors appropriately
+      window.alert("Update Failed!");
+    }
+  };
+
   const handleEndWorks = async () => {
     try {
+      // Change status
       await ticketManager.updateTicket(
         serviceTicket.ServiceRequestID,
         "Status",
@@ -97,25 +139,26 @@ const ViewTicketStaff = () => {
 
       // Perform any additional actions or display a success message
       window.alert("Update Successful!");
+      window.location.reload();
     } catch (error) {
       // Handle errors appropriately
       window.alert("Update Failed!");
     }
   };
 
-  const handleRestartWorks = async () => {
-    try {
-      await ticketManager.updateTicket(
-        ServiceRequestID,
-        "Status",
-        "Works Started"
+  const renderContent = () => {
+    // Quotation Feedback
+    if (quotationRequired === "true") {
+      return (
+        <div>
+          <UploadQuotation
+            bucketName="quotation"
+            ServiceRequestID={serviceTicket.ServiceRequestID}
+          />
+        </div>
       );
-
-      // Perform any additional actions or display a success message
-      window.alert("SUCCESS RESTART WORKS!");
-    } catch (error) {
-      // Handle errors appropriately
-      window.alert("ERROR RESTARTING WORKS!");
+    } else if (quotationRequired === "false") {
+      return null;
     }
   };
 
@@ -143,20 +186,70 @@ const ViewTicketStaff = () => {
               value={quotationRequired}
               onChange={handleQuotationRequiredChange}
             >
-              <option value="">-- Select Option --</option>
-              <option value="YES">YES</option>
-              <option value="NO">NO</option>
+              <option value={true}>YES</option>
+              <option value={false}>NO</option>
             </select>
           </label>
-
-          {quotationRequired === "YES" && (
-            <div>
-              <UploadQuotation bucketName="quotation" ServiceRequestID={serviceTicket.ServiceRequestID} />
-            </div>
-          )}
-
-          <button onClick={handleContinue}>Continue</button>
+          {renderContent()}
+          <div>
+            <button onClick={handleContinue}>Submit</button>
+          </div>
         </div>
+      </div>
+    );
+  }
+
+  if (status === "Quotation Uploaded") {
+    return (
+      <div>
+        <BasicTicketDetails ticket={serviceTicket} />
+        _______________________________________
+        <SubmittedByCard tenant={tenant} />
+        _______________________________________
+        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+        _______________________________________
+      </div>
+    );
+  }
+
+  if (status === "Quotation Accepted") {
+    return (
+      <div>
+        <BasicTicketDetails ticket={serviceTicket} />
+        _______________________________________
+        <SubmittedByCard tenant={tenant} />
+        _______________________________________
+        <div>
+          <button onClick={handleStartWorks}>Start Works</button>
+        </div>
+        _______________________________________
+        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+        _______________________________________
+      </div>
+    );
+  }
+
+  if (status === "Quotation Rejected") {
+    return (
+      <div>
+        <BasicTicketDetails ticket={serviceTicket} />
+        _______________________________________
+        <SubmittedByCard tenant={tenant} />
+        ____________________________________
+        <UploadQuotation
+          bucketName="quotation"
+          ServiceRequestID={serviceTicket.ServiceRequestID}
+        />
+        <div>
+          <button onClick={handleReuploadQuotation}>Reupload Quotation</button>
+        </div>
+        _______________________________________
+        <div>
+          <h2>Rejection Details</h2>
+          <p>Reason for rejection: {feedbackComments}</p>
+        </div>
+        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+        _______________________________________
       </div>
     );
   }
@@ -171,6 +264,8 @@ const ViewTicketStaff = () => {
         <div>
           <button onClick={handleEndWorks}>End Works</button>
         </div>
+        ____________________________________
+        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
       </div>
     );
   }
@@ -196,7 +291,7 @@ const ViewTicketStaff = () => {
           <h2>Rejection Details</h2>
           <p>Reason for rejection: {feedbackComments}</p>
 
-          <button onClick={handleRestartWorks}>Restart Works</button>
+          <button onClick={handleStartWorks}>Restart Works</button>
         </div>
       </div>
     );
