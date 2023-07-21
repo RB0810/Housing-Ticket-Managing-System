@@ -63,12 +63,21 @@ const ViewTicketSupervisor = () => {
 
   const handleAssign = async () => {
     try {
-      await ticketManager.assignTicket(ServiceRequestID, selectedStaff);
-      await ticketManager.updateTicket(
+      // Get promises for each update
+      const assignTicketPromise = ticketManager.assignTicket(
+        ServiceRequestID,
+        selectedStaff
+      );
+
+      const updateStatusPromise = ticketManager.updateTicket(
         ServiceRequestID,
         "Status",
         "Ticket Assigned"
       );
+
+      // Execute all promises concurrently using Promise.all
+      await Promise.all([assignTicketPromise, updateStatusPromise]);
+
       window.alert("Ticket Assigned");
       window.location.reload();
       // Perform any additional actions or display a success message

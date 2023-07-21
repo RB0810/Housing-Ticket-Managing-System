@@ -127,19 +127,24 @@ const ViewTicketTenant = () => {
 
   const handleAcceptQuotation = async () => {
     try {
-      // Update in Database
-      await ticketManager.updateTicket(
+      // Update in Database and get promises for each update
+      const updateQuotationAcceptedByTenantPromise = ticketManager.updateTicket(
         parseInt(serviceTicket.ServiceRequestID),
         "QuotationAcceptedByTenant",
         true
       );
 
-      // Change Status
-      await ticketManager.updateTicket(
+      const updateStatusPromise = ticketManager.updateTicket(
         parseInt(serviceTicket.ServiceRequestID),
         "Status",
         "Quotation Accepted"
       );
+
+      // Execute all promises concurrently using Promise.all
+      await Promise.all([
+        updateQuotationAcceptedByTenantPromise,
+        updateStatusPromise,
+      ]);
 
       window.alert("Quotation accepted!");
       window.location.reload();
@@ -150,32 +155,31 @@ const ViewTicketTenant = () => {
 
   const handleRejectQuotation = async () => {
     try {
-      // Update in Database
-      await ticketManager.updateTicket(
+      // Update in Database and get promises for each update
+      const updateStatusPromise = ticketManager.updateTicket(
         parseInt(serviceTicket.ServiceRequestID),
         "Status",
         "Quotation Rejected"
       );
 
-      // Change QuotationAcceptedByTenant
-      await ticketManager.updateTicket(
+      const updateQuotationAcceptedPromise = ticketManager.updateTicket(
         parseInt(serviceTicket.ServiceRequestID),
         "QuotationAcceptedByTenant",
         false
       );
 
-      // Add Reason for Rejecting Quotation (reuses FeedbackComments)
-      await ticketManager.updateFeedbackComments(
-        parseInt(serviceTicket.ServiceRequestID),
-        rejectComments
-      );
+      const updateFeedbackCommentsPromise =
+        ticketManager.updateFeedbackComments(
+          parseInt(serviceTicket.ServiceRequestID),
+          rejectComments
+        );
 
-      // Change Status
-      await ticketManager.updateTicket(
-        parseInt(serviceTicket.ServiceRequestID),
-        "Status",
-        "Quotation Rejected"
-      );
+      // Execute all promises concurrently using Promise.all
+      await Promise.all([
+        updateStatusPromise,
+        updateQuotationAcceptedPromise,
+        updateFeedbackCommentsPromise,
+      ]);
 
       window.alert("Quotation rejected!");
       window.location.reload();
@@ -198,27 +202,37 @@ const ViewTicketTenant = () => {
     e.preventDefault();
 
     try {
-      // Update in Database
-      await ticketManager.updateFeedbackRating(
+      // Update in Database and get promises for each update
+      const updateFeedbackRatingPromise = ticketManager.updateFeedbackRating(
         parseInt(serviceTicket.ServiceRequestID),
         rating
       );
-      await ticketManager.updateFeedbackComments(
-        parseInt(serviceTicket.ServiceRequestID),
-        successComments
-      );
 
-      // Close ticket
-      await ticketManager.updateTicket(
+      const updateFeedbackCommentsPromise =
+        ticketManager.updateFeedbackComments(
+          parseInt(serviceTicket.ServiceRequestID),
+          successComments
+        );
+
+      const updatePARCStatusPromise = ticketManager.updateTicket(
         ServiceRequestID,
         "PARCStatus",
         "CLOSED"
       );
-      await ticketManager.updateTicket(
+
+      const updateStatusPromise = ticketManager.updateTicket(
         ServiceRequestID,
         "Status",
         "Feedback Submitted"
       );
+
+      // Execute all promises concurrently using Promise.all
+      await Promise.all([
+        updateFeedbackRatingPromise,
+        updateFeedbackCommentsPromise,
+        updatePARCStatusPromise,
+        updateStatusPromise,
+      ]);
 
       window.alert("Feedback submitted!");
       window.location.reload();
@@ -231,16 +245,19 @@ const ViewTicketTenant = () => {
     e.preventDefault();
 
     try {
-      // Update in Database
-      await ticketManager.updateFeedbackComments(
-        parseInt(serviceTicket.ServiceRequestID),
-        rejectComments
-      );
+      // Update in Database and get promises for each update
+      const updateFeedbackCommentsPromise =
+        ticketManager.updateFeedbackComments(
+          parseInt(serviceTicket.ServiceRequestID),
+          rejectComments
+        );
 
-      // Close ticket
-      await ticketManager.rejectTicket(
+      const rejectTicketPromise = ticketManager.rejectTicket(
         parseInt(serviceTicket.ServiceRequestID)
       );
+
+      // Execute all promises concurrently using Promise.all
+      await Promise.all([updateFeedbackCommentsPromise, rejectTicketPromise]);
 
       window.alert("Feedback submitted!");
       window.location.reload();
@@ -296,6 +313,7 @@ const ViewTicketTenant = () => {
       <div>
         <BasicTicketDetails ticket={serviceTicket} />
         <AssignedToCard staff={staff} />
+        <h1>Reason for Reject Quotation : {serviceTicket.FeedbackComments}</h1>
         <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
       </div>
     );

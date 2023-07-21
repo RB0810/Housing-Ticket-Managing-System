@@ -56,30 +56,39 @@ const ViewTicketStaff = () => {
 
   const handleContinue = async () => {
     try {
-      await ticketManager.updateTicket(
+      // Get promises for each update
+      const updateQuotationRequiredPromise = ticketManager.updateTicket(
         serviceTicket.ServiceRequestID,
         "QuotationRequired",
         quotationRequired
       );
 
-      if (quotationRequired === "true") {
-        await ticketManager.updateTicket(
-          serviceTicket.ServiceRequestID,
-          "Status",
-          "Quotation Uploaded"
-        );
-      } else {
-        await ticketManager.updateTicket(
-          serviceTicket.ServiceRequestID,
-          "Status",
-          "Works Started"
-        );
-      }
-      await ticketManager.updateTicket(
+      const updateStatusPromise =
+        quotationRequired === "true"
+          ? ticketManager.updateTicket(
+              serviceTicket.ServiceRequestID,
+              "Status",
+              "Quotation Uploaded"
+            )
+          : ticketManager.updateTicket(
+              serviceTicket.ServiceRequestID,
+              "Status",
+              "Works Started"
+            );
+
+      const updatePARCStatusPromise = ticketManager.updateTicket(
         serviceTicket.ServiceRequestID,
         "PARCStatus",
         "ACTIVE"
       );
+
+      // Execute all promises concurrently using Promise.all
+      await Promise.all([
+        updateQuotationRequiredPromise,
+        updateStatusPromise,
+        updatePARCStatusPromise,
+      ]);
+
       window.alert("QUOTATION UPDATE SUCCESSFUL!");
       window.location.reload();
     } catch (error) {
