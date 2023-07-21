@@ -1,18 +1,20 @@
 import { useEffect, useState, useMemo } from "react";
-import { Routes, Route, useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Ticket from "../../objects/ticket";
 import TicketManager from "../../managers/ticketmanager";
 import AccountManager from "../../managers/accountmanager";
 import "./../../styles/viewticket.css";
+import NotificationManager from "../../managers/notificationmanager";
 
 // material UI
-import TextField from '@mui/material/TextField';
+import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { Button, Grid } from "@mui/material";
 
 const CreateTicket = () => {
+  const navigate = useNavigate();
   const ticketManager = new TicketManager();
   let { TenantID } = useParams();
   const [name, setName] = useState("");
@@ -60,18 +62,28 @@ const CreateTicket = () => {
       property
     );
 
+    const body = `A new ticket has been created by Tenant ${TenantID}, unit ${property}.
+    Request: ${name} 
+    Ticket Category: ${requestType}
+    ${description}`;
+
     setLoading(true);
 
     try {
       let success = await ticketManager.addTicket(ticket);
 
-      if (success) {
         setFormError("Successfully added ticket");
-      } else {
-        setFormError("Error adding ticket");
+        const notificationmanager = new NotificationManager();
+        try {
+          await notificationmanager.sendMailtoSupervisorFromTenantID(TenantID, body);
+          console.log("Mail sent");
+        } catch (error) {
+          console.error("Mail sending error:", error);
+        window.alert("Ticket Sucessfully Created");
+        window.location.reload();
       }
     } catch (error) {
-      setFormError("An error occurred while adding the ticket");
+      window.alert("Error submitting ticket");
     } finally {
       setLoading(false);
     }
@@ -79,122 +91,114 @@ const CreateTicket = () => {
 
   return (
     <div className="ticket-creation-page">
-      <Box className="create-ticket-box" sx={{}}>
-        <div>
-          <h1 className="ticket-creation-title">Create Ticket</h1>
+      <div>
+        <h1 className="ticket-creation-title">Create Ticket</h1>
+      </div>
+
+
+
+      <form onSubmit={handleSubmit} className="ticket-creation-form">
+        <div className="con-25">
+          <label htmlFor="name" className="create-ticket-label">Name</label>
+
         </div>
-        <form onSubmit={handleSubmit} className="ticket-creation-form">
+        <div className="con-75">
+          <input
+            type="text"
+            id="name"
+            className="create-ticket-input"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div> */}
+        <div className="name-textfield">
+          <img className="create-ticket-icons" src={"/userAccountBox.png"} />
+          <TextField
+            id="name"
+            label="Name"
+            placeholder="Enter your name"
+            variant="filled"
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
 
-          <Grid container spacing={1}>
-            <Grid item xs={12}>
-              <div className="field-row">
-                <div className="con-25">
-                  <label htmlFor="name">Name</label>
-                </div>
-                <TextField
-                  className="con-75"
-                  required
-                  type="text"
-                  id="name"
-                  label="Name"
-                  placeholder="Enter your name"
-                  variant="outlined"
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </div>
-            </Grid>
+        <div className="con-25">
+          <label htmlFor="dropdown" className="create-ticket-label">Request Type</label>
+        </div>
+        <div className="con-75">
+          <select
+            id="dropdown"
+            className="create-ticket-select"
+            value={requestType}
+            onChange={(e) => setRequestType(e.target.value)}
+          >
+            <option value="">Please Select Request Type</option>
+            <option value="Toilet">Toilet</option>
+            <option value="Plumbing">Plumbing</option>
+            <option value="Pest">Pest</option>
+            <option value="Electric">Electric</option>
+            <option value="Aircon">Aircon</option>
+            <option value="Cleaning">Cleaning</option>
+            <option value="Others">Others</option>
+          </select>
+        </div>
 
-            <Grid item xs={12}>
-              <div className="field-row">
-                <div className="con-25">
-                  <label htmlFor="dropdown-request-type">Request Type</label>
-                </div>
-                <Select
-                  className="con-75"
-                  labelId="dropdown-request-type"
-                  id="dropdown-request-type"
-                  value={requestType}
-                  label="Age"
-                  displayEmpty
-                  onChange={(e) => setRequestType(e.target.value)}
-                >
-                  <MenuItem value=""><em>Please Select Request Type</em></MenuItem>
-                  <MenuItem value="Toilet">Toilet</MenuItem>
-                  <MenuItem value="Plumbing">Plumbing</MenuItem>
-                  <MenuItem value="Pest">Pest</MenuItem>
-                  <MenuItem value="Electric">Electric</MenuItem>
-                  <MenuItem value="Aircon">Aircon</MenuItem>
-                  <MenuItem value="Cleaning">Cleaning</MenuItem>
-                  <MenuItem value="Others">Others</MenuItem>
-                </Select>
-              </div>
-            </Grid>
+        <div className="con-25">
+          <label htmlFor="description" className="create-ticket-label">Description</label>
 
-            <Grid item xs={12}>
-              <div className="field-row">
-                <div className="con-25">
-                  <label htmlFor="description">Description</label>
-                </div>
-                <TextField
-                  className="con-75"
-                  required
-                  id="description"
-                  label="Description"
-                  multiline
-                  rows={4}
-                  placeholder="Enter your description of the problem"
-                  variant="outlined"
-                  onChange={(e) => setDescription(e.target.value)}
-                />
-              </div>
-            </Grid>
+        </div>
+        <div className="con-75">
+          <textarea
+            id="description"
+            className="create-ticket-description"
+            placeholder="Description"
+            rows='5'
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div> */}
 
-            <Grid item xs={12}>
-              <div className="field-row">
-                <div className="con-25">
-                  <label htmlFor="dropdown-property-type">Property</label>
-                </div>
-                <Select
-                  className="con-75"
-                  labelId="dropdown-property-type"
-                  id="dropdown-property-type"
-                  value={requestType}
-                  label="Age"
-                  displayEmpty
-                  onChange={(e) => setProperty(e.target.value)}
-                >
-                  <MenuItem value=""><em>Please Select Property</em></MenuItem>
-                  {properties.map((property) => (
-                    <MenuItem key={property.UnitNumber} value={property.UnitNumber}>
-                      {property.UnitNumber}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </div>
-            </Grid>
+        <div className="description-textfield">
+          <TextField
+            id="description"
+            label="Description"
+            multiline
+            rows={4}
+            placeholder="Enter your description of the problem"
+            variant="filled"
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
 
-            {/* <input
-            type="submit"
-            value="Create Service Ticket"
-            className="submit-button"
-            disabled={loading}
-          /> */}
+        <div className="con-25">
+          <label htmlFor="property" className="create-ticket-label">Property</label>
+        </div>
+        <div className="con-75">
+          <select
+            id="property"
+            className="create-ticket-select"
+            value={property}
+            onChange={(e) => setProperty(e.target.value)}
+          >
+            <option value="">Please Select Property</option>
+            {properties.map((property) => (
+              <option key={property.UnitNumber} value={property.UnitNumber}>
+                {property.UnitNumber}
+              </option>
+            ))}
+          </select>
+        </div>
 
-            <Grid item xs={12}>
-              <Button
-                type="submit"
-                variant="contained"
-                disabled={loading}
-              >
-                Create Service Ticket
-              </Button>
+        <input
+          type="submit"
+          value="Create Service Ticket"
+          className="create-ticket-button"
+          disabled={loading}
+        />
 
-              {formError && <p className="create-ticket-error">{formError}</p>}
-            </Grid>
-          </Grid>
-        </form>
-      </Box>
-
+        {formError && <p className="create-ticket-error">{formError}</p>}
+      </form>
     </div>
   );
 };

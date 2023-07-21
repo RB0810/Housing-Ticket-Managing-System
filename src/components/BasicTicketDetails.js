@@ -13,6 +13,7 @@ const BasicTicketDetails = (ticket) => {
         Submitted:{" "}
         {new Date(ticket.ticket.SubmittedDateTime).toLocaleDateString()}
       </p>
+      <p>Quotation Needed: {ticket.ticket.QuotationRequired ? "YES" : "NO"}</p>
     </div>
   );
 };
