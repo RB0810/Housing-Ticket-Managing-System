@@ -7,8 +7,10 @@ import "./../../styles/viewticket.css";
 
 // material UI
 import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 import Box from "@mui/material/Box";
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import { Button, Grid } from "@mui/material";
 
 const CreateTicket = () => {
   const ticketManager = new TicketManager();
@@ -77,95 +79,119 @@ const CreateTicket = () => {
 
   return (
     <div className="ticket-creation-page">
-      <Box className="create-ticket-box" sx={{ flexDirection: "column" }}>
+      <Box className="create-ticket-box" sx={{}}>
         <div>
           <h1 className="ticket-creation-title">Create Ticket</h1>
         </div>
         <form onSubmit={handleSubmit} className="ticket-creation-form">
 
-          <div className="field-row">
-            <div className="con-25">
-              <label htmlFor="name">Name</label>
-            </div>
-            <TextField
-              className="con-75"
-              required
-              type="text"
-              id="name"
-              label="Name"
-              placeholder="Enter your name"
-              variant="outlined"
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
+          <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <div className="field-row">
+                <div className="con-25">
+                  <label htmlFor="name">Name</label>
+                </div>
+                <TextField
+                  className="con-75"
+                  required
+                  type="text"
+                  id="name"
+                  label="Name"
+                  placeholder="Enter your name"
+                  variant="outlined"
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </div>
+            </Grid>
 
-          <div className="field-row">
-            <div className="con-25">
-              <label htmlFor="dropdown">Request Type</label>
-            </div>
-            <div className="con-75">
-              <select
-                id="dropdown"
-                value={requestType}
-                onChange={(e) => setRequestType(e.target.value)}
-              >
-                <option value="">Please Select Request Type</option>
-                <option value="Toilet">Toilet</option>
-                <option value="Plumbing">Plumbing</option>
-                <option value="Pest">Pest</option>
-                <option value="Electric">Electric</option>
-                <option value="Aircon">Aircon</option>
-                <option value="Cleaning">Cleaning</option>
-                <option value="Others">Others</option>
-              </select>
-            </div>
-          </div>
+            <Grid item xs={12}>
+              <div className="field-row">
+                <div className="con-25">
+                  <label htmlFor="dropdown-request-type">Request Type</label>
+                </div>
+                <Select
+                  className="con-75"
+                  labelId="dropdown-request-type"
+                  id="dropdown-request-type"
+                  value={requestType}
+                  label="Age"
+                  displayEmpty
+                  onChange={(e) => setRequestType(e.target.value)}
+                >
+                  <MenuItem value=""><em>Please Select Request Type</em></MenuItem>
+                  <MenuItem value="Toilet">Toilet</MenuItem>
+                  <MenuItem value="Plumbing">Plumbing</MenuItem>
+                  <MenuItem value="Pest">Pest</MenuItem>
+                  <MenuItem value="Electric">Electric</MenuItem>
+                  <MenuItem value="Aircon">Aircon</MenuItem>
+                  <MenuItem value="Cleaning">Cleaning</MenuItem>
+                  <MenuItem value="Others">Others</MenuItem>
+                </Select>
+              </div>
+            </Grid>
 
-          <div className="field-row">
-            <div className="con-25">
-              <label htmlFor="description">Description</label>
-            </div>
-            <TextField
-              className="con-75"
-              required
-              id="description"
-              label="Description"
-              multiline
-              rows={4}
-              placeholder="Enter your description of the problem"
-              variant="outlined"
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
+            <Grid item xs={12}>
+              <div className="field-row">
+                <div className="con-25">
+                  <label htmlFor="description">Description</label>
+                </div>
+                <TextField
+                  className="con-75"
+                  required
+                  id="description"
+                  label="Description"
+                  multiline
+                  rows={4}
+                  placeholder="Enter your description of the problem"
+                  variant="outlined"
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+              </div>
+            </Grid>
 
-          <div className="field-row">
-            <div className="con-25">
-              <label htmlFor="property">Property</label>
-            </div>
-            <div className="con-75">
-              <select
-                id="property"
-                value={property}
-                onChange={(e) => setProperty(e.target.value)}
-              >
-                <option value="">Please Select Property</option>
-                {properties.map((property) => (
-                  <option key={property.UnitNumber} value={property.UnitNumber}>
-                    {property.UnitNumber}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
+            <Grid item xs={12}>
+              <div className="field-row">
+                <div className="con-25">
+                  <label htmlFor="dropdown-property-type">Property</label>
+                </div>
+                <Select
+                  className="con-75"
+                  labelId="dropdown-property-type"
+                  id="dropdown-property-type"
+                  value={requestType}
+                  label="Age"
+                  displayEmpty
+                  onChange={(e) => setProperty(e.target.value)}
+                >
+                  <MenuItem value=""><em>Please Select Property</em></MenuItem>
+                  {properties.map((property) => (
+                    <MenuItem key={property.UnitNumber} value={property.UnitNumber}>
+                      {property.UnitNumber}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </div>
+            </Grid>
 
-          <input
+            {/* <input
             type="submit"
             value="Create Service Ticket"
             className="submit-button"
             disabled={loading}
-          />
+          /> */}
 
-          {formError && <p className="create-ticket-error">{formError}</p>}
+            <Grid item xs={12}>
+              <Button
+                type="submit"
+                variant="contained"
+                disabled={loading}
+              >
+                Create Service Ticket
+              </Button>
+
+              {formError && <p className="create-ticket-error">{formError}</p>}
+            </Grid>
+          </Grid>
         </form>
       </Box>
 
