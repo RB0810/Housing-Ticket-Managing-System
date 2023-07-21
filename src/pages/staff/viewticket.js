@@ -36,6 +36,7 @@ const ViewTicketStaff = () => {
         setTenant(tenantData);
         setStatus(ticketData[0].Status);
         setFeedbackComments(ticketData[0].FeedbackComments);
+        setQuotationRequired(ticketData[0].QuotationRequired);
         setFetchError(null);
       } else if (ticketData.length === 0) {
         setFetchError("This ticket is EMPTY!");
@@ -56,6 +57,8 @@ const ViewTicketStaff = () => {
 
   const handleContinue = async () => {
     try {
+      if (quotationRequired === true) {
+      }
       // Get promises for each update
       const updateQuotationRequiredPromise = ticketManager.updateTicket(
         serviceTicket.ServiceRequestID,
@@ -73,7 +76,7 @@ const ViewTicketStaff = () => {
           : ticketManager.updateTicket(
               serviceTicket.ServiceRequestID,
               "Status",
-              "Works Started"
+              "Ticket Assigned"
             );
 
       const updatePARCStatusPromise = ticketManager.updateTicket(
@@ -148,7 +151,7 @@ const ViewTicketStaff = () => {
 
   const renderContent = () => {
     // Quotation Feedback
-    if (quotationRequired === "true") {
+    if (quotationRequired === "true" || quotationRequired === null) {
       return (
         <div>
           <UploadQuotation
@@ -173,30 +176,45 @@ const ViewTicketStaff = () => {
   }
 
   if (status === "Ticket Assigned") {
-    return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        _______________________________________
-        <SubmittedByCard tenant={tenant} />
-        _______________________________________
+    if (quotationRequired === false) {
+      return (
         <div>
-          <label>
-            Quotation Required:
-            <select
-              value={quotationRequired}
-              onChange={handleQuotationRequiredChange}
-            >
-              <option value={true}>YES</option>
-              <option value={false}>NO</option>
-            </select>
-          </label>
-          {renderContent()}
+          <BasicTicketDetails ticket={serviceTicket} />
+          _______________________________________
+          <SubmittedByCard tenant={tenant} />
+          _______________________________________
           <div>
-            <button onClick={handleContinue}>Submit</button>
+            <button onClick={handleStartWorks}>Start Works</button>
+          </div>
+          _______________________________________
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <BasicTicketDetails ticket={serviceTicket} />
+          _______________________________________
+          <SubmittedByCard tenant={tenant} />
+          _______________________________________
+          <div>
+            <label>
+              Quotation Required:
+              <select
+                value={quotationRequired}
+                onChange={handleQuotationRequiredChange}
+              >
+                <option value={true}>YES</option>
+                <option value={false}>NO</option>
+              </select>
+            </label>
+            {renderContent()}
+            <div>
+              <button onClick={handleContinue}>Submit</button>
+            </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 
   if (status === "Quotation Uploaded") {
