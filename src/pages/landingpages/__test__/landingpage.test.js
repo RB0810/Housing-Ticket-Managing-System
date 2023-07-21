@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import LandingPage from '../landingpage';
 import { MemoryRouter, Route,Routes } from 'react-router-dom';
 import { fireEvent } from '@testing-library/react';
+import LandingPage from '../landingpage';
 import AdminLogin from '../../login/adminlogin';
 import LandlordLogin from '../../login/landlordlogin';
 
