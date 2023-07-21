@@ -24,6 +24,10 @@ const ViewTicketSupervisor = () => {
   const [selectedStaff, setSelectedStaff] = useState("");
   const [assignStatus, setAssignStatus] = useState("");
 
+  // For Quotation
+  const [quotationPath, setQuotationPath] = useState(null);
+  const [file, setFile] = useState(null);
+
   useEffect(() => {
     const getStaffAndTenantAndTicket = async () => {
       let ticketData = await ticketManager.getTicket(
@@ -140,7 +144,6 @@ const ViewTicketSupervisor = () => {
         ____________________________________
         <AssignedToCard staff={staff} />
         _______________________________________
-        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
       </div>
     );
   }
@@ -154,7 +157,6 @@ const ViewTicketSupervisor = () => {
         ____________________________________
         <AssignedToCard staff={staff} />
         _______________________________________
-        <DisplayQuotation ticket={serviceTicket} />
       </div>
     );
   }
@@ -168,7 +170,6 @@ const ViewTicketSupervisor = () => {
         ____________________________________
         <AssignedToCard staff={staff} />
         _______________________________________
-        <DisplayQuotation ticket={serviceTicket} />
       </div>
     );
   }
