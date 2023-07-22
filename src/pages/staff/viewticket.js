@@ -9,6 +9,7 @@ import UploadQuotation from "../../components/UploadQuotation";
 import DisplayQuotation from "../../components/DisplayQuotation";
 import supabase from "../../config/supabaseClient";
 import Swal from "sweetalert2";
+import NotificationManager from "../../managers/notificationmanager";
 
 // Quotation-related imports
 import { Document, Page, pdfjs } from "react-pdf";
@@ -17,6 +18,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 const ViewTicketStaff = () => {
   const ticketManager = new TicketManager();
   const accountManager = new AccountManager();
+  //const notificationmanager = new NotificationManager();
   let { ServiceRequestID } = useParams();
   const [serviceTicket, setServiceTicket] = useState([]);
   const [tenant, setTenant] = useState([]);
@@ -109,11 +111,14 @@ const ViewTicketStaff = () => {
         "ACTIVE"
       );
 
+      //const sendNotif = notificationmanager.QuotationUploadNotif(serviceTicket.ServiceRequestID);
+
       // Execute all promises concurrently using Promise.all
       await Promise.all([
         updateQuotationRequiredPromise,
         updateStatusPromise,
         updatePARCStatusPromise,
+        //sendNotif,
       ]);
 
       window.alert("QUOTATION UPDATE SUCCESSFUL!");
@@ -130,6 +135,11 @@ const ViewTicketStaff = () => {
         "Status",
         "Quotation Uploaded"
       );
+      // try{
+      //   await notificationmanager.QuotationUploadNotif(serviceTicket.ServiceRequestID);
+      // } catch (error) {
+      //   console.log(error);
+      // }
       window.alert("QUOTATION UPDATE SUCCESSFUL!");
       window.location.reload();
     } catch (error) {
@@ -145,6 +155,12 @@ const ViewTicketStaff = () => {
         "Status",
         "Works Started"
       );
+
+      // try{
+      //   await notificationmanager.WorksStartedNotif(serviceTicket.ServiceRequestID);
+      // } catch (error) {
+      //   console.log(error);
+      // }
 
       // Perform any additional actions or display a success message
       window.alert("Works Started!");
@@ -163,6 +179,12 @@ const ViewTicketStaff = () => {
         "Status",
         "Works Ended"
       );
+
+      // try{
+      //   await notificationmanager.WorksEndedNotif(serviceTicket.ServiceRequestID);
+      // } catch (error) {
+      //   console.log(error);
+      // }
 
       // Perform any additional actions or display a success message
       window.alert("Update Successful!");

@@ -3,6 +3,11 @@ import { useParams } from 'react-router-dom';
 import TenantAccount from "../../objects/TenantAccount";
 import "./../../../src/styles/createtenantacc.css"
 
+// material UI
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Box from "@mui/material/Box";
+
 const CreateTenantAcc = () => {
   const [tenantUsername, setTenantUsername] = useState("");
   const [tenantEmail, setTenantEmail] = useState("");

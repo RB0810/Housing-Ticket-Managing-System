@@ -9,10 +9,12 @@ import DisplayQuotation from "../../components/DisplayQuotation";
 import { Rating } from "@mui/material";
 import supabase from "../../config/supabaseClient";
 import { Typography } from "@mui/material";
+import NotificationManager from "../../managers/notificationmanager";
 
 const ViewTicketTenant = () => {
   const ticketManager = new TicketManager();
   const accountManager = new AccountManager();
+  //const notificationmanager = new NotificationManager();
   let { ServiceRequestID } = useParams();
   const [serviceTicket, setServiceTicket] = useState([]);
   const [staff, setStaff] = useState([]);
@@ -183,10 +185,13 @@ const ViewTicketTenant = () => {
         "Quotation Accepted"
       );
 
+      //const sendNotif = notificationmanager.QuotationAcceptNotif(serviceTicket.ServiceRequestID);
+
       // Execute all promises concurrently using Promise.all
       await Promise.all([
         updateQuotationAcceptedByTenantPromise,
         updateStatusPromise,
+        //sendNotif,
       ]);
 
       window.alert("Quotation accepted!");
@@ -211,17 +216,21 @@ const ViewTicketTenant = () => {
         false
       );
 
-      const updateFeedbackCommentsPromise = ticketManager.updateTicket(
-        parseInt(serviceTicket.ServiceRequestID),
-        "FeedbackComments",
-        rejectComments
-      );
+
+      const updateFeedbackCommentsPromise =
+        ticketManager.updateFeedbackComments(
+          parseInt(serviceTicket.ServiceRequestID),
+          rejectComments
+        );
+      
+        //const sendNotif = notificationmanager.QuotationRejectNotif(serviceTicket.ServiceRequestID, rejectComments);
 
       // Execute all promises concurrently using Promise.all
       await Promise.all([
         updateStatusPromise,
         updateQuotationAcceptedPromise,
         updateFeedbackCommentsPromise,
+        //sendNotif,
       ]);
 
       window.alert("Quotation rejected!");
@@ -270,12 +279,17 @@ const ViewTicketTenant = () => {
         "Feedback Submitted"
       );
 
+      //const sendNotif = notificationmanager.FeedbackSubmittedNotif(
+      //  serviceTicket.ServiceRequestID, rating, successComments
+      //  );
+
       // Execute all promises concurrently using Promise.all
       await Promise.all([
         updateFeedbackRatingPromise,
         updateFeedbackCommentsPromise,
         updatePARCStatusPromise,
         updateStatusPromise,
+        //sendNotif,
       ]);
 
       window.alert("Feedback submitted!");
@@ -302,8 +316,15 @@ const ViewTicketTenant = () => {
         "Works Rejected"
       );
 
+      //const sendNotif = notificationmanager.WorksRejectNotif(serviceTicket.ServiceRequestID, rejectComments);
+
       // Execute all promises concurrently using Promise.all
-      await Promise.all([updateFeedbackCommentsPromise, rejectWorksPromise]);
+
+      await Promise.all([
+        updateFeedbackCommentsPromise, 
+        rejectTicketPromise, 
+        //sendNotif
+      ]);
 
       window.alert("Feedback submitted!");
       window.location.reload();

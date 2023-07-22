@@ -6,12 +6,14 @@ import BasicTicketDetails from "../../components/BasicTicketDetails";
 import SubmittedByCard from "../../components/SubmittedByCard";
 import AssignedToCard from "../../components/AssignedToCard";
 import ViewFinalFeedbackDetails from "../../components/ViewFinalFeedbackDetails";
+import NotificationManager from "../../managers/notificationmanager";
 import UploadQuotation from "../../components/UploadQuotation";
 import DisplayQuotation from "../../components/DisplayQuotation";
 
 const ViewTicketSupervisor = () => {
   const accountManager = new AccountManager();
   const ticketManager = new TicketManager();
+  //const notificationmanager = new NotificationManager();
   let { ServiceRequestID } = useParams();
   const [serviceTicket, setServiceTicket] = useState([]);
   const [tenant, setTenant] = useState([]);
@@ -79,8 +81,16 @@ const ViewTicketSupervisor = () => {
         "Ticket Assigned"
       );
 
+      console.log(ServiceRequestID);
+
+      //const sendNotif = notificationmanager.TicketAssignNotif(ServiceRequestID, selectedStaff);
+
       // Execute all promises concurrently using Promise.all
-      await Promise.all([assignTicketPromise, updateStatusPromise]);
+      await Promise.all([
+        assignTicketPromise, 
+        updateStatusPromise, 
+        //sendNotif
+      ]);
 
       window.alert("Ticket Assigned");
       window.location.reload();
