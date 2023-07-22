@@ -138,44 +138,9 @@ export default class TicketManager {
 
   /**
    * Updates Ticket entry in Supabase based on Ticket object's ID attribute
-   * @TicketID {int} - Ticket ID to get
-   *
-   * @returns True if successful, False if unsuccessful
-   */
-
-  async deleteTicket(ticketId) {
-    const { data, error } = await supabase
-      .from("Service Request")
-      .delete()
-      .eq("ServiceRequestID", ticketId);
-
-    if (error) {
-      console.error("Error deleting ticket:", error);
-      return false;
-    } else {
-      console.log("Ticket deleted successfully:", data);
-      return true;
-    }
-  }
-
-  /**
-   * Updates Ticket entry in Supabase based on Ticket object's ID attribute
    *
    * @returns List od dictionaries if successful, else returns false
    */
-
-  async getAllTickets() {
-    let { data, error } = await supabase.from("Service Request").select("*");
-
-    if (error) {
-      console.error("Error getting all tickets:", error);
-      return false;
-    } else {
-      console.log("Tickets fetched successfully:", data);
-    }
-
-    return data;
-  }
 
   /**
    * @param {int} - Tenant ID to get tickets of
@@ -322,14 +287,14 @@ export default class TicketManager {
       .eq("TenantID", tenantID);
 
     for (let i = 0; i < data.length; i++) {
-      if(data[i].StaffID != null){
+      if (data[i].StaffID != null) {
         let staffDetails = await supabase
-        .from("StaffUsers")
-        .select("*")
-        .eq("StaffID", data[i].StaffID);
-  
-      data[i].staffDetails = staffDetails.data[0];
-      }  
+          .from("StaffUsers")
+          .select("*")
+          .eq("StaffID", data[i].StaffID);
+
+        data[i].staffDetails = staffDetails.data[0];
+      }
     }
 
     if (error) {
@@ -362,24 +327,23 @@ export default class TicketManager {
       .eq("PARCStatus", PARCStatus)
       .eq("SupervisorID", supervisorID);
 
-      for (let i = 0; i < data.length; i++) {
-        if(data[i].StaffID != null){
-          let staffDetails = await supabase
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].StaffID != null) {
+        let staffDetails = await supabase
           .from("StaffUsers")
           .select("*")
           .eq("StaffID", data[i].StaffID);
-    
-        data[i].staffDetails = staffDetails.data[0];
-        }  
 
-        let tenantDetails = await supabase
+        data[i].staffDetails = staffDetails.data[0];
+      }
+
+      let tenantDetails = await supabase
         .from("TenantUsers")
         .select("*")
         .eq("TenantID", data[i].TenantID);
-    
-        data[i].tenantDetails = tenantDetails.data[0];
 
-      }
+      data[i].tenantDetails = tenantDetails.data[0];
+    }
 
     if (error) {
       console.error(
@@ -417,8 +381,8 @@ export default class TicketManager {
         .from("TenantUsers")
         .select("*")
         .eq("TenantID", data[i].TenantID);
-    
-        data[i].tenantDetails = tenantDetails.data[0];
+
+      data[i].tenantDetails = tenantDetails.data[0];
     }
 
     if (error) {
@@ -433,7 +397,7 @@ export default class TicketManager {
         data
       );
       return data;
-    } 
+    }
   }
 
   // ASSIGN
@@ -514,6 +478,13 @@ export default class TicketManager {
     }
   }
 
+  /**
+   * @TicketID {int} - Ticket ID
+   * @column_name {str} - Column name to update
+   * @value {int/str} - Value to update
+   *
+   * @returns True if assigned already, else False, null if error
+   */
   async updateTicket(ticketId, column_name, value) {
     const { data, error } = await supabase
       .from("Service Request")

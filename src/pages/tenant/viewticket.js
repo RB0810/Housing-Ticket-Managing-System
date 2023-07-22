@@ -211,11 +211,11 @@ const ViewTicketTenant = () => {
         false
       );
 
-      const updateFeedbackCommentsPromise =
-        ticketManager.updateFeedbackComments(
-          parseInt(serviceTicket.ServiceRequestID),
-          rejectComments
-        );
+      const updateFeedbackCommentsPromise = ticketManager.updateTicket(
+        parseInt(serviceTicket.ServiceRequestID),
+        "FeedbackComments",
+        rejectComments
+      );
 
       // Execute all promises concurrently using Promise.all
       await Promise.all([
@@ -246,16 +246,17 @@ const ViewTicketTenant = () => {
 
     try {
       // Update in Database and get promises for each update
-      const updateFeedbackRatingPromise = ticketManager.updateFeedbackRating(
+      const updateFeedbackRatingPromise = ticketManager.updateTicket(
         parseInt(serviceTicket.ServiceRequestID),
+        "FeedbackRating",
         rating
       );
 
-      const updateFeedbackCommentsPromise =
-        ticketManager.updateFeedbackComments(
-          parseInt(serviceTicket.ServiceRequestID),
-          successComments
-        );
+      const updateFeedbackCommentsPromise = ticketManager.updateTicket(
+        parseInt(serviceTicket.ServiceRequestID),
+        "FeedbackComments",
+        successComments
+      );
 
       const updatePARCStatusPromise = ticketManager.updateTicket(
         ServiceRequestID,
@@ -289,18 +290,20 @@ const ViewTicketTenant = () => {
 
     try {
       // Update in Database and get promises for each update
-      const updateFeedbackCommentsPromise =
-        ticketManager.updateFeedbackComments(
-          parseInt(serviceTicket.ServiceRequestID),
-          rejectComments
-        );
+      const updateFeedbackCommentsPromise = ticketManager.updateTicket(
+        parseInt(serviceTicket.ServiceRequestID),
+        "FeedbackComments",
+        rejectComments
+      );
 
-      const rejectTicketPromise = ticketManager.rejectTicket(
-        parseInt(serviceTicket.ServiceRequestID)
+      const rejectWorksPromise = ticketManager.updateTicket(
+        parseInt(serviceTicket.ServiceRequestID),
+        "Status",
+        "Works Rejected"
       );
 
       // Execute all promises concurrently using Promise.all
-      await Promise.all([updateFeedbackCommentsPromise, rejectTicketPromise]);
+      await Promise.all([updateFeedbackCommentsPromise, rejectWorksPromise]);
 
       window.alert("Feedback submitted!");
       window.location.reload();
