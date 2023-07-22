@@ -319,10 +319,9 @@ const ViewTicketTenant = () => {
       //const sendNotif = notificationmanager.WorksRejectNotif(serviceTicket.ServiceRequestID, rejectComments);
 
       // Execute all promises concurrently using Promise.all
-
       await Promise.all([
         updateFeedbackCommentsPromise, 
-        rejectTicketPromise, 
+        rejectWorksPromise, 
         //sendNotif
       ]);
 

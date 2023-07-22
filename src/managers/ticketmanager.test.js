@@ -1,7 +1,6 @@
 import TicketManager from "./ticketmanager";
 import Ticket from "../objects/ticket";
 import supabase from "../config/supabaseClient";
-import AccountManager from "./accountmanager";
 
 describe("TicketManager all test cases", () => {
   let ticketManager = new TicketManager();
