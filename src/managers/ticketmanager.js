@@ -5,7 +5,7 @@ export default class TicketManager {
    * Creates Ticket object
    * @Ticket {Ticket} - Ticket Object to be instantiated
    *
-   * @returns True - Ticket object is now loaded to Database, else False.
+   * @returns TicketID - Ticket object is now loaded to Database, returns Ticket ID, else False.
    */
 
   async addTicket(ticket) {

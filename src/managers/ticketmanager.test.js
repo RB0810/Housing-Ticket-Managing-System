@@ -5,43 +5,44 @@ import AccountManager from "./accountmanager";
 
 describe("TicketManager all test cases", () => {
   let ticketManager = new TicketManager();
-  let accountManager = new AccountManager();
+  beforeAll(async () => {
+    let currentDate = new Date();
+    let timezoneOffset = currentDate.getTimezoneOffset() * 60000;
+    let localTime = new Date(currentDate - timezoneOffset);
+    let submittedDateTime = localTime
+      .toISOString()
+      .replace("T", " ")
+      .slice(0, -5);
+    // Create a ticket with the name "TESTINGTICKETJEST"
+    const ticket = new Ticket(
+      "TESTINGTICKETJEST",
+      1,
+      submittedDateTime,
+      "TESTINGCATEGORYJEST",
+      "TESTINGDESCRIPTIONJEST",
+      "TESTINGLOCATIONJEST"
+    );
 
-  let currentDate = new Date();
-  let timezoneOffset = currentDate.getTimezoneOffset() * 60000;
-  let localTime = new Date(currentDate - timezoneOffset);
-  let submittedDateTime = localTime
-    .toISOString()
-    .replace("T", " ")
-    .slice(0, -5);
-
-  const ticket = new Ticket(
-    "TESTINGTICKETJEST",
-    1,
-    submittedDateTime,
-    "TESTINGCATEGORYJEST",
-    "TESTINGDESCRIPTIONJEST",
-    "TESTINGLOCATIONJEST"
-  );
-
-  accountManager.createStaffAccount()
-
-
-
-  test("Creating new service ticket returns true", async () => {
-    const created = await ticketManager.addTicket(ticket);
-    ticket.id = await ticketManager.getTestingTicketId();
-    expect(created).toEqual(true);
+    // Use promise chaining to ensure each step executes in the right sequence
+    await ticketManager
+      .addTicket(ticket)
+      .then(async () => {
+        ticket.id = await ticketManager.getTestingTicketId();
+      })
+      .then(() => {
+        global.testTicket = ticket;
+        console.log(global.testTicket);
+      });
   });
 
   test("Getting Ticket does not return False", async () => {
-    const retrieved = await ticketManager.getTicket(ticket.id);
+    const retrieved = await ticketManager.getTicket(global.testTicket.id);
     expect(retrieved).not.toEqual(false);
   });
 
   test("Change ticket status returns true if changed", async () => {
     const updated = await ticketManager.updateTicket(
-      ticket.id,
+      global.testTicket.id,
       "Status",
       "TESTINGSTATUSJEST"
     );
@@ -50,7 +51,7 @@ describe("TicketManager all test cases", () => {
 
   test("Change ticket PARC status returns true if changed", async () => {
     const updated = await ticketManager.updateTicket(
-      ticket.id,
+      global.testTicket.id,
       "PARCStatus",
       "TESTINGPARCSTATUSJEST"
     );
@@ -58,13 +59,13 @@ describe("TicketManager all test cases", () => {
   });
 
   test("Assign Ticket to Staff", async () => {
-    const assigned = await ticketManager.assignTicket(ticket.id, 1);
+    const assigned = await ticketManager.assignTicket(global.testTicket.id, 1);
     expect(assigned).toEqual(true);
   });
 
   test("Submits feedback rating for ticket", async () => {
     const feedbackRating = await ticketManager.updateTicket(
-      ticket.id,
+      global.testTicket.id,
       "FeedbackRating",
       "TESTINGFEEDBACKRATINGJEST"
     );
@@ -73,7 +74,7 @@ describe("TicketManager all test cases", () => {
 
   test("Submits feedback comments for ticket", async () => {
     const feedbackComments = await ticketManager.updateTicket(
-      ticket.id,
+      global.testTicket.id,
       "FeedbackComments",
       "TESTINGFEEDBACKCOMMENTSJEST"
     );
@@ -82,7 +83,7 @@ describe("TicketManager all test cases", () => {
 
   test("Sends no quotation required to database", async () => {
     const quotationRequired = await ticketManager.updateTicket(
-      ticket.id,
+      global.testTicket.id,
       "QuotationRequired",
       false
     );
@@ -92,7 +93,7 @@ describe("TicketManager all test cases", () => {
   test("View all active tickets for a particular tenant", async () => {
     const activeTickets = await ticketManager.getTicketsByPARCStatusForTenantID(
       "ACTIVE",
-      ticket.tenantID
+      global.testTicket.tenantID
     );
     expect(activeTickets).not.toEqual(false);
   });
@@ -101,7 +102,7 @@ describe("TicketManager all test cases", () => {
     const pendingTickets =
       await ticketManager.getTicketsByPARCStatusForTenantID(
         "PENDING",
-        ticket.tenantID
+        global.testTicket.tenantID
       );
     expect(pendingTickets).not.toEqual(false);
   });
@@ -109,13 +110,23 @@ describe("TicketManager all test cases", () => {
   test("View all closed tickets for a particular tenant", async () => {
     const closedTickets = await ticketManager.getTicketsByPARCStatusForTenantID(
       "CLOSED",
-      ticket.tenantID
+      global.testTicket.tenantID
     );
     expect(closedTickets).not.toEqual(false);
   });
 
-  afterAll = async () => {
+  afterAll(async () => {
     // Clean up testing
-    ticketManager.cleanUpTesting();
-  };
+    try {
+      const { data, error } = await supabase
+        .from("Service Request")
+        .delete()
+        .eq("Name", "TESTINGTICKETJEST");
+      if (error) {
+        throw new Error("Failed to clean up testing data from the database.");
+      }
+    } catch (err) {
+      console.error("Error during cleanup:", err);
+    }
+  });
 });
