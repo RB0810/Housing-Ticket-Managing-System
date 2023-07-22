@@ -3,7 +3,7 @@ import "../../styles/login.css";
 import AccountManager from "../../managers/accountmanager";
 import "../../styles/login.css";
 
-export default function AdminLogin() {
+export default function TenantLogin() {
   const [ID, setID] = useState("");
   const [password, setPassword] = useState("");
 

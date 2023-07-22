@@ -111,7 +111,7 @@ const CreateTicket = () => {
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
-        </div> */}
+        </div> 
         <div className="name-textfield">
           <img className="create-ticket-icons" src={"/userAccountBox.png"} />
           <TextField
@@ -157,7 +157,7 @@ const CreateTicket = () => {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
-        </div> */}
+        </div> 
 
         <div className="description-textfield">
           <TextField
