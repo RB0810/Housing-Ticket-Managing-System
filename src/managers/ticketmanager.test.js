@@ -1,9 +1,12 @@
 import TicketManager from "./ticketmanager";
 import Ticket from "../objects/ticket";
 import supabase from "../config/supabaseClient";
+import AccountManager from "./accountmanager";
 
 describe("TicketManager all test cases", () => {
-  const ticketManager = new TicketManager();
+  let ticketManager = new TicketManager();
+  let accountManager = new AccountManager();
+
   let currentDate = new Date();
   let timezoneOffset = currentDate.getTimezoneOffset() * 60000;
   let localTime = new Date(currentDate - timezoneOffset);
@@ -21,9 +24,13 @@ describe("TicketManager all test cases", () => {
     "TESTINGLOCATIONJEST"
   );
 
+  accountManager.createStaffAccount()
+
+
+
   test("Creating new service ticket returns true", async () => {
     const created = await ticketManager.addTicket(ticket);
-    console.log(ticket.id);
+    ticket.id = await ticketManager.getTestingTicketId();
     expect(created).toEqual(true);
   });
 
@@ -51,10 +58,7 @@ describe("TicketManager all test cases", () => {
   });
 
   test("Assign Ticket to Staff", async () => {
-    const assigned = await ticketManager.assignTicket(
-      ticket.id,
-      "TESTINGSTAFFJEST"
-    );
+    const assigned = await ticketManager.assignTicket(ticket.id, 1);
     expect(assigned).toEqual(true);
   });
 
@@ -111,10 +115,7 @@ describe("TicketManager all test cases", () => {
   });
 
   afterAll = async () => {
-    // Delete the mock ticket object
-    const { data, error } = await supabase
-      .from("ServiceRequest")
-      .delete()
-      .match({ Name: "TESTINGTICKETJEST" });
+    // Clean up testing
+    ticketManager.cleanUpTesting();
   };
 });

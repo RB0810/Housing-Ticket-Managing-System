@@ -516,4 +516,17 @@ export default class TicketManager {
 
     return data[0][column_name];
   }
+
+  async getTestingTicketId() {
+    const { data, error } = await supabase
+      .from("Service Request")
+      .select("ServiceRequestID")
+      .eq("Name", "TESTINGTICKETJEST");
+
+    if (error) {
+      console.log("Test Ticket does not exist", error);
+      return false;
+    }
+    return data[0]["ServiceRequestID"];
+  }
 }
