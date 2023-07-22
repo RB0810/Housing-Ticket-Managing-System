@@ -20,7 +20,6 @@ describe("TicketManager all test cases", () => {
     "TESTINGDESCRIPTIONJEST",
     "TESTINGLOCATIONJEST"
   );
-  ticket.id = 0;
 
   test("Creating new service ticket returns true", async () => {
     const created = await ticketManager.addTicket(ticket);
@@ -116,6 +115,6 @@ describe("TicketManager all test cases", () => {
     const { data, error } = await supabase
       .from("ServiceRequest")
       .delete()
-      .match({ ServiceRequestID: ticket.id });
+      .match({ Name: "TESTINGTICKETJEST" });
   };
 });
