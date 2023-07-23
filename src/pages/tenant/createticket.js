@@ -6,7 +6,6 @@ import AccountManager from "../../managers/accountmanager";
 import "./../../styles/viewticket.css";
 import NotificationManager from "../../managers/notificationmanager";
 
-// material UI
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from "@mui/material/Box";
@@ -49,7 +48,10 @@ const CreateTicket = () => {
     let currentDate = new Date();
     let timezoneOffset = currentDate.getTimezoneOffset() * 60000;
     let localTime = new Date(currentDate - timezoneOffset);
-    let submittedDateTime = localTime.toISOString().replace("T", " ").slice(0, -5);
+    let submittedDateTime = localTime
+      .toISOString()
+      .replace("T", " ")
+      .slice(0, -5);
 
     const ticket = new Ticket(
       name,
@@ -179,7 +181,6 @@ const CreateTicket = () => {
           {formError && <p className="create-ticket-error">{formError}</p>}
         </form>
       </Box>
-
     </div>
   );
 };
