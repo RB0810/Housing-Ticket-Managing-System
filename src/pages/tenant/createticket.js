@@ -73,7 +73,7 @@ const CreateTicket = () => {
 
     try {
       let success = await ticketManager.addTicket(ticket);
-        //const notificationmanager = new NotificationManager();
+        // const notificationmanager = new NotificationManager();
         // try {
         //   await notificationmanager.sendMailtoSupervisorFromTenantID(TenantID, body);
         //   console.log("Mail sent");

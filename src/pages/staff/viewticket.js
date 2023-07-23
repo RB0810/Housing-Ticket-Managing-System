@@ -78,9 +78,12 @@ const ViewTicketStaff = () => {
     getTenantAndTicket();
   }, []);
 
+  const changeQuotationRequired = (value) => {
+    setQuotationRequired(value);
+  };
+
   const handleQuotationRequiredChange = (e) => {
-    setQuotationRequired(e.target.value);
-    console.log(quotationRequired);
+    changeQuotationRequired(e.target.value);
   };
 
   const handleContinue = async () => {
@@ -111,9 +114,11 @@ const ViewTicketStaff = () => {
         "ACTIVE"
       );
 
-      //const sendNotif = notificationmanager.QuotationUploadNotif(serviceTicket.ServiceRequestID);
+      // const sendNotif = notificationmanager.QuotationUploadNotif(
+      //   serviceTicket.ServiceRequestID
+      // );
 
-      // Execute all promises concurrently using Promise.all
+      //Execute all promises concurrently using Promise.all
       await Promise.all([
         updateQuotationRequiredPromise,
         updateStatusPromise,
@@ -135,8 +140,10 @@ const ViewTicketStaff = () => {
         "Status",
         "Quotation Uploaded"
       );
-      // try{
-      //   await notificationmanager.QuotationUploadNotif(serviceTicket.ServiceRequestID);
+      // try {
+      //   await notificationmanager.QuotationUploadNotif(
+      //     serviceTicket.ServiceRequestID
+      //   );
       // } catch (error) {
       //   console.log(error);
       // }
@@ -156,8 +163,10 @@ const ViewTicketStaff = () => {
         "Works Started"
       );
 
-      // try{
-      //   await notificationmanager.WorksStartedNotif(serviceTicket.ServiceRequestID);
+      // try {
+      //   await notificationmanager.WorksStartedNotif(
+      //     serviceTicket.ServiceRequestID
+      //   );
       // } catch (error) {
       //   console.log(error);
       // }
@@ -180,8 +189,10 @@ const ViewTicketStaff = () => {
         "Works Ended"
       );
 
-      // try{
-      //   await notificationmanager.WorksEndedNotif(serviceTicket.ServiceRequestID);
+      // try {
+      //   await notificationmanager.WorksEndedNotif(
+      //     serviceTicket.ServiceRequestID
+      //   );
       // } catch (error) {
       //   console.log(error);
       // }
@@ -196,6 +207,7 @@ const ViewTicketStaff = () => {
   };
 
   const handleFileChange = async (event) => {
+    changeQuotationRequired("true");
     await uploadFileToBucket(event.target.files[0]);
   };
 

@@ -279,7 +279,7 @@ const ViewTicketTenant = () => {
         "Feedback Submitted"
       );
 
-      //const sendNotif = notificationmanager.FeedbackSubmittedNotif(
+      // const sendNotif = notificationmanager.FeedbackSubmittedNotif(
       //  serviceTicket.ServiceRequestID, rating, successComments
       //  );
 
