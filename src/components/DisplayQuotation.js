@@ -1,69 +1,71 @@
-import React, { useState, useEffect } from 'react';
+import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
+import { Viewer, Worker } from "@react-pdf-viewer/core";
 import supabase from '../config/supabaseClient';
-import { Document, Page, pdfjs } from 'react-pdf';
-import "../styles/DisplayQuotation.css"
-
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+import '../styles/DisplayQuotation.css'
+import { useState, useEffect } from "react";
+import '@react-pdf-viewer/core/lib/styles/index.css'
+import '@react-pdf-viewer/default-layout/lib/styles/index.css'
 
 const DisplayQuotation = ({ ServiceRequestID }) => {
-  const [quotationPath, setQuotationPath] = useState(null);
-  const [file, setFile] = useState(null);
+    const [quotationPath, setQuotationPath] = useState(null);
+    const [pdfFile, setPDFFile] = useState(null)
 
-  useEffect(() => {
-    const fetchQuotationPath = async () => {
-      const { data, error } = await supabase
-        .from('Service Request')
-        .select('QuotationAttachmentPath')
-        .eq('ServiceRequestID', ServiceRequestID);
-
-      if (error || !data || data.length === 0) {
-        console.error('Error fetching quotation path:', error);
-      } else {
-        const filePath = data[0].QuotationAttachmentPath;
-        if (filePath) {
-          setQuotationPath(filePath);
-          if(filePath.endsWith('.pdf')) {
-            const { data: fileData, error: fileError } = await supabase
-              .storage
-              .from('quotation')  
-              .download(filePath);
-
-            if(fileError || !fileData) {
-              console.error('Error downloading file:', fileError);
+    useEffect(() => {
+        const fetchQuotationPath = async () => {
+            const { data, error } = await supabase
+            .from('Service Request')
+            .select('QuotationAttachmentPath')
+            .eq('ServiceRequestID', ServiceRequestID);
+    
+            if (error || !data || data.length === 0) {
+                console.error('Error fetching quotation path:', error);
             } else {
-              const url = URL.createObjectURL(fileData);
-              setFile(url);
+                const filePath = data[0].QuotationAttachmentPath;
+                if (filePath && filePath.endsWith('.pdf')) {
+                    setQuotationPath(filePath);
+                }
             }
-          }
+        };
+    
+        if (ServiceRequestID) {
+            fetchQuotationPath();
         }
-      }
-    };
+    }, [ServiceRequestID]);
 
-    if (ServiceRequestID) {
-      fetchQuotationPath();
-    }
-  }, [ServiceRequestID]);
+    useEffect(() => {
+        const downloadAndSetPDF = async () => {
+            if (quotationPath) {
+                const { data: fileData, error: fileError } = await supabase
+                .storage
+                .from('quotation')
+                .download(quotationPath);
 
-  return (
-    <div>
-      {quotationPath ? (
-        <div>
-          <p>Quotation Attachment Path: {quotationPath}</p>
-          <div className="pdf-container">
-            {file && (
-              <div className="pdf-viewer">
-                <Document file={file}>
-                  <Page pageNumber={1} />
-                </Document>
-              </div>
-            )}
-          </div>
+                if (fileError || !fileData) {
+                    console.error('Error downloading file:', fileError);
+                } else {
+                    const url = URL.createObjectURL(fileData);
+                    setPDFFile(url);
+                }
+            }
+        };
+
+        downloadAndSetPDF();
+    }, [quotationPath]);
+
+    const newplugin = defaultLayoutPlugin()
+
+    return (
+        <div className='pdf-container'>
+            <div className='pdf-container2'>
+                <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.8.162/build/pdf.worker.min.js">
+                    {pdfFile && <>
+                        <Viewer fileUrl={pdfFile} plugins={[newplugin]}/>
+                    </>}
+                    {!pdfFile && <>No PDF</>} 
+                </Worker>
+            </div>
         </div>
-      ) : (
-        <p>No quotation path found.</p>
-      )}
-    </div>
-  );
-};
+    )
+}
 
 export default DisplayQuotation;

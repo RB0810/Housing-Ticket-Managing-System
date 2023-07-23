@@ -6,9 +6,9 @@ import AssignedToCard from "../../components/AssignedToCard";
 import ViewFinalFeedbackDetails from "../../components/ViewFinalFeedbackDetails";
 import { useParams } from "react-router-dom";
 import DownloadQuotation from "../../components/DownloadQuotation";
-import DisplayQuotation from "../../components/DisplayQuotation";
 import { Rating } from "@mui/material";
 import { Typography } from "@mui/material";
+import DisplayQuotation from "../../components/DisplayQuotation";
 
 const ViewTicketTenant = () => {
   const ticketManager = new TicketManager();
@@ -314,7 +314,7 @@ const ViewTicketTenant = () => {
         <BasicTicketDetails ticket={serviceTicket} />
         <AssignedToCard staff={staff} />
         <h1>Reason for Reject Quotation : {serviceTicket.FeedbackComments}</h1>
-        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID}/>
       </div>
     );
   }
@@ -345,9 +345,7 @@ const ViewTicketTenant = () => {
               bucketName="quotation"
               ServiceRequestID={serviceTicket.ServiceRequestID}
             />
-            <DisplayQuotation
-              ServiceRequestID={serviceTicket.ServiceRequestID}
-            />
+            <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID}/>
           </div>
         )}
       </div>
@@ -380,9 +378,7 @@ const ViewTicketTenant = () => {
               bucketName="quotation"
               ServiceRequestID={serviceTicket.ServiceRequestID}
             />
-            <DisplayQuotation
-              ServiceRequestID={serviceTicket.ServiceRequestID}
-            />
+            <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID}/>
           </div>
         )}
         _______________________________________
@@ -403,9 +399,7 @@ const ViewTicketTenant = () => {
               bucketName="quotation"
               ServiceRequestID={serviceTicket.ServiceRequestID}
             />
-            <DisplayQuotation
-              ServiceRequestID={serviceTicket.ServiceRequestID}
-            />
+            <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID}/>
           </div>
         )}
       </div>
@@ -430,9 +424,7 @@ const ViewTicketTenant = () => {
               bucketName="quotation"
               ServiceRequestID={serviceTicket.ServiceRequestID}
             />
-            <DisplayQuotation
-              ServiceRequestID={serviceTicket.ServiceRequestID}
-            />
+            <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID}/>
           </div>
         )}
         _______________________________________
