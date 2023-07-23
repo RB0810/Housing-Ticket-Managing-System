@@ -56,6 +56,11 @@ li{
     display: inline-block;
 }
 
+.field-row {
+    margin-bottom: 2rem;
+    padding-bottom: 20px;
+}
+
 .con-25{
     text-align: left;
     float: left;
@@ -94,27 +99,15 @@ li{
 }
 
 .submit-button {
+    margin-top: 100rem;
     background-color: #4CAF50;
     padding: 0.5rem;
     color: white;
     border-radius: 10px;
     cursor: pointer;
-    margin-top: 1.5rem;
+    margin: 1rem;
 }
 
 .submit-button:hover {
     background-color: #45a049;
-}
-
-.request-type {
-    font-size: large;
-    text-align: left;
-    float: left;
-    width: 25%;
-    margin-top: 6px;
-}
-
-.field-row {
-    margin-top: 20px;
-    margin-bottom: 20px;
 }
