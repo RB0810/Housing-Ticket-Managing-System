@@ -5,14 +5,16 @@ import BasicTicketDetails from "../../components/BasicTicketDetails";
 import AssignedToCard from "../../components/AssignedToCard";
 import ViewFinalFeedbackDetails from "../../components/ViewFinalFeedbackDetails";
 import { useParams } from "react-router-dom";
-import DownloadQuotation from "../../components/DownloadQuotation";
 import DisplayQuotation from "../../components/DisplayQuotation";
 import { Rating } from "@mui/material";
+import supabase from "../../config/supabaseClient";
 import { Typography } from "@mui/material";
+import NotificationManager from "../../managers/notificationmanager";
 
 const ViewTicketTenant = () => {
   const ticketManager = new TicketManager();
   const accountManager = new AccountManager();
+  //const notificationmanager = new NotificationManager();
   let { ServiceRequestID } = useParams();
   const [serviceTicket, setServiceTicket] = useState([]);
   const [staff, setStaff] = useState([]);
@@ -21,6 +23,10 @@ const ViewTicketTenant = () => {
   const [quotationRequired, setQuotationRequired] = useState(false);
   const [quotationState, setQuotationState] = useState(null);
   const [showQuotationButtons, setShowQuotationButtons] = useState(true);
+
+  // Quotation Items
+  const [quotationPath, setQuotationPath] = useState(null);
+  const [file, setFile] = useState(null);
 
   const [status, setStatus] = useState("");
   const [feedbackType, setFeedbackType] = useState(null);
@@ -45,6 +51,21 @@ const ViewTicketTenant = () => {
         setStaff(staffData);
         setStatus(ticketData[0].Status);
         setQuotationRequired(ticketData[0].QuotationRequired);
+        setQuotationPath(ticketData[0].QuotationAttachmentPath);
+        if (quotationPath !== null) {
+          if (quotationPath.endsWith(".pdf")) {
+            const { data: fileData, error: fileError } = await supabase.storage
+              .from("quotation")
+              .download(quotationPath);
+
+            if (fileError || !fileData) {
+              console.error("Error downloading file:", fileError);
+            } else {
+              const url = URL.createObjectURL(fileData);
+              setFile(url);
+            }
+          }
+        }
         setFetchError(null);
       } else if (ticketData.length === 0) {
         setFetchError("This ticket is EMPTY!");
@@ -57,6 +78,30 @@ const ViewTicketTenant = () => {
 
     getStaffAndTicket();
   }, []);
+
+  const handleFileDownload = async () => {
+    try {
+      const { data, error } = await supabase.storage
+        .from("quotation")
+        .download(quotationPath);
+      const blob = new Blob([data], { type: "application/octet-stream" });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      const fileName = quotationPath.split("/").pop();
+      link.download = fileName;
+      link.click();
+      URL.revokeObjectURL(url);
+
+      if (error) {
+        window.alert("Error downloading file!");
+        return;
+      }
+    } catch (error) {
+      window.alert("Error downloading file!");
+    }
+  };
 
   const renderContent = () => {
     // Quotation Feedback
@@ -140,10 +185,13 @@ const ViewTicketTenant = () => {
         "Quotation Accepted"
       );
 
+      //const sendNotif = notificationmanager.QuotationAcceptNotif(serviceTicket.ServiceRequestID);
+
       // Execute all promises concurrently using Promise.all
       await Promise.all([
         updateQuotationAcceptedByTenantPromise,
         updateStatusPromise,
+        //sendNotif,
       ]);
 
       window.alert("Quotation accepted!");
@@ -168,17 +216,21 @@ const ViewTicketTenant = () => {
         false
       );
 
+
       const updateFeedbackCommentsPromise =
         ticketManager.updateFeedbackComments(
           parseInt(serviceTicket.ServiceRequestID),
           rejectComments
         );
+      
+        //const sendNotif = notificationmanager.QuotationRejectNotif(serviceTicket.ServiceRequestID, rejectComments);
 
       // Execute all promises concurrently using Promise.all
       await Promise.all([
         updateStatusPromise,
         updateQuotationAcceptedPromise,
         updateFeedbackCommentsPromise,
+        //sendNotif,
       ]);
 
       window.alert("Quotation rejected!");
@@ -203,16 +255,17 @@ const ViewTicketTenant = () => {
 
     try {
       // Update in Database and get promises for each update
-      const updateFeedbackRatingPromise = ticketManager.updateFeedbackRating(
+      const updateFeedbackRatingPromise = ticketManager.updateTicket(
         parseInt(serviceTicket.ServiceRequestID),
+        "FeedbackRating",
         rating
       );
 
-      const updateFeedbackCommentsPromise =
-        ticketManager.updateFeedbackComments(
-          parseInt(serviceTicket.ServiceRequestID),
-          successComments
-        );
+      const updateFeedbackCommentsPromise = ticketManager.updateTicket(
+        parseInt(serviceTicket.ServiceRequestID),
+        "FeedbackComments",
+        successComments
+      );
 
       const updatePARCStatusPromise = ticketManager.updateTicket(
         ServiceRequestID,
@@ -226,12 +279,17 @@ const ViewTicketTenant = () => {
         "Feedback Submitted"
       );
 
+      //const sendNotif = notificationmanager.FeedbackSubmittedNotif(
+      //  serviceTicket.ServiceRequestID, rating, successComments
+      //  );
+
       // Execute all promises concurrently using Promise.all
       await Promise.all([
         updateFeedbackRatingPromise,
         updateFeedbackCommentsPromise,
         updatePARCStatusPromise,
         updateStatusPromise,
+        //sendNotif,
       ]);
 
       window.alert("Feedback submitted!");
@@ -246,18 +304,26 @@ const ViewTicketTenant = () => {
 
     try {
       // Update in Database and get promises for each update
-      const updateFeedbackCommentsPromise =
-        ticketManager.updateFeedbackComments(
-          parseInt(serviceTicket.ServiceRequestID),
-          rejectComments
-        );
-
-      const rejectTicketPromise = ticketManager.rejectTicket(
-        parseInt(serviceTicket.ServiceRequestID)
+      const updateFeedbackCommentsPromise = ticketManager.updateTicket(
+        parseInt(serviceTicket.ServiceRequestID),
+        "FeedbackComments",
+        rejectComments
       );
 
+      const rejectWorksPromise = ticketManager.updateTicket(
+        parseInt(serviceTicket.ServiceRequestID),
+        "Status",
+        "Works Rejected"
+      );
+
+      //const sendNotif = notificationmanager.WorksRejectNotif(serviceTicket.ServiceRequestID, rejectComments);
+
       // Execute all promises concurrently using Promise.all
-      await Promise.all([updateFeedbackCommentsPromise, rejectTicketPromise]);
+      await Promise.all([
+        updateFeedbackCommentsPromise, 
+        rejectWorksPromise, 
+        //sendNotif
+      ]);
 
       window.alert("Feedback submitted!");
       window.location.reload();
@@ -303,7 +369,14 @@ const ViewTicketTenant = () => {
         )}
         {renderContent()}
         ____________________________________
-        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+        {quotationRequired && (
+          <div>
+            <div>
+              <button onClick={handleFileDownload}>Download Quotation</button>
+            </div>
+            <DisplayQuotation quotationPath={quotationPath} file={file} />
+          </div>
+        )}
       </div>
     );
   }
@@ -325,11 +398,14 @@ const ViewTicketTenant = () => {
         <BasicTicketDetails ticket={serviceTicket} />
         <AssignedToCard ticket={serviceTicket} />
         <p>Quotation Needed: {serviceTicket.QuotationRequired}</p>
-        <DownloadQuotation
-          bucketName="quotation"
-          ServiceRequestID={serviceTicket.ServiceRequestID}
-        />
-        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+        {quotationRequired && (
+          <div>
+            <div>
+              <button onClick={handleFileDownload}>Download Quotation</button>
+            </div>
+            <DisplayQuotation quotationPath={quotationPath} file={file} />
+          </div>
+        )}
       </div>
     );
   }
@@ -341,13 +417,10 @@ const ViewTicketTenant = () => {
         <AssignedToCard staff={staff} />
         {quotationRequired && (
           <div>
-            <DownloadQuotation
-              bucketName="quotation"
-              ServiceRequestID={serviceTicket.ServiceRequestID}
-            />
-            <DisplayQuotation
-              ServiceRequestID={serviceTicket.ServiceRequestID}
-            />
+            <div>
+              <button onClick={handleFileDownload}>Download Quotation</button>
+            </div>
+            <DisplayQuotation quotationPath={quotationPath} file={file} />
           </div>
         )}
       </div>
@@ -376,16 +449,12 @@ const ViewTicketTenant = () => {
         ____________________________________
         {quotationRequired && (
           <div>
-            <DownloadQuotation
-              bucketName="quotation"
-              ServiceRequestID={serviceTicket.ServiceRequestID}
-            />
-            <DisplayQuotation
-              ServiceRequestID={serviceTicket.ServiceRequestID}
-            />
+            <div>
+              <button onClick={handleFileDownload}>Download Quotation</button>
+            </div>
+            <DisplayQuotation quotationPath={quotationPath} file={file} />
           </div>
         )}
-        _______________________________________
       </div>
     );
   }
@@ -399,13 +468,10 @@ const ViewTicketTenant = () => {
         _______________________________________
         {quotationRequired && (
           <div>
-            <DownloadQuotation
-              bucketName="quotation"
-              ServiceRequestID={serviceTicket.ServiceRequestID}
-            />
-            <DisplayQuotation
-              ServiceRequestID={serviceTicket.ServiceRequestID}
-            />
+            <div>
+              <button onClick={handleFileDownload}>Download Quotation</button>
+            </div>
+            <DisplayQuotation quotationPath={quotationPath} file={file} />
           </div>
         )}
       </div>
@@ -426,16 +492,12 @@ const ViewTicketTenant = () => {
         _______________________________________
         {quotationRequired && (
           <div>
-            <DownloadQuotation
-              bucketName="quotation"
-              ServiceRequestID={serviceTicket.ServiceRequestID}
-            />
-            <DisplayQuotation
-              ServiceRequestID={serviceTicket.ServiceRequestID}
-            />
+            <div>
+              <button onClick={handleFileDownload}>Download Quotation</button>
+            </div>
+            <DisplayQuotation quotationPath={quotationPath} file={file} />
           </div>
         )}
-        _______________________________________
       </div>
     );
   }

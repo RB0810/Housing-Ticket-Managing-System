@@ -8,12 +8,15 @@ const BasicTicketDetails = (ticket) => {
       <p>Status: {ticket.ticket.Status}</p>
       <p>Name: {ticket.ticket.Name}</p>
       <p>Category: {ticket.ticket.Category}</p>
-      <p>Description : {ticket.ticket.Description}</p>
+      <p>Description: {ticket.ticket.Description}</p>
       <p>
-        Submitted:{" "}
-        {new Date(ticket.ticket.SubmittedDateTime).toLocaleDateString()}
+        Submitted: {new Date(ticket.ticket.SubmittedDateTime).toLocaleDateString()}
       </p>
-      <p>Quotation Needed: {ticket.ticket.QuotationRequired ? "YES" : "NO"}</p>
+      {ticket.ticket.QuotationRequired !== null && (
+        <p>
+          Quotation Required: {ticket.ticket.QuotationRequired ? "YES" : "NO"}
+        </p>
+      )}
     </div>
   );
 };

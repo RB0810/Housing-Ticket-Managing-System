@@ -6,7 +6,7 @@ const BuildingCard = ({ building, onClick }) => {
     <button className="building-card" onClick={onClick}>
       <h3>{building.BuildingName}</h3>
       <p>{building.Address}, {building.PostalCode}</p>
-      <p>Supervisor: {building.supervisor.SupervisorUsername}</p>
+      <p>Supervisor: {building.supervisor.SupervisorName}</p>
       <p>{building.supervisor.SupervisorEmail}, {building.supervisor.SupervisorPhone}</p>
     </button>
   );
