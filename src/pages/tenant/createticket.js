@@ -71,15 +71,14 @@ const CreateTicket = () => {
       let success = await ticketManager.addTicket(ticket);
 
         setFormError("Successfully added ticket");
-        const notificationmanager = new NotificationManager();
-        try {
-          await notificationmanager.sendMailtoSupervisorFromTenantID(TenantID, body);
-          console.log("Mail sent");
-        } catch (error) {
-          console.error("Mail sending error:", error);
-        window.alert("Ticket Sucessfully Created");
-        window.location.reload();
-      }
+        //const notificationmanager = new NotificationManager();
+        // try {
+        //   await notificationmanager.sendMailtoSupervisorFromTenantID(TenantID, body);
+        //   console.log("Mail sent");
+        // } catch (error) {
+        //   console.error("Mail sending error:", error);
+        // }
+      window.location.reload();
     } catch (error) {
       window.alert("Error submitting ticket");
     } finally {
