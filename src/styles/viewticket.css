@@ -98,6 +98,11 @@ h3{
     display: inline-block;
 }
 
+.field-row {
+    margin-bottom: 2rem;
+    padding-bottom: 20px;
+}
+
 .con-25{
     float: left;
     width: 25%;
@@ -126,3 +131,26 @@ h3{
     width: 50px;
     transform: translateX(-50%);
 }
+
+.name-textfield {
+    background-color: white;
+}
+
+.description-textfield {
+    background-color: white;
+}
+
+.submit-button {
+    margin-top: 100rem;
+    background-color: #4CAF50;
+    padding: 0.5rem;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    margin: 1rem;
+}
+
+.submit-button:hover {
+    background-color: #45a049;
+}
+

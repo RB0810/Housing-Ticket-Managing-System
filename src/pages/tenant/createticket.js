@@ -6,8 +6,9 @@ import AccountManager from "../../managers/accountmanager";
 import "./../../styles/viewticket.css";
 import NotificationManager from "../../managers/notificationmanager";
 
-// material UI
-import TextField from "@mui/material/TextField";
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Box from "@mui/material/Box";
 
 const CreateTicket = () => {
   const navigate = useNavigate();
@@ -72,15 +73,14 @@ const CreateTicket = () => {
       let success = await ticketManager.addTicket(ticket);
 
         setFormError("Successfully added ticket");
-        const notificationmanager = new NotificationManager();
-        try {
-          await notificationmanager.sendMailtoSupervisorFromTenantID(TenantID, body);
-          console.log("Mail sent");
-        } catch (error) {
-          console.error("Mail sending error:", error);
-        window.alert("Ticket Sucessfully Created");
-        window.location.reload();
-      }
+        //const notificationmanager = new NotificationManager();
+        // try {
+        //   await notificationmanager.sendMailtoSupervisorFromTenantID(TenantID, body);
+        //   console.log("Mail sent");
+        // } catch (error) {
+        //   console.error("Mail sending error:", error);
+        // }
+      window.location.reload();
     } catch (error) {
       window.alert("Error submitting ticket");
     } finally {
@@ -90,113 +90,97 @@ const CreateTicket = () => {
 
   return (
     <div className="ticket-creation-page">
-      <div>
-        <h1 className="ticket-creation-title">Create Ticket</h1>
-      </div>
-
-      <form onSubmit={handleSubmit} className="ticket-creation-form">
-        <div className="con-25">
-          <label htmlFor="name" className="create-ticket-label">
-            Name
-          </label>
+      <Box className="create-ticket-box" sx={{ flexDirection: "column" }}>
+        <div>
+          <h1 className="ticket-creation-title">Create Ticket</h1>
         </div>
-        <div className="con-75">
+        <form onSubmit={handleSubmit} className="ticket-creation-form">
+
+          <div className="field-row">
+            <div className="con-25">
+              <label htmlFor="name">Name</label>
+            </div>
+            <TextField
+              className="con-75"
+              required
+              type="text"
+              id="name"
+              label="Name"
+              placeholder="Enter your name"
+              variant="outlined"
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+
+          <div className="field-row">
+            <div className="con-25">
+              <label htmlFor="dropdown">Request Type</label>
+            </div>
+            <div className="con-75">
+              <select
+                id="dropdown"
+                value={requestType}
+                onChange={(e) => setRequestType(e.target.value)}
+              >
+                <option value="">Please Select Request Type</option>
+                <option value="Toilet">Toilet</option>
+                <option value="Plumbing">Plumbing</option>
+                <option value="Pest">Pest</option>
+                <option value="Electric">Electric</option>
+                <option value="Aircon">Aircon</option>
+                <option value="Cleaning">Cleaning</option>
+                <option value="Others">Others</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="field-row">
+            <div className="con-25">
+              <label htmlFor="description">Description</label>
+            </div>
+            <TextField
+              className="con-75"
+              required
+              id="description"
+              label="Description"
+              multiline
+              rows={4}
+              placeholder="Enter your description of the problem"
+              variant="outlined"
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
+
+          <div className="field-row">
+            <div className="con-25">
+              <label htmlFor="property">Property</label>
+            </div>
+            <div className="con-75">
+              <select
+                id="property"
+                value={property}
+                onChange={(e) => setProperty(e.target.value)}
+              >
+                <option value="">Please Select Property</option>
+                {properties.map((property) => (
+                  <option key={property.UnitNumber} value={property.UnitNumber}>
+                    {property.UnitNumber}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
           <input
-            type="text"
-            id="name"
-            className="create-ticket-input"
-            placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            type="submit"
+            value="Create Service Ticket"
+            className="submit-button"
+            disabled={loading}
           />
-        </div>
-        <div className="name-textfield">
-          <img className="create-ticket-icons" src={"/userAccountBox.png"} />
-          <TextField
-            id="name"
-            label="Name"
-            placeholder="Enter your name"
-            variant="filled"
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <div className="con-25">
-          <label htmlFor="dropdown" className="create-ticket-label">
-            Request Type
-          </label>
-        </div>
-        <div className="con-75">
-          <select
-            id="dropdown"
-            className="create-ticket-select"
-            value={requestType}
-            onChange={(e) => setRequestType(e.target.value)}
-          >
-            <option value="">Please Select Request Type</option>
-            <option value="Toilet">Toilet</option>
-            <option value="Plumbing">Plumbing</option>
-            <option value="Pest">Pest</option>
-            <option value="Electric">Electric</option>
-            <option value="Aircon">Aircon</option>
-            <option value="Cleaning">Cleaning</option>
-            <option value="Others">Others</option>
-          </select>
-        </div>
-        <div className="con-25">
-          <label htmlFor="description" className="create-ticket-label">
-            Description
-          </label>
-        </div>
-        <div className="con-75">
-          <textarea
-            id="description"
-            className="create-ticket-description"
-            placeholder="Description"
-            rows="5"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div> 
 
-        <div className="description-textfield">
-          <TextField
-            id="description"
-            label="Description"
-            multiline
-            rows={4}
-            placeholder="Enter your description of the problem"
-            variant="filled"
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
-        <div className="con-25">
-          <label htmlFor="property" className="create-ticket-label">
-            Property
-          </label>
-        </div>
-        <div className="con-75">
-          <select
-            id="property"
-            className="create-ticket-select"
-            value={property}
-            onChange={(e) => setProperty(e.target.value)}
-          >
-            <option value="">Please Select Property</option>
-            {properties.map((property) => (
-              <option key={property.UnitNumber} value={property.UnitNumber}>
-                {property.UnitNumber}
-              </option>
-            ))}
-          </select>
-        </div>
-        <input
-          type="submit"
-          value="Create Service Ticket"
-          className="create-ticket-button"
-          disabled={loading}
-        />
-        {formError && <p className="create-ticket-error">{formError}</p>}
-      </form>
+          {formError && <p className="create-ticket-error">{formError}</p>}
+        </form>
+      </Box>
     </div>
   );
 };
