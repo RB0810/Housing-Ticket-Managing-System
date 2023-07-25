@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import AccountManager from "../../managers/accountmanager";
 import { Link, useParams } from "react-router-dom";
 import "./../../styles/profile.css"
+import {Grid, TextField} from '@mui/material'
+
 
 const TenantProfile = () => {
   const { TenantID } = useParams();
@@ -60,18 +62,43 @@ const TenantProfile = () => {
     <div className="tenant-profile-page">
       <div className="tenant-profile-row">
         <div className="tenant-profile-col25">
-          <p className="tenant-profile-label">Personal Details</p>
+          <h1 className="tenant-profile-label">Personal Details</h1>
         </div>
-        
         <div className="tenant-profile-col75">
-          <p><b>Username:</b> {tenant.TenantName}</p>
-          <p><b>Email:</b> {tenant.TenantEmail}</p>
-          <p><b>Phone:</b> {tenant.TenantPhone}</p>
+          <Grid container spacing={1}>
+            <Grid item xs = {12}>
+                <TextField 
+                className="tenant-profile-textfield"
+                id="outlined-basic" 
+                label="Username" 
+                variant="outlined" 
+                defaultValue={tenant.TenantName}
+                InputProps={{readOnly: true,}}/>
+            </Grid>
+            <Grid item xs = {12}>
+                <TextField 
+                className="tenant-profile-textfield"
+                id="outlined-basic" 
+                label="Email" 
+                variant="outlined" 
+                defaultValue={tenant.TenantEmail}
+                InputProps={{readOnly: true,}}/>
+            </Grid>
+            <Grid item xs = {12}>
+                <TextField 
+                className="tenant-profile-textfield"
+                id="outlined-basic" 
+                label="Phone" 
+                variant="outlined" 
+                defaultValue={tenant.TenantPhone}
+                InputProps={{readOnly: true,}}/>
+            </Grid>
+          </Grid>
 
           <hr></hr>
 
           <div className="tenant-profile-change-password">
-            <h4>Set New Password</h4>
+            <h2>Set New Password</h2>
             <input type="password" placeholder="New Password" value={newPassword} onChange={handleNewPasswordChange} />
             <br></br>
             <input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={handleConfirmPasswordChange} />
@@ -86,7 +113,7 @@ const TenantProfile = () => {
 
       <div className="tenant-profile-row">
         <div className="tenant-profile-col25">
-          <p className="tenant-profile-label">Supervisor Details</p>
+          <h1 className="tenant-profile-label">Supervisor Details</h1>
         </div>
         
         <div className="tenant-profile-col75">
@@ -100,7 +127,7 @@ const TenantProfile = () => {
       
       <div className="tenant-profile-row">
         <div className="tenant-profile-col25">
-          <p className="tenant-profile-label">Lease Details</p>
+          <h1 className="tenant-profile-label">Lease Details</h1>
         </div>
         
         <div className="tenant-profile-col75">

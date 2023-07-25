@@ -25,6 +25,10 @@
     display: table;
     clear: both;
 }
+.tenant-profile-textfield{
+    width: 75%;
+}
+
 
 .supervisor-profile-label{
     font-size: xx-large;
