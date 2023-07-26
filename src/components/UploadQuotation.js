@@ -34,7 +34,6 @@ const UploadQuotation = ({ bucketName, ServiceRequestID }) => {
         return { error };
       } else {
         console.log(`File path is: ${filePath}`);
-        console.log('File uploaded successfully:', data);
 
         const { data: updateData, error: updateError } = await supabase
         .from('Service Request')

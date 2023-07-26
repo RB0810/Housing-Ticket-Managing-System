@@ -154,7 +154,7 @@ const ViewTicketSupervisor = () => {
         ____________________________________
         <AssignedToCard staff={staff} />
         _______________________________________
-        <DisplayQuotation ticket={serviceTicket.ServiceRequestID} />
+        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
       </div>
     );
   }
@@ -168,7 +168,7 @@ const ViewTicketSupervisor = () => {
         ____________________________________
         <AssignedToCard staff={staff} />
         _______________________________________
-        <DisplayQuotation ticket={serviceTicket.ServiceRequestID} />
+        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
       </div>
     );
   }

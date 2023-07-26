@@ -5,7 +5,7 @@ import BasicTicketDetails from "../../components/BasicTicketDetails";
 import AssignedToCard from "../../components/AssignedToCard";
 import ViewFinalFeedbackDetails from "../../components/ViewFinalFeedbackDetails";
 import { useParams } from "react-router-dom";
-import DownloadQuotation from "../../components/DownloadQuotation";
+// import DownloadQuotation from "../../components/DownloadQuotation";
 import { Rating } from "@mui/material";
 import { Typography } from "@mui/material";
 import DisplayQuotation from "../../components/DisplayQuotation";
@@ -325,10 +325,10 @@ const ViewTicketTenant = () => {
         <BasicTicketDetails ticket={serviceTicket} />
         <AssignedToCard ticket={serviceTicket} />
         <p>Quotation Needed: {serviceTicket.QuotationRequired}</p>
-        <DownloadQuotation
+        {/* <DownloadQuotation
           bucketName="quotation"
           ServiceRequestID={serviceTicket.ServiceRequestID}
-        />
+        /> */}
         <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
       </div>
     );
@@ -341,10 +341,10 @@ const ViewTicketTenant = () => {
         <AssignedToCard staff={staff} />
         {quotationRequired && (
           <div>
-            <DownloadQuotation
+            {/* <DownloadQuotation
               bucketName="quotation"
               ServiceRequestID={serviceTicket.ServiceRequestID}
-            />
+            /> */}
             <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID}/>
           </div>
         )}
@@ -374,10 +374,10 @@ const ViewTicketTenant = () => {
         ____________________________________
         {quotationRequired && (
           <div>
-            <DownloadQuotation
+            {/* <DownloadQuotation
               bucketName="quotation"
               ServiceRequestID={serviceTicket.ServiceRequestID}
-            />
+            /> */}
             <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID}/>
           </div>
         )}
@@ -395,10 +395,10 @@ const ViewTicketTenant = () => {
         _______________________________________
         {quotationRequired && (
           <div>
-            <DownloadQuotation
+            {/* <DownloadQuotation
               bucketName="quotation"
               ServiceRequestID={serviceTicket.ServiceRequestID}
-            />
+            /> */}
             <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID}/>
           </div>
         )}
@@ -420,10 +420,10 @@ const ViewTicketTenant = () => {
         _______________________________________
         {quotationRequired && (
           <div>
-            <DownloadQuotation
+            {/* <DownloadQuotation
               bucketName="quotation"
               ServiceRequestID={serviceTicket.ServiceRequestID}
-            />
+            /> */}
             <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID}/>
           </div>
         )}
