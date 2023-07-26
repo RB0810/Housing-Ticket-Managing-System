@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AccountManager from "../../managers/accountmanager";
 import { Link, useParams } from "react-router-dom";
 import "./../../styles/profile.css"
-import {Grid, TextField} from '@mui/material'
+import {Button, Grid, TextField} from '@mui/material'
 
 
 const TenantProfile = () => {
@@ -71,7 +71,7 @@ const TenantProfile = () => {
                 className="tenant-profile-textfield"
                 id="outlined-basic" 
                 label="Username" 
-                variant="outlined" 
+                variant="filled" 
                 defaultValue={tenant.TenantName}
                 InputProps={{readOnly: true,}}/>
             </Grid>
@@ -80,7 +80,7 @@ const TenantProfile = () => {
                 className="tenant-profile-textfield"
                 id="outlined-basic" 
                 label="Email" 
-                variant="outlined" 
+                variant="filled" 
                 defaultValue={tenant.TenantEmail}
                 InputProps={{readOnly: true,}}/>
             </Grid>
@@ -88,24 +88,46 @@ const TenantProfile = () => {
                 <TextField 
                 className="tenant-profile-textfield"
                 id="outlined-basic" 
-                label="Phone" 
-                variant="outlined" 
+                label="Phone Number" 
+                variant="filled" 
                 defaultValue={tenant.TenantPhone}
                 InputProps={{readOnly: true,}}/>
             </Grid>
           </Grid>
 
           <hr></hr>
-
-          <div className="tenant-profile-change-password">
-            <h2>Set New Password</h2>
-            <input type="password" placeholder="New Password" value={newPassword} onChange={handleNewPasswordChange} />
-            <br></br>
-            <input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={handleConfirmPasswordChange} />
-            {formError && <p className="set-password-error">{formError}</p>}
-            <br></br>
-            <button onClick={handleSetPassword}>Set Password</button>
-          </div>
+          
+          <h2>Set New Password</h2>
+          
+          <Grid container spacing={1}>
+            <Grid item xs = {12}>
+              <TextField 
+              type="password"
+              className="tenant-profile-textfield"
+              id="outlined-basic" 
+              label="New Password" 
+              variant="filled" 
+              defaultValue={newPassword}
+              onChange={handleNewPasswordChange}/>
+            </Grid>
+            <Grid item xs = {12}>
+              <TextField 
+              type="password"
+              className="tenant-profile-textfield"
+              id="filled-basic" 
+              label="Confirm Password" 
+              variant="filled" 
+              defaultValue={newPassword}
+              onChange={handleConfirmPasswordChange}/>
+            </Grid>
+            <Grid item xs = {12}>
+              <Button 
+              variant="contained"
+              className="tenant-profile-button">
+                Reset Password
+              </Button>
+            </Grid>
+          </Grid>
         </div>
       </div>
       
@@ -115,11 +137,36 @@ const TenantProfile = () => {
         <div className="tenant-profile-col25">
           <h1 className="tenant-profile-label">Supervisor Details</h1>
         </div>
-        
         <div className="tenant-profile-col75">
-          <p><b>Supervisor Name:</b> {tenant.SupervisorDetails.SupervisorName}</p>
-          <p><b>Supervisor Email:</b> {tenant.SupervisorDetails.SupervisorEmail}</p>
-          <p><b>Supervisor Phone:</b> {tenant.SupervisorDetails.SupervisorPhone}</p>
+        <Grid container spacing={1}>
+            <Grid item xs = {12}>
+              <TextField 
+              className="tenant-profile-textfield"
+              id="outlined-basic" 
+              label="Supervisor Name" 
+              variant="filled" 
+              defaultValue={tenant.SupervisorDetails.SupervisorName}
+              InputProps={{readOnly: true,}}/>
+            </Grid>
+            <Grid item xs = {12}>
+              <TextField 
+              className="tenant-profile-textfield"
+              id="outlined-basic" 
+              label="Supervisor Email" 
+              variant="filled" 
+              defaultValue={tenant.SupervisorDetails.SupervisorEmail}
+              InputProps={{readOnly: true,}}/>
+            </Grid>
+            <Grid item xs = {12}>
+              <TextField 
+              className="tenant-profile-textfield"
+              id="outlined-basic" 
+              label="Supervisor Phone" 
+              variant="filled" 
+              defaultValue={tenant.SupervisorDetails.SupervisorPhone}
+              InputProps={{readOnly: true,}}/>
+            </Grid>
+        </Grid>
         </div>
       </div>
 

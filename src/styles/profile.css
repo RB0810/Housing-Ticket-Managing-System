@@ -29,7 +29,11 @@
     width: 75%;
 }
 
+.tenant-profile-button{
+    margin-left: 25%;
+    background-color: royalblue;
 
+}
 .supervisor-profile-label{
     font-size: xx-large;
 }
