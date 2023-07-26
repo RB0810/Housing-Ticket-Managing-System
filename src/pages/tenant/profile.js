@@ -56,6 +56,8 @@ const TenantProfile = () => {
     return <p>Loading tenant details...</p>;
   }
 
+  const building_address = tenant.BuildingDetails.BuildingName.concat(', ',tenant.BuildingDetails.Address,', ', tenant.BuildingDetails.PostalCode) 
+
   const unitNumbers = tenant.Units.map((unit) => unit.UnitNumber).join(", ");
 
   return (
@@ -123,11 +125,15 @@ const TenantProfile = () => {
             <Grid item xs = {12}>
               <Button 
               variant="contained"
-              className="tenant-profile-button">
+              className="tenant-profile-button"
+              onClick={handleSetPassword}>
                 Reset Password
               </Button>
             </Grid>
           </Grid>
+
+          {formError && <p className="set-password-error">{formError}</p>}
+
         </div>
       </div>
       
@@ -178,23 +184,85 @@ const TenantProfile = () => {
         </div>
         
         <div className="tenant-profile-col75">
-          <p><b>Commencement Date:</b> {new Date(tenant.LeaseDetails.CommenceDate).toLocaleDateString()}</p>
-          <p><b>Termination Date:</b> {new Date(tenant.LeaseDetails.TerminationDate).toLocaleDateString()}</p>
-          <p><b>Monthly Rental:</b> {tenant.LeaseDetails.MonthlyRental} </p>
-          <p><b>Trade Type:</b> {tenant.LeaseDetails.TradeType} </p>
-          <p><b>Area (sq meters):</b> {tenant.LeaseDetails.AreaInSqMeters} </p>
-          <p><b>Building:</b> {tenant.BuildingDetails.BuildingName}, {tenant.BuildingDetails.Address}, {tenant.BuildingDetails.PostalCode} </p>
-          <p><b>Units:</b> {unitNumbers} </p>
+        <Grid container spacing={1}>
+          <Grid item xs = {12}>
+            <TextField 
+            className="tenant-profile-textfield"
+            id="outlined-basic" 
+            label="Commencement Date" 
+            variant="filled" 
+            defaultValue={new Date(tenant.LeaseDetails.CommenceDate).toLocaleDateString()}
+            InputProps={{readOnly: true,}}/>
+          </Grid> 
+          <Grid item xs = {12}>
+            <TextField 
+            className="tenant-profile-textfield"
+            id="outlined-basic" 
+            label="Termination Date" 
+            variant="filled" 
+            defaultValue={new Date(tenant.LeaseDetails.TerminationDate).toLocaleDateString()}
+            InputProps={{readOnly: true,}}/>
+          </Grid> 
+          <Grid item xs = {12}>
+            <TextField 
+            className="tenant-profile-textfield"
+            id="outlined-basic" 
+            label="Monthly Rental" 
+            variant="filled" 
+            defaultValue={tenant.LeaseDetails.MonthlyRental}
+            InputProps={{readOnly: true,}}/>
+          </Grid> 
+          <Grid item xs = {12}>
+            <TextField 
+            className="tenant-profile-textfield"
+            id="outlined-basic" 
+            label="Trade Type" 
+            variant="filled" 
+            defaultValue={tenant.LeaseDetails.TradeType}
+            InputProps={{readOnly: true,}}/>
+          </Grid> 
+          <Grid item xs = {12}>
+            <TextField 
+            className="tenant-profile-textfield"
+            id="outlined-basic" 
+            label="Area (sq meters)" 
+            variant="filled" 
+            defaultValue={tenant.LeaseDetails.AreaInSqMeters}
+            InputProps={{readOnly: true,}}/>
+          </Grid> 
+          <Grid item xs = {12}>
+            <TextField 
+            className="tenant-profile-textfield"
+            id="outlined-basic" 
+            label="Building" 
+            variant="filled" 
+            defaultValue={building_address}
+            InputProps={{readOnly: true,}}/>
+          </Grid> 
+          <Grid item xs = {12}>
+            <TextField 
+            className="tenant-profile-textfield"
+            id="outlined-basic" 
+            label="Units" 
+            variant="filled" 
+            defaultValue={unitNumbers}
+            InputProps={{readOnly: true,}}/>
+          </Grid> 
+        </Grid>
         </div>
       </div>
 
       <hr></hr>
 
       <div className="tenant-profile-row">
-        <Link to={`/`}><button>Logout</button></Link>
+        <Link to={`/`}>
+          <Button 
+            variant="contained"
+            className="tenant-profile-button">
+              Logout
+          </Button>
+        </Link>
       </div>
-      
-      
     </div>
   );
 };

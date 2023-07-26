@@ -25,15 +25,21 @@
     display: table;
     clear: both;
 }
+
 .tenant-profile-textfield{
     width: 75%;
 }
 
 .tenant-profile-button{
-    margin-left: 25%;
     background-color: royalblue;
-
+    width: 30%;
 }
+
+.supervisor-profile-page{
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
 .supervisor-profile-label{
     font-size: xx-large;
 }
@@ -48,6 +54,12 @@
     width: 25%;
 }
 
+.supervisor-profile-row::after{
+    content: "";
+    display: table;
+    clear: both;
+}
+
 .supervisor-profile-col75{
     float: left;
     width: 70%;
@@ -55,3 +67,49 @@
     text-align: left;
     margin-left: 5%;
 }
+
+.supervisor-profile-button{
+    background-color: royalblue;
+    width: 30%;
+}
+
+.supervisor-profile-textfield{
+    width: 75%;
+}
+
+.staff-profile-label{
+    font-size: xx-large;
+}
+
+.staff-profile-page{
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.staff-profile-row::after{
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.staff-profile-col25{
+    float: left;
+    width: 25%;
+}
+
+.staff-profile-col75{
+    float: left;
+    width: 70%;
+    font-size: large;
+    text-align: left;
+    margin-left: 5%;
+}
+
+.staff-profile-button{
+    background-color: royalblue;
+    width: 30%;
+}
+.staff-profile-textfield{
+    width: 75%;
+}
+
