@@ -5,10 +5,11 @@ import BasicTicketDetails from "../../components/BasicTicketDetails";
 import AssignedToCard from "../../components/AssignedToCard";
 import ViewFinalFeedbackDetails from "../../components/ViewFinalFeedbackDetails";
 import { useParams } from "react-router-dom";
-import DisplayQuotation from "../../components/DisplayQuotation";
+// import DownloadQuotation from "../../components/DownloadQuotation";
 import { Rating } from "@mui/material";
 import supabase from "../../config/supabaseClient";
 import { Typography } from "@mui/material";
+import DisplayQuotation from "../../components/DisplayQuotation";
 import NotificationManager from "../../managers/notificationmanager";
 
 const ViewTicketTenant = () => {
@@ -387,7 +388,7 @@ const ViewTicketTenant = () => {
         <BasicTicketDetails ticket={serviceTicket} />
         <AssignedToCard staff={staff} />
         <h1>Reason for Reject Quotation : {serviceTicket.FeedbackComments}</h1>
-        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID}/>
       </div>
     );
   }
@@ -398,14 +399,11 @@ const ViewTicketTenant = () => {
         <BasicTicketDetails ticket={serviceTicket} />
         <AssignedToCard ticket={serviceTicket} />
         <p>Quotation Needed: {serviceTicket.QuotationRequired}</p>
-        {quotationRequired && (
-          <div>
-            <div>
-              <button onClick={handleFileDownload}>Download Quotation</button>
-            </div>
-            <DisplayQuotation quotationPath={quotationPath} file={file} />
-          </div>
-        )}
+        {/* <DownloadQuotation
+          bucketName="quotation"
+          ServiceRequestID={serviceTicket.ServiceRequestID}
+        /> */}
+        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
       </div>
     );
   }
@@ -417,10 +415,11 @@ const ViewTicketTenant = () => {
         <AssignedToCard staff={staff} />
         {quotationRequired && (
           <div>
-            <div>
-              <button onClick={handleFileDownload}>Download Quotation</button>
-            </div>
-            <DisplayQuotation quotationPath={quotationPath} file={file} />
+            {/* <DownloadQuotation
+              bucketName="quotation"
+              ServiceRequestID={serviceTicket.ServiceRequestID}
+            /> */}
+            <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID}/>
           </div>
         )}
       </div>
@@ -449,10 +448,11 @@ const ViewTicketTenant = () => {
         ____________________________________
         {quotationRequired && (
           <div>
-            <div>
-              <button onClick={handleFileDownload}>Download Quotation</button>
-            </div>
-            <DisplayQuotation quotationPath={quotationPath} file={file} />
+            {/* <DownloadQuotation
+              bucketName="quotation"
+              ServiceRequestID={serviceTicket.ServiceRequestID}
+            /> */}
+            <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID}/>
           </div>
         )}
       </div>
@@ -468,10 +468,11 @@ const ViewTicketTenant = () => {
         _______________________________________
         {quotationRequired && (
           <div>
-            <div>
-              <button onClick={handleFileDownload}>Download Quotation</button>
-            </div>
-            <DisplayQuotation quotationPath={quotationPath} file={file} />
+            {/* <DownloadQuotation
+              bucketName="quotation"
+              ServiceRequestID={serviceTicket.ServiceRequestID}
+            /> */}
+            <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID}/>
           </div>
         )}
       </div>
@@ -492,10 +493,11 @@ const ViewTicketTenant = () => {
         _______________________________________
         {quotationRequired && (
           <div>
-            <div>
-              <button onClick={handleFileDownload}>Download Quotation</button>
-            </div>
-            <DisplayQuotation quotationPath={quotationPath} file={file} />
+            {/* <DownloadQuotation
+              bucketName="quotation"
+              ServiceRequestID={serviceTicket.ServiceRequestID}
+            /> */}
+            <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID}/>
           </div>
         )}
       </div>

@@ -22,7 +22,7 @@ const UploadQuotation = ({ bucketName, ServiceRequestID }) => {
     try {
       const { data, error } = await supabase.storage
         .from(bucketName)
-        .upload(filePath, selectedFile, { cacheControl: '3600', upsert: false });
+        .upload(filePath, selectedFile, { cacheControl: '3600', upsert: true });
 
       if (error) {
         console.error('Error uploading file:', error);
@@ -34,7 +34,6 @@ const UploadQuotation = ({ bucketName, ServiceRequestID }) => {
         return { error };
       } else {
         console.log(`File path is: ${filePath}`);
-        console.log('File uploaded successfully:', data);
 
         const { data: updateData, error: updateError } = await supabase
         .from('Service Request')
