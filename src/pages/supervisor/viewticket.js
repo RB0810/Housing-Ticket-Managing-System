@@ -30,6 +30,11 @@ const ViewTicketSupervisor = () => {
   const [quotationPath, setQuotationPath] = useState(null);
   const [file, setFile] = useState(null);
 
+  // For Reject Ticket
+  const [rejectState, setRejectState] = useState("");
+  const [rejectComments, setRejectComments] = useState("");
+  const [showOptions, setShowOptions] = useState(true);
+
   useEffect(() => {
     const getStaffAndTenantAndTicket = async () => {
       let ticketData = await ticketManager.getTicket(
@@ -87,8 +92,8 @@ const ViewTicketSupervisor = () => {
 
       // Execute all promises concurrently using Promise.all
       await Promise.all([
-        assignTicketPromise, 
-        updateStatusPromise, 
+        assignTicketPromise,
+        updateStatusPromise,
         //sendNotif
       ]);
 
@@ -102,6 +107,76 @@ const ViewTicketSupervisor = () => {
     }
   };
 
+  const handleReject = async () => {
+    try {
+      // Get promises for each update
+      const rejectTicketPromise = ticketManager.updateTicket(
+        ServiceRequestID,
+        "PARCStatus",
+        "CLOSED"
+      );
+
+      const updateStatusPromise = ticketManager.updateTicket(
+        ServiceRequestID,
+        "Status",
+        "Ticket Rejected"
+      );
+
+      const rejectTicketCommentsPromise = ticketManager.updateTicket(
+        ServiceRequestID,
+        "FeedbackComments",
+        rejectComments
+      );
+
+      // Execute all promises concurrently using Promise.all
+      await Promise.all([
+        rejectTicketPromise,
+        updateStatusPromise,
+        rejectTicketCommentsPromise,
+        //sendNotif
+      ]);
+      window.alert("Ticket Rejected");
+      window.location.reload();
+      // Perform any additional actions or display a success message
+    } catch (error) {
+      // Handle errors appropriately
+      console.log(error);
+      setAssignStatus("Assigning failed");
+    }
+  };
+
+  const renderContent = () => {
+    // Quotation Feedback
+    if (rejectState === "reject") {
+      return (
+        <div>
+          <form onSubmit={handleReject}>
+            <label>
+              Reason for Reject :
+              <textarea
+                value={rejectComments}
+                onChange={(e) => setRejectComments(e.target.value)}
+              ></textarea>
+            </label>
+
+            <button type="submit">Submit</button>
+            <button onClick={handleCancel}>Cancel</button>
+          </form>
+        </div>
+      );
+    }
+  };
+
+  const handleRejectClick = () => {
+    setShowOptions(false);
+    setRejectState("reject");
+  };
+
+  const handleCancel = () => {
+    setShowOptions(true);
+    setRejectState("");
+  };
+
   if (status === "Awaiting Review") {
     return (
       <div>
@@ -109,26 +184,42 @@ const ViewTicketSupervisor = () => {
         _______________________________________
         <SubmittedByCard tenant={tenant} />
         ____________________________________
-        <div>
-          <label>
-            Assign Staff:
-            <select
-              value={selectedStaff}
-              onChange={(e) => setSelectedStaff(e.target.value)}
-            >
-              <option value="">-- Select Staff --</option>
-              {staffMembers.map((staff) => (
-                <option key={staff.StaffID} value={staff.StaffID}>
-                  {staff.StaffName}
-                </option>
-              ))}
-            </select>
-          </label>
+        {showOptions && (
+          <div>
+            <label>
+              Assign Staff:
+              <select
+                value={selectedStaff}
+                onChange={(e) => setSelectedStaff(e.target.value)}
+              >
+                <option value="">-- Select Staff --</option>
+                {staffMembers.map((staff) => (
+                  <option key={staff.StaffID} value={staff.StaffID}>
+                    {staff.StaffName}
+                  </option>
+                ))}
+              </select>
+            </label>
 
-          {assignStatus && <p>{assignStatus}</p>}
+            {assignStatus && <p>{assignStatus}</p>}
 
-          <button onClick={handleAssign}>Assign</button>
-        </div>
+            <button onClick={handleAssign}>Assign</button>
+            <button onClick={handleRejectClick}>Reject</button>
+          </div>
+        )}
+        {renderContent()}
+      </div>
+    );
+  }
+
+  if (status === "Ticket Rejected") {
+    return (
+      <div>
+        <BasicTicketDetails ticket={serviceTicket} />
+        _______________________________________
+        <SubmittedByCard tenant={tenant} />
+        ____________________________________
+        <div></div>
       </div>
     );
   }

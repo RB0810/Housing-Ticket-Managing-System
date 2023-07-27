@@ -529,4 +529,23 @@ export default class TicketManager {
     }
     return data[0]["ServiceRequestID"];
   }
+
+  /**
+   * @TicketID {int} - Ticket ID of ticket to delete
+   *
+   * @returns True if deleted already, else False
+   */
+  async deleteTicket(ticketId) {
+    const { data, error } = await supabase
+      .from("Service Request")
+      .delete()
+      .eq("ServiceRequestID", ticketId);
+
+    if (error) {
+      console.error("Error deleting ticket:", error);
+      return false;
+    }
+
+    return true;
+  }
 }

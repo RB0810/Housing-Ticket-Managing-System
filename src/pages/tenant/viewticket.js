@@ -4,7 +4,7 @@ import AccountManager from "../../managers/accountmanager";
 import BasicTicketDetails from "../../components/BasicTicketDetails";
 import AssignedToCard from "../../components/AssignedToCard";
 import ViewFinalFeedbackDetails from "../../components/ViewFinalFeedbackDetails";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 // import DownloadQuotation from "../../components/DownloadQuotation";
 import { Rating } from "@mui/material";
 import supabase from "../../config/supabaseClient";
@@ -17,6 +17,7 @@ const ViewTicketTenant = () => {
   const accountManager = new AccountManager();
   //const notificationmanager = new NotificationManager();
   let { ServiceRequestID } = useParams();
+  let navigate = useNavigate();
   const [serviceTicket, setServiceTicket] = useState([]);
   const [staff, setStaff] = useState([]);
   const [fetchError, setFetchError] = useState([]);
@@ -79,6 +80,22 @@ const ViewTicketTenant = () => {
 
     getStaffAndTicket();
   }, []);
+
+  const handleDeleteTicket = async () => {
+    try {
+      const deleteTicketPromise = ticketManager.deleteTicket(
+        parseInt(serviceTicket.ServiceRequestID)
+      );
+
+      // Execute all promises concurrently using Promise.all
+      await Promise.all([deleteTicketPromise]);
+      window.alert("Quotation deleted!");
+      navigate(`/tenantportal/landingpage/${serviceTicket.TenantID}`);
+      // Probably need to redirect to main page here
+    } catch (error) {
+      window.alert("Error deleting quotation: " + error);
+    }
+  };
 
   const handleFileDownload = async () => {
     try {
@@ -335,7 +352,13 @@ const ViewTicketTenant = () => {
   if (status === "Awaiting Review") {
     return (
       <div>
-        <BasicTicketDetails ticket={serviceTicket} />
+        <div>
+          <BasicTicketDetails ticket={serviceTicket} />
+        </div>
+
+        <div>
+          <button onClick={() => handleDeleteTicket()}>Delete Ticket</button>
+        </div>
       </div>
     );
   }
