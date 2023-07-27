@@ -12,6 +12,9 @@ import { Typography } from "@mui/material";
 import DisplayQuotation from "../../components/DisplayQuotation";
 import NotificationManager from "../../managers/notificationmanager";
 
+// Import styles
+// import "./../../styles/ViewTicketTenant.css";
+
 const ViewTicketTenant = () => {
   const ticketManager = new TicketManager();
   const accountManager = new AccountManager();
@@ -141,6 +144,11 @@ const ViewTicketTenant = () => {
       );
     }
 
+    const handleCancel = () => {
+      setShowFeedbackButtons(true);
+      setFeedbackType(null);
+    };
+
     // Ticket Feedback
     if (feedbackType === "feedback") {
       return (
@@ -166,6 +174,7 @@ const ViewTicketTenant = () => {
             </label>
 
             <button type="submit">Submit Feedback</button>
+            <button onClick={handleCancel}>Cancel</button>
           </form>
         </div>
       );
@@ -182,6 +191,7 @@ const ViewTicketTenant = () => {
             </label>
 
             <button type="submit">Submit Feedback</button>
+            <button onClick={handleCancel}>Cancel</button>
           </form>
         </div>
       );
