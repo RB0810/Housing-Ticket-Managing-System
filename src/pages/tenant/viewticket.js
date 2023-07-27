@@ -217,14 +217,13 @@ const ViewTicketTenant = () => {
         false
       );
 
-
       const updateFeedbackCommentsPromise =
         ticketManager.updateFeedbackComments(
           parseInt(serviceTicket.ServiceRequestID),
           rejectComments
         );
-      
-        //const sendNotif = notificationmanager.QuotationRejectNotif(serviceTicket.ServiceRequestID, rejectComments);
+
+      //const sendNotif = notificationmanager.QuotationRejectNotif(serviceTicket.ServiceRequestID, rejectComments);
 
       // Execute all promises concurrently using Promise.all
       await Promise.all([
@@ -321,8 +320,8 @@ const ViewTicketTenant = () => {
 
       // Execute all promises concurrently using Promise.all
       await Promise.all([
-        updateFeedbackCommentsPromise, 
-        rejectWorksPromise, 
+        updateFeedbackCommentsPromise,
+        rejectWorksPromise,
         //sendNotif
       ]);
 
@@ -388,7 +387,7 @@ const ViewTicketTenant = () => {
         <BasicTicketDetails ticket={serviceTicket} />
         <AssignedToCard staff={staff} />
         <h1>Reason for Reject Quotation : {serviceTicket.FeedbackComments}</h1>
-        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID}/>
+        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
       </div>
     );
   }
@@ -397,7 +396,7 @@ const ViewTicketTenant = () => {
     return (
       <div>
         <BasicTicketDetails ticket={serviceTicket} />
-        <AssignedToCard ticket={serviceTicket} />
+        <AssignedToCard staff={staff} />
         <p>Quotation Needed: {serviceTicket.QuotationRequired}</p>
         {/* <DownloadQuotation
           bucketName="quotation"
@@ -419,7 +418,9 @@ const ViewTicketTenant = () => {
               bucketName="quotation"
               ServiceRequestID={serviceTicket.ServiceRequestID}
             /> */}
-            <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID}/>
+            <DisplayQuotation
+              ServiceRequestID={serviceTicket.ServiceRequestID}
+            />
           </div>
         )}
       </div>
@@ -452,7 +453,9 @@ const ViewTicketTenant = () => {
               bucketName="quotation"
               ServiceRequestID={serviceTicket.ServiceRequestID}
             /> */}
-            <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID}/>
+            <DisplayQuotation
+              ServiceRequestID={serviceTicket.ServiceRequestID}
+            />
           </div>
         )}
       </div>
@@ -472,7 +475,9 @@ const ViewTicketTenant = () => {
               bucketName="quotation"
               ServiceRequestID={serviceTicket.ServiceRequestID}
             /> */}
-            <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID}/>
+            <DisplayQuotation
+              ServiceRequestID={serviceTicket.ServiceRequestID}
+            />
           </div>
         )}
       </div>
@@ -497,7 +502,9 @@ const ViewTicketTenant = () => {
               bucketName="quotation"
               ServiceRequestID={serviceTicket.ServiceRequestID}
             /> */}
-            <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID}/>
+            <DisplayQuotation
+              ServiceRequestID={serviceTicket.ServiceRequestID}
+            />
           </div>
         )}
       </div>

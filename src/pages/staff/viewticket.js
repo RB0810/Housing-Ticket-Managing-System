@@ -377,7 +377,7 @@ const ViewTicketStaff = () => {
         <div>
           <button onClick={handleFileDownload}>Download File</button>
         </div>
-        <DisplayQuotation quotationPath={quotationPath} file={file} />
+        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
         _______________________________________
       </div>
     );
@@ -397,7 +397,7 @@ const ViewTicketStaff = () => {
         <div>
           <button onClick={handleFileDownload}>Download File</button>
         </div>
-        <DisplayQuotation quotationPath={quotationPath} file={file} />
+        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
         _______________________________________
       </div>
     );
@@ -425,7 +425,7 @@ const ViewTicketStaff = () => {
         <div>
           <button onClick={handleFileDownload}>Download File</button>
         </div>
-        <DisplayQuotation quotationPath={quotationPath} file={file} />
+        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
         _______________________________________
       </div>
     );
@@ -447,7 +447,9 @@ const ViewTicketStaff = () => {
             <div>
               <button onClick={handleFileDownload}>Download Quotation</button>
             </div>
-            <DisplayQuotation quotationPath={quotationPath} file={file} />
+            <DisplayQuotation
+              ServiceRequestID={serviceTicket.ServiceRequestID}
+            />
           </div>
         )}
       </div>
@@ -466,7 +468,9 @@ const ViewTicketStaff = () => {
             <div>
               <button onClick={handleFileDownload}>Download Quotation</button>
             </div>
-            <DisplayQuotation quotationPath={quotationPath} file={file} />
+            <DisplayQuotation
+              ServiceRequestID={serviceTicket.ServiceRequestID}
+            />
           </div>
         )}
       </div>
@@ -492,7 +496,9 @@ const ViewTicketStaff = () => {
             <div>
               <button onClick={handleFileDownload}>Download Quotation</button>
             </div>
-            <DisplayQuotation quotationPath={quotationPath} file={file} />
+            <DisplayQuotation
+              ServiceRequestID={serviceTicket.ServiceRequestID}
+            />
           </div>
         )}
       </div>
@@ -516,7 +522,9 @@ const ViewTicketStaff = () => {
             <div>
               <button onClick={handleFileDownload}>Download Quotation</button>
             </div>
-            <DisplayQuotation quotationPath={quotationPath} file={file} />
+            <DisplayQuotation
+              ServiceRequestID={serviceTicket.ServiceRequestID}
+            />
           </div>
         )}
       </div>
