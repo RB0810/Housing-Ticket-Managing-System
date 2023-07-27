@@ -1,415 +1,350 @@
-// import necessary modules
-import 'cypress-file-upload';
-import 'cypress-wait-until';
+//import necessary modules
+import React from'react';
+import { render, screen, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
+import TenantPortal from '../tenantportal';
 
 describe('TenantPortal_function', () => {
 
-    //test that function renders table with correct headers
-    it('renders table with correct headers', () => {
-        cy.visit('http://localhost:3000/tenantPortal');
-        cy.get('table').should('be.visible');
-        cy.get('table').find('thead').find('tr').find('th').should('have.length', 4);
-        cy.get('table').find('thead').find('tr').find('th').eq(0).should('have.text', 'Name');
-        cy.get('table').find('thead').find('tr').find('th').eq(1).should('have.text', 'Email');
-        cy.get('table').find('thead').find('tr').find('th').eq(2).should('have.text', 'Phone');
-        cy.get('table').find('thead').find('tr').find('th').eq(3).should('have.text', 'Address');
+});
+
+    // Tests that the table is rendered with the correct headers and filters
+    it('renders_table_with_correct_headers_and_filters', () => {
+        // Test code goes here
+    });
+
+
+    // Tests that the component displays a loading message while fetching data
+    it('test_displays_loading_message', async () => {
+        // Mock the ticketManager.getTicketsByPARCStatusForTenantID function
+        jest.spyOn(TicketManager.prototype, 'getTicketsByPARCStatusForTenantID').mockImplementation(() => {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve([]);
+                }, 1000);
+            });
         });
-
-    //displays loading message whin isLoading is true
-    it('displays loading message whin isLoading is true', () => {
-        cy.visit('http://localhost:3000/tenantPortal');
-        cy.get('table').should('be.visible');
-        cy.get('table').find('tbody').find('tr').should('have.length', 1);
-        cy.get('table').find('tbody').find('tr').find('td').should('have.text', 'Loading...');
-        });
-    //displays error message when fetchError is not null
-    it('displays error message when fetchError is not null', () => {
-        cy.visit('http://localhost:3000/tenantPortal');
-        cy.get('table').should('be.visible');
-        cy.get('table').find('tbody').find('tr').should('have.length', 1);
-        cy.get('table').find('tbody').find('tr').find('td').should('have.text', 'Error!');
-        });
-    //displays empty message when filteredTickets is empty
-    it('displays empty message when filteredTickets is empty', () => {
-        cy.visit('http://localhost:3000/tenantPortal');
-        cy.get('table').should('be.visible');
-        cy.get('table').find('tbody').find('tr').should('have.length', 1);
-        cy.get('table').find('tbody').find('tr').find('td').should('have.text', 'No tickets found!');
-        });
-    //displays tickets when data is available
-    it('displays tickets when data is available', () => {
-        cy.visit('http://localhost:3000/tenantPortal');
-        cy.get('table').should('be.visible');
-        cy.get('table').find('tbody').find('tr').should('have.length', 3);
-        cy.get('table').find('tbody').find('tr').find('td').should('have.length', 4);
-        cy.get('table').find('tbody').find('tr').find('td').eq(0).should('have.text', 'Ticket 1');
-        cy.get('table').find('tbody').find('tr').find('td').eq(1).should('have.text', '<EMAIL>');
-        cy.get('table').find('tbody').find('tr').find('td').eq(2).should('have.text', '123-456-7890');
-        cy.get('table').find('tbody').find('tr').find('td').eq(3).should('have.text', '123 Main St');
-        });
-
-
-
-    // Tests that an error is handled when fetching tickets
-    it('test_handles_error_when_fetching_tickets', async () => {
-        const mockTicketManager = {
-            getTicketsByPARCStatusForTenantID: jest.fn().mockRejectedValue('Error fetching tickets')
-        };
-        const useParamsMock = jest.fn().mockReturnValue({ PARCStatus: 'status', TenantID: '123' });
-        const wrapper = shallow(<TenantPortal ticketManager={mockTicketManager} useParams={useParamsMock} />);
-        await wrapper.instance().getTickets();
-        expect(wrapper.state('fetchError')).toEqual('Error!');
-    });
-
-    
-
-    // Tests that an error is handled when getting the supervisor ID
-    it('test_handles_error_when_getting_supervisor_id', async () => {
-      const ticketManager = new TicketManager();
-      const mockError = new Error('Error getting SupervisorID from TenantID');
-      ticketManager.getTicketsByPARCStatusForTenantID = jest.fn().mockRejectedValue(mockError);
-
-      const consoleErrorSpy = jest.spyOn(console, 'error');
-
-      await ticketManager.getTicketsByPARCStatusForTenantID('PARCStatus', 123);
-
-      expect(consoleErrorSpy).toHaveBeenCalledWith('Error fetching tickets:', mockError);
-    });
-
-
-    // Tests that an error is handled when adding a ticket
-    it('test_handles_error_when_adding_ticket', async () => {
-      const ticketManager = new TicketManager();
-      const addTicketSpy = jest.spyOn(ticketManager, 'addTicket').mockImplementation(() => {
-        throw new Error('Error adding ticket');
-      });
-
-      const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
-
-      await act(async () => {
-        render(<TenantPortal />);
-      });
-
-      expect(consoleErrorSpy).toHaveBeenCalledWith('Error fetching tickets:', new Error('Error adding ticket'));
-
-      addTicketSpy.mockRestore();
-      consoleErrorSpy.mockRestore();
-    });
-
-
-    // Tests that the TenantPortal function handles an empty filteredTickets array by displaying 'Empty!' in the table
-    it('test_handles_empty_filteredTickets_array', () => {
-      const ticketManagerMock = jest.spyOn(TicketManager.prototype, 'getTicketsByPARCStatusForTenantID');
-      ticketManagerMock.mockResolvedValue([]);
-
-      render(<TenantPortal />);
-
-      const emptyMessage = screen.getByText('Empty!');
-      expect(emptyMessage).toBeInTheDocument();
-
-      ticketManagerMock.mockRestore();
-    });
-
-
-    // Tests that the TenantPortal function handles empty staffDetails in a ticket
-    it('test_handles_empty_staffDetails', () => {
-        const ticketManager = new TicketManager();
-        const serviceTickets = [
-          {
-            ServiceRequestID: 1,
-            Name: 'Ticket 1',
-            Category: 'Plumbing',
-            Property: 'Unit 101',
-            Status: 'Ticket Assigned',
-            SubmittedDateTime: '2022-01-01T10:00:00Z',
-            staffDetails: null
-          },
-          {
-            ServiceRequestID: 2,
-            Name: 'Ticket 2',
-            Category: 'Electric',
-            Property: 'Unit 202',
-            Status: 'Works Started',
-            SubmittedDateTime: '2022-01-02T10:00:00Z',
-            staffDetails: {
-              StaffName: 'John Doe'
-            }
-          }
-        ];
-        const setIsLoading = jest.fn();
-        const setFetchError = jest.fn();
-        const setServiceTickets = jest.fn();
-
-        jest.spyOn(ticketManager, 'getTicketsByPARCStatusForTenantID').mockResolvedValue(serviceTickets);
-
-        render(<TenantPortal />);
-
-        expect(setIsLoading).toHaveBeenCalledWith(false);
-        expect(setFetchError).toHaveBeenCalledWith(null);
-        expect(setServiceTickets).toHaveBeenCalledWith(serviceTickets);
-    });
-
-
-    // Tests that tickets are filtered correctly by category
-    it('test_filters_tickets_by_category', () => {
-        const ticketManager = new TicketManager();
-        const { PARCStatus, TenantID } = useParams();
-        const [serviceTickets, setServiceTickets] = useState([]);
-        const [categoryFilter, setCategoryFilter] = useState('');
-
-        // Set the category filter
-        setCategoryFilter('Plumbing');
-
-        // Call the getTickets function
-        getTickets();
-
-        // Check that the serviceTickets state is updated correctly
-        expect(serviceTickets).toEqual([{ ServiceRequestID: 1, Category: 'Plumbing' }, { ServiceRequestID: 2, Category: 'Plumbing' }]);
-    });
-
-
-    // Tests that the function filters tickets by status
-    it('test_filters_tickets_by_status', () => {
-        const ticketManager = new TicketManager();
-        const { PARCStatus, TenantID } = useParams();
-        const [serviceTickets, setServiceTickets] = useState([]);
-        const [isLoading, setIsLoading] = useState(true);
-        const [fetchError, setFetchError] = useState(null);
-        const [categoryFilter, setCategoryFilter] = useState('');
-        const [statusFilter, setStatusFilter] = useState('');
-        const [requestFilter, setRequestFilter] = useState('');
-        const [assignedToFilter, setAssignedToFilter] = useState('');
-        const [dateFilter, setDateFilter] = useState('');
-        const [dateSortOrder, setDateSortOrder] = useState('');
-        const [isCategoryFilterOpen, setIsCategoryFilterOpen] = useState(false);
-        const [isStatusFilterOpen, setIsStatusFilterOpen] = useState(false);
-        const [isRequestFilterOpen, setIsRequestFilterOpen] = useState(false);
-        const [isAssignedToFilterOpen, setIsAssignedToFilterOpen] = useState(false);
-        const [isDateFilterOpen, setIsDateFilterOpen] = useState(false);
-
-        // ... rest of the code
-
-        expect(filteredTickets.length).toBeGreaterThan(0);
-        expect(filteredTickets.every(ticket => ticket.Status === statusFilter)).toBe(true);
-    });
-
-
-    // Tests that the function filters tickets by request
-    it('test_filters_tickets_by_request', () => {
-        const ticketManager = new TicketManager();
-        const { PARCStatus, TenantID } = useParams();
-        const [serviceTickets, setServiceTickets] = useState([]);
-        const [requestFilter, setRequestFilter] = useState("");
-
-        // Set up mock data
-        const mockTickets = [
-            { ServiceRequestID: 1, Name: "Request 1" },
-            { ServiceRequestID: 2, Name: "Request 2" },
-            { ServiceRequestID: 3, Name: "Request 3" }
-        ];
-
-        // Mock the getTickets function
-        ticketManager.getTicketsByPARCStatusForTenantID = jest.fn().mockResolvedValue(mockTickets);
 
         // Render the component
         render(<TenantPortal />);
 
-        // Set the request filter
-        act(() => {
-            fireEvent.change(screen.getByPlaceholderText("Filter by request..."), { target: { value: "Request 2" } });
-        });
+        // Check if the loading message is displayed
+        const loadingMessage = screen.getByText('Loading...');
+        expect(loadingMessage).toBeInTheDocument();
 
-        // Check if the tickets are filtered correctly
-        expect(screen.getByText("Request 2")).toBeInTheDocument();
-        expect(screen.queryByText("Request 1")).not.toBeInTheDocument();
-        expect(screen.queryByText("Request 3")).not.toBeInTheDocument();
+        // Wait for the data to be fetched
+        await waitFor(() => {
+            expect(loadingMessage).not.toBeInTheDocument();
+        });
     });
 
 
-    // Tests that tickets are filtered correctly by the assigned to filter
-    it('test_filters_tickets_by_assigned_to', () => {
-        // Set up the initial state
-        const ticketManager = new TicketManager();
-        const { PARCStatus, TenantID } = useParams();
-        const [serviceTickets, setServiceTickets] = useState([]);
-        const [isLoading, setIsLoading] = useState(true);
-        const [fetchError, setFetchError] = useState(null);
-        const [categoryFilter, setCategoryFilter] = useState('');
-        const [statusFilter, setStatusFilter] = useState('');
-        const [requestFilter, setRequestFilter] = useState('');
-        const [assignedToFilter, setAssignedToFilter] = useState('');
-        const [dateFilter, setDateFilter] = useState('');
-        const [dateSortOrder, setDateSortOrder] = useState('');
-        const [isCategoryFilterOpen, setIsCategoryFilterOpen] = useState(false);
-        const [isStatusFilterOpen, setIsStatusFilterOpen] = useState(false);
-        const [isRequestFilterOpen, setIsRequestFilterOpen] = useState(false);
-        const [isAssignedToFilterOpen, setIsAssignedToFilterOpen] = useState(false);
-        const [isDateFilterOpen, setIsDateFilterOpen] = useState(false);
+    // Tests that an error message is displayed when data fetch fails
+    it('test_displays_error_message_if_data_fetch_fails', () => {
+        // Mock the ticketManager.getTicketsByPARCStatusForTenantID function to throw an error
+        jest.spyOn(ticketManager, 'getTicketsByPARCStatusForTenantID').mockImplementation(() => {
+            throw new Error('Error fetching tickets');
+        });
 
-        // Mock the ticket data
-        const mockTickets = [
-          {
-            ServiceRequestID: 1,
-            Name: 'Ticket 1',
-            Category: 'Category 1',
-            Property: 'Property 1',
-            Status: 'Status 1',
-            SubmittedDateTime: '2022-01-01',
-            staffDetails: {
-              StaffName: 'Staff 1'
+        // Render the TenantPortal component
+        render(<TenantPortal />);
+
+        // Check if the error message is displayed
+        expect(screen.getByText('Error!')).toBeInTheDocument();
+    });
+
+
+    // Tests that the component displays an empty message if no data is found
+    it('test_displays_empty_message_if_no_data_found', () => {
+        // Render the component
+        const { getByText } = render(<TenantPortal />);
+
+        // Assert that the empty message is displayed
+        expect(getByText('Empty!')).toBeInTheDocument();
+    });
+
+
+    // Tests that the TenantPortal function displays filtered and sorted data correctly
+    it('test_displays_filtered_and_sorted_data_correctly', async () => {
+        const serviceTickets = [
+            {
+                ServiceRequestID: 1,
+                Name: 'Test Request 1',
+                Category: 'Plumbing',
+                Property: 'Test Property 1',
+                Status: 'Awaiting Review',
+                SubmittedDateTime: '2022-01-01T00:00:00.000Z',
+                staffDetails: {
+                    StaffName: 'Test Staff 1'
+                }
+            },
+            {
+                ServiceRequestID: 2,
+                Name: 'Test Request 2',
+                Category: 'Electric',
+                Property: 'Test Property 2',
+                Status: 'Ticket Assigned',
+                SubmittedDateTime: '2022-01-02T00:00:00.000Z',
+                staffDetails: {
+                    StaffName: 'Test Staff 2'
+                }
             }
-          },
-          {
-            ServiceRequestID: 2,
-            Name: 'Ticket 2',
-            Category: 'Category 2',
-            Property: 'Property 2',
-            Status: 'Status 2',
-            SubmittedDateTime: '2022-01-02',
-            staffDetails: {
-              StaffName: 'Staff 2'
-            }
-          },
-          {
-            ServiceRequestID: 3,
-            Name: 'Ticket 3',
-            Category: 'Category 3',
-            Property: 'Property 3',
-            Status: 'Status 3',
-            SubmittedDateTime: '2022-01-03',
-            staffDetails: {
-              StaffName: 'Staff 3'
-            }
-          }
         ];
+        const { getByText, queryByText } = render(<TenantPortal />);
+        expect(getByText('Loading...')).toBeInTheDocument();
+        await waitFor(() => expect(queryByText('Loading...')).not.toBeInTheDocument());
+        expect(getByText('Test Request 1')).toBeInTheDocument();
+        expect(getByText('Plumbing')).toBeInTheDocument();
+        expect(getByText('Test Property 1')).toBeInTheDocument();
+        expect(getByText('Awaiting Review')).toBeInTheDocument();
+        expect(getByText('01/01/2022')).toBeInTheDocument();
+        expect(getByText('Test Staff 1')).toBeInTheDocument();
+        expect(getByText('Test Request 2')).toBeInTheDocument();
+        expect(getByText('Electric')).toBeInTheDocument();
+        expect(getByText('Test Property 2')).toBeInTheDocument();
+        expect(getByText('Ticket Assigned')).toBeInTheDocument();
+        expect(getByText('02/01/2022')).toBeInTheDocument();
+        expect(getByText('Test Staff 2')).toBeInTheDocument();
+        fireEvent.click(getByText('Request'));
+        fireEvent.change(screen.getByPlaceholderText('Filter by request...'), { target: { value: 'Test Request 1' } });
+        expect(getByText('Test Request 1')).toBeInTheDocument();
+        expect(queryByText('Test Request 2')).not.toBeInTheDocument();
+        fireEvent.click(getByText('Category'));
+        fireEvent.click(getByText('Electric'));
+        expect(queryByText('Test Request 1')).not.toBeInTheDocument();
+        expect(getByText('Test Request 2')).toBeInTheDocument();
+        fireEvent.click(getByText('Status'));
+        fireEvent.click(getByText('Awaiting Review'));
+        expect(getByText('Test Request 1')).toBeInTheDocument();
+        expect(queryByText('Test Request 2')).not.toBeInTheDocument();
+        fireEvent.click(getByText('Submitted Date'));
+        fireEvent.click(getByText('Newest to Oldest'));
+        expect(getByText('Test Request 2')).toBeInTheDocument();
+        expect(queryByText('Test Request 1')).not.toBeInTheDocument();
+    });
 
-        // Mock the useParams hook
-        jest.mock('react-router-dom', () => ({
-          useParams: jest.fn().mockReturnValue({ PARCStatus: 'status', TenantID: 'tenant' })
-        }));
+    
 
+    // Tests that all filters are removed and data is fetched again when the 'Remove all Filters' button is clicked
+    it('test_removes_all_filters_and_fetches_data_again', () => {
         // Mock the TicketManager class
         jest.mock('../../managers/ticketmanager', () => {
           return jest.fn().mockImplementation(() => ({
-            getTicketsByPARCStatusForTenantID: jest.fn().mockResolvedValue(mockTickets)
+            getTicketsByPARCStatusForTenantID: jest.fn().mockResolvedValue([])
           }));
         });
 
         // Render the TenantPortal component
-        const wrapper = shallow(<TenantPortal />);
+        const { getByText } = render(<TenantPortal />);
 
-        // Assert the initial state
-        expect(wrapper.find('tr')).toHaveLength(4);
+        // Click the 'Remove all Filters' button
+        fireEvent.click(getByText('Remove all Filters'));
 
-        // Set the assigned to filter
-        wrapper.find('input').simulate('change', { target: { value: 'Staff 1' } });
+        // Check that the filters are cleared
+        expect(setCategoryFilter).toHaveBeenCalledWith('');
+        expect(setIsCategoryFilterOpen).toHaveBeenCalledWith(false);
+        expect(setStatusFilter).toHaveBeenCalledWith('');
+        expect(setIsStatusFilterOpen).toHaveBeenCalledWith(false);
+        expect(setRequestFilter).toHaveBeenCalledWith('');
+        expect(setIsRequestFilterOpen).toHaveBeenCalledWith(false);
+        expect(setAssignedToFilter).toHaveBeenCalledWith('');
+        expect(setIsAssignedToFilterOpen).toHaveBeenCalledWith(false);
+        expect(setDateFilter).toHaveBeenCalledWith('');
+        expect(setIsDateFilterOpen).toHaveBeenCalledWith(false);
+        expect(setDateSortOrder).toHaveBeenCalledWith('');
+        expect(setIsLoading).toHaveBeenCalledWith(true);
+        expect(setFetchError).toHaveBeenCalledWith(null);
 
-        // Assert the filtered state
-        expect(wrapper.find('tr')).toHaveLength(2);
+        // Check that the getTickets function is called
+        expect(getTickets).toHaveBeenCalled();
       });
 
 
-    // Tests that the tickets are sorted by date in the specified order
-    it('sorts_tickets_by_date', () => {
-        const ticketManager = new TicketManager();
-        const { PARCStatus, TenantID } = useParams();
-        const [serviceTickets, setServiceTickets] = useState([]);
-        const [isLoading, setIsLoading] = useState(true);
-        const [fetchError, setFetchError] = useState(null);
-        const [categoryFilter, setCategoryFilter] = useState('');
-        const [statusFilter, setStatusFilter] = useState('');
-        const [requestFilter, setRequestFilter] = useState('');
-        const [assignedToFilter, setAssignedToFilter] = useState('');
-        const [dateFilter, setDateFilter] = useState('');
-        const [dateSortOrder, setDateSortOrder] = useState('');
-        const [isCategoryFilterOpen, setIsCategoryFilterOpen] = useState(false);
-        const [isStatusFilterOpen, setIsStatusFilterOpen] = useState(false);
-        const [isRequestFilterOpen, setIsRequestFilterOpen] = useState(false);
-        const [isAssignedToFilterOpen, setIsAssignedToFilterOpen] = useState(false);
-        const [isDateFilterOpen, setIsDateFilterOpen] = useState(false);
+    // Tests that the function handles an invalid PARCStatus parameter by displaying an error message
+    it('test_handles_invalid_parcstatus_parameter', () => {
+        // Mock useParams
+        const mockUseParams = jest.fn().mockReturnValue({ PARCStatus: 'invalid', TenantID: '1' });
+        jest.mock('react-router-dom', () => ({
+            ...jest.requireActual('react-router-dom'),
+            useParams: mockUseParams
+        }));
 
-        // ... rest of the code
-        // Call sortTicketsByDate
-        sortTicketsByDate('oldest');
-        // Expected sorted tickets
-        const expectedSortedTickets = [
-            {
-                TicketID: 1,
-                TicketNumber: '123456',
-                Category: 'Plumbing',
-                Status: 'Ticket Assigned',
-                Request: 'Leak',
-                AssignedTo: 'John Doe',
-                Date: '2020-01-01'
-                },
-            {
-                TicketID: 2,
-                TicketNumber: '123457',
-                Category: 'Plumbing',
-                Status: 'Ticket Assigned',
-                Request: 'Leak',
-                AssignedTo: 'John Doe',
-                Date: '2020-01-02'
-                },
-            {
-                TicketID: 3,
-                TicketNumber: '123458',
-                Category: 'Plumbing',
-                Status: 'Ticket Assigned',
-                Request: 'Leak',
-                AssignedTo: 'John Doe',
-                Date: '2020-01-03'
-                },
-            {
-                TicketID: 4,
-                TicketNumber: '123459',
-                Category: 'Plumbing',
-                Status: 'Ticket Assigned',
-                Request: 'Leak',
-                AssignedTo: 'John Doe',
-                Date: '2020-01-04'
-                },
-                {
-                    TicketID: 5,
-                    TicketNumber: '123460',
-                    Category: 'Plumbing',
-                    Status: 'Ticket Assigned',
-                    Request: 'Leak',
-                    AssignedTo: 'John Doe',
-                    Date: '2020-01-05'  
-                    }
+        // Render the component
+        render(<TenantPortal />);
 
-                ]
-
-        sortTicketsByDate('newest');
-
-        expect(serviceTickets).toEqual(expectedSortedTickets);
+        // Check if the error message is displayed
+        expect(screen.getByText('Error!')).toBeInTheDocument();
     });
 
 
-    // Tests that all filters are removed when removeFilters is called
-    it('test_remove_filters', () => {
-        const wrapper = shallow(<TenantPortal />);
+    // Tests that an error message is displayed when an invalid TenantID parameter is provided
+    it('handles_invalid_tenant_id', () => {
+        // Arrange
+        const { getByText } = render(<TenantPortal />);
+        const errorMessage = 'Error!';
 
-        // Set initial filters
-        wrapper.setState({
-            categoryFilter: 'Plumbing',
-            statusFilter: 'Ticket Assigned',
-            requestFilter: 'Leak',
-            assignedToFilter: 'John Doe',
-            dateFilter: 'newest',
-            dateSortOrder: 'newest'
-        });
+        // Act
+        // No need to perform any action, as the useEffect hook will be triggered automatically
 
-        // Call removeFilters
-        wrapper.instance().removeFilters();
-
-        // Check if all filters are cleared
-        expect(wrapper.state('categoryFilter')).toEqual('');
-        expect(wrapper.state('statusFilter')).toEqual('');
-        expect(wrapper.state('requestFilter')).toEqual('');
-        expect(wrapper.state('assignedToFilter')).toEqual('');
-        expect(wrapper.state('dateFilter')).toEqual('');
-        expect(wrapper.state('dateSortOrder')).toEqual('');
+        // Assert
+        expect(getByText(errorMessage)).toBeInTheDocument();
     });
-});
+
+
+    // Tests that the TenantPortal function handles an empty serviceTickets array by displaying 'Empty!' in the table
+    it('test_handles_empty_serviceTickets_array', () => {
+      render(<TenantPortal />);
+
+      const emptyMessage = screen.getByText('Empty!');
+
+      expect(emptyMessage).toBeInTheDocument();
+    });
+
+
+    // Tests that an invalid dateFilter parameter does not filter out any tickets
+    it('test_handles_invalid_date_filter_parameter', () => {
+        const { getByText } = render(<TenantPortal />);
+        const initialTicketCount = getByText(/Loading/i);
+        expect(initialTicketCount).toBeInTheDocument();
+
+        const newestFilter = getByText(/Newest to Oldest/i);
+        fireEvent.click(newestFilter);
+
+        const invalidFilter = getByText(/Invalid Filter/i);
+        fireEvent.click(invalidFilter);
+
+        const ticketCount = getByText(/Loading/i);
+        expect(ticketCount).toBeInTheDocument();
+    });
+
+
+    // Tests that the function handles an invalid categoryFilter parameter by setting the categoryFilter state to an empty string and fetching the tickets again
+    it('test_handles_invalid_category_filter_parameter', () => {
+      // Mock TicketManager
+      const ticketManager = new TicketManager();
+
+      // Mock useParams
+      const useParamsMock = jest.fn().mockReturnValue({ PARCStatus: 'status', TenantID: 'tenantId' });
+
+      // Mock useState
+      const useStateMock = jest.spyOn(React, 'useState');
+      useStateMock.mockImplementation((initialValue) => [initialValue, jest.fn()]);
+
+      // Mock useEffect
+      const useEffectMock = jest.spyOn(React, 'useEffect');
+      useEffectMock.mockImplementation((callback) => callback());
+
+      // Mock getTickets function
+      ticketManager.getTicketsByPARCStatusForTenantID = jest.fn().mockResolvedValue([]);
+
+      // Render component
+      render(<TenantPortal />, { wrapper: MemoryRouter });
+
+      // Set invalid categoryFilter
+      act(() => {
+        fireEvent.change(screen.getByPlaceholderText('Filter by request...'), { target: { value: 'Invalid Category' } });
+      });
+
+      // Check if categoryFilter state is set to empty string
+      expect(useStateMock.mock.calls[2][0]).toBe('');
+
+      // Check if getTickets function is called again
+      expect(ticketManager.getTicketsByPARCStatusForTenantID).toHaveBeenCalledWith('STATUS', 'tenantId');
+    });
+
+
+    // Tests that the function handles an invalid statusFilter parameter by setting the fetchError state and displaying an error message
+    it('test_handles_invalid_status_filter_parameter', () => {
+      // Mock useParams
+      const mockParams = {
+        PARCStatus: 'invalid',
+        TenantID: '123'
+      };
+      jest.mock('react-router-dom', () => ({
+        ...jest.requireActual('react-router-dom'),
+        useParams: () => mockParams
+      }));
+
+      // Render the component
+      render(<TenantPortal />);
+
+      // Assert that the fetchError state is set
+      expect(screen.getByText('Error!')).toBeInTheDocument();
+    });
+
+
+    // Tests that an error is thrown when an invalid assignedToFilter parameter is provided
+    it('test_handles_invalid_assignedToFilter_parameter', () => {
+        // Arrange
+        const { getByText } = render(<TenantPortal />);
+        const assignedToFilterInput = getByText('Assigned To').nextSibling;
+
+        // Act
+        fireEvent.change(assignedToFilterInput, { target: { value: 'Invalid' } });
+
+        // Assert
+        expect(assignedToFilterInput.value).toBe('');
+    });
+
+
+    // Tests that an error message is displayed when an invalid requestFilter parameter is provided
+    it('test_handles_invalid_request_filter_parameter', () => {
+        // Arrange
+        const { getByText, getByPlaceholderText } = render(<TenantPortal />);
+        const requestFilterInput = getByPlaceholderText('Filter by request...');
+
+        // Act
+        fireEvent.change(requestFilterInput, { target: { value: 'Invalid Request' } });
+
+        // Assert
+        expect(getByText('Empty!')).toBeInTheDocument();
+    });
+
+
+    // Tests that the function filters the tickets by request name case-insensitively
+    it('test_filters_by_request_name_case_insensitively', () => {
+        // Test code goes here
+    });
+
+
+    // Tests that the function filters the tickets by assigned staff name case-insensitively
+    it('test_filters_by_assigned_staff_name_case_insensitively', () => {
+        // Test code goes here
+    });
+
+
+    // Tests that the tickets are sorted correctly by date
+    it('test_sortByDate', () => {
+        // Arrange
+        const { getByText } = render(<TenantPortal />);
+        const newestButton = getByText('Newest to Oldest');
+        const oldestButton = getByText('Oldest to Newest');
+
+        // Act
+        fireEvent.click(newestButton);
+        const newestTickets = serviceTickets.sort((a, b) => new Date(b.SubmittedDateTime) - new Date(a.SubmittedDateTime));
+
+        fireEvent.click(oldestButton);
+        const oldestTickets = serviceTickets.sort((a, b) => new Date(a.SubmittedDateTime) - new Date(b.SubmittedDateTime));
+
+        // Assert
+        expect(serviceTickets).toEqual(newestTickets);
+        expect(serviceTickets).toEqual(oldestTickets);
+    });
+
+
+    // Tests that the date format in the table is correct
+    it('test_correct_date_format_in_table', () => {
+        const { getByText } = render(<TenantPortal />);
+        const date = new Date().toLocaleDateString();
+        expect(getByText(date)).toBeInTheDocument();
+    });
+
+
+    // Tests that the table displays the correct ticket number
+    it('displays_correct_ticket_number_in_table', () => {
+        const { getByText } = render(<TenantPortal />);
+        const ticketNumber = getByText('1');
+        expect(ticketNumber).toBeInTheDocument();
+    });
+

@@ -2,7 +2,7 @@
 import React from'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { SupervisorPortal } from './supervisorportal';
+import { SupervisorPortal } from './supervisorportal.js';
 
 
 describe('SupervisorPortal_function', () => {
