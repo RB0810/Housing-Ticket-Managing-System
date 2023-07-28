@@ -11,6 +11,9 @@ import supabase from "../../config/supabaseClient";
 import Swal from "sweetalert2";
 import NotificationManager from "../../managers/notificationmanager";
 
+// // Styles
+// import "./../../styles/ViewTicketStaff.css";
+
 // Quotation-related imports
 import { Document, Page, pdfjs } from "react-pdf";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
@@ -317,10 +320,13 @@ const ViewTicketStaff = () => {
 
   if (status === "Awaiting Review") {
     return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        _______________________________________
-        <SubmittedByCard tenant={tenant} />
+      <div className="ticket-grid">
+        <div className="ticket-details">
+          <BasicTicketDetails ticket={serviceTicket} />
+        </div>
+        <div className="submitted-by-card">
+          <SubmittedByCard tenant={tenant} />
+        </div>
       </div>
     );
   }
@@ -328,25 +334,28 @@ const ViewTicketStaff = () => {
   if (status === "Ticket Assigned") {
     if (quotationRequired === false) {
       return (
-        <div>
-          <BasicTicketDetails ticket={serviceTicket} />
-          _______________________________________
-          <SubmittedByCard tenant={tenant} />
-          _______________________________________
-          <div>
+        <div className="ticket-grid">
+          <div className="ticket-details">
+            <BasicTicketDetails ticket={serviceTicket} />
+          </div>
+          <div className="submitted-by-card">
+            <SubmittedByCard tenant={tenant} />
+          </div>
+          <div className="start-works">
             <button onClick={handleStartWorks}>Start Works</button>
           </div>
-          _______________________________________
         </div>
       );
     } else {
       return (
-        <div>
-          <BasicTicketDetails ticket={serviceTicket} />
-          _______________________________________
-          <SubmittedByCard tenant={tenant} />
-          _______________________________________
-          <div>
+        <div className="ticket-grid">
+          <div className="ticket-details">
+            <BasicTicketDetails ticket={serviceTicket} />
+          </div>
+          <div className="submitted-by-card">
+            <SubmittedByCard tenant={tenant} />
+          </div>
+          <div className="quotation-section">
             <label>
               Quotation Required:
               <select
@@ -369,36 +378,36 @@ const ViewTicketStaff = () => {
 
   if (status === "Quotation Uploaded") {
     return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        _______________________________________
-        <SubmittedByCard tenant={tenant} />
-        _______________________________________
-        <div>
-          <button onClick={handleFileDownload}>Download File</button>
+      <div class="ticket-grid">
+        <div class="ticket-details">
+          <BasicTicketDetails ticket={serviceTicket} />
         </div>
-        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
-        _______________________________________
+        <div class="submitted-by-card">
+          <SubmittedByCard tenant={tenant} />
+        </div>
+
+        <div class="quotation">
+          <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+        </div>
       </div>
     );
   }
 
   if (status === "Quotation Accepted") {
     return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        _______________________________________
-        <SubmittedByCard tenant={tenant} />
-        _______________________________________
-        <div>
+      <div className="ticket-grid">
+        <div className="ticket-details">
+          <BasicTicketDetails ticket={serviceTicket} />
+        </div>
+        <div className="submitted-by-card">
+          <SubmittedByCard tenant={tenant} />
+        </div>
+        <div className="start-works">
           <button onClick={handleStartWorks}>Start Works</button>
         </div>
-        _______________________________________
-        <div>
-          <button onClick={handleFileDownload}>Download File</button>
+        <div className="quotation">
+          <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
         </div>
-        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
-        _______________________________________
       </div>
     );
   }
@@ -422,9 +431,6 @@ const ViewTicketStaff = () => {
           <h2>Rejection Details</h2>
           <p>Reason for rejection: {feedbackComments}</p>
         </div>
-        <div>
-          <button onClick={handleFileDownload}>Download File</button>
-        </div>
         <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
         _______________________________________
       </div>
@@ -433,20 +439,18 @@ const ViewTicketStaff = () => {
 
   if (status === "Works Started") {
     return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        _______________________________________
-        <SubmittedByCard tenant={tenant} />
-        _______________________________________
-        <div>
+      <div class="ticket-grid">
+        <div class="ticket-details">
+          <BasicTicketDetails ticket={serviceTicket} />
+        </div>
+        <div class="submitted-by-card">
+          <SubmittedByCard tenant={tenant} />
+        </div>
+        <div class="button-group">
           <button onClick={handleEndWorks}>End Works</button>
         </div>
-        ____________________________________
         {quotationRequired && (
-          <div>
-            <div>
-              <button onClick={handleFileDownload}>Download Quotation</button>
-            </div>
+          <div class="quotation">
             <DisplayQuotation
               ServiceRequestID={serviceTicket.ServiceRequestID}
             />
@@ -458,16 +462,15 @@ const ViewTicketStaff = () => {
 
   if (status === "Works Ended") {
     return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        _______________________________________
-        <SubmittedByCard tenant={tenant} />
-        _______________________________________
+      <div class="ticket-grid">
+        <div class="ticket-details">
+          <BasicTicketDetails ticket={serviceTicket} />
+        </div>
+        <div class="submitted-by-card">
+          <SubmittedByCard tenant={tenant} />
+        </div>
         {quotationRequired && (
-          <div>
-            <div>
-              <button onClick={handleFileDownload}>Download Quotation</button>
-            </div>
+          <div class="quotation">
             <DisplayQuotation
               ServiceRequestID={serviceTicket.ServiceRequestID}
             />
@@ -493,9 +496,6 @@ const ViewTicketStaff = () => {
         _______________________________________
         {quotationRequired && (
           <div>
-            <div>
-              <button onClick={handleFileDownload}>Download Quotation</button>
-            </div>
             <DisplayQuotation
               ServiceRequestID={serviceTicket.ServiceRequestID}
             />
@@ -519,9 +519,6 @@ const ViewTicketStaff = () => {
         _______________________________________
         {quotationRequired && (
           <div>
-            <div>
-              <button onClick={handleFileDownload}>Download Quotation</button>
-            </div>
             <DisplayQuotation
               ServiceRequestID={serviceTicket.ServiceRequestID}
             />

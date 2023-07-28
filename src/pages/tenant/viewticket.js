@@ -13,7 +13,7 @@ import DisplayQuotation from "../../components/DisplayQuotation";
 import NotificationManager from "../../managers/notificationmanager";
 
 // Import styles
-// import "./../../styles/ViewTicketTenant.css";
+import "./../../styles/ViewTicketTenant.css";
 
 const ViewTicketTenant = () => {
   const ticketManager = new TicketManager();
@@ -124,11 +124,18 @@ const ViewTicketTenant = () => {
     }
   };
 
+  const handleCancel = () => {
+    setShowFeedbackButtons(true);
+    setFeedbackType(null);
+    setShowQuotationButtons(true);
+    setQuotationState(null);
+  };
+
   const renderContent = () => {
     // Quotation Feedback
     if (quotationState === "reject") {
       return (
-        <div>
+        <div class="comments-section">
           <form onSubmit={handleRejectQuotation}>
             <label>
               Reason for Reject :
@@ -137,25 +144,19 @@ const ViewTicketTenant = () => {
                 onChange={(e) => setRejectComments(e.target.value)}
               ></textarea>
             </label>
-
             <button type="submit">Submit</button>
           </form>
+          <button onClick={handleCancel}>Cancel</button>
         </div>
       );
     }
 
-    const handleCancel = () => {
-      setShowFeedbackButtons(true);
-      setFeedbackType(null);
-    };
-
     // Ticket Feedback
     if (feedbackType === "feedback") {
       return (
-        <div>
+        <div class="comments-section">
           <form onSubmit={handleSuccessFeedback}>
             <label>
-              <Typography component="legend">Rating</Typography>
               <Rating
                 name="simple-controlled"
                 value={rating}
@@ -166,7 +167,6 @@ const ViewTicketTenant = () => {
             </label>
 
             <label>
-              Comments:
               <textarea
                 value={successComments}
                 onChange={(e) => setSuccessComments(e.target.value)}
@@ -174,16 +174,16 @@ const ViewTicketTenant = () => {
             </label>
 
             <button type="submit">Submit Feedback</button>
-            <button onClick={handleCancel}>Cancel</button>
           </form>
+          <button onClick={handleCancel}>Cancel</button>
         </div>
       );
     } else if (feedbackType === "reject") {
       return (
-        <div>
+        <div class="comments-section">
           <form onSubmit={handleRejectFeedback}>
             <label>
-              Reason for Reject :
+              Reason:
               <textarea
                 value={rejectComments}
                 onChange={(e) => setRejectComments(e.target.value)}
@@ -191,8 +191,8 @@ const ViewTicketTenant = () => {
             </label>
 
             <button type="submit">Submit Feedback</button>
-            <button onClick={handleCancel}>Cancel</button>
           </form>
+          <button onClick={handleCancel}>Cancel</button>
         </div>
       );
     }
@@ -361,12 +361,12 @@ const ViewTicketTenant = () => {
 
   if (status === "Awaiting Review") {
     return (
-      <div>
-        <div>
+      <div class="ticket-grid">
+        <div class="ticket-details">
           <BasicTicketDetails ticket={serviceTicket} />
         </div>
 
-        <div>
+        <div class="delete-ticket-button">
           <button onClick={() => handleDeleteTicket()}>Delete Ticket</button>
         </div>
       </div>
@@ -375,23 +375,28 @@ const ViewTicketTenant = () => {
 
   if (status === "Ticket Assigned") {
     return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-
-        <h1>ASSIGNED TO</h1>
-        <AssignedToCard staff={staff} />
+      <div class="ticket-grid">
+        <div class="ticket-details">
+          <BasicTicketDetails ticket={serviceTicket} />
+        </div>
+        <div class="assigned-to-card">
+          <AssignedToCard staff={staff} />
+        </div>
       </div>
     );
   }
 
   if (status === "Quotation Uploaded") {
     return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        <AssignedToCard staff={staff} />
-        ____________________________________
+      <div class="ticket-grid">
+        <div class="ticket-details">
+          <BasicTicketDetails ticket={serviceTicket} />
+        </div>
+        <div class="assigned-to-card">
+          <AssignedToCard staff={staff} />
+        </div>
         {showQuotationButtons && (
-          <div>
+          <div class="button-group">
             <button onClick={() => handleAcceptQuotation()}>
               Accept Quotation
             </button>
@@ -401,13 +406,11 @@ const ViewTicketTenant = () => {
           </div>
         )}
         {renderContent()}
-        ____________________________________
         {quotationRequired && (
-          <div>
-            <div>
-              <button onClick={handleFileDownload}>Download Quotation</button>
-            </div>
-            <DisplayQuotation quotationPath={quotationPath} file={file} />
+          <div class="quotation">
+            <DisplayQuotation
+              ServiceRequestID={serviceTicket.ServiceRequestID}
+            />
           </div>
         )}
       </div>
@@ -427,30 +430,31 @@ const ViewTicketTenant = () => {
 
   if (status === "Quotation Accepted") {
     return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        <AssignedToCard staff={staff} />
-        <p>Quotation Needed: {serviceTicket.QuotationRequired}</p>
-        {/* <DownloadQuotation
-          bucketName="quotation"
-          ServiceRequestID={serviceTicket.ServiceRequestID}
-        /> */}
-        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+      <div class="ticket-grid">
+        <div class="ticket-details">
+          <BasicTicketDetails ticket={serviceTicket} />
+        </div>
+        <div class="assigned-to-card">
+          <AssignedToCard staff={staff} />
+        </div>
+        <div class="quotation">
+          <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+        </div>
       </div>
     );
   }
 
   if (status === "Works Started") {
     return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        <AssignedToCard staff={staff} />
+      <div class="ticket-grid">
+        <div class="ticket-details">
+          <BasicTicketDetails ticket={serviceTicket} />
+        </div>
+        <div class="assigned-to-card">
+          <AssignedToCard staff={staff} />
+        </div>
         {quotationRequired && (
-          <div>
-            {/* <DownloadQuotation
-              bucketName="quotation"
-              ServiceRequestID={serviceTicket.ServiceRequestID}
-            /> */}
+          <div class="quotation">
             <DisplayQuotation
               ServiceRequestID={serviceTicket.ServiceRequestID}
             />
@@ -462,13 +466,15 @@ const ViewTicketTenant = () => {
 
   if (status === "Works Ended") {
     return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        _______________________________________
-        <AssignedToCard staff={staff} />
-        _______________________________________
+      <div class="ticket-grid">
+        <div class="ticket-details">
+          <BasicTicketDetails ticket={serviceTicket} />
+        </div>
+        <div class="assigned-to-card">
+          <AssignedToCard staff={staff} />
+        </div>
         {showFeedbackButtons && (
-          <div>
+          <div class="button-group">
             <button onClick={() => handleFeedbackClick("feedback")}>
               Give Feedback
             </button>
@@ -478,14 +484,9 @@ const ViewTicketTenant = () => {
           </div>
         )}
         {renderContent()}
-        _______________________________________
-        ____________________________________
+
         {quotationRequired && (
-          <div>
-            {/* <DownloadQuotation
-              bucketName="quotation"
-              ServiceRequestID={serviceTicket.ServiceRequestID}
-            /> */}
+          <div class="quotation">
             <DisplayQuotation
               ServiceRequestID={serviceTicket.ServiceRequestID}
             />
@@ -497,22 +498,25 @@ const ViewTicketTenant = () => {
 
   if (status === "Works Rejected") {
     return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        <h1>Reason for Reject : {serviceTicket.FeedbackComments}</h1>
-        <AssignedToCard staff={staff} />
-        _______________________________________
+      <div class="ticket-grid">
+        <div class="ticket-details">
+          <BasicTicketDetails ticket={serviceTicket} />
+        </div>
+        <div class="assigned-to-card">
+          <AssignedToCard staff={staff} />
+        </div>
+
         {quotationRequired && (
-          <div>
-            {/* <DownloadQuotation
-              bucketName="quotation"
-              ServiceRequestID={serviceTicket.ServiceRequestID}
-            /> */}
+          <div class="quotation">
             <DisplayQuotation
               ServiceRequestID={serviceTicket.ServiceRequestID}
             />
           </div>
         )}
+
+        <div class="reject-reason">
+          <h2>Reason for Reject : {serviceTicket.FeedbackComments}</h2>
+        </div>
       </div>
     );
   }
