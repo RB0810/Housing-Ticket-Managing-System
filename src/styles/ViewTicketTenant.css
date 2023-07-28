@@ -1,7 +1,7 @@
 .ticket-grid {
     display: grid;
     grid-template-columns: repeat(10, 1fr);
-    grid-template-rows: repeat(6, 1fr);
+    grid-template-rows: repeat(8, 1fr);
     gap: 0px;
     height: 600px; /* Set the desired height of the grid container */
   }
@@ -13,17 +13,17 @@
   }
 
 .submitted-by-card {
-    grid-row: 4/ span 5 ; /* Occupies grid row 3 */
+    grid-row: 5/ span 6 ; /* Occupies grid row 3 */
     grid-column: 1 / span 4; /* Occupies grid column 1 and 2 */
 }
 
 .assigned-to-card {
-    grid-row: 4/ span 5 ; /* Occupies grid row 3 */
+    grid-row: 5/ span 6 ; /* Occupies grid row 3 */
     grid-column: 1 / span 4; /* Occupies grid column 1 and 2 */
   }
 
 .button-group {
-    grid-row: 6; /* Occupies grid row 4 */
+    grid-row: 8; /* Occupies grid row 4 */
     grid-column: 1 / span 4; /* Occupies all columns in the last row */
   }
   
@@ -44,14 +44,29 @@
   }
 
 .comments-section {
-    grid-row: 6/span 6;
+    grid-row: 8/span 8;
     grid-column: 1 / span 4;
 }
 
 .reject-reason {
-    grid-row: 6/span 6;
+    grid-row: 7;
     grid-column: 1 / span 4;
     color: red
+}
+
+.final-staff-tenant-details {
+    grid-row: 6/ span 6 ; /* Occupies grid row 3 */
+    grid-column: 1 / span 2; /* Occupies grid column 1 and 2 */
+
+}
+
+.final-feedback-details {
+    grid-row: 6/ span 6 ; /* Occupies grid row 3 */
+    grid-column: 2 / span 4; /* Occupies grid column 1 and 2 */
+
+    
+
+
 }
 
 

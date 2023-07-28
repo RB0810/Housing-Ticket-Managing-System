@@ -523,18 +523,22 @@ const ViewTicketTenant = () => {
 
   if (status === "Feedback Submitted") {
     return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        _______________________________________
-        <AssignedToCard staff={staff} />
-        ____________________________________
-        <ViewFinalFeedbackDetails
-          rating={serviceTicket.FeedbackRating}
-          comments={serviceTicket.FeedbackComments}
-        />
-        _______________________________________
+      <div class="ticket-grid">
+        <div class="ticket-details">
+          <BasicTicketDetails ticket={serviceTicket} />
+        </div>
+        <div class="final-staff-tenant-details">
+          <AssignedToCard staff={staff} />
+        </div>
+        <div class="final-feedback-details">
+          <ViewFinalFeedbackDetails
+            rating={serviceTicket.FeedbackRating}
+            comments={serviceTicket.FeedbackComments}
+          />
+        </div>
+
         {quotationRequired && (
-          <div>
+          <div class="quotation">
             {/* <DownloadQuotation
               bucketName="quotation"
               ServiceRequestID={serviceTicket.ServiceRequestID}

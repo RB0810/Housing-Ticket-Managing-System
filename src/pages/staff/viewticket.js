@@ -482,20 +482,21 @@ const ViewTicketStaff = () => {
 
   if (status === "Works Rejected") {
     return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        _______________________________________
-        <SubmittedByCard tenant={tenant} />
-        _______________________________________
-        <div>
-          <h2>Rejection Details</h2>
-          <p>Reason for rejection: {feedbackComments}</p>
-
+      <div class="ticket-grid">
+        <div class="ticket-details">
+          <BasicTicketDetails ticket={serviceTicket} />
+        </div>
+        <div class="submitted-by-card">
+          <SubmittedByCard tenant={tenant} />
+        </div>
+        <div class="reject-reason">
+          <h2>Reason for rejection: {feedbackComments}</h2>
+        </div>
+        <div class="button-group">
           <button onClick={handleStartWorks}>Restart Works</button>
         </div>
-        _______________________________________
         {quotationRequired && (
-          <div>
+          <div class="quotation">
             <DisplayQuotation
               ServiceRequestID={serviceTicket.ServiceRequestID}
             />
@@ -507,18 +508,22 @@ const ViewTicketStaff = () => {
 
   if (status === "Feedback Submitted") {
     return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        _______________________________________
-        <SubmittedByCard tenant={tenant} />
-        _______________________________________
-        <ViewFinalFeedbackDetails
-          rating={serviceTicket.FeedbackRating}
-          comments={serviceTicket.FeedbackComments}
-        />
-        _______________________________________
+      <div class="ticket-grid">
+        <div class="ticket-details">
+          <BasicTicketDetails ticket={serviceTicket} />
+        </div>
+        <div class="final-staff-tenant-details">
+          <SubmittedByCard tenant={tenant} />
+        </div>
+        <div class="final-feedback-details">
+          <ViewFinalFeedbackDetails
+            rating={serviceTicket.FeedbackRating}
+            comments={serviceTicket.FeedbackComments}
+          />
+        </div>
+
         {quotationRequired && (
-          <div>
+          <div class="quotation">
             <DisplayQuotation
               ServiceRequestID={serviceTicket.ServiceRequestID}
             />
