@@ -1,16 +1,14 @@
 import React, { useState } from "react";
 import "../../styles/login.css";
-import AccountManager from "../../managers/accountmanager";
-import "../../styles/login.css";
+import { useAccountManager } from "../../managers/context";
 
 export default function TenantLogin() {
   const [ID, setID] = useState("");
   const [password, setPassword] = useState("");
+  const accountmanager = useAccountManager();
 
   const handleLogin = async (event) => {
     event.preventDefault();
-
-    const accountManager = new AccountManager();
 
     const eventData = {
       ID,
@@ -19,7 +17,7 @@ export default function TenantLogin() {
     };
 
     try {
-      await accountManager.loginAuth(eventData);
+      await accountmanager.loginAuth(eventData);
     } catch (error) {
       console.error("Login error:", error);
       window.alert(`Error: ${error.message}`);

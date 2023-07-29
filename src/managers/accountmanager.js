@@ -1,6 +1,26 @@
 import supabase from "../config/supabaseClient";
+import { Jwt } from "jsonwebtoken";
 
 class AccountManager {
+  constructor() {
+    this.loginStatus = false;
+    this.sessionToken = null;
+  }
+
+  saveLoginStatus() {
+    localStorage.setItem("loginStatus", JSON.stringify(this.loginStatus));
+    localStorage.setItem("sessionToken", JSON.stringify(this.sessionToken));
+  }
+
+  // Load login status and session token from localStorage
+  loadLoginStatus() {
+    const loginStatus = localStorage.getItem("loginStatus");
+    const sessionToken = localStorage.getItem("sessionToken");
+    this.loginStatus = loginStatus ? JSON.parse(loginStatus) : false;
+    this.sessionToken = sessionToken ? JSON.parse(sessionToken) : null;
+    return loginStatus;
+  }
+
   async loginAuth(event) {
     const { data, error } = await supabase
       .from(`${event.Type}Users`)
@@ -14,13 +34,31 @@ class AccountManager {
     const user = data[0];
 
     if (user && user[`${event.Type}Password`] === event.password) {
-      const redirectUrl = `/${event.Type.toLowerCase()}portal/landingpage/${
-        user[`${event.Type}ID`]
-      }`;
+      const redirectUrl = `/${event.Type.toLowerCase()}portal/landingpage/${user[`${event.Type}ID`]}`;
+
+      // Generate a session token (JWT)
+      const payload = { userId: user[`${event.Type}ID`] };
+      const secretKey = "your-secret-key"; // Replace with your actual secret key
+      const options = { expiresIn: "1d" }; // Token expires in 1 day, change as needed
+      this.sessionToken = Jwt.sign(payload, secretKey, options);
+
+      this.loginStatus = true;
+      this.saveLoginStatus(); // Store login status and session token in local storage
       window.location.href = redirectUrl;
     } else {
       throw new Error("Invalid credentials");
     }
+  }
+
+  logout() {
+    this.loginStatus = false;
+    this.sessionToken = null;
+    this.saveLoginStatus(); // Store login status and session token in local storage
+    window.location.href = "/"; // Redirect to the home page after logout
+  }
+
+  getSessionToken() {
+    return this.sessionToken;
   }
 
   async setPassword(Type, ID, password) {
@@ -264,6 +302,14 @@ class AccountManager {
     console.log(staffData);
     return staffData;
   }
+
+  static getInstance(loginStatus = false) {
+    if (!AccountManager.instance) {
+      AccountManager.instance = new AccountManager(loginStatus);
+    }
+    return AccountManager.instance;
+  }
+
 }
 
 export default AccountManager;
