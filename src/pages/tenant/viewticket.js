@@ -13,7 +13,7 @@ import DisplayQuotation from "../../components/DisplayQuotation";
 import NotificationManager from "../../managers/notificationmanager";
 
 // Import styles
-import "./../../styles/ViewTicketTenant.css";
+import "./../../styles/viewticket.css";
 
 const ViewTicketTenant = () => {
   const ticketManager = new TicketManager();
@@ -419,11 +419,21 @@ const ViewTicketTenant = () => {
 
   if (status === "Quotation Rejected") {
     return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        <AssignedToCard staff={staff} />
-        <h1>Reason for Reject Quotation : {serviceTicket.FeedbackComments}</h1>
-        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+      <div class="ticket-grid">
+        <div class="ticket-details">
+          <BasicTicketDetails ticket={serviceTicket} />
+        </div>
+        <div class="assigned-to-card">
+          <AssignedToCard staff={staff} />
+        </div>
+        <div class="reject-reason">
+          <h2>
+            Reason for Reject Quotation : {serviceTicket.FeedbackComments}
+          </h2>
+        </div>
+        <div class="quotation">
+          <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+        </div>
       </div>
     );
   }

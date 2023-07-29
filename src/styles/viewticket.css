@@ -1,155 +1,74 @@
-.ticketNav {
-    background-color: whitesmoke;
-    color: black;
-    display: flex;
-    align-items: left;
-    padding: 0rem 2rem; 
-    height: 6rem;
-    margin-left: 5rem;
-    margin-right: 5rem;
-    margin-bottom: 0;
-}
+.ticket-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    gap: 0px;
+    height: 600px; /* Set the desired height of the grid container */
+  }
+  
+.ticket-details {
+    grid-row: 1 / span 2; /* Occupies grid row 1 and 2 */
+    grid-column: 1 / span 4; /* Occupies grid column 1 and 2 */
 
-.ticket nav li{
-    padding: 0rem 1rem;
-}
-
-.viewtixh1{
-    margin: 3rem;
-}
-
-li{
-    list-style: none;
-    display: flex;
-}
-
-/* img{
-    object-fit: scale-down;
-    height: 20px;
-    width: 20px;
-} */
-
-h3{
-    font-size: 70%;
-}
-
-.ticketlabel{
-    background-color: lightgray;
-    color: black;
-    display: flex;
-    justify-content: space-between;
-    align-items: stretch;
-    gap: 2rem;
-    padding: 0.5rem 2rem;
-}
-
-.Top Nav Bar{
-    margin-top: 0;
-}
-
-.Tabs{
-    background-color: whitesmoke;
-    color: black;
-    display: flex;
-    justify-content: space-between;
-    align-items: stretch;
-    gap: 2rem;
-    padding: 0.5rem 2rem;
-    margin-left: 5rem;
-    margin-right: 5rem;
-}
-
-.create-ticket-input{
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    resize: vertical;
-}
-.create-ticket-select{
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    resize: vertical;
-}
-.create-ticket-description{
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    resize: vertical;
-    height: 5rem;
-}
-
-.create-ticket-button{
-    background-color: royalblue;
-    color: white;
-    padding: 12px 20px;
-    margin-top: 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    float: right;
-}
-
-.create-ticket-label{
-    padding: 12px 12px 12px 0;
-    display: inline-block;
-}
-
-.field-row {
-    margin-bottom: 2rem;
-    padding-bottom: 20px;
-}
-
-.con-25{
-    float: left;
-    width: 25%;
-    margin-top: 6px;
-}
-
-.con-75 {
-    float: left;
-    width: 75%;
-    margin-top: 6px;
   }
 
-.ticket-creation-form{
-    align-items: center;
-    margin-left: 10%;
-    margin-right: 10%;
+.submitted-by-card {
+    grid-row: 5/ span 6 ; /* Occupies grid row 3 */
+    grid-column: 1 / span 4; /* Occupies grid column 1 and 2 */
 }
 
-.ticket-creation-title{
-    margin-top: 3rem;
-    margin-bottom: 3rem;
-    font-size: xxx-large;
+.assigned-to-card {
+    grid-row: 5/ span 6 ; /* Occupies grid row 3 */
+    grid-column: 1 / span 4; /* Occupies grid column 1 and 2 */
+  }
+
+.button-group {
+    grid-row: 8; /* Occupies grid row 4 */
+    grid-column: 1 / span 4; /* Occupies all columns in the last row */
+  }
+  
+.start-works {
+    grid-row: 6; /* Occupies grid row 4 */
+    grid-column: 1 / span 4; /* Occupies all columns in the last row */
+  }
+  
+.quotation {
+    grid-row: 1 / span 5; /* Occupies grid row 2 and 3 */
+    grid-column: 5 / span 10; /* Occupies grid column 3 and 4 */
+  }
+
+.delete-ticket-button {
+    grid-row: 6 ; /* Occupies grid row 4 */
+    grid-column: 1 / span 4; /* Occupies all columns in the last row */
+  
+  }
+
+.comments-section {
+    grid-row: 8/span 8;
+    grid-column: 1 / span 4;
 }
 
-.create-ticket-icons {
-    width: 50px;
-    transform: translateX(-50%);
+.reject-reason {
+    grid-row: 7;
+    grid-column: 1 / span 4;
+    color: red
 }
 
-.name-textfield {
-    background-color: white;
+.final-staff-tenant-details {
+    grid-row: 6/ span 6 ; /* Occupies grid row 3 */
+    grid-column: 1 / span 2; /* Occupies grid column 1 and 2 */
+
 }
 
-.description-textfield {
-    background-color: white;
+.final-feedback-details {
+    grid-row: 6/ span 6 ; /* Occupies grid row 3 */
+    grid-column: 2 / span 4; /* Occupies grid column 1 and 2 */
+
+    
+
+
 }
 
-.submit-button {
-    margin-top: 100rem;
-    background-color: #4CAF50;
-    padding: 0.5rem;
-    color: white;
-    border-radius: 10px;
-    cursor: pointer;
-    margin: 1rem;
-}
 
-.submit-button:hover {
-    background-color: #45a049;
-}
+  
+

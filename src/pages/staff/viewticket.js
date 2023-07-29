@@ -12,7 +12,7 @@ import Swal from "sweetalert2";
 import NotificationManager from "../../managers/notificationmanager";
 
 // // Styles
-// import "./../../styles/ViewTicketStaff.css";
+import "./../../styles/viewticket.css";
 
 // Quotation-related imports
 import { Document, Page, pdfjs } from "react-pdf";
@@ -341,7 +341,7 @@ const ViewTicketStaff = () => {
           <div className="submitted-by-card">
             <SubmittedByCard tenant={tenant} />
           </div>
-          <div className="start-works">
+          <div className="button-group">
             <button onClick={handleStartWorks}>Start Works</button>
           </div>
         </div>
@@ -355,7 +355,7 @@ const ViewTicketStaff = () => {
           <div className="submitted-by-card">
             <SubmittedByCard tenant={tenant} />
           </div>
-          <div className="quotation-section">
+          <div className="button-group">
             <label>
               Quotation Required:
               <select
@@ -414,25 +414,28 @@ const ViewTicketStaff = () => {
 
   if (status === "Quotation Rejected") {
     return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        _______________________________________
-        <SubmittedByCard tenant={tenant} />
-        ____________________________________
-        <UploadQuotation
-          bucketName="quotation"
-          ServiceRequestID={serviceTicket.ServiceRequestID}
-        />
-        <div>
+      <div class="ticket-grid">
+        <div class="ticket-details">
+          <BasicTicketDetails ticket={serviceTicket} />
+        </div>
+
+        <div class="submitted-by-card">
+          <SubmittedByCard tenant={tenant} />
+        </div>
+
+        <div class="button-group">
+          <div>
+            <input type="file" onChange={handleFileChange} />
+          </div>
           <button onClick={handleReuploadQuotation}>Reupload Quotation</button>
         </div>
-        _______________________________________
-        <div>
-          <h2>Rejection Details</h2>
-          <p>Reason for rejection: {feedbackComments}</p>
+
+        <div class="reject-reason">
+          <h2>Reason for rejection: {feedbackComments}</h2>
         </div>
-        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
-        _______________________________________
+        <div class="quotation">
+          <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+        </div>
       </div>
     );
   }
