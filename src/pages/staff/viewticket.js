@@ -4,7 +4,8 @@ import AccountManager from "../../managers/accountmanager";
 import BasicTicketDetails from "../../components/BasicTicketDetails";
 import SubmittedByCard from "../../components/SubmittedByCard";
 import ViewFinalFeedbackDetails from "../../components/ViewFinalFeedbackDetails";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 import UploadQuotation from "../../components/UploadQuotation";
 import DisplayQuotation from "../../components/DisplayQuotation";
 import supabase from "../../config/supabaseClient";
@@ -32,6 +33,30 @@ const ViewTicketStaff = () => {
   // Quotation Items
   const [quotationPath, setQuotationPath] = useState(null);
   const [file, setFile] = useState(null);
+
+  const navigate = useNavigate();
+  const {StaffID} = useParams();
+
+  useEffect(() => {
+    const userId = Cookies.get('userId');
+    const type = Cookies.get('type');
+
+    if (!userId || !type) {
+      // If any of the required cookies are missing, redirect to the login page
+      console.log('Unauthorized');
+      navigate("/unauthorize");
+    } else {
+      // Check if the user's ID and type match the expected values (e.g., StaffID and "Staff")
+      if (Number(userId) === parseInt(StaffID) && type === "Staff") {
+        // Proceed with rendering the component
+        console.log('Authorized');
+      } else {
+        // If not authorized, display "Unauthorized access" message
+        console.log('Unauthorized');
+        navigate("/unauthorize");
+      }
+    }
+  }, [navigate, StaffID]);
 
   useEffect(() => {
     const getTenantAndTicket = async () => {

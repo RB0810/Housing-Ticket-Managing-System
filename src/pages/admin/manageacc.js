@@ -2,11 +2,35 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import AccountManager from "../../managers/accountmanager";
 import BuildingCard from "../../components/BuildingCard";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 const ManageAccount = () => {
   const [buildings, setBuildings] = useState([]);
   const { AdminID } = useParams();
   const accountManager = new AccountManager();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const userId = Cookies.get('userId');
+    const type = Cookies.get('type');
+
+    if (!userId || !type) {
+      // If any of the required cookies are missing, redirect to the login page
+      console.log('Unauthorized');
+      navigate("/unauthorize");
+    } else {
+      // Check if the user's ID and type match the expected values (e.g., TenantID and "tenant")
+      if (Number(userId) === parseInt(AdminID) && type === "Admin") {
+        // Proceed with rendering the component
+        console.log('Authorized');
+      } else {
+        // If not authorized, display "Unauthorized access" message
+        console.log('Unauthorized');
+        navigate("/unauthorize");
+      }
+    }
+  }, [navigate, AdminID]);
 
   useEffect(() => {
     const fetchBuildings = async () => {

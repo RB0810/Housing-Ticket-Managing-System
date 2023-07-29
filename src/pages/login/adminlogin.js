@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import "../../styles/login.css";
-import AccountManager from "../../managers/accountmanager";
+import Authentication from "../../managers/authentication";
 
 export default function AdminLogin() {
   const [ID, setID] = useState("");
   const [password, setPassword] = useState("");
 
-  const accountManager = new AccountManager();
+  const authentication = new Authentication();
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -18,7 +18,7 @@ export default function AdminLogin() {
     };
 
     try {
-      await accountManager.loginAuth(eventData);
+      await authentication.loginAuth(eventData);
     } catch (error) {
       console.error("Login error:", error);
       window.alert(`Error: ${error.message}`);

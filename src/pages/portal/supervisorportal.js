@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { Routes, Route, useParams, Link } from "react-router-dom";
+import { Routes, Route, useParams, Link, useNavigate } from "react-router-dom";
 import TicketManager from "../../managers/ticketmanager";
 import "../../styles/ticketportal.css";
 import "../../styles/supervisorportal.css";
-
+import Cookies from "js-cookie";
 
 export default function SupervisorPortal() {
   const ticketManager = new TicketManager();
@@ -26,7 +26,28 @@ export default function SupervisorPortal() {
   const [isAssignedToFilterOpen, setIsAssignedToFilterOpen] = useState(false);
   const[isSubmittedByFilterOpen, setIsSubmittedByFilterOpen] = useState(false);
   const [isDateFilterOpen, setIsDateFilterOpen] = useState(false);
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    const userId = Cookies.get('userId');
+    const type = Cookies.get('type');
+
+    if (!userId || !type) {
+      // If any of the required cookies are missing, redirect to the login page
+      console.log('Unauthorized');
+      navigate("/unauthorize");
+    } else {
+      // Check if the user's ID and type match the expected values (e.g., SupervisorID and "Supervisor")
+      if (Number(userId) === parseInt(SupervisorID) && type === "Supervisor") {
+        // Proceed with rendering the component
+        console.log('Authorized');
+      } else {
+        // If not authorized, display "Unauthorized access" message
+        console.log('Unauthorized');
+        navigate("/unauthorize");
+      }
+    }
+  }, [navigate, SupervisorID]);
 
   useEffect(() => {
     getTickets();

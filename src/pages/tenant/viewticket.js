@@ -4,13 +4,14 @@ import AccountManager from "../../managers/accountmanager";
 import BasicTicketDetails from "../../components/BasicTicketDetails";
 import AssignedToCard from "../../components/AssignedToCard";
 import ViewFinalFeedbackDetails from "../../components/ViewFinalFeedbackDetails";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 // import DownloadQuotation from "../../components/DownloadQuotation";
 import { Rating } from "@mui/material";
 import supabase from "../../config/supabaseClient";
 import { Typography } from "@mui/material";
 import DisplayQuotation from "../../components/DisplayQuotation";
 import NotificationManager from "../../managers/notificationmanager";
+import Cookies from "js-cookie";
 
 const ViewTicketTenant = () => {
   const ticketManager = new TicketManager();
@@ -36,6 +37,30 @@ const ViewTicketTenant = () => {
 
   const [successComments, setSuccessComments] = useState("");
   const [rating, setRating] = useState(0);
+
+  const {TenantID} = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const userId = Cookies.get('userId');
+    const type = Cookies.get('type');
+
+    if (!userId || !type) {
+      // If any of the required cookies are missing, redirect to the login page
+      console.log('Unauthorized');
+      navigate("/unauthorize");
+    } else {
+      // Check if the user's ID and type match the expected values (e.g., TenantID and "tenant")
+      if (Number(userId) === parseInt(TenantID) && type === "Tenant") {
+        // Proceed with rendering the component
+        console.log('Authorized');
+      } else {
+        // If not authorized, display "Unauthorized access" message
+        console.log('Unauthorized');
+        navigate("/unauthorize");
+      }
+    }
+  }, [navigate, TenantID]);
 
   useEffect(() => {
     const getStaffAndTicket = async () => {

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from 'react-router-dom';
 import TenantAccount from "../../objects/TenantAccount";
 import "./../../../src/styles/createtenantacc.css"
+import Cookies from "js-cookie";
 
 const CreateTenantAcc = () => {
   const [tenantUsername, setTenantUsername] = useState("");
@@ -18,6 +19,28 @@ const CreateTenantAcc = () => {
   const [unitFields, setUnitFields] = useState([]);
   const [formError, setFormError] = useState(null);
   const { SupervisorID } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const userId = Cookies.get('userId');
+    const type = Cookies.get('type');
+
+    if (!userId || !type) {
+      // If any of the required cookies are missing, redirect to the login page
+      console.log('Unauthorized');
+      navigate("/unauthorize");
+    } else {
+      // Check if the user's ID and type match the expected values (e.g., SupervisorID and "Supervisor")
+      if (Number(userId) === parseInt(SupervisorID) && type === "Supervisor") {
+        // Proceed with rendering the component
+        console.log('Authorized');
+      } else {
+        // If not authorized, display "Unauthorized access" message
+        console.log('Unauthorized');
+        navigate("/unauthorize");
+      }
+    }
+  }, [navigate, SupervisorID]);
 
   const handleUnitFieldChange = (index, value) => {
     const updatedUnitFields = [...unitFields];

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import AccountManager from "../../managers/accountmanager";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import Authentication from "../../managers/authentication";
 import "./../../styles/profile.css"
+import Cookies from "js-cookie";
 
 const TenantProfile = () => {
   const { TenantID } = useParams();
@@ -9,6 +11,28 @@ const TenantProfile = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [formError, setFormError] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const userId = Cookies.get('userId');
+    const type = Cookies.get('type');
+
+    if (!userId || !type) {
+      // If any of the required cookies are missing, redirect to the login page
+      console.log('Unauthorized');
+      navigate("/unauthorize");
+    } else {
+      // Check if the user's ID and type match the expected values (e.g., TenantID and "tenant")
+      if (Number(userId) === parseInt(TenantID) && type === "Tenant") {
+        // Proceed with rendering the component
+        console.log('Authorized');
+      } else {
+        // If not authorized, display "Unauthorized access" message
+        console.log('Unauthorized');
+        navigate("/unauthorize");
+      }
+    }
+  }, [navigate, TenantID]);
 
   useEffect(() => {
     const fetchTenantDetails = async () => {
@@ -23,6 +47,11 @@ const TenantProfile = () => {
   const handleNewPasswordChange = (e) => {
     setNewPassword(e.target.value);
   };
+
+  const logout = () => {
+    const authentication = new Authentication();
+    authentication.logout();
+  }
 
   const handleConfirmPasswordChange = (e) => {
     setConfirmPassword(e.target.value);
@@ -117,7 +146,7 @@ const TenantProfile = () => {
       <hr></hr>
 
       <div className="tenant-profile-row">
-        <Link to={`/`}><button>Logout</button></Link>
+        <button onClick={logout}>Logout</button>
       </div>
       
       

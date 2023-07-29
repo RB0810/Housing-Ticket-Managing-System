@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import TicketManager from "../../managers/ticketmanager";
 import AccountManager from "../../managers/accountmanager";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import BasicTicketDetails from "../../components/BasicTicketDetails";
 import SubmittedByCard from "../../components/SubmittedByCard";
 import AssignedToCard from "../../components/AssignedToCard";
@@ -9,6 +9,7 @@ import ViewFinalFeedbackDetails from "../../components/ViewFinalFeedbackDetails"
 import NotificationManager from "../../managers/notificationmanager";
 import UploadQuotation from "../../components/UploadQuotation";
 import DisplayQuotation from "../../components/DisplayQuotation";
+import Cookies from "js-cookie";
 
 const ViewTicketSupervisor = () => {
   const accountManager = new AccountManager();
@@ -29,6 +30,30 @@ const ViewTicketSupervisor = () => {
   // For Quotation
   const [quotationPath, setQuotationPath] = useState(null);
   const [file, setFile] = useState(null);
+
+  const {SupervisorID} = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const userId = Cookies.get('userId');
+    const type = Cookies.get('type');
+
+    if (!userId || !type) {
+      // If any of the required cookies are missing, redirect to the login page
+      console.log('Unauthorized');
+      navigate("/unauthorize");
+    } else {
+      // Check if the user's ID and type match the expected values (e.g., SupervisorID and "Supervisor")
+      if (Number(userId) === parseInt(SupervisorID) && type === "Supervisor") {
+        // Proceed with rendering the component
+        console.log('Authorized');
+      } else {
+        // If not authorized, display "Unauthorized access" message
+        console.log('Unauthorized');
+        navigate("/unauthorize");
+      }
+    }
+  }, [navigate, SupervisorID]);
 
   useEffect(() => {
     const getStaffAndTenantAndTicket = async () => {
