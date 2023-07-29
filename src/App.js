@@ -1,5 +1,7 @@
 import "./styles/App.css";
+import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import TenantNavbar from "./components/TenantNavbar";
 import SupervisorNavbar from "./components/SupervisorNavbar";
@@ -28,11 +30,28 @@ import BuildingDetailsPage from "./pages/admin/BuildingDetailsPage";
 import TenantProfile from "./pages/tenant/profile";
 import SupervisorProfile from "./pages/supervisor/profile";
 import StaffProfile from "./pages/staff/profile";
+import { AccountManagerProvider, useAccountManager } from "./managers/context";
+
 
 function App() {
+  const accountManagerInstance = useAccountManager();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check for the presence of session token and login status
+    const sessionToken = accountManagerInstance.getSessionToken();
+    const loginStatus = accountManagerInstance.loadLoginStatus();
+
+    // If the user is not logged in or session token is missing, redirect to the login page
+    if (!loginStatus || !sessionToken) {
+      navigate("/");
+    }
+  }, []); // Empty dependency array ensures this effect runs only once, after initial rendering
+  
   // Routing
 
   return (
+    <AccountManagerProvider>
     <>
       <Routes>
         <Route path="/*" element={<Navbar />} />
@@ -70,6 +89,7 @@ function App() {
           </Routes>
       </div>
     </>
+    </AccountManagerProvider>
   );
 }
 
