@@ -6,7 +6,7 @@ import AssignedToCard from "../../components/AssignedToCard";
 import ViewFinalFeedbackDetails from "../../components/ViewFinalFeedbackDetails";
 import { useParams, useNavigate } from "react-router-dom";
 // import DownloadQuotation from "../../components/DownloadQuotation";
-import { Rating } from "@mui/material";
+import { Rating, TextField, Grid, Button } from "@mui/material";
 import supabase from "../../config/supabaseClient";
 import { Typography } from "@mui/material";
 import DisplayQuotation from "../../components/DisplayQuotation";
@@ -137,16 +137,36 @@ const ViewTicketTenant = () => {
       return (
         <div class="comments-section">
           <form onSubmit={handleRejectQuotation}>
-            <label>
-              Reason for Reject :
-              <textarea
-                value={rejectComments}
+
+            <Grid container spacing={1}>
+              <Grid item xs={12}>
+                <TextField
+                className="view-ticket-textfield"
+                id="outlined-basic"
+                multiline='true'
+                label='Reason for Reject'
+                variant="filled"
                 onChange={(e) => setRejectComments(e.target.value)}
-              ></textarea>
-            </label>
-            <button type="submit">Submit</button>
-          </form>
-          <button onClick={handleCancel}>Cancel</button>
+                value={rejectComments}/>
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                variant="contained"
+                type="submit"
+                className="view-ticket-button">
+                  Submit
+                </Button>
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                variant="contained"
+                className="view-ticket-button"
+                onClick={handleCancel}>
+                  Cancel
+                </Button>
+              </Grid>
+            </Grid>
+          </form>   
         </div>
       );
     }
@@ -167,15 +187,36 @@ const ViewTicketTenant = () => {
             </label>
 
             <label>
-              <textarea
-                value={successComments}
-                onChange={(e) => setSuccessComments(e.target.value)}
-              ></textarea>
+              <Grid container spacing={1}>
+                <Grid item xs={12}>
+                  <TextField
+                  className="view-ticket-textfield"
+                  id="outlined-basic"
+                  multiline='true'
+                  label='Comment'
+                  variant="filled"
+                  onChange={(e) => setSuccessComments(e.target.value)}
+                  value={successComments}/>
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                  variant="contained"
+                  type="submit"
+                  className="view-ticket-button">
+                    Submit Feedback
+                  </Button>
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                  variant="contained"
+                  className="view-ticket-button"
+                  onClick={handleCancel}>
+                    Cancel
+                  </Button>
+                </Grid>
+              </Grid>
             </label>
-
-            <button type="submit">Submit Feedback</button>
           </form>
-          <button onClick={handleCancel}>Cancel</button>
         </div>
       );
     } else if (feedbackType === "reject") {
@@ -183,16 +224,36 @@ const ViewTicketTenant = () => {
         <div class="comments-section">
           <form onSubmit={handleRejectFeedback}>
             <label>
-              Reason:
-              <textarea
-                value={rejectComments}
-                onChange={(e) => setRejectComments(e.target.value)}
-              ></textarea>
+              <Grid container spacing={1}>
+                <Grid item xs={12}>
+                  <TextField
+                  className="view-ticket-textfield"
+                  id="outlined-basic"
+                  multiline='true'
+                  label='Reason'
+                  variant="filled"
+                  onChange={(e) => setRejectComments(e.target.value)}
+                  value={rejectComments}/>
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                  variant="contained"
+                  type="submit"
+                  className="view-ticket-button">
+                    Submit Feedback
+                  </Button>
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                  variant="contained"
+                  className="view-ticket-button"
+                  onClick={handleCancel}>
+                    Cancel
+                  </Button>
+                </Grid>
+              </Grid>
             </label>
-
-            <button type="submit">Submit Feedback</button>
           </form>
-          <button onClick={handleCancel}>Cancel</button>
         </div>
       );
     }
@@ -367,7 +428,12 @@ const ViewTicketTenant = () => {
         </div>
 
         <div class="delete-ticket-button">
-          <button onClick={() => handleDeleteTicket()}>Delete Ticket</button>
+          <Button
+          onClick={() => handleDeleteTicket()}
+          variant="contained"
+          className="view-ticket-button">
+            Delete Ticket
+          </Button>
         </div>
       </div>
     );
@@ -397,12 +463,24 @@ const ViewTicketTenant = () => {
         </div>
         {showQuotationButtons && (
           <div class="button-group">
-            <button onClick={() => handleAcceptQuotation()}>
-              Accept Quotation
-            </button>
-            <button onClick={() => handleQuotationAcceptRejectClick("reject")}>
-              Reject Quotation
-            </button>
+            <Grid container spacing={1} columnSpacing={0}>
+              <Grid item xs={12}>
+                <Button
+                variant="contained"
+                onClick={() => handleAcceptQuotation()}
+                className="view-ticket-button">
+                  Accept Quotation
+                </Button>
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                variant="contained"
+                className="view-ticket-button"
+                onClick={() => handleQuotationAcceptRejectClick("reject")}>
+                  Reject Quotation
+                </Button>
+              </Grid>
+            </Grid>
           </div>
         )}
         {renderContent()}
@@ -427,9 +505,17 @@ const ViewTicketTenant = () => {
           <AssignedToCard staff={staff} />
         </div>
         <div class="reject-reason">
-          <h2>
-            Reason for Reject Quotation : {serviceTicket.FeedbackComments}
-          </h2>
+          <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <TextField
+              className="view-ticket-textfield"
+              id="outlined-basic"
+              multiline='true'
+              label='Reason for Reject Quotation'
+              variant="filled"
+              value={serviceTicket.FeedbackComments}/>
+            </Grid>
+          </Grid>
         </div>
         <div class="quotation">
           <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
@@ -485,12 +571,24 @@ const ViewTicketTenant = () => {
         </div>
         {showFeedbackButtons && (
           <div class="button-group">
-            <button onClick={() => handleFeedbackClick("feedback")}>
-              Give Feedback
-            </button>
-            <button onClick={() => handleFeedbackClick("reject")}>
-              Not Satisfied
-            </button>
+            <Grid container spacing={1} columnSpacing={0}>
+              <Grid item xs={12}>
+                <Button
+                variant="contained"
+                onClick={() => handleFeedbackClick("feedback")}
+                className="view-ticket-button">
+                  Give Feedback
+                </Button>
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                variant="contained"
+                className="view-ticket-button"
+                onClick={() => handleFeedbackClick("reject")}>
+                  Not Satisfied
+                </Button>
+              </Grid>
+            </Grid>
           </div>
         )}
         {renderContent()}
@@ -525,7 +623,17 @@ const ViewTicketTenant = () => {
         )}
 
         <div class="reject-reason">
-          <h2>Reason for Reject : {serviceTicket.FeedbackComments}</h2>
+          <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <TextField
+              className="view-ticket-textfield"
+              multiline='true'
+              id="outlined-basic"
+              label='Reason for Reject'
+              variant="filled"
+              value={serviceTicket.FeedbackComments}/>
+            </Grid>
+          </Grid>
         </div>
       </div>
     );

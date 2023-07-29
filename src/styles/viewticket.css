@@ -3,14 +3,13 @@
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(8, 1fr);
     gap: 0px;
-    height: 600px; /* Set the desired height of the grid container */
+    height: 1100px; /* Set the desired height of the grid container */
   }
 
   
 .ticket-details {
     grid-row: 1 / span 2; /* Occupies grid row 1 and 2 */
     grid-column: 1 / span 4; /* Occupies grid column 1 and 2 */
-
   }
 
 .submitted-by-card {
@@ -24,7 +23,7 @@
   }
 
 .button-group {
-    grid-row: 8; /* Occupies grid row 4 */
+    grid-row: 7; /* Occupies grid row 4 */
     grid-column: 1 / span 4; /* Occupies all columns in the last row */
   }
   
@@ -34,7 +33,7 @@
   }
   
 .quotation {
-    grid-row: 1 / span 5; /* Occupies grid row 2 and 3 */
+    grid-row: 1 / span 6; /* Occupies grid row 2 and 3 */
     grid-column: 5 / span 10; /* Occupies grid column 3 and 4 */
   }
 
@@ -80,6 +79,28 @@
     grid-row: 7/ span 8 ; /* Occupies grid row 3 */
     grid-column: 1 / span 4; /* Occupies grid column 1 and 2 */
     margin: 25px;
+}
+
+.assignedtocard-textfield{
+  width: 80%;
+}
+
+.assignedtocard-header{
+  text-align: left;
+  margin-left: 10%;
+}
+
+.basicticketdetails-textfield{
+  width: 80%;
+}
+
+.basicticketdetails-header{
+  text-align: left;
+  margin-left: 10%;
+}
+
+.view-ticket-textfield{
+  width: 80%;
 }
 
 
