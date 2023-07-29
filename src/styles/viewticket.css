@@ -5,6 +5,7 @@
     gap: 0px;
     height: 600px; /* Set the desired height of the grid container */
   }
+
   
 .ticket-details {
     grid-row: 1 / span 2; /* Occupies grid row 1 and 2 */
@@ -63,10 +64,22 @@
 .final-feedback-details {
     grid-row: 6/ span 6 ; /* Occupies grid row 3 */
     grid-column: 2 / span 4; /* Occupies grid column 1 and 2 */
+}
 
-    
+.supervisor-assigned-card {
+    grid-row: 5/ span 6 ; /* Occupies grid row 3 */
+    grid-column: 2 / span 4; /* Occupies grid column 1 and 2 */
+}
 
+.supervisor-submitted-card {
+    grid-row: 5/ span 6 ; /* Occupies grid row 3 */
+    grid-column: 1 / span 2; /* Occupies grid column 1 and 2 */
+}
 
+.supervisor-final-feedback {
+    grid-row: 7/ span 8 ; /* Occupies grid row 3 */
+    grid-column: 1 / span 4; /* Occupies grid column 1 and 2 */
+    margin: 25px;
 }
 
 
