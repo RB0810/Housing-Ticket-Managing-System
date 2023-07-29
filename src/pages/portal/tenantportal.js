@@ -23,9 +23,13 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-// import DeleteIcon from '@mui/icons-material/Delete';
-// import FilterListIcon from '@mui/icons-material/FilterList';
+import Button from '@mui/material/Button';
 import { visuallyHidden } from '@mui/utils';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import SortIcon from '@mui/icons-material/Sort';
+import SearchIcon from '@mui/icons-material/Search';
+import { Height } from "@mui/icons-material";
 
 const TenantPortal = () => {
   const ticketManager = new TicketManager();
@@ -112,7 +116,7 @@ const TenantPortal = () => {
     }
     return 0;
   });
-  
+
 
   const removeFilters = () => {
     setCategoryFilter("");
@@ -152,44 +156,135 @@ const TenantPortal = () => {
     setServiceTickets(sortedTickets);
   };
 
+  const tablerowSX = {
+    background: "#f1f1f1",
+    '&:hover': {
+      background: "#f00",
+    }
+  }
+
   return (
     <div className="page tenantportal">
-      <pre>{JSON.stringify(filteredTickets)}</pre>
       <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell align="left">S/N</TableCell>
-            <TableCell align="left">Request</TableCell>
-            <TableCell align="left">Category</TableCell>
-            <TableCell align="left">Unit</TableCell>
-            <TableCell align="left">Status</TableCell>
-            <TableCell align="left">Submitted Date</TableCell>
-            <TableCell align="left">Assigned To</TableCell>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead sx={{marginY:100}}>
+            <TableRow>
+              <TableCell sx={{fontWeight: 'bold'}} align="left">S/N</TableCell>
+              <TableCell sx={{fontWeight: 'bold'}} align="left">Request<IconButton 
+              onClick={() => setIsRequestFilterOpen(!isRequestFilterOpen)}><SortIcon></SortIcon></IconButton>
+                {isRequestFilterOpen && (
+                  <div className="filter-dropdown">
+                    <input
+                      type="text"
+                      value={requestFilter}
+                      onChange={(e) => setRequestFilter(e.target.value)}
+                      placeholder="Filter by request..."
+                    />
+                  </div>
+                )}
+              </TableCell>
 
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {filteredTickets.map((ticket, index) => (
-            <TableRow
-              key={ticket.ServiceRequestID}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-            <TableCell align="left">{index + 1}</TableCell>
-            <TableCell align="left">{ticket.Name}</TableCell>
-            <TableCell align="left">{ticket.Category}</TableCell>
-            <TableCell align="left">{ticket.Property}</TableCell>
-            <TableCell align="left">{ticket.Status}</TableCell>
-            <TableCell align="left">{new Date(ticket.SubmittedDateTime).toLocaleDateString()}</TableCell>
-            <TableCell align="left">{ticket.staffDetails ? ticket.staffDetails.StaffName : "Unassigned"}</TableCell>
+              <TableCell sx={{fontWeight: 'bold'}} align="left">Category<IconButton onClick={() => setIsCategoryFilterOpen(!isCategoryFilterOpen)}>
+                <SortIcon></SortIcon></IconButton>
+                {isCategoryFilterOpen && (
+                  <div className="filter-dropdown">
+                    <select
+                      value={categoryFilter}
+                      onChange={(e) => setCategoryFilter(e.target.value)}
+                    >
+                      <option value="">All</option>
+                      <option value="Plumbing">Plumbing</option>
+                      <option value="Toilet">Toilet</option>
+                      <option value="Pest">Pest</option>
+                      <option value="Electric">Electric</option>
+                      <option value="Aircon">Aircon</option>
+                      <option value="Others">Others</option>
+                    </select>
+                  </div>
+                )}</TableCell>
+
+              <TableCell sx={{fontWeight: 'bold'}} align="left">Unit<IconButton><SortIcon></SortIcon></IconButton></TableCell>
+              <TableCell sx={{fontWeight: 'bold'}} align="left">Status<IconButton onClick={() => setIsStatusFilterOpen(!isStatusFilterOpen)}>
+                <SortIcon></SortIcon></IconButton>
+                {isStatusFilterOpen && (
+                  <div className="filter-dropdown">
+                    <select
+                      value={statusFilter}
+                      onChange={(e) => setStatusFilter(e.target.value)}
+                    >
+                      <option value="">All</option>
+                      <option value="Awaiting Review">Awaiting Review</option>
+                      <option value="Ticket Assigned">Ticket Assigned</option>
+                      <option value="Quotation Uploaded">Quotation Uploaded</option>
+                      <option value="Quotation Accepted">Quotation Accepted</option>
+                      <option value="Quotation Rejected">Quotation Rejected</option>
+                      <option value="Works Started">Works Started</option>
+                      <option value="Works Ended">Works Ended</option>
+                      <option value="Works Rejected">Works Rejected</option>
+                      <option value="Feedback Submitted">Feedback Submitted</option>
+                    </select>
+                  </div>
+                )}</TableCell>
+
+              <TableCell sx={{fontWeight: 'bold'}} align="left">Submitted Date<IconButton onClick={() => setIsDateFilterOpen(!isDateFilterOpen)}>
+                <SortIcon></SortIcon></IconButton>
+                {isDateFilterOpen && (
+                  <div className="filter-dropdown">
+                    <select
+                      value={dateFilter}
+                      onChange={(e) => setDateFilter(e.target.value)}
+                    >
+                      <option value="">Sort according to Date Submitted</option>
+                      <option value="newest">Newest to Oldest</option>
+                      <option value="oldest">Oldest to Newest</option>
+                    </select>
+                  </div>
+                )}</TableCell>
+
+              <TableCell sx={{fontWeight: 'bold'}} align="left">Assigned To<IconButton onClick={() => setIsAssignedToFilterOpen(!isAssignedToFilterOpen)}>
+                <SearchIcon></SearchIcon></IconButton>
+                {isAssignedToFilterOpen && (
+                  <div className="filter-dropdown">
+                    <input
+                      type="text"
+                      value={assignedToFilter}
+                      onChange={(e) => setAssignedToFilter(e.target.value)}
+                      placeholder="Filter by assigned..."
+                    />
+                  </div>
+                )}</TableCell>
+
+              <TableCell align="left"></TableCell>
+
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {filteredTickets.map((ticket, index) => (
+              <TableRow
+                hover
+                key={ticket.ServiceRequestID}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell align="left">{index + 1}</TableCell>
+                <TableCell align="left">{ticket.Name}</TableCell>
+                <TableCell align="left">{ticket.Category}</TableCell>
+                <TableCell align="left">{ticket.Property}</TableCell>
+                <TableCell align="left">{ticket.Status}</TableCell>
+                <TableCell align="left">{new Date(ticket.SubmittedDateTime).toLocaleDateString()}</TableCell>
+                <TableCell align="left">{ticket.staffDetails ? ticket.staffDetails.StaffName : "Unassigned"}</TableCell>
+                <TableCell align="left">
+                  <Link to={`${getViewTicketsRoute()}/${TenantID}/${ticket.ServiceRequestID}`}>
+                    <Button variant="contained" >View Ticket
+                    </Button>
+                  </Link>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        <Button variant="contained" onClick={removeFilters}>Remove Filters</Button>
+      </TableContainer>
 
-      
-      <h1>hello</h1>
 
       <table className="ticket-portal-table">
         <thead>
