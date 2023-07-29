@@ -3,6 +3,30 @@ import { useParams, Link } from "react-router-dom";
 import TicketManager from "../../managers/ticketmanager";
 import "../../styles/ticketportal.css";
 
+// material ui
+import PropTypes from 'prop-types';
+import { alpha } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
+import TableSortLabel from '@mui/material/TableSortLabel';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
+import Checkbox from '@mui/material/Checkbox';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+// import DeleteIcon from '@mui/icons-material/Delete';
+// import FilterListIcon from '@mui/icons-material/FilterList';
+import { visuallyHidden } from '@mui/utils';
+
 const TenantPortal = () => {
   const ticketManager = new TicketManager();
   const { PARCStatus, TenantID } = useParams();
@@ -130,6 +154,43 @@ const TenantPortal = () => {
 
   return (
     <div className="page tenantportal">
+      <pre>{JSON.stringify(filteredTickets)}</pre>
+      <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell align="left">S/N</TableCell>
+            <TableCell align="left">Request</TableCell>
+            <TableCell align="left">Category</TableCell>
+            <TableCell align="left">Unit</TableCell>
+            <TableCell align="left">Status</TableCell>
+            <TableCell align="left">Submitted Date</TableCell>
+            <TableCell align="left">Assigned To</TableCell>
+
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {filteredTickets.map((ticket, index) => (
+            <TableRow
+              key={ticket.ServiceRequestID}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+            <TableCell align="left">{index + 1}</TableCell>
+            <TableCell align="left">{ticket.Name}</TableCell>
+            <TableCell align="left">{ticket.Category}</TableCell>
+            <TableCell align="left">{ticket.Property}</TableCell>
+            <TableCell align="left">{ticket.Status}</TableCell>
+            <TableCell align="left">{new Date(ticket.SubmittedDateTime).toLocaleDateString()}</TableCell>
+            <TableCell align="left">{ticket.staffDetails ? ticket.staffDetails.StaffName : "Unassigned"}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+
+      
+      <h1>hello</h1>
+
       <table className="ticket-portal-table">
         <thead>
           <tr className="table-row">
