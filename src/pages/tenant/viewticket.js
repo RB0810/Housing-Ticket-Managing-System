@@ -4,19 +4,23 @@ import AccountManager from "../../managers/accountmanager";
 import BasicTicketDetails from "../../components/BasicTicketDetails";
 import AssignedToCard from "../../components/AssignedToCard";
 import ViewFinalFeedbackDetails from "../../components/ViewFinalFeedbackDetails";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 // import DownloadQuotation from "../../components/DownloadQuotation";
-import { Rating } from "@mui/material";
+import { Rating, TextField, Grid, Button } from "@mui/material";
 import supabase from "../../config/supabaseClient";
 import { Typography } from "@mui/material";
 import DisplayQuotation from "../../components/DisplayQuotation";
 import NotificationManager from "../../managers/notificationmanager";
+
+// Import styles
+import "./../../styles/viewticket.css";
 
 const ViewTicketTenant = () => {
   const ticketManager = new TicketManager();
   const accountManager = new AccountManager();
   //const notificationmanager = new NotificationManager();
   let { ServiceRequestID } = useParams();
+  let navigate = useNavigate();
   const [serviceTicket, setServiceTicket] = useState([]);
   const [staff, setStaff] = useState([]);
   const [fetchError, setFetchError] = useState([]);
@@ -80,6 +84,22 @@ const ViewTicketTenant = () => {
     getStaffAndTicket();
   }, []);
 
+  const handleDeleteTicket = async () => {
+    try {
+      const deleteTicketPromise = ticketManager.deleteTicket(
+        parseInt(serviceTicket.ServiceRequestID)
+      );
+
+      // Execute all promises concurrently using Promise.all
+      await Promise.all([deleteTicketPromise]);
+      window.alert("Quotation deleted!");
+      navigate(`/tenantportal/landingpage/${serviceTicket.TenantID}`);
+      // Probably need to redirect to main page here
+    } catch (error) {
+      window.alert("Error deleting quotation: " + error);
+    }
+  };
+
   const handleFileDownload = async () => {
     try {
       const { data, error } = await supabase.storage
@@ -104,22 +124,49 @@ const ViewTicketTenant = () => {
     }
   };
 
+  const handleCancel = () => {
+    setShowFeedbackButtons(true);
+    setFeedbackType(null);
+    setShowQuotationButtons(true);
+    setQuotationState(null);
+  };
+
   const renderContent = () => {
     // Quotation Feedback
     if (quotationState === "reject") {
       return (
-        <div>
+        <div class="comments-section">
           <form onSubmit={handleRejectQuotation}>
-            <label>
-              Reason for Reject :
-              <textarea
-                value={rejectComments}
-                onChange={(e) => setRejectComments(e.target.value)}
-              ></textarea>
-            </label>
 
-            <button type="submit">Submit</button>
-          </form>
+            <Grid container spacing={1}>
+              <Grid item xs={12}>
+                <TextField
+                className="view-ticket-textfield"
+                id="outlined-basic"
+                multiline='true'
+                label='Reason for Reject'
+                variant="filled"
+                onChange={(e) => setRejectComments(e.target.value)}
+                value={rejectComments}/>
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                variant="contained"
+                type="submit"
+                className="view-ticket-button">
+                  Submit
+                </Button>
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                variant="contained"
+                className="view-ticket-button"
+                onClick={handleCancel}>
+                  Cancel
+                </Button>
+              </Grid>
+            </Grid>
+          </form>   
         </div>
       );
     }
@@ -127,10 +174,9 @@ const ViewTicketTenant = () => {
     // Ticket Feedback
     if (feedbackType === "feedback") {
       return (
-        <div>
+        <div class="comments-section">
           <form onSubmit={handleSuccessFeedback}>
             <label>
-              <Typography component="legend">Rating</Typography>
               <Rating
                 name="simple-controlled"
                 value={rating}
@@ -141,30 +187,72 @@ const ViewTicketTenant = () => {
             </label>
 
             <label>
-              Comments:
-              <textarea
-                value={successComments}
-                onChange={(e) => setSuccessComments(e.target.value)}
-              ></textarea>
+              <Grid container spacing={1}>
+                <Grid item xs={12}>
+                  <TextField
+                  className="view-ticket-textfield"
+                  id="outlined-basic"
+                  multiline='true'
+                  label='Comment'
+                  variant="filled"
+                  onChange={(e) => setSuccessComments(e.target.value)}
+                  value={successComments}/>
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                  variant="contained"
+                  type="submit"
+                  className="view-ticket-button">
+                    Submit Feedback
+                  </Button>
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                  variant="contained"
+                  className="view-ticket-button"
+                  onClick={handleCancel}>
+                    Cancel
+                  </Button>
+                </Grid>
+              </Grid>
             </label>
-
-            <button type="submit">Submit Feedback</button>
           </form>
         </div>
       );
     } else if (feedbackType === "reject") {
       return (
-        <div>
+        <div class="comments-section">
           <form onSubmit={handleRejectFeedback}>
             <label>
-              Reason for Reject :
-              <textarea
-                value={rejectComments}
-                onChange={(e) => setRejectComments(e.target.value)}
-              ></textarea>
+              <Grid container spacing={1}>
+                <Grid item xs={12}>
+                  <TextField
+                  className="view-ticket-textfield"
+                  id="outlined-basic"
+                  multiline='true'
+                  label='Reason'
+                  variant="filled"
+                  onChange={(e) => setRejectComments(e.target.value)}
+                  value={rejectComments}/>
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                  variant="contained"
+                  type="submit"
+                  className="view-ticket-button">
+                    Submit Feedback
+                  </Button>
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                  variant="contained"
+                  className="view-ticket-button"
+                  onClick={handleCancel}>
+                    Cancel
+                  </Button>
+                </Grid>
+              </Grid>
             </label>
-
-            <button type="submit">Submit Feedback</button>
           </form>
         </div>
       );
@@ -217,14 +305,13 @@ const ViewTicketTenant = () => {
         false
       );
 
-
       const updateFeedbackCommentsPromise =
         ticketManager.updateFeedbackComments(
           parseInt(serviceTicket.ServiceRequestID),
           rejectComments
         );
-      
-        //const sendNotif = notificationmanager.QuotationRejectNotif(serviceTicket.ServiceRequestID, rejectComments);
+
+      //const sendNotif = notificationmanager.QuotationRejectNotif(serviceTicket.ServiceRequestID, rejectComments);
 
       // Execute all promises concurrently using Promise.all
       await Promise.all([
@@ -321,8 +408,8 @@ const ViewTicketTenant = () => {
 
       // Execute all promises concurrently using Promise.all
       await Promise.all([
-        updateFeedbackCommentsPromise, 
-        rejectWorksPromise, 
+        updateFeedbackCommentsPromise,
+        rejectWorksPromise,
         //sendNotif
       ]);
 
@@ -335,47 +422,73 @@ const ViewTicketTenant = () => {
 
   if (status === "Awaiting Review") {
     return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
+      <div class="ticket-grid">
+        <div class="ticket-details">
+          <BasicTicketDetails ticket={serviceTicket} />
+        </div>
+
+        <div class="delete-ticket-button">
+          <Button
+          onClick={() => handleDeleteTicket()}
+          variant="contained"
+          className="view-ticket-button">
+            Delete Ticket
+          </Button>
+        </div>
       </div>
     );
   }
 
   if (status === "Ticket Assigned") {
     return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-
-        <h1>ASSIGNED TO</h1>
-        <AssignedToCard staff={staff} />
+      <div class="ticket-grid">
+        <div class="ticket-details">
+          <BasicTicketDetails ticket={serviceTicket} />
+        </div>
+        <div class="assigned-to-card">
+          <AssignedToCard staff={staff} />
+        </div>
       </div>
     );
   }
 
   if (status === "Quotation Uploaded") {
     return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        <AssignedToCard staff={staff} />
-        ____________________________________
+      <div class="ticket-grid">
+        <div class="ticket-details">
+          <BasicTicketDetails ticket={serviceTicket} />
+        </div>
+        <div class="assigned-to-card">
+          <AssignedToCard staff={staff} />
+        </div>
         {showQuotationButtons && (
-          <div>
-            <button onClick={() => handleAcceptQuotation()}>
-              Accept Quotation
-            </button>
-            <button onClick={() => handleQuotationAcceptRejectClick("reject")}>
-              Reject Quotation
-            </button>
+          <div class="button-group">
+            <Grid container spacing={1} columnSpacing={0}>
+              <Grid item xs={12}>
+                <Button
+                variant="contained"
+                onClick={() => handleAcceptQuotation()}
+                className="view-ticket-button">
+                  Accept Quotation
+                </Button>
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                variant="contained"
+                className="view-ticket-button"
+                onClick={() => handleQuotationAcceptRejectClick("reject")}>
+                  Reject Quotation
+                </Button>
+              </Grid>
+            </Grid>
           </div>
         )}
         {renderContent()}
-        ____________________________________
         {quotationRequired && (
-          <div>
-            <div>
-              <button onClick={handleFileDownload}>Download Quotation</button>
-            </div>
-            <DisplayQuotation quotationPath={quotationPath} file={file} />
+          <div class="quotation">
+            <DisplayQuotation
+              ServiceRequestID={serviceTicket.ServiceRequestID}
+            />
           </div>
         )}
       </div>
@@ -384,42 +497,63 @@ const ViewTicketTenant = () => {
 
   if (status === "Quotation Rejected") {
     return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        <AssignedToCard staff={staff} />
-        <h1>Reason for Reject Quotation : {serviceTicket.FeedbackComments}</h1>
-        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID}/>
+      <div class="ticket-grid">
+        <div class="ticket-details">
+          <BasicTicketDetails ticket={serviceTicket} />
+        </div>
+        <div class="assigned-to-card">
+          <AssignedToCard staff={staff} />
+        </div>
+        <div class="reject-reason">
+          <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <TextField
+              className="view-ticket-textfield"
+              id="outlined-basic"
+              multiline='true'
+              label='Reason for Reject Quotation'
+              variant="filled"
+              value={serviceTicket.FeedbackComments}/>
+            </Grid>
+          </Grid>
+        </div>
+        <div class="quotation">
+          <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+        </div>
       </div>
     );
   }
 
   if (status === "Quotation Accepted") {
     return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        <AssignedToCard ticket={serviceTicket} />
-        <p>Quotation Needed: {serviceTicket.QuotationRequired}</p>
-        {/* <DownloadQuotation
-          bucketName="quotation"
-          ServiceRequestID={serviceTicket.ServiceRequestID}
-        /> */}
-        <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+      <div class="ticket-grid">
+        <div class="ticket-details">
+          <BasicTicketDetails ticket={serviceTicket} />
+        </div>
+        <div class="assigned-to-card">
+          <AssignedToCard staff={staff} />
+        </div>
+        <div class="quotation">
+          <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+        </div>
       </div>
     );
   }
 
   if (status === "Works Started") {
     return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        <AssignedToCard staff={staff} />
+      <div class="ticket-grid">
+        <div class="ticket-details">
+          <BasicTicketDetails ticket={serviceTicket} />
+        </div>
+        <div class="assigned-to-card">
+          <AssignedToCard staff={staff} />
+        </div>
         {quotationRequired && (
-          <div>
-            {/* <DownloadQuotation
-              bucketName="quotation"
+          <div class="quotation">
+            <DisplayQuotation
               ServiceRequestID={serviceTicket.ServiceRequestID}
-            /> */}
-            <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID}/>
+            />
           </div>
         )}
       </div>
@@ -428,31 +562,42 @@ const ViewTicketTenant = () => {
 
   if (status === "Works Ended") {
     return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        _______________________________________
-        <AssignedToCard staff={staff} />
-        _______________________________________
+      <div class="ticket-grid">
+        <div class="ticket-details">
+          <BasicTicketDetails ticket={serviceTicket} />
+        </div>
+        <div class="assigned-to-card">
+          <AssignedToCard staff={staff} />
+        </div>
         {showFeedbackButtons && (
-          <div>
-            <button onClick={() => handleFeedbackClick("feedback")}>
-              Give Feedback
-            </button>
-            <button onClick={() => handleFeedbackClick("reject")}>
-              Not Satisfied
-            </button>
+          <div class="button-group">
+            <Grid container spacing={1} columnSpacing={0}>
+              <Grid item xs={12}>
+                <Button
+                variant="contained"
+                onClick={() => handleFeedbackClick("feedback")}
+                className="view-ticket-button">
+                  Give Feedback
+                </Button>
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                variant="contained"
+                className="view-ticket-button"
+                onClick={() => handleFeedbackClick("reject")}>
+                  Not Satisfied
+                </Button>
+              </Grid>
+            </Grid>
           </div>
         )}
         {renderContent()}
-        _______________________________________
-        ____________________________________
+
         {quotationRequired && (
-          <div>
-            {/* <DownloadQuotation
-              bucketName="quotation"
+          <div class="quotation">
+            <DisplayQuotation
               ServiceRequestID={serviceTicket.ServiceRequestID}
-            /> */}
-            <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID}/>
+            />
           </div>
         )}
       </div>
@@ -461,43 +606,64 @@ const ViewTicketTenant = () => {
 
   if (status === "Works Rejected") {
     return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        <h1>Reason for Reject : {serviceTicket.FeedbackComments}</h1>
-        <AssignedToCard staff={staff} />
-        _______________________________________
+      <div class="ticket-grid">
+        <div class="ticket-details">
+          <BasicTicketDetails ticket={serviceTicket} />
+        </div>
+        <div class="assigned-to-card">
+          <AssignedToCard staff={staff} />
+        </div>
+
         {quotationRequired && (
-          <div>
-            {/* <DownloadQuotation
-              bucketName="quotation"
+          <div class="quotation">
+            <DisplayQuotation
               ServiceRequestID={serviceTicket.ServiceRequestID}
-            /> */}
-            <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID}/>
+            />
           </div>
         )}
+
+        <div class="reject-reason">
+          <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <TextField
+              className="view-ticket-textfield"
+              multiline='true'
+              id="outlined-basic"
+              label='Reason for Reject'
+              variant="filled"
+              value={serviceTicket.FeedbackComments}/>
+            </Grid>
+          </Grid>
+        </div>
       </div>
     );
   }
 
   if (status === "Feedback Submitted") {
     return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        _______________________________________
-        <AssignedToCard staff={staff} />
-        ____________________________________
-        <ViewFinalFeedbackDetails
-          rating={serviceTicket.FeedbackRating}
-          comments={serviceTicket.FeedbackComments}
-        />
-        _______________________________________
+      <div class="ticket-grid">
+        <div class="ticket-details">
+          <BasicTicketDetails ticket={serviceTicket} />
+        </div>
+        <div class="final-staff-tenant-details">
+          <AssignedToCard staff={staff} />
+        </div>
+        <div class="final-feedback-details">
+          <ViewFinalFeedbackDetails
+            rating={serviceTicket.FeedbackRating}
+            comments={serviceTicket.FeedbackComments}
+          />
+        </div>
+
         {quotationRequired && (
-          <div>
+          <div class="quotation">
             {/* <DownloadQuotation
               bucketName="quotation"
               ServiceRequestID={serviceTicket.ServiceRequestID}
             /> */}
-            <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID}/>
+            <DisplayQuotation
+              ServiceRequestID={serviceTicket.ServiceRequestID}
+            />
           </div>
         )}
       </div>
