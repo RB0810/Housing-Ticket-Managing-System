@@ -177,14 +177,17 @@ class AccountManager {
       .from("Lease")
       .select("*")
       .in("LeaseID", leaseIds);
-    const unitDataPromises = leaseData.map((lease) =>
+  
+    // Fetch all the unit data for each tenant concurrently
+    const unitDataPromises = tenantData.map((tenant) =>
       supabase
         .from("Unit")
         .select("UnitNumber")
-        .eq("LeaseID", lease.LeaseID)
+        .eq("LeaseID", tenant.Lease)
         .then((response) => response.data)
     );
     const unitData = await Promise.all(unitDataPromises);
+  
     const buildingDetails = {
       Building: buildingData[0],
       staff: staffData,
@@ -194,9 +197,13 @@ class AccountManager {
         Units: unitData[index],
       })),
     };
-
+  
     return buildingDetails;
   }
+  
+  
+  
+  
 
   async createStaffAccount(staff) {
     await supabase.from("StaffUsers").insert(staff);

@@ -5,6 +5,8 @@ import {Button, Grid, TextField} from '@mui/material'
 const BuildingDetails = ({ building }) => {
   const { staff, tenant } = building;
 
+  console.log(building);
+
   return (
     <div className="building-details">
       <div className='building-details-staffcard'>
