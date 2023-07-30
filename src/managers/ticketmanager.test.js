@@ -30,7 +30,6 @@ describe("TicketManager all test cases", () => {
       })
       .then(() => {
         global.testTicket = ticket;
-        console.log(global.testTicket);
       });
   });
 
@@ -58,7 +57,10 @@ describe("TicketManager all test cases", () => {
   });
 
   test("Assign Ticket to Staff", async () => {
-    const assigned = await ticketManager.assignTicket(global.testTicket.id, 1);
+    const assigned = await ticketManager.assignTicket(
+      global.testTicket.id,
+      999
+    );
     expect(assigned).toEqual(true);
   });
 

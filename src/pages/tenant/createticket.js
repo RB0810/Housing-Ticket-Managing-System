@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import Ticket from "../../objects/ticket";
 import TicketManager from "../../managers/ticketmanager";
 import AccountManager from "../../managers/accountmanager";
-import "./../../styles/viewticket.css";
+import "./../../styles/createticket.css";
 import NotificationManager from "../../managers/notificationmanager";
 
 import TextField from '@mui/material/TextField';
