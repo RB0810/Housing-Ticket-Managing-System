@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Routes, Route, useParams, Link } from "react-router-dom";
 import TicketManager from "../../managers/ticketmanager";
 import "../../styles/ticketportal.css";
-import "../../styles/supervisorportal.css";
+
 
 
 export default function SupervisorPortal() {
