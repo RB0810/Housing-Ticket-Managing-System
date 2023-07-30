@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import AccountManager from "../../managers/accountmanager";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import BuildingDetails from "../../components/BuildingDetails";
 import './../../styles/profile.css'
+import Authentication from "../../managers/authentication";
+import Cookies from "js-cookie";
 import {Button, Grid, TextField} from '@mui/material'
 
 const SupervisorProfile = () => {
@@ -13,6 +15,28 @@ const SupervisorProfile = () => {
   const [formError, setFormError] = useState(null);
   const [buildingDetails, setBuildingDetails] = useState(null);
   const accountManager = new AccountManager();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const userId = Cookies.get('userId');
+    const type = Cookies.get('type');
+
+    if (!userId || !type) {
+      // If any of the required cookies are missing, redirect to the login page
+      console.log('Unauthorized');
+      navigate("/unauthorize");
+    } else {
+      // Check if the user's ID and type match the expected values (e.g., SupervisorID and "Supervisor")
+      if (Number(userId) === parseInt(SupervisorID) && type === "Supervisor") {
+        // Proceed with rendering the component
+        console.log('Authorized');
+      } else {
+        // If not authorized, display "Unauthorized access" message
+        console.log('Unauthorized');
+        navigate("/unauthorize");
+      }
+    }
+  }, [navigate, SupervisorID]);
 
   useEffect(() => {
     const fetchSupervisorDetails = async () => {
@@ -50,6 +74,10 @@ const SupervisorProfile = () => {
     setConfirmPassword(e.target.value);
   };
 
+  const logout = () => {
+    const authentication = new Authentication();
+    authentication.logout();
+  }
 
   const handleSetPassword = async () => {
     if (newPassword && confirmPassword) {
@@ -171,15 +199,8 @@ const SupervisorProfile = () => {
       <BuildingDetails building={buildingDetails} />
 
 
-      <Link to={`/`}>
-      <Button 
-            variant="contained"
-            className="supervisor-profile-button">
-              Logout
-          </Button>
-      </Link>
-
-      
+      <Button variant="contained" className="supervisor-profile-button" onClick={logout}>Logout</Button>
+    
     </div>
   );
 };

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import  AccountManager  from '../../managers/accountmanager';
 import "../../styles/login.css";
+import Authentication from "../../managers/authentication";
 import {Button, Grid, TextField} from '@mui/material'
+
 
 export default function LandlordLogin() {
   const [ID, setID] = useState("");
@@ -10,7 +11,7 @@ export default function LandlordLogin() {
   const handleLogin = async (event) => {
     event.preventDefault();
 
-    const accountManager = new AccountManager();
+    const authentication = new Authentication();
 
     const eventDataSupervisor = {
       ID,
@@ -19,7 +20,7 @@ export default function LandlordLogin() {
     };
 
     try {
-      await accountManager.loginAuth(eventDataSupervisor);
+      await authentication.loginAuth(eventDataSupervisor);
     } catch (error) {
       if (error.message === "Invalid credentials") {
         const eventDataStaff = {
@@ -29,7 +30,7 @@ export default function LandlordLogin() {
         };
 
         try {
-          await accountManager.loginAuth(eventDataStaff);
+          await authentication.loginAuth(eventDataStaff);
         } catch (error) {
           console.error("Login error:", error);
           window.alert(`Error: ${error.message}`);

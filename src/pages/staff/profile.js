@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import AccountManager from "../../managers/accountmanager";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import Authentication from "../../managers/authentication";
+import Cookies from "js-cookie";
 import { Link, useParams } from "react-router-dom";
 import {Button, Grid, TextField} from '@mui/material'
 
@@ -9,6 +12,28 @@ const StaffProfile = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [formError, setFormError] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const userId = Cookies.get('userId');
+    const type = Cookies.get('type');
+
+    if (!userId || !type) {
+      // If any of the required cookies are missing, redirect to the login page
+      console.log('Unauthorized');
+      navigate("/unauthorize");
+    } else {
+      // Check if the user's ID and type match the expected values (e.g., StaffID and "Staff")
+      if (Number(userId) === parseInt(StaffID) && type === "Staff") {
+        // Proceed with rendering the component
+        console.log('Authorized');
+      } else {
+        // If not authorized, display "Unauthorized access" message
+        console.log('Unauthorized');
+        navigate("/unauthorize");
+      }
+    }
+  }, [navigate, StaffID]);
 
   useEffect(() => {
     const fetchTenantDetails = async () => {
@@ -27,6 +52,11 @@ const StaffProfile = () => {
   const handleConfirmPasswordChange = (e) => {
     setConfirmPassword(e.target.value);
   };
+
+  const logout = () => {
+    const authentication = new Authentication();
+    authentication.logout();
+  }
 
   const handleSetPassword = async () => {
     if (newPassword && confirmPassword) {

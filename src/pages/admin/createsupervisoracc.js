@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../../styles/createaccount.css";
 import SupervisorAccount from "../../objects/SupervisorAccount";
+import Cookies from "js-cookie";
+import { useParams, useNavigate } from "react-router";
 
 const CreateSupervisor = () => {
   const [formError, setFormError] = useState(null);
@@ -12,6 +14,29 @@ const CreateSupervisor = () => {
   const [buildingName, setBuildingName] = useState("");
   const [buildingAddress, setBuildingAddress] = useState("");
   const [postalCode, setPostalCode] = useState("");
+  const { AdminID } = useParams();
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    const userId = Cookies.get('userId');
+    const type = Cookies.get('type');
+
+    if (!userId || !type) {
+      // If any of the required cookies are missing, redirect to the login page
+      console.log('Unauthorized');
+      navigate("/unauthorize");
+    } else {
+      // Check if the user's ID and type match the expected values (e.g., TenantID and "tenant")
+      if (Number(userId) === parseInt(AdminID) && type === "Admin") {
+        // Proceed with rendering the component
+        console.log('Authorized');
+      } else {
+        // If not authorized, display "Unauthorized access" message
+        console.log('Unauthorized');
+        navigate("/unauthorize");
+      }
+    }
+  }, [navigate, AdminID]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

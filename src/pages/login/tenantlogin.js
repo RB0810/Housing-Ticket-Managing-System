@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../../styles/login.css";
-import AccountManager from "../../managers/accountmanager";
+import Authentication from "../../managers/authentication";
 import "../../styles/login.css";
 import {Button, Grid, TextField} from '@mui/material'
 
@@ -11,7 +11,7 @@ export default function TenantLogin() {
   const handleLogin = async (event) => {
     event.preventDefault();
 
-    const accountManager = new AccountManager();
+    const authentication = new Authentication();
 
     const eventData = {
       ID,
@@ -20,7 +20,7 @@ export default function TenantLogin() {
     };
 
     try {
-      await accountManager.loginAuth(eventData);
+      await authentication.loginAuth(eventData);
     } catch (error) {
       console.error("Login error:", error);
       window.alert(`Error: ${error.message}`);
