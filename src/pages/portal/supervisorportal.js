@@ -5,6 +5,7 @@ import "../../styles/ticketportal.css";
 import "../../styles/supervisorportal.css";
 import Cookies from "js-cookie";
 
+
 export default function SupervisorPortal() {
   const ticketManager = new TicketManager();
   let { PARCStatus, SupervisorID } = useParams();
