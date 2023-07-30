@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import TicketManager from "../../managers/ticketmanager";
+import AccountManager from "../../managers/accountmanager"
 import "../../styles/ticketportal.css";
 import Cookies from "js-cookie";
 
@@ -34,6 +35,7 @@ import { Height } from "@mui/icons-material";
 
 const TenantPortal = () => {
   const ticketManager = new TicketManager();
+  const accountManager = new AccountManager();
   const { PARCStatus, TenantID } = useParams();
   const [serviceTickets, setServiceTickets] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -48,7 +50,10 @@ const TenantPortal = () => {
   const [isStatusFilterOpen, setIsStatusFilterOpen] = useState(false);
   const [isRequestFilterOpen, setIsRequestFilterOpen] = useState(false);
   const [isAssignedToFilterOpen, setIsAssignedToFilterOpen] = useState(false);
+  const [isUnitFilterOpen, setIsUnitFilterOpen] = useState(false);
   const [isDateFilterOpen, setIsDateFilterOpen] = useState(false);
+  const [unitFilter, setUnitFilter] = useState("");
+  const [units, setUnits] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -75,6 +80,20 @@ const TenantPortal = () => {
   useEffect(() => {
     getTickets();
   }, [PARCStatus, TenantID]);
+
+  useEffect(() => {
+    // Fetch unit data from the server and populate the dropdown options
+    const fetchUnits = async () => {
+      try {
+        const unitData = await accountManager.getUnits(TenantID);
+        setUnits(unitData);
+      } catch (error) {
+        console.error("Error fetching units:", error);
+      }
+    };
+
+    fetchUnits();
+  }, [TenantID]);
 
   const getTickets = async () => {
     try {
@@ -130,6 +149,9 @@ const TenantPortal = () => {
     if (assignedToFilter && ticket.staffDetails && !ticket.staffDetails.StaffName.toLowerCase().includes(assignedToFilter.toLowerCase())) {
       return false;
     }
+    if (unitFilter && ticket.Property !== unitFilter) {
+      return false;
+    }
     return true;
   }).sort((a, b) => {
     if (dateFilter === "newest") {
@@ -147,6 +169,8 @@ const TenantPortal = () => {
     setStatusFilter("");
     setIsStatusFilterOpen(false);
     setRequestFilter("");
+    setIsUnitFilterOpen(false);
+    setUnitFilter("");
     setIsRequestFilterOpen(false);
     setAssignedToFilter("");
     setIsAssignedToFilterOpen(false);
@@ -225,7 +249,23 @@ const TenantPortal = () => {
                   </div>
                 )}</TableCell>
 
-              <TableCell sx={{ fontWeight: 'bold' }} align="left">Unit<IconButton><SortIcon></SortIcon></IconButton></TableCell>
+              <TableCell sx={{ fontWeight: 'bold' }} align="left">Unit<IconButton onClick={() => setIsUnitFilterOpen(!isUnitFilterOpen)}>
+                <SortIcon></SortIcon></IconButton>
+                {isUnitFilterOpen && (
+                  <div className="filter-dropdown">
+                    <select
+                      value={unitFilter}
+                      onChange={(e) => setUnitFilter(e.target.value)}>
+                      <option value="">All</option>
+                      {units.map((unit) => (
+                        <option key={unit.UnitNumber} value={unit.UnitNumber}>
+                          {unit.UnitNumber}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+              </TableCell>
               <TableCell sx={{ fontWeight: 'bold' }} align="left">Status<IconButton onClick={() => setIsStatusFilterOpen(!isStatusFilterOpen)}>
                 <SortIcon></SortIcon></IconButton>
                 {isStatusFilterOpen && (
