@@ -60,6 +60,7 @@ export default function AdminLogin() {
             <Button 
             type="submit"
             variant="contained"
+            onClick={handleLogin}
             className="login-portal-button">
               Login
             </Button>
