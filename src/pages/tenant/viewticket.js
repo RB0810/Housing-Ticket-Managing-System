@@ -12,6 +12,7 @@ import { Typography } from "@mui/material";
 import DisplayQuotation from "../../components/DisplayQuotation";
 import NotificationManager from "../../managers/notificationmanager";
 import Cookies from "js-cookie";
+import Swal from "sweetalert2";
 
 // Import styles
 import "./../../styles/viewticket.css";
@@ -116,11 +117,18 @@ const ViewTicketTenant = () => {
 
       // Execute all promises concurrently using Promise.all
       await Promise.all([deleteTicketPromise]);
-      window.alert("Quotation deleted!");
+      Swal.fire({
+        icon: "success",
+        title: "Ticket deleted",
+      });
       navigate(`/tenantportal/landingpage/${serviceTicket.TenantID}`);
       // Probably need to redirect to main page here
     } catch (error) {
-      window.alert("Error deleting quotation: " + error);
+      Swal.fire({
+        icon: "error",
+        title: "Error in deleting Quotation",
+        text: error.message
+      });
     }
   };
 
@@ -140,11 +148,17 @@ const ViewTicketTenant = () => {
       URL.revokeObjectURL(url);
 
       if (error) {
-        window.alert("Error downloading file!");
+        Swal.fire({
+          icon: "error",
+          title: "Error downloading file",
+        });
         return;
       }
     } catch (error) {
-      window.alert("Error downloading file!");
+      Swal.fire({
+        icon: "error",
+        title: "Error downloading file",
+      });
     }
   };
 
@@ -307,10 +321,20 @@ const ViewTicketTenant = () => {
         //sendNotif,
       ]);
 
-      window.alert("Quotation accepted!");
-      window.location.reload();
+      Swal.fire({
+        icon: "success",
+        title: "Quotation accepted"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
     } catch (error) {
-      window.alert("Error accepting quotation: " + error);
+      Swal.fire({
+        icon: "error",
+        title: "Error accepting Quotation",
+        text: error.message
+      });
     }
   };
 
@@ -345,10 +369,20 @@ const ViewTicketTenant = () => {
         //sendNotif,
       ]);
 
-      window.alert("Quotation rejected!");
-      window.location.reload();
+      Swal.fire({
+        icon: "success",
+        title: "Quotation rejected"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
     } catch (error) {
-      window.alert("Error rejecting quotation: " + error);
+      Swal.fire({
+        icon: "error",
+        title: "Reject Quotation error",
+        text: error.message
+      });
     }
   };
 
@@ -404,10 +438,20 @@ const ViewTicketTenant = () => {
         //sendNotif,
       ]);
 
-      window.alert("Feedback submitted!");
-      window.location.reload();
+      Swal.fire({
+        icon: "success",
+        title: "Feedback submitted",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
     } catch (error) {
-      window.alert("Error submitting feedback: " + error);
+      Swal.fire({
+        icon: "error",
+        title: "Error in submitting feedback",
+        text: error.message
+      });
     }
   };
 
@@ -437,10 +481,20 @@ const ViewTicketTenant = () => {
         //sendNotif
       ]);
 
-      window.alert("Feedback submitted!");
-      window.location.reload();
+      Swal.fire({
+        icon: "success",
+        title: "Feedback submitted"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
     } catch (error) {
-      window.alert("Error submitting feedback: " + error);
+      Swal.fire({
+        icon: "success",
+        title: "Error in submitting feedback",
+        text: error.message
+      });
     }
   };
 

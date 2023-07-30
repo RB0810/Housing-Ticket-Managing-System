@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../../styles/login.css";
 import Authentication from "../../managers/authentication";
 import {Button, Grid, TextField} from '@mui/material'
+import Swal from "sweetalert2";
 
 
 export default function LandlordLogin() {
@@ -33,11 +34,19 @@ export default function LandlordLogin() {
           await authentication.loginAuth(eventDataStaff);
         } catch (error) {
           console.error("Login error:", error);
-          window.alert(`Error: ${error.message}`);
+          Swal.fire({
+            icon: "error",
+            title: "Login error",
+            text: error.message
+          });
         }
       } else {
         console.error("Login error:", error);
-        window.alert(`Error: ${error.message}`);
+        Swal.fire({
+          icon: "error",
+          title: "Login error",
+          text: error.message
+        });
       }
     }
   };

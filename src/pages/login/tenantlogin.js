@@ -3,6 +3,7 @@ import "../../styles/login.css";
 import Authentication from "../../managers/authentication";
 import "../../styles/login.css";
 import {Button, Grid, TextField} from '@mui/material'
+import Swal from "sweetalert2";
 
 export default function TenantLogin() {
   const [ID, setID] = useState("");
@@ -23,7 +24,11 @@ export default function TenantLogin() {
       await authentication.loginAuth(eventData);
     } catch (error) {
       console.error("Login error:", error);
-      window.alert(`Error: ${error.message}`);
+      Swal.fire({
+        icon: "error",
+        title: "Login error",
+        text: error.message
+      });
     }
   };
 
