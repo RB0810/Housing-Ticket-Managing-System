@@ -3,7 +3,6 @@ import AccountManager from "../../managers/accountmanager";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import Authentication from "../../managers/authentication";
 import Cookies from "js-cookie";
-import { Link, useParams } from "react-router-dom";
 import {Button, Grid, TextField} from '@mui/material'
 
 const StaffProfile = () => {

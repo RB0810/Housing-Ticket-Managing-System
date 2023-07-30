@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Routes, Route, useParams, Link, useNavigate } from "react-router-dom";
 import TicketManager from "../../managers/ticketmanager";
 import "../../styles/ticketportal.css";
-import "../../styles/supervisorportal.css";
 import Cookies from "js-cookie";
 
 

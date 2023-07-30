@@ -43,7 +43,6 @@ const ViewTicketTenant = () => {
   const [rating, setRating] = useState(0);
 
   const {TenantID} = useParams();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const userId = Cookies.get('userId');
