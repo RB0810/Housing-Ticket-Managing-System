@@ -51,8 +51,9 @@ const BuildingDetailsPage = () => {
     <div>
       {buildingDetails && (
         <>
-          <h2>{buildingDetails.Building.BuildingName}</h2>
+          <h1>{buildingDetails.Building.BuildingName}</h1>
           <h2>{buildingDetails.Building.Address}, {buildingDetails.Building.PostalCode}</h2>
+          <hr></hr>
           <BuildingDetails building={buildingDetails} />
         </>
       )}

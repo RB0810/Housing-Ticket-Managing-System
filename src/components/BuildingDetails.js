@@ -17,19 +17,9 @@ const BuildingDetails = ({ building }) => {
         {staff.map((staffMember) => (
           <div className='building-details-row'>
             <div className="building-details-col75" key={staffMember.StaffID}>
-            <hr></hr>
             <Grid container spacing={1}>
               <Grid item xs = {12}>
-                <h4>Staff: {staffMember.StaffID}</h4>
-              </Grid>
-              <Grid item xs = {12}>
-                <TextField 
-                className="building-details-textfield"
-                id="outlined-basic" 
-                label="Name" 
-                variant="filled" 
-                defaultValue={staffMember.StaffName}
-                InputProps={{readOnly: true,}}/>
+                <h2>Staff: {staffMember.StaffName}</h2>
               </Grid>
               <Grid item xs = {12}>
                 <TextField 
@@ -50,7 +40,7 @@ const BuildingDetails = ({ building }) => {
                 InputProps={{readOnly: true,}}/>
               </Grid>
             </Grid>
-            <hr></hr>
+            
             </div>
           </div>
         ))}
@@ -60,24 +50,15 @@ const BuildingDetails = ({ building }) => {
       <hr></hr>
 
       <div className="section">
-        <h2 className='building-details-label'>Tenants</h2>
-
-        {tenant.map((tenantData) => (
+        <div className="building-details-tenant-col25">
+          <h2 className='building-details-label'>Tenants</h2>
+        </div>
+        <div className="building-details-tenant-col75">
+          {tenant.map((tenantData) => (
           <div className="tenant-item" key={tenantData.TenantID}>
-            <div className="building-details-row">
-              <div className="building-details-tenant-col25">
-                <h2 className='building-details-sub-label'>Personal Details:</h2>
-              </div>
-              <div className="building-details-tenant-col75">
                 <Grid container spacing={1}>
                   <Grid item xs = {12}>
-                    <TextField 
-                    className="building-details-textfield"
-                    id="outlined-basic" 
-                    label="Name" 
-                    variant="filled" 
-                    defaultValue={tenantData.TenantName}
-                    InputProps={{readOnly: true,}}/>
+                    <h2>Tenant: {tenantData.TenantName}</h2>
                   </Grid>
                   <Grid item xs = {12}>
                     <TextField 
@@ -98,18 +79,12 @@ const BuildingDetails = ({ building }) => {
                     InputProps={{readOnly: true,}}/>
                   </Grid>
                 </Grid>
-                <hr></hr>
-              </div>
-            </div>
-
-            <div className="building-details-row">
-              <div className="building-details-tenant-col25">
-                <h2 className='building-details-sub-label'>Lease Details:</h2>
-              </div>
-              <div className="building-details-tenant-col75">
                 {tenantData.LeaseDetails && (
                   <div>
                     <Grid container spacing={1}>
+                      <Grid item xs = {12}>
+                        <h3 className='building-details-sub-label'>Lease Details:</h3>
+                      </Grid>
                       <Grid item xs = {12}>
                         <TextField 
                         className="building-details-textfield"
@@ -168,13 +143,10 @@ const BuildingDetails = ({ building }) => {
                     <br></br>
                   </div>
                 )}
-              </div>
-
-              <hr></hr>
-
-            </div>
+                <hr></hr>
           </div>
         ))}
+        </div>        
       </div>
     </div>
   );

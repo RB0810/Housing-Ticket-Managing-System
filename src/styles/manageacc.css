@@ -1,7 +1,10 @@
 .building-card {
     background-color: white;
-    width: fit-content;
+    width: 40vh;
     border-radius: 10px;
     margin: 20px;
   }
-  
+
+  .buildingcard-textfield{
+    width: 35vh;
+  }

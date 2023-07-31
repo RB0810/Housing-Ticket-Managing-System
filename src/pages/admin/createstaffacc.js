@@ -71,17 +71,14 @@ const CreateStaffAcc = () => {
     <div className="ticket-creation-page">
       <h1 className="wlcText">Create Staff Account</h1>
       <form onSubmit={handleSubmit} className="create-staff-acc-form">
-        <div className="create-staff-acc-row">
-          <div className="create-staff-acc-col25">
-            <label 
-            htmlFor="username"
-            className="create-staff-acc-label"
-            >Staff Username</label>
-          </div>
-          
-          <div className="create-staff-acc-col75">
             <Grid container spacing={1}>
               <Grid item xs = {12}>
+                <div className="create-staff-acc-col25">
+                  <label 
+                  htmlFor="username"
+                  className="create-staff-acc-label"
+                  >Staff Username</label>
+                </div>
                   <TextField 
                   className="create-staff-acc-textfield"
                   id="outlined-basic" 
@@ -90,121 +87,80 @@ const CreateStaffAcc = () => {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}/>
               </Grid>
-            </Grid>
-          </div>
-        </div>
-
-        <div className="create-staff-acc-row">
-          <div className="create-staff-acc-col25">
-            <label 
-            htmlFor="email"
-            className="create-staff-acc-label"
-            >Staff Email</label>
-          </div>
-          
-          <div className="create-staff-acc-col75">
-            <Grid container spacing={1}>
-                <Grid item xs = {12}>
-                    <TextField 
-                    className="create-staff-acc-textfield"
-                    id="outlined-basic" 
-                    variant="outlined" 
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}/>
-                </Grid>
-              </Grid>
-          </div>
-        </div>
-
-        <div className="create-staff-acc-row">
-          <div className="create-staff-acc-col25">
-            <label 
-            htmlFor="password"
-            className="create-staff-acc-label"
-            >Enter Password</label>
-          </div>
-          
-          <div className="create-staff-acc-col75">
-            <Grid container spacing={1} className='create-staff-acc-grid'>
-                <Grid item xs = {12}>
-                    <TextField 
-                    className="create-staff-acc-textfield"
-                    id="outlined-basic" 
-                    variant="outlined" 
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}/>
-                </Grid>
-              </Grid>
-          </div>
-        </div>
-
-        <div className="create-staff-acc-row">
-          <div className="create-staff-acc-col25">
-            <label 
-            htmlFor="rePassword"
-            className="create-staff-acc-label"
-            >Re-enter Password</label>
-          </div>
-          
-          <div className="create-staff-acc-col75">
-            <Grid container spacing={1}>
-                <Grid item xs = {12}>
-                    <TextField 
-                    className="create-staff-acc-textfield"
-                    id="outlined-basic" 
-                    variant="outlined" 
-                    type="password"
-                    value={rePassword}
-                    onChange={(e) => setRePassword(e.target.value)}/>
-                </Grid>
-              </Grid>
-          </div>
-        </div>
-
-        <div className="create-staff-acc-row">
-          <div className="create-staff-acc-col25">
-            <label 
-            htmlFor="phone"
-            className="create-staff-acc-label"
-            >Staff Phone Number</label>
-          </div>
-          
-          <div className="create-staff-acc-col75">
-            <Grid container spacing={1}>
-                <Grid item xs = {12}>
-                    <TextField 
-                    className="create-staff-acc-textfield"
-                    id="outlined-basic" 
-                    variant="outlined" 
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}/>
-                </Grid>
-              </Grid>
-          </div>
-        </div>
-
-        <div className="create-staff-acc-row">
-          <div className="create-staff-acc-col25">
-            <label 
-            htmlFor="buildingID"
-            className="create-staff-acc-label"
-            >Building ID</label>
-          </div>
-          
-          <div className="create-staff-acc-col75">
-            <Grid container spacing={1}>
               <Grid item xs = {12}>
+                <div className="create-staff-acc-col25">
+                  <label 
+                  htmlFor="email"
+                  className="create-staff-acc-label"
+                  >Staff Email</label>
+                </div>
+                  <TextField 
+                  className="create-staff-acc-textfield"
+                  id="outlined-basic" 
+                  variant="outlined" 
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}/>
+              </Grid>
+              <Grid item xs = {12}>
+                <div className="create-staff-acc-col25">
+                  <label 
+                  htmlFor="password"
+                  className="create-staff-acc-label"
+                  >Enter Password</label>
+                </div>
+                  <TextField 
+                  className="create-staff-acc-textfield"
+                  id="outlined-basic" 
+                  variant="outlined" 
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}/>
+              </Grid>
+              <Grid item xs = {12}>
+                <div className="create-staff-acc-col25">
+                  <label 
+                  htmlFor="rePassword"
+                  className="create-staff-acc-label"
+                  >Re-enter Password</label>
+                </div>
+                  <TextField 
+                  className="create-staff-acc-textfield"
+                  id="outlined-basic" 
+                  variant="outlined" 
+                  type="password"
+                  value={rePassword}
+                  onChange={(e) => setRePassword(e.target.value)}/>
+              </Grid>
+              <Grid item xs = {12}>
+                <div className="create-staff-acc-col25">
+                  <label 
+                  htmlFor="phone"
+                  className="create-staff-acc-label"
+                  >Staff Phone Number</label>
+                </div>
+                  <TextField 
+                  className="create-staff-acc-textfield"
+                  id="outlined-basic" 
+                  variant="outlined" 
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}/>
+              </Grid>
+              <Grid item xs = {12}>
+                <div className="create-staff-acc-col25">
+                  <label 
+                  htmlFor="buildingID"
+                  className="create-staff-acc-label"
+                  >Building ID</label>
+                </div>
                 <Select
                 id="buildingID"
                 className="create-staff-acc-textfield"
                 value={buildingID}
                 variant='outlined'
                 onChange={(e) => setBuildingID(e.target.value)}
-                input={<OutlinedInput />}
-                >
+                input={<OutlinedInput />}>
                   {buildingOptions.map((building) => (
                     <MenuItem
                     key={building.id} 
@@ -214,24 +170,15 @@ const CreateStaffAcc = () => {
                   ))}
                 </Select>
               </Grid>
-            </Grid>
-          </div>
-        </div>
-
-        <div className="create-staff-acc-row">
-          <Grid container spacing={1}>
-            <Grid item xs = {12}>
-              <Button
-              onClick={handleSubmit}
-              variant="contained"
-              className="create-staff-acc-button">
-                Create Staff Account
-              </Button>
-            </Grid>
-          </Grid>
-        </div>     
-        
-
+              <Grid item xs = {12}>
+                <Button
+                onClick={handleSubmit}
+                variant="contained"
+                className="create-staff-acc-button">
+                  Create Staff Account
+                </Button>
+              </Grid>
+            </Grid>     
         {formError && <p className="create-ticket-error">{formError}</p>}
       </form>
     </div>
