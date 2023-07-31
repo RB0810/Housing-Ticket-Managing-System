@@ -3,6 +3,7 @@ import "../../styles/createaccount.css";
 import SupervisorAccount from "../../objects/SupervisorAccount";
 import Cookies from "js-cookie";
 import { useParams, useNavigate } from "react-router";
+import { Grid,TextField } from "@mui/material";
 
 const CreateSupervisor = () => {
   const [formError, setFormError] = useState(null);
@@ -69,13 +70,17 @@ const CreateSupervisor = () => {
           </div>
           
           <div className="create-supervisor-acc-col75">
-            <input
-              type="text"
-              id="username"
-              className="create-supervisor-acc-input-text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
+            <Grid container spacing={1}>
+              <Grid item xs = {12}>
+                  <TextField 
+                  className="create-supervisor-acc-textfield"
+                  id="outlined-basic" 
+                  variant="outlined" 
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}/>
+              </Grid>
+            </Grid>
           </div>
         </div>
 

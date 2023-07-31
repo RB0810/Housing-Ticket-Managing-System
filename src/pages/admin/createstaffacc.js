@@ -3,6 +3,7 @@ import "../../styles/createaccount.css";
 import StaffAccount from "../../objects/StaffAccount";
 import { useParams, useNavigate } from "react-router";
 import Cookies from "js-cookie";
+import {Grid,TextField,MenuItem,Select,OutlinedInput,Button} from '@mui/material';
 
 const CreateStaffAcc = () => {
   const [formError, setFormError] = useState(null);
@@ -79,13 +80,17 @@ const CreateStaffAcc = () => {
           </div>
           
           <div className="create-staff-acc-col75">
-            <input
-            type="text"
-            id="username"
-            className="create-staff-acc-input-text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
+            <Grid container spacing={1}>
+              <Grid item xs = {12}>
+                  <TextField 
+                  className="create-staff-acc-textfield"
+                  id="outlined-basic" 
+                  variant="outlined" 
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}/>
+              </Grid>
+            </Grid>
           </div>
         </div>
 
@@ -98,13 +103,17 @@ const CreateStaffAcc = () => {
           </div>
           
           <div className="create-staff-acc-col75">
-            <input
-              type="email"
-              id="email"
-              className="create-staff-acc-input-text"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+            <Grid container spacing={1}>
+                <Grid item xs = {12}>
+                    <TextField 
+                    className="create-staff-acc-textfield"
+                    id="outlined-basic" 
+                    variant="outlined" 
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}/>
+                </Grid>
+              </Grid>
           </div>
         </div>
 
@@ -117,13 +126,17 @@ const CreateStaffAcc = () => {
           </div>
           
           <div className="create-staff-acc-col75">
-            <input
-            type="password"
-            id="password"
-            className="create-staff-acc-input-text"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+            <Grid container spacing={1} className='create-staff-acc-grid'>
+                <Grid item xs = {12}>
+                    <TextField 
+                    className="create-staff-acc-textfield"
+                    id="outlined-basic" 
+                    variant="outlined" 
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}/>
+                </Grid>
+              </Grid>
           </div>
         </div>
 
@@ -136,13 +149,17 @@ const CreateStaffAcc = () => {
           </div>
           
           <div className="create-staff-acc-col75">
-            <input
-            type="password"
-            id="rePassword"
-            className="create-staff-acc-input-text"
-            value={rePassword}
-            onChange={(e) => setRePassword(e.target.value)}
-          />
+            <Grid container spacing={1}>
+                <Grid item xs = {12}>
+                    <TextField 
+                    className="create-staff-acc-textfield"
+                    id="outlined-basic" 
+                    variant="outlined" 
+                    type="password"
+                    value={rePassword}
+                    onChange={(e) => setRePassword(e.target.value)}/>
+                </Grid>
+              </Grid>
           </div>
         </div>
 
@@ -151,17 +168,21 @@ const CreateStaffAcc = () => {
             <label 
             htmlFor="phone"
             className="create-staff-acc-label"
-            >Staff Phone</label>
+            >Staff Phone Number</label>
           </div>
           
           <div className="create-staff-acc-col75">
-            <input
-            type="tel"
-            id="phone"
-            className="create-staff-acc-input-text"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-          />
+            <Grid container spacing={1}>
+                <Grid item xs = {12}>
+                    <TextField 
+                    className="create-staff-acc-textfield"
+                    id="outlined-basic" 
+                    variant="outlined" 
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}/>
+                </Grid>
+              </Grid>
           </div>
         </div>
 
@@ -174,28 +195,40 @@ const CreateStaffAcc = () => {
           </div>
           
           <div className="create-staff-acc-col75">
-            <select
-            id="buildingID"
-            className="create-staff-acc-input-text"
-            value={buildingID}
-            onChange={(e) => setBuildingID(e.target.value)}
-          >
-            <option value="">Select Building ID</option>
-            {buildingOptions.map((building) => (
-              <option key={building.id} value={building.id}>
-                {building.name},{building.address}
-              </option>
-            ))}
-          </select>
+            <Grid container spacing={1}>
+              <Grid item xs = {12}>
+                <Select
+                id="buildingID"
+                className="create-staff-acc-textfield"
+                value={buildingID}
+                variant='outlined'
+                onChange={(e) => setBuildingID(e.target.value)}
+                input={<OutlinedInput />}
+                >
+                  {buildingOptions.map((building) => (
+                    <MenuItem
+                    key={building.id} 
+                    value={building.id}>
+                    {building.name},{building.address}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Grid>
+            </Grid>
           </div>
         </div>
 
         <div className="create-staff-acc-row">
-          <input
-            type="submit"
-            value="Create Staff Account"
-            className="create-staff-acc-input-submit"
-          />
+          <Grid container spacing={1}>
+            <Grid item xs = {12}>
+              <Button
+              onClick={handleSubmit}
+              variant="contained"
+              className="create-staff-acc-button">
+                Create Staff Account
+              </Button>
+            </Grid>
+          </Grid>
         </div>     
         
 

@@ -95,3 +95,12 @@
     cursor: pointer;
     float: right;
 }
+
+.create-staff-acc-textfield{
+    width: 80%;
+    text-align: left;
+}
+
+.create-supervisor-acc-textfield{
+    width: 80%;
+}

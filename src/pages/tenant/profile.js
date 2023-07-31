@@ -136,7 +136,7 @@ const TenantProfile = () => {
               className="tenant-profile-textfield"
               id="outlined-basic" 
               label="New Password" 
-              variant="filled" 
+              variant="outlined" 
               defaultValue={newPassword}
               onChange={handleNewPasswordChange}/>
             </Grid>
@@ -146,7 +146,7 @@ const TenantProfile = () => {
               className="tenant-profile-textfield"
               id="filled-basic" 
               label="Confirm Password" 
-              variant="filled" 
+              variant="outlined" 
               defaultValue={newPassword}
               onChange={handleConfirmPasswordChange}/>
             </Grid>
