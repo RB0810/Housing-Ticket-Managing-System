@@ -54,15 +54,7 @@ const DisplayQuotation = ({ ServiceRequestID }) => {
   const newplugin = defaultLayoutPlugin();
 
   return (
-    <div
-      className="pdf-container"
-      style={{
-        height: "70vh",
-        width: "70vw",
-        justifyContent: "start",
-        padding: "25px",
-      }}
-    >
+    <div className="pdf-container">
       <div className="pdf-container2">
         <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.8.162/build/pdf.worker.min.js">
           {pdfFile && (

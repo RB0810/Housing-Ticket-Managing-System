@@ -12,6 +12,7 @@ import DisplayQuotation from "../../components/DisplayQuotation";
 import Cookies from "js-cookie";
 
 import "./../../styles/viewticket.css";
+import { Grid, Button, Select, MenuItem, OutlinedInput} from "@mui/material";
 
 const ViewTicketSupervisor = () => {
   const accountManager = new AccountManager();
@@ -185,9 +186,16 @@ const ViewTicketSupervisor = () => {
                 onChange={(e) => setRejectComments(e.target.value)}
               ></textarea>
             </label>
-
-            <button type="submit">Submit</button>
-            <button onClick={handleCancel}>Cancel</button>
+            <Button
+            variant="contained"
+            onClick={handleReject}>
+              Submit
+            </Button>
+            <Button
+            variant="contained"
+            onClick={handleCancel}>
+              Cancel
+            </Button>
           </form>
         </div>
       );
@@ -206,211 +214,168 @@ const ViewTicketSupervisor = () => {
 
   if (status === "Awaiting Review") {
     return (
-      <div class="ticket-grid">
-        <div class="ticket-details">
-          <BasicTicketDetails ticket={serviceTicket} />
-        </div>
-        <div class="submitted-by-card">
-          <SubmittedByCard tenant={tenant} />
-        </div>
-        <div class="button-group">
-          {showOptions && (
+      <div >
+      <Grid container spacing={1} columns={10}>
+        <Grid item xs ={4}>
+          <Grid item xs={12}>
+            <BasicTicketDetails ticket={serviceTicket} />
+          </Grid>
+          <Grid item xs={12}>
+            <SubmittedByCard tenant={tenant} />
+          </Grid>
+          <Grid item xs={12}>
             <div>
-              <label>
-                Assign Staff:
-                <select
-                  value={selectedStaff}
-                  onChange={(e) => setSelectedStaff(e.target.value)}
-                >
-                  <option value="">-- Select Staff --</option>
-                  {staffMembers.map((staff) => (
-                    <option key={staff.StaffID} value={staff.StaffID}>
-                      {staff.StaffName}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              {assignStatus && <p>{assignStatus}</p>}
-
-              <button onClick={handleAssign}>Assign</button>
-              <button onClick={handleRejectClick}>Reject</button>
+              {showOptions && (
+                <div>
+                  <Grid item xs={12}>
+                    <h2 className="assignstaff-header">Assign Staff:</h2>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Select
+                    id="buildingID"
+                    className="assignstaff-textfield"
+                    value={selectedStaff}
+                    variant='outlined'
+                    onChange={(e) => setSelectedStaff(e.target.value)}
+                    input={<OutlinedInput value='--Select Staff--'/>}>
+                      {staffMembers.map((staff) => (
+                        <MenuItem
+                        key={staff.StaffID}
+                        value={staff.StaffID}>
+                        {staff.StaffName}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    {assignStatus && <p>{assignStatus}</p>}
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Button
+                    variant="contained"
+                    onClick={handleAssign}>
+                      Assign
+                    </Button>
+                    <Button
+                    variant="contained"
+                    onClick={handleRejectClick}>
+                      Reject
+                    </Button>
+                  </Grid>
+                </div>
+              )}
+              <div>{renderContent()}</div>
             </div>
-          )}
-          <div>{renderContent()}</div>
-        </div>
-      </div>
+          </Grid>
+        </Grid>
+      </Grid>
+    </div>
     );
   }
 
   if (status === "Ticket Rejected") {
     return (
-      <div class="ticket-grid">
-        <div class="ticket-details">
-          <BasicTicketDetails ticket={serviceTicket} />
-        </div>
-        <div class="submitted-by-card">
-          <SubmittedByCard tenant={tenant} />
-        </div>
+      <div >
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs ={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <SubmittedByCard tenant={tenant} />
+            </Grid>
+          </Grid>
+        </Grid>
       </div>
     );
   }
 
   if (status === "Ticket Assigned") {
     return (
-      <div class="ticket-grid">
-        <div class="ticket-details">
-          <BasicTicketDetails ticket={serviceTicket} />
-        </div>
-        <div class="supervisor-submitted-card">
-          <SubmittedByCard tenant={tenant} />
-        </div>
-        <div class="supervisor-assigned-card">
-          <AssignedToCard staff={staff} />
-        </div>
+      <div >
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <SubmittedByCard tenant={tenant} />
+            </Grid>
+            <Grid item xs={12}>
+              <AssignedToCard staff={staff} />
+            </Grid>
+          </Grid>
+          <Grid item xs ={6}>
+
+          </Grid>
+        </Grid>
       </div>
     );
   }
 
-  if (status === "Quotation Uploaded") {
+  if (status === "Quotation Uploaded" || status === "Quotation Accepted" || status === "Quotation Rejected") {
     return (
-      <div class="ticket-grid">
-        <div class="ticket-details">
-          <BasicTicketDetails ticket={serviceTicket} />
-        </div>
-        <div class="supervisor-submitted-card">
-          <SubmittedByCard tenant={tenant} />
-        </div>
-        <div class="supervisor-assigned-card">
-          <AssignedToCard staff={staff} />
-        </div>
-        <div class="quotation">
-          <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
-        </div>
+      <div>
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs ={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <SubmittedByCard tenant={tenant} /> 
+            </Grid>
+            <Grid item xs={12}>
+              <AssignedToCard staff={staff} />
+            </Grid>
+          </Grid>
+          <Grid item xs ={6}>
+            <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+          </Grid>
+        </Grid>
       </div>
     );
   }
 
-  if (status === "Quotation Accepted") {
+  if (status === "Works Started" || status === "Works Ended" || status === "Works Rejected") {
     return (
-      <div class="ticket-grid">
-        <div class="ticket-details">
-          <BasicTicketDetails ticket={serviceTicket} />
-        </div>
-        <div class="supervisor-submitted-card">
-          <SubmittedByCard tenant={tenant} />
-        </div>
-        <div class="supervisor-assigned-card">
-          <AssignedToCard staff={staff} />
-        </div>
-        <div class="quotation">
-          <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
-        </div>
-      </div>
-    );
-  }
-
-  if (status === "Quotation Rejected") {
-    return (
-      <div class="ticket-grid">
-        <div class="ticket-details">
-          <BasicTicketDetails ticket={serviceTicket} />
-        </div>
-        <div class="supervisor-submitted-card">
-          <SubmittedByCard tenant={tenant} />
-        </div>
-        <div class="supervisor-assigned-card">
-          <AssignedToCard staff={staff} />
-        </div>
-        <div class="quotation">
-          <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
-        </div>
-      </div>
-    );
-  }
-
-  if (status === "Works Started") {
-    return (
-      <div class="ticket-grid">
-        <div class="ticket-details">
-          <BasicTicketDetails ticket={serviceTicket} />
-        </div>
-        <div class="supervisor-submitted-card">
-          <SubmittedByCard tenant={tenant} />
-        </div>
-        <div class="supervisor-assigned-card">
-          <AssignedToCard staff={staff} />
-        </div>
-      </div>
-    );
-  }
-
-  if (status === "Works Ended") {
-    return (
-      <div class="ticket-grid">
-        <div class="ticket-details">
-          <BasicTicketDetails ticket={serviceTicket} />
-        </div>
-        <div class="supervisor-submitted-card">
-          <SubmittedByCard tenant={tenant} />
-        </div>
-        <div class="supervisor-assigned-card">
-          <AssignedToCard staff={staff} />
-        </div>
-      </div>
-    );
-  }
-
-  if (status === "Works Rejected") {
-    return (
-      <div class="ticket-grid">
-        <div class="ticket-details">
-          <BasicTicketDetails ticket={serviceTicket} />
-        </div>
-        <div class="supervisor-submitted-card">
-          <SubmittedByCard tenant={tenant} />
-        </div>
-        <div class="supervisor-assigned-card">
-          <AssignedToCard staff={staff} />
-        </div>
-      </div>
-    );
-  }
-
-  if (status === "Works Rejected") {
-    return (
-      <div class="ticket-grid">
-        <div class="ticket-details">
-          <BasicTicketDetails ticket={serviceTicket} />
-        </div>
-        <div class="supervisor-submitted-card">
-          <SubmittedByCard tenant={tenant} />
-        </div>
-        <div class="supervisor-assigned-card">
-          <AssignedToCard staff={staff} />
-        </div>
+      <div>
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs ={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <SubmittedByCard tenant={tenant} /> 
+            </Grid>
+            <Grid item xs={12}>
+              <AssignedToCard staff={staff} />
+            </Grid>
+          </Grid>
+        </Grid>
       </div>
     );
   }
 
   if (status === "Feedback Submitted") {
     return (
-      <div class="ticket-grid">
-        <div class="ticket-details">
-          <BasicTicketDetails ticket={serviceTicket} />
-        </div>
-        <div class="supervisor-submitted-card">
-          <SubmittedByCard tenant={tenant} />
-        </div>
-        <div class="supervisor-assigned-card">
-          <AssignedToCard staff={staff} />
-        </div>
-        <div class="supervisor-final-feedback">
-          <ViewFinalFeedbackDetails
-            rating={serviceTicket.FeedbackRating}
-            comments={serviceTicket.FeedbackComments}
-          />
-        </div>
+      <div>
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs ={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <SubmittedByCard tenant={tenant} /> 
+            </Grid>
+            <Grid item xs={12}>
+              <AssignedToCard staff={staff} />
+            </Grid>
+            <Grid item xs={12}>
+            <ViewFinalFeedbackDetails
+              rating={serviceTicket.FeedbackRating}
+              comments={serviceTicket.FeedbackComments}
+            />
+            </Grid>
+          </Grid>
+        </Grid>
       </div>
     );
   }

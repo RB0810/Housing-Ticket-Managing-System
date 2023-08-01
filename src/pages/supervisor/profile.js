@@ -198,6 +198,7 @@ const SupervisorProfile = () => {
 
       <BuildingDetails building={buildingDetails} />
 
+      <hr></hr>
 
       <Button variant="contained" className="supervisor-profile-button" onClick={logout}>Logout</Button>
     
