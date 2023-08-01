@@ -10,7 +10,3 @@
 .filter-dropdown.open {
   visibility: visible;
 }
-
-.remove-filter-button {
-  background-color: #f50057;
-}

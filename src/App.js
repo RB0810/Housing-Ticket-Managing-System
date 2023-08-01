@@ -31,14 +31,21 @@ import StaffProfile from "./pages/staff/profile";
 import UnauthorizedAccess from "./pages/unauthorized_access";
 
 // MUI themes
-import { red } from '@mui/material/colors';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { CssBaseline } from "@mui/material";
 
 const theme = createTheme({
   palette: {
+    mode: 'light',
     primary: {
-      main: red[500],
+      main: '#707c4f',
     },
+    secondary: {
+      main: '#b7b09c',
+    },
+  },
+  typography: {
+    fontFamily: 'Montserrat',
   },
 });
 
@@ -48,6 +55,7 @@ function App() {
   return (
     <>
     <ThemeProvider theme={theme}>
+      <CssBaseline enableColorScheme />
       <Routes>
         <Route path="/*" element={<Navbar />} />
         <Route path="/tenantportal/*" element={<TenantNavbar />} />
