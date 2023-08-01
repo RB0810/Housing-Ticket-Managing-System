@@ -360,6 +360,9 @@ const ViewTicketSupervisor = () => {
               <AssignedToCard staff={staff} />
             </Grid>
           </Grid>
+          <Grid item xs ={6}>
+            <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+          </Grid>
         </Grid>
       </div>
     );
@@ -385,6 +388,9 @@ const ViewTicketSupervisor = () => {
               comments={serviceTicket.FeedbackComments}
             />
             </Grid>
+          </Grid>
+          <Grid item xs ={6}>
+            <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
           </Grid>
         </Grid>
       </div>

@@ -205,7 +205,8 @@ export default function SupervisorPortal() {
           <TableHead sx={{ height: 100}}>
             <TableRow>
               <TableCell sx={{ fontWeight: 'bold' }} align="left">S/N</TableCell>
-              <TableCell sx={{ fontWeight: 'bold' }} align="left">Ticket ID<IconButton
+              <TableCell sx={{ fontWeight: 'bold' }} align="left">Ticket ID</TableCell>
+              <TableCell sx={{ fontWeight: 'bold' }} align="left">Request<IconButton
                 onClick={() => setIsRequestFilterOpen(!isRequestFilterOpen)}><SortIcon></SortIcon></IconButton>
                 {(
                   <div className={`filter-dropdown${isRequestFilterOpen ? ' open' : ''}`}>
