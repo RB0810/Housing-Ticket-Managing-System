@@ -15,7 +15,15 @@ export default class TicketManager {
       .select("UnderSupervisor")
       .eq("TenantID", ticket.tenantID);
 
-    supervisorID = supervisorID[0].UnderSupervisor;
+    try {
+      supervisorID = supervisorID[0].UnderSupervisor;
+    } catch (error) {
+      console.error(
+        `"Error getting SupervisorID from TenantID ${ticket.tenantID}"`,
+        error
+      );
+      return false;
+    }
 
     if (error) {
       console.error(
@@ -126,7 +134,7 @@ export default class TicketManager {
       .select()
       .eq("ServiceRequestID", ticketId);
 
-    if (error) {
+    if (error || data.length == 0) {
       console.error("Error fetching ticket:", error);
       return false;
     } else {
@@ -437,7 +445,7 @@ export default class TicketManager {
       .eq("ServiceRequestID", ticketId)
       .select();
 
-    if (error) {
+    if (error || data.length == 0) {
       console.error("Error assigning ticket:", error);
       return false;
     } else {
@@ -469,7 +477,7 @@ export default class TicketManager {
       .eq("ServiceRequestID", ticketId)
       .select();
 
-    if (error) {
+    if (error || data.length == 0) {
       console.error("Error rejecting ticket:", error);
       return false;
     } else {
@@ -492,7 +500,7 @@ export default class TicketManager {
       .eq("ServiceRequestID", parseInt(ticketId))
       .select();
 
-    if (error) {
+    if (error || data.length == 0 || data == null) {
       console.error("Error updating ticket:", error);
       return false;
     } else {
@@ -541,7 +549,7 @@ export default class TicketManager {
       .delete()
       .eq("ServiceRequestID", ticketId);
 
-    if (error) {
+    if (error || data == null) {
       console.error("Error deleting ticket:", error);
       return false;
     }
