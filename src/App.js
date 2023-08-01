@@ -30,11 +30,24 @@ import SupervisorProfile from "./pages/supervisor/profile";
 import StaffProfile from "./pages/staff/profile";
 import UnauthorizedAccess from "./pages/unauthorized_access";
 
+// MUI themes
+import { red } from '@mui/material/colors';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: red[500],
+    },
+  },
+});
+
 function App() {
   // Routing
 
   return (
     <>
+    <ThemeProvider theme={theme}>
       <Routes>
         <Route path="/*" element={<Navbar />} />
         <Route path="/tenantportal/*" element={<TenantNavbar />} />
@@ -71,6 +84,7 @@ function App() {
           <Route path="/unauthorize" element={<UnauthorizedAccess />} />
           </Routes>
       </div>
+      </ThemeProvider>
     </>
   );
 }
