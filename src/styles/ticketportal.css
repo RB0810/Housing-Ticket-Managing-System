@@ -37,3 +37,13 @@
   transform: rotate(180deg);
 }
 
+/* The .filter-dropdown class is always rendered, but invisible by default */
+.filter-dropdown {
+  visibility: hidden;
+  position: absolute; /* To avoid affecting layout */
+}
+
+/* The .open class controls the visibility when isRequestFilterOpen is true */
+.filter-dropdown.open {
+  visibility: visible;
+}
