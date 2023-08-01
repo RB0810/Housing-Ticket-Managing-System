@@ -212,15 +212,16 @@ const TenantPortal = () => {
 
   return (
     <div className="page tenantportal">
+      
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead sx={{ marginY: 100 }}>
+          <TableHead sx={{ height: 100}}>
             <TableRow>
               <TableCell sx={{ fontWeight: 'bold' }} align="left">S/N</TableCell>
               <TableCell sx={{ fontWeight: 'bold' }} align="left">Request<IconButton
                 onClick={() => setIsRequestFilterOpen(!isRequestFilterOpen)}><SortIcon></SortIcon></IconButton>
-                {isRequestFilterOpen && (
-                  <div className="filter-dropdown">
+                {(
+                  <div className={`filter-dropdown${isRequestFilterOpen ? ' open' : ''}`}>
                     <input
                       type="text"
                       value={requestFilter}
@@ -233,8 +234,8 @@ const TenantPortal = () => {
 
               <TableCell sx={{ fontWeight: 'bold' }} align="left">Category<IconButton onClick={() => setIsCategoryFilterOpen(!isCategoryFilterOpen)}>
                 <SortIcon></SortIcon></IconButton>
-                {isCategoryFilterOpen && (
-                  <div className="filter-dropdown">
+                {(
+                  <div className={`filter-dropdown${isCategoryFilterOpen ? ' open' : ''}`}>
                     <select
                       value={categoryFilter}
                       onChange={(e) => setCategoryFilter(e.target.value)}>
@@ -251,8 +252,8 @@ const TenantPortal = () => {
 
               <TableCell sx={{ fontWeight: 'bold' }} align="left">Unit<IconButton onClick={() => setIsUnitFilterOpen(!isUnitFilterOpen)}>
                 <SortIcon></SortIcon></IconButton>
-                {isUnitFilterOpen && (
-                  <div className="filter-dropdown">
+                {(
+                  <div className={`filter-dropdown${isUnitFilterOpen ? ' open' : ''}`}>
                     <select
                       value={unitFilter}
                       onChange={(e) => setUnitFilter(e.target.value)}>
@@ -268,8 +269,8 @@ const TenantPortal = () => {
               </TableCell>
               <TableCell sx={{ fontWeight: 'bold' }} align="left">Status<IconButton onClick={() => setIsStatusFilterOpen(!isStatusFilterOpen)}>
                 <SortIcon></SortIcon></IconButton>
-                {isStatusFilterOpen && (
-                  <div className="filter-dropdown">
+                {(
+                  <div className={`filter-dropdown${isStatusFilterOpen ? ' open' : ''}`}>
                     <select
                       value={statusFilter}
                       onChange={(e) => setStatusFilter(e.target.value)}
@@ -290,8 +291,8 @@ const TenantPortal = () => {
 
               <TableCell sx={{ fontWeight: 'bold' }} align="left">Submitted Date<IconButton onClick={() => setIsDateFilterOpen(!isDateFilterOpen)}>
                 <SortIcon></SortIcon></IconButton>
-                {isDateFilterOpen && (
-                  <div className="filter-dropdown">
+                {(
+                  <div className={`filter-dropdown${isDateFilterOpen ? ' open' : ''}`}>
                     <select
                       value={dateFilter}
                       onChange={(e) => setDateFilter(e.target.value)}
@@ -305,8 +306,8 @@ const TenantPortal = () => {
 
               <TableCell sx={{ fontWeight: 'bold' }} align="left">Assigned To<IconButton onClick={() => setIsAssignedToFilterOpen(!isAssignedToFilterOpen)}>
                 <SearchIcon></SearchIcon></IconButton>
-                {isAssignedToFilterOpen && (
-                  <div className="filter-dropdown">
+                {(
+                  <div className={`filter-dropdown${isAssignedToFilterOpen ? ' open' : ''}`}>
                     <input
                       type="text"
                       value={assignedToFilter}
@@ -316,8 +317,11 @@ const TenantPortal = () => {
                   </div>
                 )}</TableCell>
 
-              <TableCell align="left"><Button variant="contained" onClick={removeFilters}>Remove Filters</Button></TableCell>
-
+              <TableCell align="left"><Button
+              sx={{backgroundColor: '#e91e63', '&:hover': {
+                backgroundColor: '#a31545',
+              }, }}
+              variant="contained" onClick={removeFilters}>Remove Filters</Button></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -366,171 +370,6 @@ const TenantPortal = () => {
         </Table>
       </TableContainer>
 
-
-      {/* <table className="ticket-portal-table">
-        <thead>
-          <tr className="table-row">
-            <th className="header-cell text-center">S No.</th>
-            <th className="header-cell text-center">
-              <div className="filter-header">
-                <span>Request</span>
-                <button
-                  className={`filter-arrow ${isRequestFilterOpen ? "up" : ""}`}
-                  onClick={() => setIsRequestFilterOpen(!isRequestFilterOpen)}
-                ></button>
-                {isRequestFilterOpen && (
-                  <div className="filter-dropdown">
-                    <input
-                      type="text"
-                      value={requestFilter}
-                      onChange={(e) => setRequestFilter(e.target.value)}
-                      placeholder="Filter by request..."
-                    />
-                  </div>
-                )}
-              </div>
-            </th>
-            <th className="header-cell text-center">
-              <div className="filter-header">
-                <span>Category</span>
-                <button
-                  className={`filter-arrow ${isCategoryFilterOpen ? "up" : ""}`}
-                  onClick={() => setIsCategoryFilterOpen(!isCategoryFilterOpen)}
-                ></button>
-                {isCategoryFilterOpen && (
-                  <div className="filter-dropdown">
-                    <select
-                      value={categoryFilter}
-                      onChange={(e) => setCategoryFilter(e.target.value)}
-                    >
-                      <option value="">All</option>
-                      <option value="Plumbing">Plumbing</option>
-                      <option value="Toilet">Toilet</option>
-                      <option value="Pest">Pest</option>
-                      <option value="Electric">Electric</option>
-                      <option value="Aircon">Aircon</option>
-                      <option value="Others">Others</option>
-                    </select>
-                  </div>
-                )}
-              </div>
-            </th>
-            <th className="header-cell text-center">Unit</th>
-            <th className="header-cell text-center">
-              <div className="filter-header">
-                <span>Status</span>
-                <button
-                  className={`filter-arrow ${isStatusFilterOpen ? "up" : ""}`}
-                  onClick={() => setIsStatusFilterOpen(!isStatusFilterOpen)}
-                ></button>
-                {isStatusFilterOpen && (
-                  <div className="filter-dropdown">
-                    <select
-                      value={statusFilter}
-                      onChange={(e) => setStatusFilter(e.target.value)}
-                    >
-                      <option value="">All</option>
-                      <option value="Awaiting Review">Awaiting Review</option>
-                      <option value="Ticket Assigned">Ticket Assigned</option>
-                      <option value="Quotation Uploaded">Quotation Uploaded</option>
-                      <option value="Quotation Accepted">Quotation Accepted</option>
-                      <option value="Quotation Rejected">Quotation Rejected</option>
-                      <option value="Works Started">Works Started</option>
-                      <option value="Works Ended">Works Ended</option>
-                      <option value="Works Rejected">Works Rejected</option>
-                      <option value="Feedback Submitted">Feedback Submitted</option>
-                    </select>
-                  </div>
-                )}
-              </div>
-            </th>
-            <th className="header-cell text-center">
-              <div className="filter-header">
-                <span>Submitted Date</span>
-                <button
-                  className={`filter-arrow ${isDateFilterOpen ? "up" : ""}`}
-                  onClick={() => setIsDateFilterOpen(!isDateFilterOpen)}
-                ></button>
-                {isDateFilterOpen && (
-                  <div className="filter-dropdown">
-                    <select
-                      value={dateFilter}
-                      onChange={(e) => setDateFilter(e.target.value)}
-                    >
-                      <option value="">Sort according to Date Submitted</option>
-                      <option value="newest">Newest to Oldest</option>
-                      <option value="oldest">Oldest to Newest</option>
-                    </select>
-                  </div>
-                )}
-              </div>
-            </th>
-            <th className="header-cell text-center">
-              <div className="filter-header">
-                <span>Assigned To</span>
-                <button
-                  className={`filter-arrow ${isAssignedToFilterOpen ? "up" : ""}`}
-                  onClick={() => setIsAssignedToFilterOpen(!isAssignedToFilterOpen)}
-                ></button>
-                {isAssignedToFilterOpen && (
-                  <div className="filter-dropdown">
-                    <input
-                      type="text"
-                      value={assignedToFilter}
-                      onChange={(e) => setAssignedToFilter(e.target.value)}
-                      placeholder="Filter by assigned..."
-                    />
-                  </div>
-                )}
-              </div>
-            </th>
-            <th className="header-cell text-center"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {isLoading ? (
-            <tr>
-              <td colSpan="8" className="text-center">
-                Loading...
-              </td>
-            </tr>
-          ) : fetchError ? (
-            <tr>
-              <td colSpan="8" className="text-center">
-                {fetchError}
-              </td>
-            </tr>
-          ) : filteredTickets.length === 0 ? (
-            <tr>
-              <td colSpan="8" className="text-center">
-                Empty!
-              </td>
-            </tr>
-          ) : (
-            filteredTickets.map((ticket, index) => (
-              <tr key={ticket.ServiceRequestID} className="table-row">
-                <td className="text-center">{index + 1}</td>
-                <td className="text-center">{ticket.Name}</td>
-                <td className="text-center">{ticket.Category}</td>
-                <td className="text-center">{ticket.Property}</td>
-                <td className="text-center">{ticket.Status}</td>
-                <td className="text-center">{new Date(ticket.SubmittedDateTime).toLocaleDateString()}</td>
-                <td className="text-center">{ticket.staffDetails ? ticket.staffDetails.StaffName : null}</td>
-                <td className="text-center">
-                  <Link to={`${getViewTicketsRoute()}/${TenantID}/${ticket.ServiceRequestID}`}>
-                    <button className="btn">
-                      View Ticket
-                    </button>
-                  </Link>
-                </td>
-              </tr>
-            ))
-          )}
-        </tbody>
-      </table>
-      <button onClick={removeFilters}>
-        Remove all Filters
-      </button> */}
     </div>
   );
 };
