@@ -18,6 +18,7 @@ const MockNavBar= ()=>{
                     <Route path="/" element={<LandingPage />} />
                     <Route path="/landlordlogin" element={<LandlordLogin />} />
                     <Route path="/adminlogin" element={<AdminLogin />} />
+                    <Route path="/tenantlogin" element={<TenantLogin />} />
                 </Routes>
             </div>
         </MemoryRouter>
