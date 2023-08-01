@@ -158,14 +158,14 @@ const ViewTicketStaff = () => {
         //sendNotif,
       ]);
 
-      // Swal.fire({
-      //   icon: "success",
-      //   title: "Update Quotation successful"
-      // }).then((result) => {
-      //   if (result.isConfirmed) {
-      //     window.location.reload();
-      //   }
-      // });
+      Swal.fire({
+        icon: "success",
+        title: "Update Quotation successful"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
     } catch (error) {
       Swal.fire({
         icon: "error",

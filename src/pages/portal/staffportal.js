@@ -184,7 +184,8 @@ export default function StaffPortal() {
           <TableHead sx={{ height: 100 }}>
             <TableRow>
               <TableCell sx={{ fontWeight: 'bold' }} align="left">S/N</TableCell>
-              <TableCell sx={{ fontWeight: 'bold' }} align="left">Ticket ID<IconButton
+              <TableCell sx={{ fontWeight: 'bold' }} align="left">Ticket ID</TableCell>
+              <TableCell sx={{ fontWeight: 'bold' }} align="left">Request<IconButton
                 onClick={() => setIsRequestFilterOpen(!isRequestFilterOpen)}><SortIcon></SortIcon></IconButton>
                 {(
                   <div className={`filter-dropdown${isRequestFilterOpen ? ' open' : ''}`}>
@@ -255,19 +256,7 @@ export default function StaffPortal() {
                   </div>
                 )}</TableCell>
 
-              <TableCell sx={{ fontWeight: 'bold' }} align="left">Submitted By<IconButton
-                onClick={() => setIsSubmittedByFilterOpen(!isSubmittedByFilterOpen)}><SortIcon></SortIcon></IconButton>
-                {(
-                  <div className={`filter-dropdown${isSubmittedByFilterOpen ? ' open' : ''}`}>
-                    <input
-                      type="text"
-                      value={submittedByFilter}
-                      onChange={(e) => setSubmittedByFilter(e.target.value)}
-                      placeholder="Filter by submitted..."
-                    />
-                  </div>
-                )}
-              </TableCell>
+              
 
               <TableCell sx={{ fontWeight: 'bold' }} align="left">Submitted Date<IconButton
                 onClick={() => setIsDateFilterOpen(!isDateFilterOpen)}><SortIcon></SortIcon></IconButton>
@@ -281,6 +270,20 @@ export default function StaffPortal() {
                       <option value="newest">Newest to Oldest</option>
                       <option value="oldest">Oldest to Newest</option>
                     </select>
+                  </div>
+                )}
+              </TableCell>
+
+              <TableCell sx={{ fontWeight: 'bold' }} align="left">Submitted By<IconButton
+                onClick={() => setIsSubmittedByFilterOpen(!isSubmittedByFilterOpen)}><SortIcon></SortIcon></IconButton>
+                {(
+                  <div className={`filter-dropdown${isSubmittedByFilterOpen ? ' open' : ''}`}>
+                    <input
+                      type="text"
+                      value={submittedByFilter}
+                      onChange={(e) => setSubmittedByFilter(e.target.value)}
+                      placeholder="Filter by submitted..."
+                    />
                   </div>
                 )}
               </TableCell>

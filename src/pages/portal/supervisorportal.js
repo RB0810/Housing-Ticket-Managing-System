@@ -277,20 +277,6 @@ export default function SupervisorPortal() {
                   </div>
                 )}</TableCell>
 
-              <TableCell sx={{ fontWeight: 'bold' }} align="left">Submitted By<IconButton
-                onClick={() => setIsSubmittedByFilterOpen(!isSubmittedByFilterOpen)}><SortIcon></SortIcon></IconButton>
-                {(
-                  <div className={`filter-dropdown${isSubmittedByFilterOpen ? ' open' : ''}`}>
-                    <input
-                      type="text"
-                      value={submittedByFilter}
-                      onChange={(e) => setIsSubmittedByFilterOpen(e.target.value)}
-                      placeholder="Filter by submitted..."
-                    />
-                  </div>
-                )}
-              </TableCell>
-
               <TableCell sx={{ fontWeight: 'bold' }} align="left">Submitted Date<IconButton
                 onClick={() => setIsDateFilterOpen(!isDateFilterOpen)}><SortIcon></SortIcon></IconButton>
                 {(
@@ -303,6 +289,20 @@ export default function SupervisorPortal() {
                       <option value="newest">Newest to Oldest</option>
                       <option value="oldest">Oldest to Newest</option>
                     </select>
+                  </div>
+                )}
+              </TableCell>
+
+              <TableCell sx={{ fontWeight: 'bold' }} align="left">Submitted By<IconButton
+                onClick={() => setIsSubmittedByFilterOpen(!isSubmittedByFilterOpen)}><SortIcon></SortIcon></IconButton>
+                {(
+                  <div className={`filter-dropdown${isSubmittedByFilterOpen ? ' open' : ''}`}>
+                    <input
+                      type="text"
+                      value={submittedByFilter}
+                      onChange={(e) => setIsSubmittedByFilterOpen(e.target.value)}
+                      placeholder="Filter by submitted..."
+                    />
                   </div>
                 )}
               </TableCell>
