@@ -9,6 +9,7 @@ import CreateSupervisor from "../../pages/admin/createsupervisoracc";
 import CreateStaffAcc from "../../pages/admin/createstaffacc";
 import ManageAccount from "../../pages/admin/manageacc";
 import Cookies from 'js-cookie';
+import Authentication from "../../managers/authentication";
 jest.mock('js-cookie');
 
 const MockNavBar= ()=>{
@@ -94,6 +95,12 @@ describe("Testing if routing works for the admin navbar",()=>{
             expect(screen.getByRole("heading",{name:"Manage Accounts"})).toBeInTheDocument()
         })
 
+        test("Test if can logout",async ()=>{
+            const mockLogout = jest.spyOn(Authentication.prototype, 'logout');
+            render(<MockNavBar/>)
+            fireEvent.click(screen.getByRole('button', { name: /Logout/i }))
+            expect(mockLogout).toHaveBeenCalled()
+        })
     
     })
 
