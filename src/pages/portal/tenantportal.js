@@ -212,9 +212,10 @@ const TenantPortal = () => {
 
   return (
     <div className="page tenantportal">
+      
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead sx={{ marginY: 100 }}>
+          <TableHead sx={{ height: 100}}>
             <TableRow>
               <TableCell sx={{ fontWeight: 'bold' }} align="left">S/N</TableCell>
               <TableCell sx={{ fontWeight: 'bold' }} align="left">Request<IconButton
@@ -316,8 +317,11 @@ const TenantPortal = () => {
                   </div>
                 )}</TableCell>
 
-              <TableCell align="left"><Button variant="contained" onClick={removeFilters}>Remove Filters</Button></TableCell>
-
+              <TableCell align="left"><Button
+              sx={{backgroundColor: '#e91e63', '&:hover': {
+                backgroundColor: '#a31545',
+              }, }}
+              variant="contained" onClick={removeFilters}>Remove Filters</Button></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
