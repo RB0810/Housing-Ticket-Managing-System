@@ -4,6 +4,7 @@ import AccountManager from "../../managers/accountmanager";
 import BuildingCard from "../../components/BuildingCard";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import { Grid } from "@mui/material";
 
 const ManageAccount = () => {
   const [buildings, setBuildings] = useState([]);
@@ -48,14 +49,20 @@ const ManageAccount = () => {
   return (
     <div>
       <h1>Manage Accounts</h1>
-      {buildings.map((building) => (
-        <Link
-          key={building.BuildingID}
-          to={`/adminportal/manageacc/${AdminID}/building/${building.BuildingID}`}
-        >
-          <BuildingCard building={building} />
-        </Link>
-      ))}
+      <Grid container spacing={1}>
+        {buildings.map((building) => (
+          <Grid item xs={6}>
+            <Link
+              key={building.BuildingID}
+              to={`/adminportal/manageacc/${AdminID}/building/${building.BuildingID}`}
+            >
+                <BuildingCard building={building}/>
+            </Link>
+          </Grid>
+          
+        ))}
+      </Grid>
+      
     </div>
   );
 };
