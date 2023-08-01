@@ -37,27 +37,50 @@ const validroutes = [
     /^\/landlordlogin$/,
     /^\/adminlogin$/,
 ]
+
 const unauthorisedroutes = [ //regex
-    /^\/tenantportal\/ticket\/[^\/]+\/[^\/]+$/,
-    /^\/supervisorportal\/ticket\/[^\/]+\/[^\/]+$/,
-    /^\/staffportal\/ticket\/[^\/]+\/[^\/]+$/,
-    /^\/tenantportal\/tickets\/[^\/]+\/[^\/]+$/,
-    /^\/staffportal\/tickets\/[^\/]+\/[^\/]+$/,
-    /^\/supervisorportal\/tickets\/[^\/]+\/[^\/]+$/,
-    /^\/supervisorportal\/createtennantacc\/[^\/]+$/,
-    /^\/tenantportal\/createticket\/[^\/]+$/,
-    /^\/supervisorportal\/landingpage\/[^\/]+$/,
-    /^\/staffportal\/landingpage\/[^\/]+$/,
-    /^\/tenantportal\/landingpage\/[^\/]+$/,
-    /^\/adminportal\/landingpage\/[^\/]+$/,
-    /^\/adminportal\/createsupervisoracc\/[^\/]+$/,
-    /^\/adminportal\/createstaffacc\/[^\/]+$/,
-    /^\/adminportal\/manageacc\/[^\/]+$/,
-    /^\/adminportal\/manageacc\/[^\/]+\/building\/[^\/]+$/,
-    /^\/tenantportal\/profile\/[^\/]+$/,
-    /^\/supervisorportal\/profile\/[^\/]+$/,
-    /^\/staffportal\/profile\/[^\/]+$/
-  ];
+    /^\/tenantportal\/ticket\/[^\/]+\/[^\/]+\/?$/,
+    /^\/supervisorportal\/ticket\/[^\/]+\/[^\/]+\/?$/,
+    /^\/staffportal\/ticket\/[^\/]+\/[^\/]+\/?$/,
+    /^\/tenantportal\/tickets\/[^\/]+\/[^\/]+\/?$/,
+    /^\/staffportal\/tickets\/[^\/]+\/[^\/]+\/?$/,
+    /^\/supervisorportal\/tickets\/[^\/]+\/[^\/]+\/?$/,
+    /^\/supervisorportal\/createtennantacc\/[^\/]+\/?$/,
+    /^\/tenantportal\/createticket\/[^\/]+\/?$/,
+    /^\/supervisorportal\/landingpage\/[^\/]+\/?$/,
+    /^\/staffportal\/landingpage\/[^\/]+\/?$/,
+    /^\/tenantportal\/landingpage\/[^\/]+\/?$/,
+    /^\/adminportal\/landingpage\/[^\/]+\/?$/,
+    /^\/adminportal\/createsupervisoracc\/[^\/]+\/?$/,
+    /^\/adminportal\/createstaffacc\/[^\/]+\/?$/,
+    /^\/adminportal\/manageacc\/[^\/]+\/?$/,
+    /^\/adminportal\/manageacc\/[^\/]+\/building\/[^\/]+\/?$/,
+    /^\/tenantportal\/profile\/[^\/]+\/?$/,
+    /^\/supervisorportal\/profile\/[^\/]+\/?$/,
+    /^\/staffportal\/profile\/[^\/]+\/?$/
+];
+
+// const unauthorisedroutes = [ //regex
+//     /^\/tenantportal\/ticket\/[^\/]+\/[^\/]+$/,
+//     /^\/supervisorportal\/ticket\/[^\/]+\/[^\/]+$/,
+//     /^\/staffportal\/ticket\/[^\/]+\/[^\/]+$/,
+//     /^\/tenantportal\/tickets\/[^\/]+\/[^\/]+$/,
+//     /^\/staffportal\/tickets\/[^\/]+\/[^\/]+$/,
+//     /^\/supervisorportal\/tickets\/[^\/]+\/[^\/]+$/,
+//     /^\/supervisorportal\/createtennantacc\/[^\/]+$/,
+//     /^\/tenantportal\/createticket\/[^\/]+$/,
+//     /^\/supervisorportal\/landingpage\/[^\/]+$/,
+//     /^\/staffportal\/landingpage\/[^\/]+$/,
+//     /^\/tenantportal\/landingpage\/[^\/]+$/,
+//     /^\/adminportal\/landingpage\/[^\/]+$/,
+//     /^\/adminportal\/createsupervisoracc\/[^\/]+$/,
+//     /^\/adminportal\/createstaffacc\/[^\/]+$/,
+//     /^\/adminportal\/manageacc\/[^\/]+$/,
+//     /^\/adminportal\/manageacc\/[^\/]+\/building\/[^\/]+$/,
+//     /^\/tenantportal\/profile\/[^\/]+$/,
+//     /^\/supervisorportal\/profile\/[^\/]+$/,
+//     /^\/staffportal\/profile\/[^\/]+$/
+//   ];
 
 function generaterandom(){
     const routes = [
@@ -81,14 +104,32 @@ function generaterandom(){
         "filter"
     ]
 
+    const portalstart = [
+        "/tenantportal/",
+        "/adminportal/",
+        "/supervisorportal/",
+        "/staffportal/",
+    ]
+
+    const portalstart2 = [
+        "landingpage/",
+        "manageacc/",
+        "ticket/",
+        "tickets/",
+    ]
+
     const ran = ["","/"]
-    let URL = "/"
-    const timesran = Math.floor(Math.random()*6)
+    // let URL = "/"
+    let URL = Math.floor(Math.random()*2) === 0 ? "/" : portalstart[Math.floor(Math.random()*4)] + portalstart2[Math.floor(Math.random()*4)]
+    const timesran = Math.floor(Math.random()*4)
     for(let i=0;i<Math.floor(timesran);i++){
 
         let roll = ran[Math.floor(Math.random()*ran.length)] // add a / or not
+        if (i === 0) {
+            roll = ""
+        }
 
-        URL += routes[Math.floor(Math.random()*routes.length)] + roll
+        URL += roll + routes[Math.floor(Math.random()*routes.length)]
 
     }
     return URL
@@ -137,66 +178,107 @@ const Mockfuzz = (path)=>{
     )
 }
 
+const Mockfuzz2 = (path)=>{
+    render (
+        <MemoryRouter initialEntries={[path]}>
+            <Routes>
+                <Route path="/*" element={<Navbar />} />
+            </Routes>
+        </MemoryRouter>
+    )
+}
+
 describe("We test if our fuzzing works", ()=>{
-    test("user should be directed to the appropriate page if it's an unauthorised route",async ()=>{
-        for (let i =0;i<100;i++){
-            let path = generaterandom()
-            Mockfuzz(path) //we render the page again and again for each test for isolation
-            if (unauthorisedroutes.some(route => route.test(path))){ //for js, some works to match regex. Include doesn't work. Test is a function used with regex
-                console.log("Unauthorised Path:" + path)
+    for (let i =0;i<100;i++){
+        let path = generaterandom();
+        test(`user should be directed to the appropriate page if path is ${path}`, async ()=>{
+            Mockfuzz(path);
 
-                // const errormessage = screen.getByText("You cannot access this page.")
-                // expect(errormessage).toBeInTheDocument()
+            if (unauthorisedroutes.some(route => route.test(path))){ 
+                console.log("Unauthorised Path:" + path);
 
-                await waitFor(async()=>{
-
-                    const errormessage = await screen.getByText("You cannot access this page.");
+                await waitFor(() => {
+                    const errormessage = screen.getByText("You cannot access this page.");
                     expect(errormessage).toBeInTheDocument(); 
-                
-                })
+                });
 
-                //expect(screen.getAllByText("Housing Portal")[0]).toBeInTheDocument() //If it's a valid path, should see Nav Bar
-            }
-            else{
-                console.log("VALID PATH:" + path)
+            } else {
+                console.log("VALID PATH:" + path);
 
-                await waitFor(async()=>{
-
-                    const errorMessage = screen.queryByText("You cannot access this page."); //query find null
+                await waitFor(() => {
+                    const errorMessage = screen.queryByText("You cannot access this page.");
                     expect(errorMessage).not.toBeInTheDocument();
-                
-                })
+                    expect(screen.getAllByText(/.*portal/i)[0]).toBeInTheDocument() //Navbar must be present
+                });
 
-                // const errorMessage = screen.queryByText("You cannot access this page."); //query find null
-                // expect(errorMessage).not.toBeInTheDocument();
-
-                // await waitFor(()=>{
-
-                //     const errorMessage = screen.queryByText("You cannot access this page.");
-                //     expect(errorMessage).not.toBeInTheDocument();
-
-                // })
-                
-                //expect(()=> getAllByText("Housing Portal")).toThrow()
             }
-        
-        }
-    })
-
-    // test("user should be directed to the appropriate with expect",()=>{
-    //     for (let i =0;i<1;i++){
-    //         let path = generaterandom()
-    //         Mockfuzz(path)
-    //         if (validroutes.some(route => route.test(path))){ //for js, some works to match regex. Include doesn't work. Test is a function used with regex
-    //             console.log("VALID PATH:" + path)
-    //             expect(screen.getAllByText("Housing Portal")[0]).toBeInTheDocument() //If it's a valid path, should see Nav Bar
-    //         }
-    //         else{
-    //             console.log("INVALID PATH:" + path)
-    //             expect(()=> getAllByText("Housing Portal")).toThrow()
-    //         }
-        
-    //     }
-    // })
-
+        });
+    }
 })
+
+
+
+// describe("We test if our fuzzing works", ()=>{
+//     test("user should be directed to the appropriate page if it's an unauthorised route",async ()=>{
+//         for (let i =0;i<1;i++){
+//             let path = "/ticketsadminlogi"//Generaterandom is skewed towards generating authorized routes. Maybe should change the code a bit.
+//             Mockfuzz(path) //we render the page again and again for each test for isolation
+//             console.log(path)
+//             if (unauthorisedroutes.some(route => route.test(path))){ //for js, some works to match regex. Include doesn't work. Test is a function used with regex
+//                 console.log("Unauthorised Path:" + path)
+
+//                 // const errormessage = screen.getByText("You cannot access this page.")
+//                 // expect(errormessage).toBeInTheDocument()
+
+//                 await waitFor(async()=>{
+
+//                     const errormessage = await screen.getByText("You cannot access this page.");
+//                     expect(errormessage).toBeInTheDocument(); 
+                
+//                 })
+
+//                 //expect(screen.getAllByText("Housing Portal")[0]).toBeInTheDocument() //If it's a valid path, should see Nav Bar
+//             }
+//             else{
+//                 console.log("VALID PATH:" + path)
+
+//                 await waitFor(async()=>{
+
+//                     const errorMessage = screen.queryByText("You cannot access this page."); //query find null
+//                     expect(errorMessage).not.toBeInTheDocument();
+                
+//                 })
+
+//                 // const errorMessage = screen.queryByText("You cannot access this page."); //query find null
+//                 // expect(errorMessage).not.toBeInTheDocument();
+
+//                 // await waitFor(()=>{
+
+//                 //     const errorMessage = screen.queryByText("You cannot access this page.");
+//                 //     expect(errorMessage).not.toBeInTheDocument();
+
+//                 // })
+                
+//                 //expect(()=> getAllByText("Housing Portal")).toThrow()
+//             }
+        
+//         }
+//     })
+
+//     // test("user should be directed to the appropriate with expect",()=>{
+//     //     for (let i =0;i<1;i++){
+//     //         let path = generaterandom()
+//     //         Mockfuzz(path)
+//     //         if (validroutes.some(route => route.test(path))){ //for js, some works to match regex. Include doesn't work. Test is a function used with regex
+//     //             console.log("VALID PATH:" + path)
+//     //             expect(screen.getAllByText("Housing Portal")[0]).toBeInTheDocument() //If it's a valid path, should see Nav Bar
+//     //         }
+//     //         else{
+//     //             console.log("INVALID PATH:" + path)
+//     //             expect(()=> getAllByText("Housing Portal")).toThrow()
+//     //         }
+        
+//     //     }
+//     // })
+
+// })
