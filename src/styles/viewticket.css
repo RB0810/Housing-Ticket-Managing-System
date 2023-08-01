@@ -51,5 +51,26 @@
   width: 80%;
 }
 
+.comments-section{
+  margin-top: 1rem;
+}
+
+.button-group{
+  margin-top: 1rem;
+}
+
+.view-ticvket-special-div{
+  margin-top: 1rem;
+}
+
+.quotationrequired-header{
+  text-align: left;
+  margin-left: 10%;
+}
   
+.viewticket-select{
+  width: 80%;
+  text-align: center;
+}
+
 

@@ -12,7 +12,7 @@ import DisplayQuotation from "../../components/DisplayQuotation";
 import Cookies from "js-cookie";
 
 import "./../../styles/viewticket.css";
-import { Grid, Button, Select, MenuItem, OutlinedInput} from "@mui/material";
+import { Grid, Button, Select, MenuItem, OutlinedInput, TextField} from "@mui/material";
 
 const ViewTicketSupervisor = () => {
   const accountManager = new AccountManager();
@@ -179,13 +179,14 @@ const ViewTicketSupervisor = () => {
       return (
         <div>
           <form onSubmit={handleReject}>
-            <label>
-              Reason for Reject :
-              <textarea
-                value={rejectComments}
-                onChange={(e) => setRejectComments(e.target.value)}
-              ></textarea>
-            </label>
+              <TextField
+              className="view-ticket-textfield"
+              id="outlined-basic"
+              multiline='true'
+              label ="Reason for Reject"
+              variant="filled"
+              value={rejectComments}
+              onChange={(e) => setRejectComments(e.target.value)}/>
             <Button
             variant="contained"
             onClick={handleReject}>
@@ -302,9 +303,6 @@ const ViewTicketSupervisor = () => {
             <Grid item xs={12}>
               <AssignedToCard staff={staff} />
             </Grid>
-          </Grid>
-          <Grid item xs ={6}>
-
           </Grid>
         </Grid>
       </div>

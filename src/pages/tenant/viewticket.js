@@ -161,7 +161,6 @@ const ViewTicketTenant = () => {
       return (
         <div class="comments-section">
           <form onSubmit={handleRejectQuotation}>
-
             <Grid container spacing={1}>
               <Grid item xs={12}>
                 <TextField
@@ -446,250 +445,291 @@ const ViewTicketTenant = () => {
 
   if (status === "Awaiting Review") {
     return (
-      <div class="ticket-grid">
-        <div class="ticket-details">
-          <BasicTicketDetails ticket={serviceTicket} />
-        </div>
-
-        <div class="delete-ticket-button">
-          <Button
-          onClick={() => handleDeleteTicket()}
-          variant="contained"
-          className="view-ticket-button">
-            Delete Ticket
-          </Button>
-        </div>
+      <div>
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+              onClick={() => handleDeleteTicket()}
+              variant="contained"
+              className="view-ticket-button">
+                Delete Ticket
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
       </div>
     );
   }
 
   if (status === "Ticket Assigned") {
     return (
-      <div class="ticket-grid">
-        <div class="ticket-details">
-          <BasicTicketDetails ticket={serviceTicket} />
-        </div>
-        <div class="assigned-to-card">
-          <AssignedToCard staff={staff} />
-        </div>
+      <div>
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <AssignedToCard staff={staff} />
+            </Grid>
+          </Grid>
+        </Grid>
       </div>
     );
   }
 
   if (status === "Quotation Uploaded") {
     return (
-      <div class="ticket-grid">
-        <div class="ticket-details">
-          <BasicTicketDetails ticket={serviceTicket} />
-        </div>
-        <div class="assigned-to-card">
-          <AssignedToCard staff={staff} />
-        </div>
-        {showQuotationButtons && (
-          <div class="button-group">
-            <Grid container spacing={1} columnSpacing={0}>
-              <Grid item xs={12}>
-                <Button
-                variant="contained"
-                onClick={() => handleAcceptQuotation()}
-                className="view-ticket-button">
-                  Accept Quotation
-                </Button>
-              </Grid>
-              <Grid item xs={12}>
-                <Button
-                variant="contained"
-                className="view-ticket-button"
-                onClick={() => handleQuotationAcceptRejectClick("reject")}>
-                  Reject Quotation
-                </Button>
-              </Grid>
+      <div>
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
             </Grid>
-          </div>
-        )}
-        {renderContent()}
-        {quotationRequired && (
-          <div class="quotation">
-            <DisplayQuotation
-              ServiceRequestID={serviceTicket.ServiceRequestID}
-            />
-          </div>
-        )}
+            <Grid item xs={12}>
+              <AssignedToCard staff={staff} />
+            </Grid>
+            <Grid item xs={12}>
+              {showQuotationButtons && (
+                <div class="button-group">
+                  <Grid container spacing={1} >
+                    <Grid item xs={12}>
+                      <Button
+                      variant="contained"
+                      onClick={() => handleAcceptQuotation()}
+                      className="view-ticket-button">
+                        Accept Quotation
+                      </Button>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Button
+                      variant="contained"
+                      className="view-ticket-button"
+                      onClick={() => handleQuotationAcceptRejectClick("reject")}>
+                        Reject Quotation
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </div>
+              )}
+              {renderContent()}
+            </Grid>
+          </Grid>
+          <Grid item xs={6}>
+            {quotationRequired && (
+                <div class="quotation">
+                  <DisplayQuotation
+                    ServiceRequestID={serviceTicket.ServiceRequestID}
+                  />
+                </div>
+              )}
+          </Grid>
+        </Grid>
       </div>
     );
   }
 
   if (status === "Quotation Rejected") {
     return (
-      <div class="ticket-grid">
-        <div class="ticket-details">
-          <BasicTicketDetails ticket={serviceTicket} />
-        </div>
-        <div class="assigned-to-card">
-          <AssignedToCard staff={staff} />
-        </div>
-        <div class="reject-reason">
-          <Grid container spacing={1}>
+      <div>
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs={4}>
             <Grid item xs={12}>
-              <TextField
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <AssignedToCard staff={staff} />
+            </Grid>
+          </Grid>
+          <Grid item xs={4}>
+            <TextField
               className="view-ticket-textfield"
               id="outlined-basic"
               multiline='true'
               label='Reason for Reject Quotation'
               variant="filled"
               value={serviceTicket.FeedbackComments}/>
-            </Grid>
           </Grid>
-        </div>
-        <div class="quotation">
-          <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
-        </div>
+          <Grid item xs={6}>
+            <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+          </Grid>
+        </Grid>
       </div>
     );
   }
 
   if (status === "Quotation Accepted") {
     return (
-      <div class="ticket-grid">
-        <div class="ticket-details">
-          <BasicTicketDetails ticket={serviceTicket} />
-        </div>
-        <div class="assigned-to-card">
-          <AssignedToCard staff={staff} />
-        </div>
-        <div class="quotation">
+      <div>
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <AssignedToCard staff={staff} />
+            </Grid>
+          </Grid>
+          <Grid item xs={6}>
           <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
-        </div>
+          </Grid>
+        </Grid>
       </div>
     );
   }
 
   if (status === "Works Started") {
     return (
-      <div class="ticket-grid">
-        <div class="ticket-details">
-          <BasicTicketDetails ticket={serviceTicket} />
-        </div>
-        <div class="assigned-to-card">
-          <AssignedToCard staff={staff} />
-        </div>
-        {quotationRequired && (
-          <div class="quotation">
-            <DisplayQuotation
-              ServiceRequestID={serviceTicket.ServiceRequestID}
-            />
-          </div>
-        )}
+      <div>
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <AssignedToCard staff={staff} />
+            </Grid>
+          </Grid>
+          <Grid item xs={6}>
+            {quotationRequired && (
+              <div class="quotation">
+                <DisplayQuotation
+                  ServiceRequestID={serviceTicket.ServiceRequestID}
+                />
+              </div>
+            )}
+          </Grid>
+        </Grid>
       </div>
     );
   }
 
   if (status === "Works Ended") {
     return (
-      <div class="ticket-grid">
-        <div class="ticket-details">
-          <BasicTicketDetails ticket={serviceTicket} />
-        </div>
-        <div class="assigned-to-card">
-          <AssignedToCard staff={staff} />
-        </div>
-        {showFeedbackButtons && (
-          <div class="button-group">
-            <Grid container spacing={1} columnSpacing={0}>
-              <Grid item xs={12}>
-                <Button
-                variant="contained"
-                onClick={() => handleFeedbackClick("feedback")}
-                className="view-ticket-button">
-                  Give Feedback
-                </Button>
-              </Grid>
-              <Grid item xs={12}>
-                <Button
-                variant="contained"
-                className="view-ticket-button"
-                onClick={() => handleFeedbackClick("reject")}>
-                  Not Satisfied
-                </Button>
-              </Grid>
+      <div>
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
             </Grid>
-          </div>
-        )}
-        {renderContent()}
-
-        {quotationRequired && (
-          <div class="quotation">
-            <DisplayQuotation
-              ServiceRequestID={serviceTicket.ServiceRequestID}
-            />
-          </div>
-        )}
+            <Grid item xs={12}>
+              <AssignedToCard staff={staff} />
+            </Grid>
+            <Grid item xs={12}>
+              {showFeedbackButtons && (
+                <div class="button-group">
+                  <Grid container spacing={1} columnSpacing={0}>
+                    <Grid item xs={12}>
+                      <Button
+                      variant="contained"
+                      onClick={() => handleFeedbackClick("feedback")}
+                      className="view-ticket-button">
+                        Give Feedback
+                      </Button>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Button
+                      variant="contained"
+                      className="view-ticket-button"
+                      onClick={() => handleFeedbackClick("reject")}>
+                        Not Satisfied
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </div>
+              )}
+              {renderContent()}
+            </Grid>
+          </Grid>
+          <Grid item xs={6}>
+            {quotationRequired && (
+              <div class="quotation">
+                <DisplayQuotation
+                  ServiceRequestID={serviceTicket.ServiceRequestID}
+                />
+              </div>
+            )}
+          </Grid>
+        </Grid>
       </div>
     );
   }
 
   if (status === "Works Rejected") {
     return (
-      <div class="ticket-grid">
-        <div class="ticket-details">
-          <BasicTicketDetails ticket={serviceTicket} />
-        </div>
-        <div class="assigned-to-card">
-          <AssignedToCard staff={staff} />
-        </div>
-
-        {quotationRequired && (
-          <div class="quotation">
-            <DisplayQuotation
-              ServiceRequestID={serviceTicket.ServiceRequestID}
-            />
-          </div>
-        )}
-
-        <div class="reject-reason">
-          <Grid container spacing={1}>
+      <div>
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs={4}>
             <Grid item xs={12}>
-              <TextField
-              className="view-ticket-textfield"
-              multiline='true'
-              id="outlined-basic"
-              label='Reason for Reject'
-              variant="filled"
-              value={serviceTicket.FeedbackComments}/>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <AssignedToCard staff={staff} />
+            </Grid>
+            <Grid item xs={12}>
+              {quotationRequired && (
+                <div class="quotation">
+                  <DisplayQuotation
+                    ServiceRequestID={serviceTicket.ServiceRequestID}
+                  />
+                </div>
+              )}
+            </Grid>
+            <Grid item xs={12}>
+              <div className="view-ticvket-special-div">
+                <TextField
+                className="view-ticket-textfield"
+                multiline='true'
+                id="outlined-basic"
+                label='Reason for Reject'
+                variant="filled"
+                value={serviceTicket.FeedbackComments}/>
+              </div>
             </Grid>
           </Grid>
-        </div>
+        </Grid>
       </div>
     );
   }
 
   if (status === "Feedback Submitted") {
     return (
-      <div class="ticket-grid">
-        <div class="ticket-details">
-          <BasicTicketDetails ticket={serviceTicket} />
-        </div>
-        <div class="final-staff-tenant-details">
-          <AssignedToCard staff={staff} />
-        </div>
-        <div class="final-feedback-details">
-          <ViewFinalFeedbackDetails
-            rating={serviceTicket.FeedbackRating}
-            comments={serviceTicket.FeedbackComments}
-          />
-        </div>
+      <div>
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <AssignedToCard staff={staff} />
+            </Grid>
+            <Grid item xs={12}>
+              <ViewFinalFeedbackDetails
+              rating={serviceTicket.FeedbackRating}
+              comments={serviceTicket.FeedbackComments}
+              />
+            </Grid>
+          </Grid>
+          <Grid item xs={6}>
+            {quotationRequired && (
+              <div class="quotation">
+                {/* <DownloadQuotation
+                  bucketName="quotation"
+                  ServiceRequestID={serviceTicket.ServiceRequestID}
+                /> */}
+                <DisplayQuotation
+                  ServiceRequestID={serviceTicket.ServiceRequestID}
+                />
+              </div>
+            )}
+          </Grid>
+        </Grid>
 
-        {quotationRequired && (
-          <div class="quotation">
-            {/* <DownloadQuotation
-              bucketName="quotation"
-              ServiceRequestID={serviceTicket.ServiceRequestID}
-            /> */}
-            <DisplayQuotation
-              ServiceRequestID={serviceTicket.ServiceRequestID}
-            />
-          </div>
-        )}
+        
       </div>
     );
   }
