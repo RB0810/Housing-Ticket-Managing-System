@@ -278,13 +278,13 @@ export default function SupervisorPortal() {
                 )}</TableCell>
 
               <TableCell sx={{ fontWeight: 'bold' }} align="left">Submitted By<IconButton
-                onClick={() => setIsRequestFilterOpen(!isSubmittedByFilterOpen)}><SortIcon></SortIcon></IconButton>
+                onClick={() => setIsSubmittedByFilterOpen(!isSubmittedByFilterOpen)}><SortIcon></SortIcon></IconButton>
                 {(
                   <div className={`filter-dropdown${isSubmittedByFilterOpen ? ' open' : ''}`}>
                     <input
                       type="text"
                       value={submittedByFilter}
-                      onChange={(e) => setSubmittedByFilter(e.target.value)}
+                      onChange={(e) => setIsSubmittedByFilterOpen(e.target.value)}
                       placeholder="Filter by submitted..."
                     />
                   </div>
