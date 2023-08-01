@@ -95,7 +95,10 @@ const ViewTicketStaff = () => {
         setFetchError(null);
       } else if (ticketData.length === 0) {
         setFetchError("This ticket is EMPTY!");
-        window.alert("Ticket empty!");
+        Swal.fire({
+          icon: "error",
+          title: "Ticket is empty"
+        });
         setServiceTicket();
       } else {
         setFetchError("Error finding this ticket :(");
@@ -154,10 +157,19 @@ const ViewTicketStaff = () => {
         //sendNotif,
       ]);
 
-      window.alert("QUOTATION UPDATE SUCCESSFUL!");
-      window.location.reload();
+      // Swal.fire({
+      //   icon: "success",
+      //   title: "Update Quotation successful"
+      // }).then((result) => {
+      //   if (result.isConfirmed) {
+      //     window.location.reload();
+      //   }
+      // });
     } catch (error) {
-      window.alert("ERROR IN CONTINUE FOR QUOTATION UPLOAD");
+      Swal.fire({
+        icon: "error",
+        title: "Error in continue for quotation upload"
+      });
     }
   };
 
@@ -175,10 +187,19 @@ const ViewTicketStaff = () => {
       // } catch (error) {
       //   console.log(error);
       // }
-      window.alert("QUOTATION UPDATE SUCCESSFUL!");
-      window.location.reload();
+      Swal.fire({
+        icon: "success",
+        title: "Update Quotation successful"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
     } catch (error) {
-      window.alert("ERROR IN REUPLOAD FOR QUOTATION UPLOAD");
+      Swal.fire({
+        icon: "error",
+        title: "Quotation reupload error"
+      });
     }
   };
 
@@ -200,11 +221,20 @@ const ViewTicketStaff = () => {
       // }
 
       // Perform any additional actions or display a success message
-      window.alert("Works Started!");
-      window.location.reload();
+      Swal.fire({
+        icon: "success",
+        title: "Works started"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
     } catch (error) {
       // Handle errors appropriately
-      window.alert("Update Failed!");
+      Swal.fire({
+        icon: "error",
+        title: "Update failed"
+      });
     }
   };
 
@@ -226,11 +256,20 @@ const ViewTicketStaff = () => {
       // }
 
       // Perform any additional actions or display a success message
-      window.alert("Update Successful!");
-      window.location.reload();
+      Swal.fire({
+        icon: "success",
+        title: "Update successful"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
     } catch (error) {
       // Handle errors appropriately
-      window.alert("Update Failed!");
+      Swal.fire({
+        icon: "error",
+        title: "Update failed"
+      });
     }
   };
 
@@ -280,8 +319,7 @@ const ViewTicketStaff = () => {
         Swal.fire({
           // Display error alert
           icon: "error",
-          title: "Oops...",
-          text: "Failed to update the file path in the database!",
+          title: "Error uploading Quotation"
         });
         return { error: updateError };
       }
@@ -290,8 +328,7 @@ const ViewTicketStaff = () => {
       Swal.fire({
         // Display success alert
         icon: "success",
-        title: "Uploaded",
-        text: "Your file has been uploaded and the file path is updated.",
+        title: "Quotation Uploaded"
       });
       return { data: updateData };
     } catch (error) {
@@ -322,11 +359,17 @@ const ViewTicketStaff = () => {
       URL.revokeObjectURL(url);
 
       if (error) {
-        window.alert("Error downloading file!");
+        Swal.fire({
+          icon: "error",
+          title: "Error downloading file"
+        });
         return;
       }
     } catch (error) {
-      window.alert("Error downloading file!");
+      Swal.fire({
+        icon: "error",
+        title: "Error downloading file"
+      });
     }
   };
 

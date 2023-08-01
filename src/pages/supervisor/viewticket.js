@@ -10,6 +10,7 @@ import NotificationManager from "../../managers/notificationmanager";
 import UploadQuotation from "../../components/UploadQuotation";
 import DisplayQuotation from "../../components/DisplayQuotation";
 import Cookies from "js-cookie";
+import Swal from "sweetalert2";
 
 import "./../../styles/viewticket.css";
 
@@ -124,8 +125,14 @@ const ViewTicketSupervisor = () => {
         //sendNotif
       ]);
 
-      window.alert("Ticket Assigned");
-      window.location.reload();
+      Swal.fire({
+        icon: "success",
+        title: "Ticket Assigned"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
       // Perform any additional actions or display a success message
     } catch (error) {
       // Handle errors appropriately
@@ -162,8 +169,14 @@ const ViewTicketSupervisor = () => {
         rejectTicketCommentsPromise,
         //sendNotif
       ]);
-      window.alert("Ticket Rejected");
-      window.location.reload();
+      Swal.fire({
+        icon: "success",
+        title: "Ticket rejected"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
       // Perform any additional actions or display a success message
     } catch (error) {
       // Handle errors appropriately
