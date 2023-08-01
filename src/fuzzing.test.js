@@ -28,13 +28,16 @@ import BuildingDetailsPage from "./pages/admin/BuildingDetailsPage";
 import TenantProfile from "./pages/tenant/profile";
 import SupervisorProfile from "./pages/supervisor/profile";
 import StaffProfile from "./pages/staff/profile";
+import UnauthorizedAccess from "./pages/unauthorized_access";
 import { render, screen, waitFor } from '@testing-library/react';
 
-const validroutes = [ //regex
+const validroutes = [
     /^\/$/,
     /^\/tenantlogin$/,
     /^\/landlordlogin$/,
     /^\/adminlogin$/,
+]
+const unauthorisedroutes = [ //regex
     /^\/tenantportal\/ticket\/[^\/]+\/[^\/]+$/,
     /^\/supervisorportal\/ticket\/[^\/]+\/[^\/]+$/,
     /^\/staffportal\/ticket\/[^\/]+\/[^\/]+$/,
@@ -91,17 +94,6 @@ function generaterandom(){
     return URL
 }
 
-const Mockfuzz2 = (path)=>{
-    console.log("WOWZA!")
-    render (
-        <MemoryRouter initialEntries={[path]}>
-            <Routes>
-                <Route path="/*" element={<Navbar />} />
-            </Routes>
-        </MemoryRouter>
-    )
-}
-
 const Mockfuzz = (path)=>{
     render (
         <MemoryRouter initialEntries={[path]}>
@@ -138,6 +130,7 @@ const Mockfuzz = (path)=>{
                 <Route path="/tenantportal/profile/:TenantID" element={<TenantProfile />} />
                 <Route path="/supervisorportal/profile/:SupervisorID" element={<SupervisorProfile />} />
                 <Route path="/staffportal/profile/:StaffID" element={<StaffProfile />} />
+                <Route path="/unauthorize" element={<UnauthorizedAccess />} />
                 </Routes>
             </div>
         </MemoryRouter>
@@ -145,40 +138,50 @@ const Mockfuzz = (path)=>{
 }
 
 describe("We test if our fuzzing works", ()=>{
-    // test("user should be directed to the appropriate page",async ()=>{
-    //     for (let i =0;i<1;i++){
-    //         let path = generaterandom()
-    //         path = "/asddddddddddddddddddddddds"
-    //         Mockfuzz2(path)
-    //         if (validroutes.some(route => route.test(path))){ //for js, some works to match regex. Include doesn't work. Test is a function used with regex
-    //             console.log("VALID PATH:" + path)
+    test("user should be directed to the appropriate page if it's an unauthorised route",async ()=>{
+        for (let i =0;i<100;i++){
+            let path = generaterandom()
+            Mockfuzz(path) //we render the page again and again for each test for isolation
+            if (unauthorisedroutes.some(route => route.test(path))){ //for js, some works to match regex. Include doesn't work. Test is a function used with regex
+                console.log("Unauthorised Path:" + path)
 
-    //             await waitFor(async()=>{
+                // const errormessage = screen.getByText("You cannot access this page.")
+                // expect(errormessage).toBeInTheDocument()
 
-    //                 const items = await screen.findAllByText("Housing Portal");
-    //                 expect(items[0]).toBeInTheDocument(); 
+                await waitFor(async()=>{
+
+                    const errormessage = await screen.getByText("You cannot access this page.");
+                    expect(errormessage).toBeInTheDocument(); 
                 
+                })
 
-    //             })
+                //expect(screen.getAllByText("Housing Portal")[0]).toBeInTheDocument() //If it's a valid path, should see Nav Bar
+            }
+            else{
+                console.log("VALID PATH:" + path)
 
-    //             //expect(screen.getAllByText("Housing Portal")[0]).toBeInTheDocument() //If it's a valid path, should see Nav Bar
-    //         }
-    //         else{
-    //             console.log("INVALID PATH:" + path)
+                await waitFor(async()=>{
 
-    //             await waitFor(()=>{
-
-    //                 const items = screen.queryAllByText("Housing Portal");
-    //                 console.log("THIS ARE MY ITEMS!" + items)
-    //                 expect(items).toHaveLength(0);
-
-    //             })
+                    const errorMessage = screen.queryByText("You cannot access this page."); //query find null
+                    expect(errorMessage).not.toBeInTheDocument();
                 
-    //             //expect(()=> getAllByText("Housing Portal")).toThrow()
-    //         }
+                })
+
+                // const errorMessage = screen.queryByText("You cannot access this page."); //query find null
+                // expect(errorMessage).not.toBeInTheDocument();
+
+                // await waitFor(()=>{
+
+                //     const errorMessage = screen.queryByText("You cannot access this page.");
+                //     expect(errorMessage).not.toBeInTheDocument();
+
+                // })
+                
+                //expect(()=> getAllByText("Housing Portal")).toThrow()
+            }
         
-    //     }
-    // })
+        }
+    })
 
     // test("user should be directed to the appropriate with expect",()=>{
     //     for (let i =0;i<1;i++){
