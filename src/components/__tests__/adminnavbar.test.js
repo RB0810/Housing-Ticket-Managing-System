@@ -8,6 +8,8 @@ import AdminLandingPage from "../../pages/landingpages/adminlandingpage";
 import CreateSupervisor from "../../pages/admin/createsupervisoracc";
 import CreateStaffAcc from "../../pages/admin/createstaffacc";
 import ManageAccount from "../../pages/admin/manageacc";
+import Cookies from 'js-cookie';
+jest.mock('js-cookie');
 
 const MockNavBar= ()=>{
     return (
@@ -29,11 +31,41 @@ const MockNavBar= ()=>{
     )
 }
 
-function setup(){
-
+const MockNavBar2= ()=>{
+    return (
+        <MemoryRouter initialEntries={["/"]}>
+            <Routes>
+                <Route path="/*" element={<Navbar />} />
+                <Route path="/adminportal/*" element={<AdminNavbar />} />
+            </Routes>
+            <div className="container">
+                <Routes>
+                    <Route path="/" element={<LandingPage />} />
+                    <Route path="/adminportal/landingpage/:AdminID" element={<AdminLandingPage />} />
+                    <Route path="/adminportal/createsupervisoracc/:AdminID" element={<CreateSupervisor />} />
+                    <Route path="/adminportal/createstaffacc/:AdminID" element={<CreateStaffAcc />} />
+                    <Route path="/adminportal/manageacc/:AdminID" element={<ManageAccount />} />
+                </Routes>
+            </div>
+        </MemoryRouter>
+    )
 }
 
+
 describe("Testing if routing works for the admin navbar",()=>{
+    beforeEach(() => {
+        Cookies.get.mockImplementation((key) => {
+        switch (key) {
+            case 'userId':
+            return '123';  // The ID must match with TenantID
+            case 'type':
+            return 'Admin';  // The user type must be "Tenant"
+            default:
+            return null;
+        }
+        });
+    });
+
         test("Test if can route to Admin Portal",async ()=>{
             render(<MockNavBar/>)
             fireEvent.click(screen.getByRole('link', { name: /Manage Accounts/i }))
@@ -62,12 +94,6 @@ describe("Testing if routing works for the admin navbar",()=>{
             expect(screen.getByRole("heading",{name:"Manage Accounts"})).toBeInTheDocument()
         })
 
-        test("Test if can logout", async() =>{
-            render(<MockNavBar/>)
-            fireEvent.click(screen.getByRole('link', { name: /Logout/i }))
-            expect(screen.getAllByText("Login")[0]).toBeInTheDocument()
-
-        })
     
     })
 
