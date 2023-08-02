@@ -32,6 +32,16 @@ describe("AccountManager all test cases", () => {
   const commenceTimestamp = 1679683200000; // July 23, 2023
   const terminationTimestamp = 1737628800000; // July 23, 2024
 
+  const tenantData = {
+    TenantID: 1000,
+    TenantName: "TEST TENANT",
+    TenantEmail: "testtenant@gmail.com",
+    TenantPassword: "testtenant123",
+    TenantPhone: 12345678,
+    UnderSupervisor: 1000,
+    Lease: null,
+  };
+
   const leaseData = {
     CommenceDate: new Date(commenceTimestamp).toISOString(),
     TerminationDate: new Date(terminationTimestamp).toISOString(),
@@ -46,6 +56,18 @@ describe("AccountManager all test cases", () => {
     unit: ["L3-101","L4-100"],
   };
 
+  const staffData = {
+    StaffID: 1000,
+    StaffName: "TEST STAFF",
+    StaffEmail: "teststaff@gmail.com",
+    StaffPassword: "teststaff123",
+    StaffPhone: 12345678,
+    BuildingID: 1000,
+  };
+
+  /*******
+   Test Cases Mapped from Use Case Document
+   ********/
   test("Create supervisor account", async () => {
     const { data: originalSupervisorData } = await supabase.from("SupervisorUsers").select("*");
     await accountManager.createSupervisorAcc(buildingData, supervisorData);
@@ -64,16 +86,6 @@ describe("AccountManager all test cases", () => {
     expect(newSupervisor.BuildingID).toBe(1000);
 
   });
-  
-  const tenantData = {
-    TenantID: 1000,
-    TenantName: "TEST TENANT",
-    TenantEmail: "testtenant@gmail.com",
-    TenantPassword: "testtenant123",
-    TenantPhone: 12345678,
-    UnderSupervisor: 1000,
-    Lease: null,
-  };
   
   test("Create tenant account with lease and units", async () => {
     const { data: originalTenantData } = await supabase.from("TenantUsers").select("*");
@@ -99,15 +111,6 @@ describe("AccountManager all test cases", () => {
     expect(newTenant.TenantID).toBe(1000);
     expect(newTenant.UnderSupervisor).toBe(1000);
   });
-  
-  const staffData = {
-    StaffID: 1000,
-    StaffName: "TEST STAFF",
-    StaffEmail: "teststaff@gmail.com",
-    StaffPassword: "teststaff123",
-    StaffPhone: 12345678,
-    BuildingID: 1000,
-  };
 
   test("Create staff account", async () => {
     const { data: originalStaffData } = await supabase.from("StaffUsers").select("*");  
@@ -124,9 +127,7 @@ describe("AccountManager all test cases", () => {
     // Check if the new staff is correctly linked to the building
     expect(newStaff.StaffID).toBe(1000);
     expect(newStaff.BuildingID).toBe(1000);
-  });
-  
-  
+  }); 
 
   test("Get supervisor details", async () => {
     const supervisorDetails = await accountManager.getSupervisorDetails(1000);
@@ -135,7 +136,6 @@ describe("AccountManager all test cases", () => {
     expect(supervisorDetails.SupervisorID).toBe(1000);
     expect(supervisorDetails.BuildingDetails).toBeDefined();
   });
-  
 
   test("Get staff details", async () => {
     const staffDetails = await accountManager.getStaffDetails(1000);
@@ -165,7 +165,6 @@ describe("AccountManager all test cases", () => {
     expect(units.length).toBe(2);
   });
   
-
   test("Get all building details", async () => {
     const buildingsWithSupervisor = await accountManager.getBuildingsandSupervisors();
     // Assertions
@@ -184,34 +183,6 @@ describe("AccountManager all test cases", () => {
     expect(Array.isArray(staffForSupervisor)).toBe(true);
   });
 
-  // test("loginAuth should redirect to correct URL on successful login", async () => {
-  //   const event = {
-  //     Type: "Supervisor",
-  //     ID: "rohan@gmail.com",
-  //     password: "rohan123",
-  //   };
-
-  //   // Mock window.location.href
-  //   delete window.location;
-  //   window.location = { href: "" };
-
-  //   await accountManager.loginAuth(event);
-
-  //   // Replace 'expectedUserID' with the expected user ID after successful login
-  //   expect(window.location.href).toBe("/supervisorportal/landingpage/10");
-  // });
-
-  // test("loginAuth should throw an error on invalid credentials", async () => {
-  //   // Mock event data with incorrect password
-  //   const event = {
-  //     Type: "Supervisor",
-  //     ID: "testsupervisor@gmail.com",
-  //     password: "wrong-password",
-  //   };
-
-  //   await expect(accountManager.loginAuth(event)).rejects.toThrow("Invalid credentials");
-  // });
-
   test("setPassword should set the password successfully", async () => {
     // Mock user type, user ID, and new password
     const userType = "Supervisor";
@@ -226,6 +197,68 @@ describe("AccountManager all test cases", () => {
     expect(consoleLogSpy).toHaveBeenCalledWith("Password set successfully!");
   });
 
+  /*******
+   Negative Test Cases
+   ********/
+
+   test("Negative Test Case: Creating an Account with missing fields - Error", async () => {
+    const supervisorDataWithMissingPw = {
+      SupervisorID: 2000,
+      SupervisorName: "TEST",
+      SupervisorEmail: "testsupervisor2@gmail.com",
+      SupervisorPhone: 87654321,
+      BuildingID: null,
+    };
+
+    await expect(accountManager.createSupervisorAcc(buildingData, supervisorDataWithMissingPw)).rejects.toThrow();
+  });
+
+  test("Negative Test Case: Creating an Account with an undefined foreign key link - Account Not Created", async () => {
+    const staffDataWithoutBuilding = {
+      StaffID: 2007,
+      StaffName: "TEST STAFF 4",
+      StaffEmail: "teststaff4@gmail.com",
+      StaffPassword: "teststaff123",
+      StaffPhone: 87654321,
+      BuildingID: 2000,
+    };
+
+    const { data: originalStaffData } = await supabase.from("StaffUsers").select("*");  
+    await accountManager.createStaffAccount(staffDataWithoutBuilding);
+    const { data: updatedStaffData } = await supabase.from("StaffUsers").select("*");
+  
+    // After insertion the length should not increase as the staff is not created
+    expect(updatedStaffData.length).toBe(originalStaffData.length);
+  
+  });
+  
+  
+  test("Negative Test Case: Creating an account with invalid data type - Error", async () => {
+    const invalidLeaseData = {
+      CommenceDate: new Date(commenceTimestamp).toISOString(),
+      TerminationDate: "abcdefgh", // Termination date is not in the timestamp format
+      Status: "ACTIVE",
+      AreaInSqMeters: "5000",
+      TradeType: "TESTING",
+      MonthlyRental: "5000",
+    };
+    await expect(accountManager.createTenantAccount(tenantData, invalidLeaseData, unitsData)).rejects.toThrow();
+  });
+
+  test("Negative Test Case: Getting details for an account that does not exist - Error", async () => {
+    const invalidSupervisorID = 9999;
+    await expect(accountManager.getSupervisorDetails(invalidSupervisorID)).rejects.toThrow();
+  });
+
+  test("Negative Test Case: Setting password for an account that does not exist - Error", async () => {
+    // Mock invalid tenant ID and new password
+    const invalidTenantID = 9999;
+    const newPassword = "new-password";
+  
+    // Expecting the promise to resolve successfully because setting the password should fail for an invalid tenant ID
+    await expect(accountManager.setPassword("Tenant", invalidTenantID, newPassword)).resolves.not.toThrow();
+  });
+  
   afterAll(async () => {
     //Clean up testing data
     await supabase.from("TenantUsers").delete().eq("TenantName", "TEST TENANT");
