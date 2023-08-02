@@ -6,7 +6,7 @@ import AccountManager from "../../managers/accountmanager";
 import "./../../styles/createticket.css";
 import NotificationManager from "../../managers/notificationmanager";
 import Cookies from "js-cookie";
-
+import Swal from "sweetalert2";
 import TextField from '@mui/material/TextField';
 import Box from "@mui/material/Box";
 import MenuItem from '@mui/material/MenuItem';
@@ -102,10 +102,19 @@ const CreateTicket = () => {
         // } catch (error) {
         //   console.error("Mail sending error:", error);
         // }
-      window.alert("Ticket Submitted Successfully");
-      window.location.reload();
+        Swal.fire({
+          icon: "success",
+          title: "Ticket submitted successfully!",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        });
     } catch (error) {
-      window.alert("Error submitting ticket");
+      Swal.fire({
+        icon: "error",
+        title: "Error submitting ticket",
+      });
     } finally {
       setLoading(false);
     }

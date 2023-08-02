@@ -22,11 +22,11 @@ export default function ViewFinalFeedbackDetails({ rating, comments }) {
 
   return (
     <div>
-      <h2>Final Feedback Details</h2>
+      <h2 className='feedback-header'>Final Feedback Details</h2>
       <div>
         <Grid container spacing={1}>
           <Grid item xs={12}>
-            <p>Rating: {renderRatingStars()}</p>
+            <p className='feedback-rating'>Rating: {renderRatingStars()}</p>
           </Grid>
           <Grid item xs={12}>
             <TextField

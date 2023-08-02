@@ -92,7 +92,7 @@ const CreateTenantAcc = () => {
               key={i}
               className="create-tenant-acc-textfield"
               id="outlined-basic" 
-              variant="filled" 
+              variant="outlined" 
               value={unitFields[i] || ""}
               onChange={(e) => handleUnitFieldChange(i,e.target.value)}/>
             </Grid>
@@ -119,7 +119,7 @@ const CreateTenantAcc = () => {
                   type="text"
                   className="create-tenant-acc-textfield"
                   id="outlined-basic" 
-                  variant="filled" 
+                  variant="outlined" 
                   value={tenantUsername}
                   onChange={(e) => setTenantUsername(e.target.value)}/>
               </Grid>
@@ -140,7 +140,7 @@ const CreateTenantAcc = () => {
                   type="email"
                   className="create-tenant-acc-textfield"
                   id="outlined-basic" 
-                  variant="filled" 
+                  variant="outlined" 
                   value={tenantEmail}
                   onChange={(e) => setTenantEmail(e.target.value)}/>
               </Grid>
@@ -161,7 +161,7 @@ const CreateTenantAcc = () => {
                   type="password"
                   className="create-tenant-acc-textfield"
                   id="outlined-basic" 
-                  variant="filled" 
+                  variant="outlined" 
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}/>
               </Grid>
@@ -182,7 +182,7 @@ const CreateTenantAcc = () => {
                   type="password"
                   className="create-tenant-acc-textfield"
                   id="outlined-basic" 
-                  variant="filled" 
+                  variant="outlined" 
                   value={reEnterPassword}
                   onChange={(e) => setReEnterPassword(e.target.value)}/>
               </Grid>
@@ -202,7 +202,7 @@ const CreateTenantAcc = () => {
                   type="tel"
                   className="create-tenant-acc-textfield"
                   id="outlined-basic" 
-                  variant="filled" 
+                  variant="outlined" 
                   value={tenantPhone}
                   onChange={(e) => setTenantPhone(e.target.value)}/>
               </Grid>
@@ -222,7 +222,7 @@ const CreateTenantAcc = () => {
                   type="text"
                   className="create-tenant-acc-textfield"
                   id="outlined-basic" 
-                  variant="filled" 
+                  variant="outlined" 
                   value={tradeType}
                   onChange={(e) => setTradeType(e.target.value)}/>
               </Grid>
@@ -242,7 +242,7 @@ const CreateTenantAcc = () => {
                   type="text"
                   className="create-tenant-acc-textfield"
                   id="outlined-basic" 
-                  variant="filled" 
+                  variant="outlined" 
                   value={monthlyRental}
                   onChange={(e) => setMonthlyRental(e.target.value)}/>
               </Grid>
@@ -262,7 +262,7 @@ const CreateTenantAcc = () => {
                   type="date"
                   className="create-tenant-acc-textfield"
                   id="outlined-basic" 
-                  variant="filled" 
+                  variant="outlined" 
                   value={leaseCommencementDate}
                   onChange={(e) => setLeaseCommencementDate(e.target.value)}/>
               </Grid>
@@ -282,7 +282,7 @@ const CreateTenantAcc = () => {
                   type="date"
                   className="create-tenant-acc-textfield"
                   id="outlined-basic" 
-                  variant="filled" 
+                  variant="outlined" 
                   value={leaseTerminationDate}
                   onChange={(e) => setLeaseTerminationDate(e.target.value)}/>
               </Grid>
@@ -302,7 +302,7 @@ const CreateTenantAcc = () => {
                   type="number"
                   className="create-tenant-acc-textfield"
                   id="outlined-basic" 
-                  variant="filled" 
+                  variant="outlined" 
                   value={areaOfUnit}
                   InputProps={{
                     inputProps: {min: 0 }
@@ -324,7 +324,7 @@ const CreateTenantAcc = () => {
                   <TextField 
                   className="create-tenant-acc-textfield"
                   id="outlined-basic" 
-                  variant="filled" 
+                  variant="outlined" 
                   type="number"
                   value={numberOfUnits}
                   onChange={handleNumberOfUnitsChange}
@@ -354,7 +354,8 @@ const CreateTenantAcc = () => {
             <Grid item xs = {12}>
               <Button
               variant="contained"
-              className="create-tenant-acc-button">
+              className="create-tenant-acc-button"
+              onClick={handleSubmit}>
                 Create Account
               </Button>
             </Grid>
