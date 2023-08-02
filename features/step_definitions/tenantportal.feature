@@ -1,87 +1,88 @@
-Feature: Tenant portal 
-    Scenario: Log into Tenant Portal
-        Given I am on the Tenant Portal login page
-        When I enter valid credentials
-        And click on the login button
-        Then I should be redirected to Tenant portal landing page (and receive successful login alert)
+Feature: Tenant Portal Functionality
 
-    Scenario: Go to create ticket page
-        Given I am in the Tenant portal landing page
-        When I click on create ticket 
-        Then I am redirected to the create ticket page
-    
-    Scenario: Create Ticket 
-        Given I am in the create ticket page
-        When I enter all ticket details
-        And click on create service ticket 
-        Then a ticket is created and recorded in Supabase (wih success notification)
+Scenario: Login to Tenant Account
+  Given Tenant has loaded the login page for Tenant Portal
+  When Tenant enters valid account credentials
+  And Tenant clicks "login" button
+  Then Tenant should be redirected to the Tenant home page
+  But if login is unsuccessful, an error notification for invalid credentials should appear
 
-    Scenario: Go to Profile
-        Given I am in the Tenant Portal Landing Page 
-        When click on Profile in the NavBar
-        Then I am redirected to the Profile page 
-    
-    Scenario: Set new password
-        Given I am in the Tenant profile page 
-        When I enter a New Password 
-        And I fill in the same password in Confirm Password
-        And I click Set Password 
-        Then my new password is recorded in the Supabase tab;e
+Scenario: View all pending tickets
+  Given Tenant has logged into their tenant account successfully
+  When Tenant navigates to the landing page
+  And Tenant clicks on "View Pending Tickets"
+  Then Tenant should see all pending tickets in a table format
 
-    Scenario: Go to Pending tickets 
-        Given that I am on the Tenant Portal Landing page
-        When I click on Pending tickets 
-        Then I am redirected to the view ticket page
+Scenario: View all active tickets
+  Given Tenant has logged into their tenant account successfully
+  When Tenant navigates to the landing page
+  And Tenant clicks on "View Active Tickets"
+  Then Tenant should see all active tickets in a table format
 
-    Scenario: View all Pending tickets 
-        Given that I am in the View Tickets (Pending) page
-        When there are pending tickets 
-        Then the tickets are displayed 
-    
-    Scenario: View Pending ticket 
-        Given that I am in the View Tickets (Pending) page
-        When I click on View Ticket
-        Then I am redirected to the View ticket page for that ticket 
-    
-    Scenario: Click on Active tickets 
-        Given that I am on the Tenant Portal Landing page
-        When I click on Active tickets 
-        Then I am redirected to the view ticket page 
-    
-    Scenario: View all Active tickets 
-        Given that I am in the View Tickets (Active) page
-        When there are Active tickets 
-        Then the tickets are displayed 
-    
-    Scenario: View Active ticket 
-        Given that I am in the View Tickets (Active) page
-        When I click on View Ticket
-        Then I am redirected to the View ticket page for that ticket 
+Scenario: View all closed tickets
+  Given Tenant has logged into their tenant account successfully
+  When Tenant navigates to the landing page
+  And Tenant clicks on "View Closed Tickets"
+  Then Tenant should see all closed tickets in a table format
 
-    Scenario: Click on Closed tickets 
-        Given that I am on the Tenant Portal Landing page
-        When I click on Closed tickets 
-        Then I am redirected to the view ticket page 
+Scenario: Create new service ticket
+  Given Tenant is logged in
+  When Tenant navigates to the landing page
+  And Tenant clicks on "Create Ticket"
+  And Tenant fills in the required information
+  And Tenant clicks "Create Service Ticket"
+  Then Tenant should receive a success notification
 
-    Scenario: View all closed tickets 
-        Given that I am in the View Tickets (Closed) page
-        When there are closed tickets 
-        Then the tickets are displayed 
-    
-    Scenario: View closed ticket 
-        Given that I am in the View Tickets (Closed) page
-        When I click on View Ticket
-        Then I am redirected to the View ticket page for that ticket
-    
-    Scenario: Creating a Supervisor account
-        Given I am logged in as an admin
-        When I navigate to the Supervisor creation page
-        And fill in the required Supervisor details
-        And click on the submit button to create Supervisor
-        Then the Supervisor account should be created successfully
+Scenario: View Tenant Account Information
+  Given Tenant is logged in
+  When Tenant navigates to the "Profile" section through the Navbar
+  Then Tenant's account information should be displayed
 
-    Scenario: Creating a Staff account
-        When I navigate to the Staff creation page
-        And fill in the required Staff details
-        And click on the submit button to create Staff
-        Then the Staff account should be created successfully
+Scenario: Set new password
+  Given Tenant is logged in and in the profile page
+  When Tenant goes to the Profile page via NavBar
+  And Tenant enters a new password
+  And Tenant re-enters the new password
+  And Tenant clicks on "Set New Password"
+  Then Tenant should receive a success notification
+
+Scenario: View Quotation
+  Given Ticket status is Quotation uploaded
+  When Tenant receives a notification of Quotation uploaded
+  And Tenant clicks on "View Ticket"
+  Then Tenant should see the Quotation rendered using ReactPDFViewer
+
+Scenario: Download Quotation
+  Given Ticket status is Quotation uploaded
+  When Tenant receives a notification of Quotation uploaded
+  And Tenant clicks on "View Ticket"
+  And Tenant clicks on the download button in ReactPDFViewer
+  Then Tenant should download the Quotation into their local computer
+
+Scenario: Accept Quotation
+  Given Ticket status is Quotation uploaded
+  When Tenant receives a notification of Quotation uploaded
+  And Tenant clicks on "View Ticket"
+  And Tenant clicks on "Accept Quotation"
+  Then Ticket status should change to Quotation Accepted
+
+Scenario: Reject Quotation
+  Given Ticket status is Quotation uploaded
+  When Tenant receives a notification of Quotation uploaded
+  And Tenant clicks on "View Ticket"
+  And Tenant clicks on "Reject Quotation"
+  Then Ticket status should change accordingly
+
+Scenario: Submit feedback survey
+  Given Ticket status is Works Ended
+  When Tenant receives a notification of works completion
+  And Tenant fills in the feedback survey
+  And Tenant submits the feedback
+  Then Feedback should be updated in the system
+
+Scenario: Reject work
+  Given Ticket status is Works Ended
+  When Tenant receives a notification of works ended
+  And Tenant goes to View Ticket
+  And Tenant clicks on "Reject Work"
+  Then Ticket status should be updated
