@@ -30,8 +30,9 @@ import SupervisorProfile from "./pages/supervisor/profile";
 import StaffProfile from "./pages/staff/profile";
 import UnauthorizedAccess from "./pages/unauthorized_access";
 import { render, screen, waitFor } from '@testing-library/react';
+import * as fc from 'fast-check';
 
-const unauthorisedroutes = [ //regex
+const unauthorisedroutes = [ //We use regex to check 
     /^\/tenantportal\/ticket\/[^\/]+\/[^\/]+\/?$/,
     /^\/supervisorportal\/ticket\/[^\/]+\/[^\/]+\/?$/,
     /^\/staffportal\/ticket\/[^\/]+\/[^\/]+\/?$/,
@@ -151,7 +152,7 @@ const Mockfuzz = (path)=>{
 
 describe("We test if our fuzzing works", ()=>{
     for (let i =0;i<100;i++){
-        let path = generaterandom();
+        let path = generaterandom(); //generaterandom generates a few unauthorized paths
         test(`user should be directed to the appropriate page if path is ${path}`, async ()=>{
             Mockfuzz(path);
 
@@ -175,4 +176,34 @@ describe("We test if our fuzzing works", ()=>{
             }
         });
     }
+
+    test("When the user enters a truly random url, the right page must be shown", async ()=>{
+        await fc.assert(
+            fc.asyncProperty(
+                fc.array(fc.string()),
+                async (str) =>{
+                    Mockfuzz(str) //The user puts the string as the URL
+    
+                    if (unauthorisedroutes.some(route => route.test(str))){ 
+                        console.log("Unauthorised Path:" + str);
+        
+                        await waitFor(() => {
+                            const errormessage = screen.getByText("You cannot access this page.");
+                            expect(errormessage).toBeInTheDocument(); 
+                        });
+        
+                    } else {
+                        console.log("VALID PATH:" + str);
+        
+                        await waitFor(() => {
+                            const errorMessage = screen.queryByText("You cannot access this page.");
+                            expect(errorMessage).not.toBeInTheDocument();
+                            expect(screen.getAllByText(/.*portal/i)[0]).toBeInTheDocument() //Navbar must be present
+                        });
+        
+                    }
+                }
+            )
+        )
+    })
 })
