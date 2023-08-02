@@ -129,7 +129,7 @@ const StaffProfile = () => {
               <TextField 
               type="password"
               className="staff-profile-textfield"
-              id="outlined-basic" 
+              id="staff-portal-new-password-textfield"
               label="New Password" 
               variant="outlined" 
               defaultValue={newPassword}
@@ -139,7 +139,7 @@ const StaffProfile = () => {
               <TextField 
               type="password"
               className="staff-profile-textfield"
-              id="filled-basic" 
+              id="staff-portal-confirm-password-textfield"
               label="Confirm Password" 
               variant="outlined" 
               defaultValue={newPassword}
@@ -147,6 +147,7 @@ const StaffProfile = () => {
             </Grid>
             <Grid item xs = {12}>
               <Button 
+              id="staff-portal-reset-password-button"
               variant="contained"
               className="staff-profile-button"
               onClick={handleSetPassword}>
@@ -207,7 +208,8 @@ const StaffProfile = () => {
       <hr></hr>
       <div className="staff-profile-row">
         <Link to={`/`}>
-          <Button 
+          <Button
+            id="staff-portal-logout-button"
             variant="contained"
             className="staff-profile-button">
               Logout

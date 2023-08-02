@@ -48,7 +48,7 @@ export default function TenantLogin() {
           <Grid item xs = {12}>
               <TextField 
               className="login-portal-textfield"
-              id="outlined-basic" 
+              id="tenant-login-email-textfield" 
               label="ID Number/Email"
               onChange={(e) => setID(e.target.value)} 
               variant="outlined" />
@@ -57,13 +57,14 @@ export default function TenantLogin() {
               <TextField 
               type="password"
               className="login-portal-textfield"
-              id="outlined-basic" 
+              id="tenant-login-password-textfield" 
               label="Password" 
               onChange={(e) => setPassword(e.target.value)}
               variant="outlined" />
           </Grid>
           <Grid item xs = {12}>
             <Button 
+            id="tenant-login-login-button" 
             type="submit"
             variant="contained"
             className="login-portal-button">

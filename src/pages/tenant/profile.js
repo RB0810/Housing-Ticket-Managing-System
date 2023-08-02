@@ -134,7 +134,7 @@ const TenantProfile = () => {
               <TextField 
               type="password"
               className="tenant-profile-textfield"
-              id="outlined-basic" 
+              id="tenant-profile-new-password-textfield" 
               label="New Password" 
               variant="outlined" 
               defaultValue={newPassword}
@@ -144,7 +144,7 @@ const TenantProfile = () => {
               <TextField 
               type="password"
               className="tenant-profile-textfield"
-              id="filled-basic" 
+              id="tenant-profile-confirm-password-textfield" 
               label="Confirm Password" 
               variant="outlined" 
               defaultValue={newPassword}
@@ -152,6 +152,7 @@ const TenantProfile = () => {
             </Grid>
             <Grid item xs = {12}>
               <Button 
+              id="tenant-profile-reset-password-button"
               variant="contained"
               className="tenant-profile-button"
               onClick={handleSetPassword}>
@@ -283,7 +284,11 @@ const TenantProfile = () => {
       <hr></hr>
 
       <div className="tenant-profile-row">
-        <Button variant="contained" className="tenant-profile-button"onClick={logout}>Logout</Button>
+        <Button
+        id="tenant-profile-logout-button" 
+        variant="contained" 
+        className="tenant-profile-button"
+        onClick={logout}>Logout</Button>
       </div>
     </div>
   );
