@@ -365,7 +365,7 @@ export default function SupervisorPortal() {
                   <TableCell align="left">{ticket.staffDetails ? ticket.staffDetails.StaffName : "Unassigned"}</TableCell>
                   <TableCell align="left">
                     <Link to={`${getViewTicketsRoute()}/${SupervisorID}/${ticket.ServiceRequestID}`}>
-                      <Button variant="contained" >View Ticket
+                      <Button variant="contained" id={`${ticket.ServiceRequestID}-button`} >View Ticket
                       </Button>
                     </Link>
                   </TableCell>

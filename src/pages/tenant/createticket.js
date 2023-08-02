@@ -138,7 +138,7 @@ const CreateTicket = () => {
                   className="con-75"
                   required
                   type="text"
-                  id="name"
+                  id="tenant-create-ticket-name-textfield"
                   label="Name"
                   placeholder="Enter your name"
                   variant="outlined"
@@ -155,20 +155,20 @@ const CreateTicket = () => {
                 <Select
                   className="con-75"
                   labelId="dropdown-request-type"
-                  id="dropdown-request-type"
+                  id="tenant-create-ticket-request-type-select"
                   value={requestType}
                   label="Age"
                   displayEmpty
                   onChange={(e) => setRequestType(e.target.value)}
                 >
-                  <MenuItem value=""><em>Please Select Request Type</em></MenuItem>
-                  <MenuItem value="Toilet">Toilet</MenuItem>
-                  <MenuItem value="Plumbing">Plumbing</MenuItem>
-                  <MenuItem value="Pest">Pest</MenuItem>
-                  <MenuItem value="Electric">Electric</MenuItem>
-                  <MenuItem value="Aircon">Aircon</MenuItem>
-                  <MenuItem value="Cleaning">Cleaning</MenuItem>
-                  <MenuItem value="Others">Others</MenuItem>
+                  <MenuItem value="" id=""><em>Please Select Request Type</em></MenuItem>
+                  <MenuItem value="Toilet" id="toilet">Toilet</MenuItem>
+                  <MenuItem value="Plumbing" id="plumbing">Plumbing</MenuItem>
+                  <MenuItem value="Pest" id="pest">Pest</MenuItem>
+                  <MenuItem value="Electric" id="electric">Electric</MenuItem>
+                  <MenuItem value="Aircon" id="aircon">Aircon</MenuItem>
+                  <MenuItem value="Cleaning" id="cleaning">Cleaning</MenuItem>
+                  <MenuItem value="Others" id="others">Others</MenuItem>
                 </Select>
               </div>
             </Grid>
@@ -181,7 +181,7 @@ const CreateTicket = () => {
                 <TextField
                   className="con-75"
                   required
-                  id="description"
+                  id="tenant-create-ticket-description-textfield"
                   label="Description"
                   multiline
                   rows={4}
@@ -200,7 +200,7 @@ const CreateTicket = () => {
                 <Select
                   className="con-75"
                   labelId="dropdown-property-type"
-                  id="dropdown-property-type"
+                  id="tenant-create-ticket-property-type-select"
                   value={property} // Use property instead of requestType here
                   label="Age"
                   displayEmpty
@@ -208,7 +208,10 @@ const CreateTicket = () => {
                 >
                   <MenuItem value=""><em>Please Select Property</em></MenuItem>
                   {properties.map((property) => (
-                    <MenuItem key={property.UnitNumber} value={property.UnitNumber}>
+                    <MenuItem 
+                    key={property.UnitNumber} 
+                    value={property.UnitNumber}
+                    id={property.UnitNumber}>
                       {property.UnitNumber}
                     </MenuItem>
                   ))}
@@ -218,6 +221,7 @@ const CreateTicket = () => {
 
             <Grid item xs={12}>
               <Button
+                id="tenant-create-ticket-submit-button"
                 type="submit"
                 variant="contained"
                 disabled={loading}

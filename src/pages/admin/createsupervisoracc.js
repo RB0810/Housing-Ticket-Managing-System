@@ -4,6 +4,7 @@ import SupervisorAccount from "../../objects/SupervisorAccount";
 import Cookies from "js-cookie";
 import { useParams, useNavigate } from "react-router";
 import { Grid,TextField, Button } from "@mui/material";
+import Swal from "sweetalert2";
 
 const CreateSupervisor = () => {
   const [formError, setFormError] = useState(null);
@@ -54,7 +55,14 @@ const CreateSupervisor = () => {
 
     try {
       const message = await supervisorAccount.createAccount();
-      setFormError(message);
+      Swal.fire({
+        icon: "success",
+        title: "Supervisor Account created successfully!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
     } catch (error) {
       setFormError(error.message);
     }
@@ -71,7 +79,7 @@ const CreateSupervisor = () => {
               </div>
                 <TextField 
                 className="create-supervisor-acc-textfield"
-                id="outlined-basic" 
+                id="create-supervisor-username-textfield"
                 variant="outlined" 
                 type="text"
                 value={username}
@@ -83,7 +91,7 @@ const CreateSupervisor = () => {
               </div>
                 <TextField 
                 className="create-supervisor-acc-textfield"
-                id="outlined-basic" 
+                id="create-supervisor-email-textfield"
                 variant="outlined" 
                 type="email"
                 value={email}
@@ -95,7 +103,7 @@ const CreateSupervisor = () => {
               </div>
                 <TextField 
                 className="create-supervisor-acc-textfield"
-                id="outlined-basic" 
+                id="create-supervisor-password-textfield"
                 variant="outlined" 
                 type="password"
                 value={password}
@@ -107,7 +115,7 @@ const CreateSupervisor = () => {
               </div>
                 <TextField 
                 className="create-supervisor-acc-textfield"
-                id="outlined-basic" 
+                id="create-supervisor-repassword-textfield"
                 variant="outlined" 
                 type="password"
                 value={rePassword}
@@ -119,7 +127,7 @@ const CreateSupervisor = () => {
               </div>
                 <TextField 
                 className="create-supervisor-acc-textfield"
-                id="outlined-basic" 
+                id="create-supervisor-phone-number-textfield"
                 variant="outlined" 
                 type="text"
                 value={phone}
@@ -131,7 +139,7 @@ const CreateSupervisor = () => {
               </div>
                 <TextField 
                 className="create-supervisor-acc-textfield"
-                id="outlined-basic" 
+                id="create-supervisor-building-name-textfield"
                 variant="outlined" 
                 type="text"
                 value={buildingName}
@@ -143,7 +151,7 @@ const CreateSupervisor = () => {
               </div>
                 <TextField 
                 className="create-supervisor-acc-textfield"
-                id="outlined-basic" 
+                id="create-supervisor-building-address-textfield"
                 variant="outlined" 
                 type="text"
                 value={buildingAddress}
@@ -155,7 +163,7 @@ const CreateSupervisor = () => {
               </div>
                 <TextField 
                 className="create-supervisor-acc-textfield"
-                id="outlined-basic" 
+                id="create-supervisor-postal-code-textfield"
                 variant="outlined" 
                 type="text"
                 value={postalCode}
@@ -163,6 +171,7 @@ const CreateSupervisor = () => {
               </Grid>
               <Grid item xs = {12}>
                 <Button
+                id="create-supervisor-submit-button"
                 onClick={handleSubmit}
                 variant="contained"
                 className="create-supervisor-acc-button">
