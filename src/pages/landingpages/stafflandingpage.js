@@ -1,11 +1,34 @@
 import React from 'react';
 import '../../styles/landlordlandingpage.css';
 import { useNavigate, useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import { useEffect } from 'react';
 
 export default function StaffLandingPage() {
   const navigate = useNavigate();
   const { StaffID } = useParams();
   var status = "";
+
+  useEffect(() => {
+    const userId = Cookies.get('userId');
+    const type = Cookies.get('type');
+
+    if (!userId || !type) {
+      // If any of the required cookies are missing, redirect to the login page
+      console.log('Unauthorized');
+      navigate("/unauthorize");
+    } else {
+      // Check if the user's ID and type match the expected values (e.g., StaffID and "Staff")
+      if (Number(userId) === parseInt(StaffID) && type === "Staff") {
+        // Proceed with rendering the component
+        console.log('Authorized');
+      } else {
+        // If not authorized, display "Unauthorized access" message
+        console.log('Unauthorized');
+        navigate("/unauthorize");
+      }
+    }
+  }, [navigate, StaffID]);
 
   const handleButtonClickPending = () => {
     status = "pending";

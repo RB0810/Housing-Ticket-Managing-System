@@ -4,12 +4,14 @@ import AccountManager from "../../managers/accountmanager";
 import BasicTicketDetails from "../../components/BasicTicketDetails";
 import SubmittedByCard from "../../components/SubmittedByCard";
 import ViewFinalFeedbackDetails from "../../components/ViewFinalFeedbackDetails";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 import UploadQuotation from "../../components/UploadQuotation";
 import DisplayQuotation from "../../components/DisplayQuotation";
 import supabase from "../../config/supabaseClient";
 import Swal from "sweetalert2";
 import NotificationManager from "../../managers/notificationmanager";
+import { Grid,Button,TextField,MenuItem, Select, OutlinedInput } from "@mui/material";
 
 // // Styles
 import "./../../styles/viewticket.css";
@@ -35,6 +37,30 @@ const ViewTicketStaff = () => {
   // Quotation Items
   const [quotationPath, setQuotationPath] = useState(null);
   const [file, setFile] = useState(null);
+
+  const navigate = useNavigate();
+  const {StaffID} = useParams();
+
+  useEffect(() => {
+    const userId = Cookies.get('userId');
+    const type = Cookies.get('type');
+
+    if (!userId || !type) {
+      // If any of the required cookies are missing, redirect to the login page
+      console.log('Unauthorized');
+      navigate("/unauthorize");
+    } else {
+      // Check if the user's ID and type match the expected values (e.g., StaffID and "Staff")
+      if (Number(userId) === parseInt(StaffID) && type === "Staff") {
+        // Proceed with rendering the component
+        console.log('Authorized');
+      } else {
+        // If not authorized, display "Unauthorized access" message
+        console.log('Unauthorized');
+        navigate("/unauthorize");
+      }
+    }
+  }, [navigate, StaffID]);
 
   useEffect(() => {
     const getTenantAndTicket = async () => {
@@ -70,7 +96,10 @@ const ViewTicketStaff = () => {
         setFetchError(null);
       } else if (ticketData.length === 0) {
         setFetchError("This ticket is EMPTY!");
-        window.alert("Ticket empty!");
+        Swal.fire({
+          icon: "error",
+          title: "Ticket is empty"
+        });
         setServiceTicket();
       } else {
         setFetchError("Error finding this ticket :(");
@@ -129,10 +158,19 @@ const ViewTicketStaff = () => {
         //sendNotif,
       ]);
 
-      window.alert("QUOTATION UPDATE SUCCESSFUL!");
-      window.location.reload();
+      Swal.fire({
+        icon: "success",
+        title: "Update Quotation successful"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
     } catch (error) {
-      window.alert("ERROR IN CONTINUE FOR QUOTATION UPLOAD");
+      Swal.fire({
+        icon: "error",
+        title: "Error in continue for quotation upload"
+      });
     }
   };
 
@@ -150,10 +188,19 @@ const ViewTicketStaff = () => {
       // } catch (error) {
       //   console.log(error);
       // }
-      window.alert("QUOTATION UPDATE SUCCESSFUL!");
-      window.location.reload();
+      Swal.fire({
+        icon: "success",
+        title: "Update Quotation successful"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
     } catch (error) {
-      window.alert("ERROR IN REUPLOAD FOR QUOTATION UPLOAD");
+      Swal.fire({
+        icon: "error",
+        title: "Quotation reupload error"
+      });
     }
   };
 
@@ -175,11 +222,20 @@ const ViewTicketStaff = () => {
       // }
 
       // Perform any additional actions or display a success message
-      window.alert("Works Started!");
-      window.location.reload();
+      Swal.fire({
+        icon: "success",
+        title: "Works started"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
     } catch (error) {
       // Handle errors appropriately
-      window.alert("Update Failed!");
+      Swal.fire({
+        icon: "error",
+        title: "Update failed"
+      });
     }
   };
 
@@ -201,11 +257,20 @@ const ViewTicketStaff = () => {
       // }
 
       // Perform any additional actions or display a success message
-      window.alert("Update Successful!");
-      window.location.reload();
+      Swal.fire({
+        icon: "success",
+        title: "Update successful"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
     } catch (error) {
       // Handle errors appropriately
-      window.alert("Update Failed!");
+      Swal.fire({
+        icon: "error",
+        title: "Update failed"
+      });
     }
   };
 
@@ -255,8 +320,7 @@ const ViewTicketStaff = () => {
         Swal.fire({
           // Display error alert
           icon: "error",
-          title: "Oops...",
-          text: "Failed to update the file path in the database!",
+          title: "Error uploading Quotation"
         });
         return { error: updateError };
       }
@@ -265,8 +329,7 @@ const ViewTicketStaff = () => {
       Swal.fire({
         // Display success alert
         icon: "success",
-        title: "Uploaded",
-        text: "Your file has been uploaded and the file path is updated.",
+        title: "Quotation Uploaded"
       });
       return { data: updateData };
     } catch (error) {
@@ -297,11 +360,17 @@ const ViewTicketStaff = () => {
       URL.revokeObjectURL(url);
 
       if (error) {
-        window.alert("Error downloading file!");
+        Swal.fire({
+          icon: "error",
+          title: "Error downloading file"
+        });
         return;
       }
     } catch (error) {
-      window.alert("Error downloading file!");
+      Swal.fire({
+        icon: "error",
+        title: "Error downloading file"
+      });
     }
   };
 
@@ -310,8 +379,10 @@ const ViewTicketStaff = () => {
     if (quotationRequired === "true" || quotationRequired === null) {
       return (
         <div>
+          {/* Attention!! */}
           <input type="file" onChange={handleFileChange} />
         </div>
+        
       );
     } else if (quotationRequired === "false") {
       return null;
@@ -320,13 +391,17 @@ const ViewTicketStaff = () => {
 
   if (status === "Awaiting Review") {
     return (
-      <div className="ticket-grid">
-        <div className="ticket-details">
-          <BasicTicketDetails ticket={serviceTicket} />
-        </div>
-        <div className="submitted-by-card">
-          <SubmittedByCard tenant={tenant} />
-        </div>
+      <div>
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs ={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <SubmittedByCard tenant={tenant} />
+            </Grid>
+          </Grid>
+        </Grid>
       </div>
     );
   }
@@ -334,43 +409,69 @@ const ViewTicketStaff = () => {
   if (status === "Ticket Assigned") {
     if (quotationRequired === false) {
       return (
-        <div className="ticket-grid">
-          <div className="ticket-details">
-            <BasicTicketDetails ticket={serviceTicket} />
-          </div>
-          <div className="submitted-by-card">
-            <SubmittedByCard tenant={tenant} />
-          </div>
-          <div className="button-group">
-            <button onClick={handleStartWorks}>Start Works</button>
-          </div>
+        <div>
+          <Grid container spacing={1} columns={10}>
+            <Grid item xs ={4}>
+              <Grid item xs={12}>
+                <BasicTicketDetails ticket={serviceTicket} />
+              </Grid>
+              <Grid item xs={12}>
+                <SubmittedByCard tenant={tenant} />
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                variant="contained"
+                onClick={handleStartWorks}>
+                  Start Works
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
         </div>
       );
     } else {
       return (
-        <div className="ticket-grid">
-          <div className="ticket-details">
-            <BasicTicketDetails ticket={serviceTicket} />
-          </div>
-          <div className="submitted-by-card">
-            <SubmittedByCard tenant={tenant} />
-          </div>
-          <div className="button-group">
-            <label>
-              Quotation Required:
-              <select
+        <div>
+          <Grid container spacing={1} columns={10}>
+            <Grid item xs ={4}>
+              <Grid item xs={12}>
+                <BasicTicketDetails ticket={serviceTicket} />
+              </Grid>
+              <Grid item xs={12}>
+                <SubmittedByCard tenant={tenant} />
+              </Grid>
+              <Grid item xs={12}>
+                <h2 className="quotationrequired-header">Quotation Required</h2>
+              </Grid>
+              <Grid item xs={12}>
+                {/* <Select
+                className="assignstaff-textfield"
                 value={quotationRequired}
+                variant='outlined'
                 onChange={handleQuotationRequiredChange}
-              >
-                <option value={true}>YES</option>
-                <option value={false}>NO</option>
-              </select>
-            </label>
-            {renderContent()}
-            <div>
-              <button onClick={handleContinue}>Submit</button>
-            </div>
-          </div>
+                input={<OutlinedInput value={quotationRequired}/>}>
+                  <MenuItem value={true}>YES</MenuItem>
+                  <MenuItem value={false}>NO</MenuItem>
+                </Select> */}
+                <select
+                  className="viewticket-select"
+                  value={quotationRequired}
+                  onChange={handleQuotationRequiredChange}>
+                  <option value={true}> Yes</option>
+                  <option value={false}>No</option>
+                </select>
+                
+              </Grid>
+              <Grid item xs={12}>
+              {renderContent()}
+                <Button
+                variant="contained"
+                onClick={handleContinue}>
+                  Submit
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
         </div>
       );
     }
@@ -378,17 +479,20 @@ const ViewTicketStaff = () => {
 
   if (status === "Quotation Uploaded") {
     return (
-      <div class="ticket-grid">
-        <div class="ticket-details">
-          <BasicTicketDetails ticket={serviceTicket} />
-        </div>
-        <div class="submitted-by-card">
-          <SubmittedByCard tenant={tenant} />
-        </div>
-
-        <div class="quotation">
-          <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
-        </div>
+      <div>
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <SubmittedByCard tenant={tenant} />
+            </Grid>
+          </Grid>
+          <Grid item xs={6}>
+            <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+          </Grid>
+        </Grid>
       </div>
     );
   }
@@ -396,18 +500,26 @@ const ViewTicketStaff = () => {
   if (status === "Quotation Accepted") {
     return (
       <div className="ticket-grid">
-        <div className="ticket-details">
-          <BasicTicketDetails ticket={serviceTicket} />
-        </div>
-        <div className="submitted-by-card">
-          <SubmittedByCard tenant={tenant} />
-        </div>
-        <div className="start-works">
-          <button onClick={handleStartWorks}>Start Works</button>
-        </div>
-        <div className="quotation">
-          <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
-        </div>
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <SubmittedByCard tenant={tenant} />
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+              variant="contained"
+              onClick={handleStartWorks}>
+                Start Works
+              </Button>
+            </Grid>
+          </Grid>
+          <Grid item xs={6}>
+            <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+          </Grid>
+        </Grid>
       </div>
     );
   }
@@ -415,96 +527,137 @@ const ViewTicketStaff = () => {
   if (status === "Quotation Rejected") {
     return (
       <div class="ticket-grid">
-        <div class="ticket-details">
-          <BasicTicketDetails ticket={serviceTicket} />
-        </div>
-
-        <div class="submitted-by-card">
-          <SubmittedByCard tenant={tenant} />
-        </div>
-
-        <div class="button-group">
-          <div>
-            <input type="file" onChange={handleFileChange} />
-          </div>
-          <button onClick={handleReuploadQuotation}>Reupload Quotation</button>
-        </div>
-
-        <div class="reject-reason">
-          <h2>Reason for rejection: {feedbackComments}</h2>
-        </div>
-        <div class="quotation">
-          <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
-        </div>
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <SubmittedByCard tenant={tenant} />
+            </Grid>
+            <Grid item xs={12}>
+              <input type="file" onChange={handleFileChange} />
+            </Grid>
+            <Grid item xs={12}>
+              <Button 
+              variant="contained" 
+              onClick={handleReuploadQuotation}>
+                Reupload Quotation
+              </Button>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+              className="view-ticket-textfield"
+              id="outlined-basic"
+              multiline='true'
+              label ="Reason for Rejection"
+              variant="filled"
+              value={feedbackComments}
+              InputProps={{readOnly: true,}}/>
+            </Grid>
+          </Grid>
+          <Grid item xs={6}>
+            <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+          </Grid>
+        </Grid>
       </div>
     );
   }
 
   if (status === "Works Started") {
     return (
-      <div class="ticket-grid">
-        <div class="ticket-details">
-          <BasicTicketDetails ticket={serviceTicket} />
-        </div>
-        <div class="submitted-by-card">
-          <SubmittedByCard tenant={tenant} />
-        </div>
-        <div class="button-group">
-          <button onClick={handleEndWorks}>End Works</button>
-        </div>
-        {quotationRequired && (
-          <div class="quotation">
-            <DisplayQuotation
-              ServiceRequestID={serviceTicket.ServiceRequestID}
-            />
-          </div>
-        )}
+      <div>
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <SubmittedByCard tenant={tenant} />
+            </Grid>
+            <Grid item xs ={12}>
+              <Button onClick={handleEndWorks} variant="contained">
+                End Works
+              </Button>
+            </Grid>
+          </Grid>
+          <Grid item xs={6}>
+            {quotationRequired && (
+              <div class="quotation">
+                <DisplayQuotation
+                  ServiceRequestID={serviceTicket.ServiceRequestID}
+                />
+              </div>
+            )}
+          </Grid>
+        </Grid>
       </div>
     );
   }
 
   if (status === "Works Ended") {
     return (
-      <div class="ticket-grid">
-        <div class="ticket-details">
-          <BasicTicketDetails ticket={serviceTicket} />
-        </div>
-        <div class="submitted-by-card">
-          <SubmittedByCard tenant={tenant} />
-        </div>
-        {quotationRequired && (
-          <div class="quotation">
-            <DisplayQuotation
-              ServiceRequestID={serviceTicket.ServiceRequestID}
-            />
-          </div>
-        )}
+      <div>
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <SubmittedByCard tenant={tenant} />
+            </Grid>
+          </Grid>
+          <Grid item xs={6}>
+            {quotationRequired && (
+              <div class="quotation">
+                <DisplayQuotation
+                  ServiceRequestID={serviceTicket.ServiceRequestID}
+                />
+              </div>
+            )}
+          </Grid>
+        </Grid>
       </div>
     );
   }
 
   if (status === "Works Rejected") {
     return (
-      <div class="ticket-grid">
-        <div class="ticket-details">
-          <BasicTicketDetails ticket={serviceTicket} />
-        </div>
-        <div class="submitted-by-card">
-          <SubmittedByCard tenant={tenant} />
-        </div>
-        <div class="reject-reason">
-          <h2>Reason for rejection: {feedbackComments}</h2>
-        </div>
-        <div class="button-group">
-          <button onClick={handleStartWorks}>Restart Works</button>
-        </div>
-        {quotationRequired && (
-          <div class="quotation">
-            <DisplayQuotation
-              ServiceRequestID={serviceTicket.ServiceRequestID}
-            />
-          </div>
-        )}
+      <div>
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <SubmittedByCard tenant={tenant} />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+              className="view-ticket-textfield"
+              id="outlined-basic"
+              multiline='true'
+              label ="Reason for Rejection"
+              variant="filled"
+              value={feedbackComments}
+              InputProps={{readOnly: true,}}/>
+            </Grid>
+            <Grid item xs ={12}>
+              <Button onClick={handleStartWorks} variant="contained">
+                Restart Works
+              </Button>
+            </Grid>
+          </Grid>
+          <Grid item xs={6}>
+            {quotationRequired && (
+              <div class="quotation">
+                <DisplayQuotation
+                  ServiceRequestID={serviceTicket.ServiceRequestID}
+                />
+              </div>
+            )}
+          </Grid>
+        </Grid>
       </div>
     );
   }
@@ -512,26 +665,31 @@ const ViewTicketStaff = () => {
   if (status === "Feedback Submitted") {
     return (
       <div class="ticket-grid">
-        <div class="ticket-details">
-          <BasicTicketDetails ticket={serviceTicket} />
-        </div>
-        <div class="final-staff-tenant-details">
-          <SubmittedByCard tenant={tenant} />
-        </div>
-        <div class="final-feedback-details">
-          <ViewFinalFeedbackDetails
-            rating={serviceTicket.FeedbackRating}
-            comments={serviceTicket.FeedbackComments}
-          />
-        </div>
-
-        {quotationRequired && (
-          <div class="quotation">
-            <DisplayQuotation
-              ServiceRequestID={serviceTicket.ServiceRequestID}
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs ={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <SubmittedByCard tenant={tenant} /> 
+            </Grid>
+            <Grid item xs={12}>
+            <ViewFinalFeedbackDetails
+              rating={serviceTicket.FeedbackRating}
+              comments={serviceTicket.FeedbackComments}
             />
-          </div>
-        )}
+            </Grid>
+          </Grid>
+          <Grid item xs={6}>
+              {quotationRequired && (
+                <div class="quotation">
+                  <DisplayQuotation
+                    ServiceRequestID={serviceTicket.ServiceRequestID}
+                  />
+                </div>
+              )}
+            </Grid>
+        </Grid>
       </div>
     );
   }

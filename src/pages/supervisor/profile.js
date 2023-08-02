@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import AccountManager from "../../managers/accountmanager";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import BuildingDetails from "../../components/BuildingDetails";
 import './../../styles/profile.css'
+import Authentication from "../../managers/authentication";
+import Cookies from "js-cookie";
+import {Button, Grid, TextField} from '@mui/material'
 
 const SupervisorProfile = () => {
   const { SupervisorID } = useParams();
@@ -12,6 +15,28 @@ const SupervisorProfile = () => {
   const [formError, setFormError] = useState(null);
   const [buildingDetails, setBuildingDetails] = useState(null);
   const accountManager = new AccountManager();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const userId = Cookies.get('userId');
+    const type = Cookies.get('type');
+
+    if (!userId || !type) {
+      // If any of the required cookies are missing, redirect to the login page
+      console.log('Unauthorized');
+      navigate("/unauthorize");
+    } else {
+      // Check if the user's ID and type match the expected values (e.g., SupervisorID and "Supervisor")
+      if (Number(userId) === parseInt(SupervisorID) && type === "Supervisor") {
+        // Proceed with rendering the component
+        console.log('Authorized');
+      } else {
+        // If not authorized, display "Unauthorized access" message
+        console.log('Unauthorized');
+        navigate("/unauthorize");
+      }
+    }
+  }, [navigate, SupervisorID]);
 
   useEffect(() => {
     const fetchSupervisorDetails = async () => {
@@ -49,6 +74,10 @@ const SupervisorProfile = () => {
     setConfirmPassword(e.target.value);
   };
 
+  const logout = () => {
+    const authentication = new Authentication();
+    authentication.logout();
+  }
 
   const handleSetPassword = async () => {
     if (newPassword && confirmPassword) {
@@ -75,56 +104,104 @@ const SupervisorProfile = () => {
   if (!supervisor || !buildingDetails) {
     return <p>Loading supervisor details...</p>;
   }
+  
+  const building_address = supervisor.BuildingDetails.BuildingName.concat(', ',supervisor.BuildingDetails.Address,', ', supervisor.BuildingDetails.PostalCode) 
 
   return (
-    <div>
+    <div className="supervisor-profile-page">
       <div className="supervisor-profile-row">
         <div className="supervisor-profile-col25">
-          <p className="supervisor-profile-label">Personal Details</p>
+          <h2 className="supervisor-profile-label">Personal Details</h2>
         </div>
         
         <div className="supervisor-profile-col75">
-          <p><b>Username:</b> {supervisor.SupervisorName}</p>
-          <p><b>Email:</b> {supervisor.SupervisorEmail}</p>
-          <p><b>Phone:</b> {supervisor.SupervisorPhone}</p>
-          <p>
-            <b>Building Details: </b>{supervisor.BuildingDetails.BuildingName}, {supervisor.BuildingDetails.Address}, {supervisor.BuildingDetails.PostalCode}
-          </p>
+          <Grid container spacing={1}>
+            <Grid item xs = {12}>
+              <TextField 
+              className="supervisor-profile-textfield"
+              id="outlined-basic" 
+              label="Username" 
+              variant="filled" 
+              defaultValue={supervisor.SupervisorName}
+              InputProps={{readOnly: true,}}/>
+            </Grid>
+            <Grid item xs = {12}>
+              <TextField 
+              className="supervisor-profile-textfield"
+              id="outlined-basic" 
+              label="Email" 
+              variant="filled" 
+              defaultValue={supervisor.SupervisorEmail}
+              InputProps={{readOnly: true,}}/>
+            </Grid>
+            <Grid item xs = {12}>
+              <TextField 
+              className="supervisor-profile-textfield"
+              id="outlined-basic" 
+              label="Phone" 
+              variant="filled" 
+              defaultValue={supervisor.SupervisorPhone}
+              InputProps={{readOnly: true,}}/>
+            </Grid>
+            <Grid item xs = {12}>
+              <TextField 
+              className="supervisor-profile-textfield"
+              id="outlined-basic" 
+              label="Building Details" 
+              variant="filled" 
+              defaultValue={building_address}
+              InputProps={{readOnly: true,}}/>
+            </Grid>
+          </Grid>
 
-          <h4>Set New Password: </h4>
-          <input
-            type="password"
-            placeholder="New Password"
-            value={newPassword}
-            onChange={handleNewPasswordChange}
-          />
-          <br/>
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={handleConfirmPasswordChange}
-          />
+          <hr></hr>
+
+          <h2>Set New Password: </h2>
+
+          <Grid container spacing={1}>
+            <Grid item xs = {12}>
+              <TextField 
+              type="password"
+              className="supervisor-profile-textfield"
+              id="outlined-basic" 
+              label="New Password" 
+              variant="outlined" 
+              defaultValue={newPassword}
+              onChange={handleNewPasswordChange}/>
+            </Grid>
+            <Grid item xs = {12}>
+              <TextField 
+              type="password"
+              className="supervisor-profile-textfield"
+              id="filled-basic" 
+              label="Confirm Password" 
+              variant="outlined" 
+              defaultValue={newPassword}
+              onChange={handleConfirmPasswordChange}/>
+            </Grid>
+            <Grid item xs = {12}>
+              <Button 
+              variant="contained"
+              className="supervisor-profile-button"
+              onClick={handleSetPassword}>
+                Reset Password
+              </Button>
+            </Grid>
+          </Grid>
+
           {formError && <p className="set-password-error">{formError}</p>}
-
-          <br/>
-
-          <button onClick={handleSetPassword}>Set Password</button>
+        
         </div>
       </div>
-      
-        
+
       <hr></hr>
 
       <BuildingDetails building={buildingDetails} />
 
       <hr></hr>
 
-      <Link to={`/`}>
-        <button>Logout</button>
-      </Link>
-
-      
+      <Button variant="contained" className="supervisor-profile-button" onClick={logout}>Logout</Button>
+    
     </div>
   );
 };

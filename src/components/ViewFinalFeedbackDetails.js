@@ -1,4 +1,5 @@
 import React from "react";
+import { Grid,TextField,Button } from "@mui/material";
 
 export default function ViewFinalFeedbackDetails({ rating, comments }) {
   const renderRatingStars = () => {
@@ -21,10 +22,22 @@ export default function ViewFinalFeedbackDetails({ rating, comments }) {
 
   return (
     <div>
-      <h2>Final Feedback Details</h2>
+      <h2 className='feedback-header'>Final Feedback Details</h2>
       <div>
-        <p>Rating: {renderRatingStars()}</p>
-        <p>Comments: {comments}</p>
+        <Grid container spacing={1}>
+          <Grid item xs={12}>
+            <p className='feedback-rating'>Rating: {renderRatingStars()}</p>
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+            className="feedback-textfield"
+            id="outlined-basic"
+            label='Comments'
+            variant="filled"
+            value={comments}
+            InputProps={{readOnly: true,}}/>
+          </Grid>
+        </Grid>
       </div>
     </div>
   );

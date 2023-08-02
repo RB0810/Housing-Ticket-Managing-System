@@ -19,14 +19,11 @@ body {
     margin-top: 10%;
 }
 
-.loginBtn{
+.login-portal-button{
     background-color: royalblue;
     color: white;
     width: 225px;
-    border-radius: 0.4rem;
     font-size: medium;
-    padding: 3px 10px;
-    margin: 10px;
 }
 
 .login-email {
@@ -39,10 +36,6 @@ body {
     margin: 10px;
 }
 
-.loginInput{
-    height: 20px;
-    width: 250px;
-    border-radius: 0.4rem;
-    padding: 10px 10px;
-    margin: 10px;
+.login-portal-textfield{
+    width: 30%;
 }

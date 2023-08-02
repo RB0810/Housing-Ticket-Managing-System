@@ -1,87 +1,76 @@
-.ticket-grid {
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    grid-template-rows: repeat(8, 1fr);
-    gap: 0px;
-    height: 600px; /* Set the desired height of the grid container */
-  }
+.assignedtocard-textfield{
+  width: 80%;
+}
 
+.assignedtocard-header{
+  text-align: left;
+  margin-left: 10%;
+}
+
+.basicticketdetails-textfield{
+  width: 80%;
+}
+
+.basicticketdetails-header{
+  text-align: left;
+  margin-left: 10%;
+}
+
+.view-ticket-textfield{
+  width: 80%;
+}
+
+.submittedbycard-header{
+  text-align: left;
+  margin-left: 10%;
+}
+
+.submittedbycard-textfield{
+  width: 80%;
+}
+
+.feedback-textfield{
+  width: 80%;
+}
+
+.feedback-rating{
+  text-align: left;
+  margin-left: 10%;
+}
+
+.feedback-header{
+  text-align: left;
+  margin-left: 10%;
+}
+.assignstaff-header{
+  text-align: left;
+  margin-left: 10%;
+}
+
+.assignstaff-textfield{
+  width: 80%;
+}
+
+.comments-section{
+  margin-top: 1rem;
+}
+
+.button-group{
+  margin-top: 1rem;
+}
+
+.view-ticvket-special-div{
+  margin-top: 1rem;
+}
+
+.quotationrequired-header{
+  text-align: left;
+  margin-left: 10%;
+}
   
-.ticket-details {
-    grid-row: 1 / span 2; /* Occupies grid row 1 and 2 */
-    grid-column: 1 / span 4; /* Occupies grid column 1 and 2 */
-
-  }
-
-.submitted-by-card {
-    grid-row: 5/ span 6 ; /* Occupies grid row 3 */
-    grid-column: 1 / span 4; /* Occupies grid column 1 and 2 */
+.viewticket-select{
+  width: 80%;
+  text-align: center;
 }
 
-.assigned-to-card {
-    grid-row: 5/ span 6 ; /* Occupies grid row 3 */
-    grid-column: 1 / span 4; /* Occupies grid column 1 and 2 */
-  }
-
-.button-group {
-    grid-row: 8; /* Occupies grid row 4 */
-    grid-column: 1 / span 4; /* Occupies all columns in the last row */
-  }
-  
-.start-works {
-    grid-row: 6; /* Occupies grid row 4 */
-    grid-column: 1 / span 4; /* Occupies all columns in the last row */
-  }
-  
-.quotation {
-    grid-row: 1 / span 5; /* Occupies grid row 2 and 3 */
-    grid-column: 5 / span 10; /* Occupies grid column 3 and 4 */
-  }
-
-.delete-ticket-button {
-    grid-row: 6 ; /* Occupies grid row 4 */
-    grid-column: 1 / span 4; /* Occupies all columns in the last row */
-  
-  }
-
-.comments-section {
-    grid-row: 8/span 8;
-    grid-column: 1 / span 4;
-}
-
-.reject-reason {
-    grid-row: 7;
-    grid-column: 1 / span 4;
-    color: red
-}
-
-.final-staff-tenant-details {
-    grid-row: 6/ span 6 ; /* Occupies grid row 3 */
-    grid-column: 1 / span 2; /* Occupies grid column 1 and 2 */
-
-}
-
-.final-feedback-details {
-    grid-row: 6/ span 6 ; /* Occupies grid row 3 */
-    grid-column: 2 / span 4; /* Occupies grid column 1 and 2 */
-}
-
-.supervisor-assigned-card {
-    grid-row: 5/ span 6 ; /* Occupies grid row 3 */
-    grid-column: 2 / span 4; /* Occupies grid column 1 and 2 */
-}
-
-.supervisor-submitted-card {
-    grid-row: 5/ span 6 ; /* Occupies grid row 3 */
-    grid-column: 1 / span 2; /* Occupies grid column 1 and 2 */
-}
-
-.supervisor-final-feedback {
-    grid-row: 7/ span 8 ; /* Occupies grid row 3 */
-    grid-column: 1 / span 4; /* Occupies grid column 1 and 2 */
-    margin: 25px;
-}
-
-
-  
 
