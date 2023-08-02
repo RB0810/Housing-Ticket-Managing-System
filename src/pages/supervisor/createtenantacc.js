@@ -354,7 +354,8 @@ const CreateTenantAcc = () => {
             <Grid item xs = {12}>
               <Button
               variant="contained"
-              className="create-tenant-acc-button">
+              className="create-tenant-acc-button"
+              onClick={handleSubmit}>
                 Create Account
               </Button>
             </Grid>
