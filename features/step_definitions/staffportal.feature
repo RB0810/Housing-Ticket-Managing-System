@@ -2,7 +2,6 @@ Feature: Staff Portal
     Scenario: Log into Staff Portal
         Given I am on the Staff Portal login page
         When I enter valid credentials
-        And click on the login button
         Then I should be redirected to Staff portal landing page (and receive successful login alert)
 
     Scenario: Click on Pending tickets 

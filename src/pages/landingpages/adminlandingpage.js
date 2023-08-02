@@ -44,7 +44,7 @@ export default function AdminLandingPage() {
   return (
     <div>
       <div className="centered-card">
-      <button className="card" onClick={handleButtonClickManage}>
+      <button className="card" onClick={handleButtonClickManage} id="createsupervisor">
         <img src="/manageaccount.jpg" alt="Card" className="card-image" />
         <div>
           <button>Manage Accounts</button>

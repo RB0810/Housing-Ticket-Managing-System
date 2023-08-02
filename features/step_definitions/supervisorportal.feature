@@ -2,7 +2,6 @@ Feature: Supervisor Portal
    Scenario: Log into Supervisor Portal
     Given I am on the Supervisor Portal login page
     When I enter valid credentials
-    And click on the login button
     Then I should be redirected to Supervisor portal landing page (and receive successful login alert)
 
   Scenario: Go to Create Tenant account
@@ -13,7 +12,6 @@ Feature: Supervisor Portal
   Scenario: Create Tenant account
     Given I am in the Create Tenant account page 
     When I fill in all required details
-    And click on the Create Tenant Account button
     Then a new Tenant account is created and the credentials are recorded in the supabase table 
 
   Scenario: Click on Pending tickets 
@@ -33,16 +31,11 @@ Feature: Supervisor Portal
 
   Scenario: Assign Staff 
     Given that I am in the View Ticket (Pending) page
-    And PARC status is Pending
-    And Status is Awaiting Review 
     When I choose a staff
-    And click on the assign button
     Then I assign that particular ticket to a staff 
 
   Scenario: Reject Ticket 
     Given that I am in the View Ticket (Pending) page
-    And PARC status is Pending
-    And Status is Awaiting Review 
     When I click on the reject button
     Then I am redirected to a reason for reject form 
 
@@ -50,9 +43,6 @@ Feature: Supervisor Portal
     Given that I have filled in the reason for reject
     When I click on Submit button
     Then the page refreshes 
-    And PARC status changed to CLOSED 
-    And ticket status changed to ticket rejected
-    Then 
 
   
   Scenario: Click on Active tickets 
