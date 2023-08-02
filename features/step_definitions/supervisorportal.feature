@@ -53,7 +53,6 @@ Feature: Supervisor Portal
     And PARC status changed to CLOSED 
     And ticket status changed to ticket rejected
     Then 
-
   
   Scenario: Click on Active tickets 
     Given that I am on the Supervisor Portal Landing page
