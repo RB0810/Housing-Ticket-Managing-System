@@ -90,7 +90,10 @@ Feature: Sequence Diagram Flow
         And Status is Awaiting Review 
         When I choose a staff
         And click on the assign button
-        Then I assign that particular ticket to a staff 
+        Then ticket assignment to staff recorded in Supabase
+        And ticket assigned alert appears 
+        And page reloads 
+        And ticket status changes to ticket assigned 
 
     Scenario: Reject Ticket 
         Given that I am in the View Ticket (Pending) page
@@ -105,7 +108,9 @@ Feature: Sequence Diagram Flow
         Then the page refreshes 
         And PARC status changed to CLOSED 
         And ticket status changed to ticket rejected
-        Then 
+        Then I receieve a ticket rejected alert 
+        And page reloads 
+        And Ticket status changes to Ticket Rejected 
 
     Scenario: Log into Staff Portal
         Given I am on the Staff Portal login page
@@ -158,6 +163,7 @@ Feature: Sequence Diagram Flow
         Then a update successful alert notification is displayed
         And page reloads
         And ticket status updated to Works Started 
+        And email sent to Tenant 
 
     Scenario: End Works
         Given that the Staff is in the Ticket details page 
@@ -177,6 +183,7 @@ Feature: Sequence Diagram Flow
         Then feedback is recorded in supabase 
         And feedback submitted notification is displayed
         And page reloads with feedback and stars given 
+        And email sent to Landlord 
 
 
     
