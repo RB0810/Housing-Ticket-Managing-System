@@ -194,7 +194,7 @@ const ViewTicketSupervisor = () => {
           <form onSubmit={handleReject}>
               <TextField
               className="view-ticket-textfield"
-              id="outlined-basic"
+              id="rejectComments-textfield"
               multiline='true'
               label ="Reason for Reject"
               variant="filled"
@@ -264,11 +264,13 @@ const ViewTicketSupervisor = () => {
                   </Grid>
                   <Grid item xs={12}>
                     <Button
+                    id="assignstaff-button"
                     variant="contained"
                     onClick={handleAssign}>
                       Assign
                     </Button>
                     <Button
+                    id="reject-button"
                     variant="contained"
                     onClick={handleRejectClick}>
                       Reject
