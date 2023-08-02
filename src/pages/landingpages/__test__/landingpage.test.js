@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route,Routes } from 'react-router-dom';
 import { fireEvent } from '@testing-library/react';
 import LandingPage from '../landingpage';
+import TenantLogin from '../../login/tenantlogin';
 import AdminLogin from '../../login/adminlogin';
 import LandlordLogin from '../../login/landlordlogin';
 
@@ -10,6 +11,7 @@ const MockGoToLogin = ()=>{
         <MemoryRouter>
             <Routes>
                 <Route path="/" element={<LandingPage />} />
+                <Route path="/tenantlogin" element={<TenantLogin />} />
                 <Route path="/landlordlogin" element={<LandlordLogin />} />
                 <Route path="/adminlogin" element={<AdminLogin />} />
             </Routes>
@@ -31,6 +33,14 @@ describe("Testing landing page functionality", ()=>{
         const landLordButton = landLordImage.parentElement.querySelector('button')
         fireEvent.click(landLordButton)
         expect(screen.getByText("Manage Tickets and Tenants!")).toBeInTheDocument()
+    })
+
+    test("Click on Tenant",()=>{
+        render(<MockGoToLogin/>)
+        const TenantImage = screen.getByAltText('Tenant')
+        const TenantButton = TenantImage.parentElement.querySelector('button')
+        fireEvent.click(TenantButton)
+        expect(screen.getByText("Tenant Portal Login")).toBeInTheDocument()
     })
 })
 
