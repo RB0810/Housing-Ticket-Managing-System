@@ -18,7 +18,7 @@ export default function AdminNavbar() {
 
       <ul>
       <DropdownLink label="Create Landlord Account" options={["Supervisor", "Staff"]} id="nav-bar-admin-portal-create-account" />
-        <CustomLink to={`/adminportal/manageacc/${AdminID}`}>Manage Accounts</CustomLink>
+        <CustomLink to={`/adminportal/manageacc/${AdminID}`} id="nav-bar-manage-accounts">Manage Accounts</CustomLink>
         <button onClick={handleLogout} id="admin-portal-logout-button">Logout</button>
       </ul>
     </nav>
