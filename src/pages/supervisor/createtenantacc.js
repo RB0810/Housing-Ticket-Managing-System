@@ -4,6 +4,7 @@ import TenantAccount from "../../objects/TenantAccount";
 import "./../../../src/styles/createtenantacc.css"
 import Cookies from "js-cookie";
 import {Button, Grid, TextField} from '@mui/material'
+import Swal from "sweetalert2";
 
 const CreateTenantAcc = () => {
   const [tenantUsername, setTenantUsername] = useState("");
@@ -75,7 +76,14 @@ const CreateTenantAcc = () => {
 
     try {
       const message = await tenantAccount.createAccount();
-      setFormError(message);
+      Swal.fire({
+        icon: "success",
+        title: "Tenant Account created successfully!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          //window.location.reload();
+        }
+      });
     } catch (error) {
       setFormError(error.message);
     }

@@ -4,6 +4,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import Authentication from "../../managers/authentication";
 import Cookies from "js-cookie";
 import {Button, Grid, TextField} from '@mui/material'
+import Swal from "sweetalert2";
 
 const StaffProfile = () => {
   const { StaffID } = useParams();
@@ -66,7 +67,14 @@ const StaffProfile = () => {
           await accountManager.setPassword("Staff", StaffID, newPassword);
           setNewPassword("");
           setConfirmPassword("");
-          setFormError("Password Changed Successfully!");
+          Swal.fire({
+            icon: "success",
+            title: "Password changed successfully!",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
         } catch (error) {
           setFormError("Database Error");
         }

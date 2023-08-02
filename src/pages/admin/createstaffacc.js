@@ -4,6 +4,7 @@ import StaffAccount from "../../objects/StaffAccount";
 import { useParams, useNavigate } from "react-router";
 import Cookies from "js-cookie";
 import {Grid,TextField,MenuItem,Select,OutlinedInput,Button} from '@mui/material';
+import Swal from "sweetalert2";
 
 const CreateStaffAcc = () => {
   const [formError, setFormError] = useState(null);
@@ -61,7 +62,14 @@ const CreateStaffAcc = () => {
 
     try {
       const message = await staffAccount.createAccount();
-      setFormError(message);
+      Swal.fire({
+        icon: "success",
+        title: "Staff Account created successfully!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
     } catch (error) {
       setFormError(error.message);
     }
@@ -152,7 +160,7 @@ const CreateStaffAcc = () => {
                   <label 
                   htmlFor="buildingID"
                   className="create-staff-acc-label"
-                  >Building ID</label>
+                  >Select Building</label>
                 </div>
                 <Select
                 id="buildingID"

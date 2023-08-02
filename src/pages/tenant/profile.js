@@ -5,6 +5,7 @@ import Authentication from "../../managers/authentication";
 import "./../../styles/profile.css"
 import Cookies from "js-cookie";
 import {Button, Grid, TextField} from '@mui/material'
+import Swal from "sweetalert2";
 
 const TenantProfile = () => {
   const { TenantID } = useParams();
@@ -67,7 +68,14 @@ const TenantProfile = () => {
           await accountManager.setPassword("Tenant", TenantID, newPassword);
           setNewPassword("");
           setConfirmPassword("");
-          setFormError("Password Changed Successfully!");
+          Swal.fire({
+            icon: "success",
+            title: "Password changed successfully!",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
         } catch (error) {
           setFormError("Database Error");
         }

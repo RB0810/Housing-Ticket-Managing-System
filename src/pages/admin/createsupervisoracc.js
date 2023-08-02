@@ -4,6 +4,7 @@ import SupervisorAccount from "../../objects/SupervisorAccount";
 import Cookies from "js-cookie";
 import { useParams, useNavigate } from "react-router";
 import { Grid,TextField, Button } from "@mui/material";
+import Swal from "sweetalert2";
 
 const CreateSupervisor = () => {
   const [formError, setFormError] = useState(null);
@@ -54,7 +55,14 @@ const CreateSupervisor = () => {
 
     try {
       const message = await supervisorAccount.createAccount();
-      setFormError(message);
+      Swal.fire({
+        icon: "success",
+        title: "Supervisor Account created successfully!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
     } catch (error) {
       setFormError(error.message);
     }
