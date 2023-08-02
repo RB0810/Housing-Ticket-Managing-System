@@ -51,21 +51,21 @@ describe("Testing if routing works for the staff navbar",()=>{
             render(<MockNavBar/>)
             fireEvent.click(screen.getByRole('button', { name: /View Tickets ▾/i }))
             fireEvent.click(screen.getByRole('link', { name: /^Pending$/i }))
-            expect(screen.getByText(/Remove all Filters/i)).toBeInTheDocument()
+            expect(screen.getByText(/Remove Filters/i)).toBeInTheDocument()
         })
 
         test("Test if can route to View Tickets pending",async ()=>{
             render(<MockNavBar/>)
             fireEvent.click(screen.getByRole('button', { name: /View Tickets ▾/i }))
             fireEvent.click(screen.getByRole('link', { name: /^Active$/i }))
-            expect(screen.getByText(/Remove all Filters/i)).toBeInTheDocument()
+            expect(screen.getByText(/Remove Filters/i)).toBeInTheDocument()
         })
 
         test("Test if can route to View Tickets pending",async ()=>{
             render(<MockNavBar/>)
             fireEvent.click(screen.getByRole('button', { name: /View Tickets ▾/i }))
             fireEvent.click(screen.getByRole('link', { name: /^Closed$/i }))
-            expect(screen.getByText(/Remove all Filters/i)).toBeInTheDocument()
+            expect(screen.getByText(/Remove Filters/i)).toBeInTheDocument()
         })
     
     })
