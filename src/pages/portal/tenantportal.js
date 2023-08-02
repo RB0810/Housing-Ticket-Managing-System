@@ -1,10 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import TicketManager from "../../managers/ticketmanager";
+import AccountManager from "../../managers/accountmanager"
 import "../../styles/ticketportal.css";
+import Cookies from "js-cookie";
+
+// material ui
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
+import SortIcon from '@mui/icons-material/Sort';
+import SearchIcon from '@mui/icons-material/Search';
 
 const TenantPortal = () => {
   const ticketManager = new TicketManager();
+  const accountManager = new AccountManager();
   const { PARCStatus, TenantID } = useParams();
   const [serviceTickets, setServiceTickets] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -19,11 +35,50 @@ const TenantPortal = () => {
   const [isStatusFilterOpen, setIsStatusFilterOpen] = useState(false);
   const [isRequestFilterOpen, setIsRequestFilterOpen] = useState(false);
   const [isAssignedToFilterOpen, setIsAssignedToFilterOpen] = useState(false);
+  const [isUnitFilterOpen, setIsUnitFilterOpen] = useState(false);
   const [isDateFilterOpen, setIsDateFilterOpen] = useState(false);
+  const [unitFilter, setUnitFilter] = useState("");
+  const [units, setUnits] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const userId = Cookies.get('userId');
+    const type = Cookies.get('type');
+
+    if (!userId || !type) {
+      // If any of the required cookies are missing, redirect to the login page
+      console.log('Unauthorized');
+      navigate("/unauthorize");
+    } else {
+      // Check if the user's ID and type match the expected values (e.g., TenantID and "tenant")
+      if (Number(userId) === parseInt(TenantID) && type === "Tenant") {
+        // Proceed with rendering the component
+        console.log('Authorized');
+      } else {
+        // If not authorized, display "Unauthorized access" message
+        console.log('Unauthorized');
+        navigate("/unauthorize");
+      }
+    }
+  }, [navigate, TenantID]);
 
   useEffect(() => {
     getTickets();
   }, [PARCStatus, TenantID]);
+
+  useEffect(() => {
+    // Fetch unit data from the server and populate the dropdown options
+    const fetchUnits = async () => {
+      try {
+        const unitData = await accountManager.getUnits(TenantID);
+        setUnits(unitData);
+      } catch (error) {
+        console.error("Error fetching units:", error);
+      }
+    };
+
+    fetchUnits();
+  }, [TenantID]);
 
   const getTickets = async () => {
     try {
@@ -79,6 +134,9 @@ const TenantPortal = () => {
     if (assignedToFilter && ticket.staffDetails && !ticket.staffDetails.StaffName.toLowerCase().includes(assignedToFilter.toLowerCase())) {
       return false;
     }
+    if (unitFilter && ticket.Property !== unitFilter) {
+      return false;
+    }
     return true;
   }).sort((a, b) => {
     if (dateFilter === "newest") {
@@ -88,7 +146,7 @@ const TenantPortal = () => {
     }
     return 0;
   });
-  
+
 
   const removeFilters = () => {
     setCategoryFilter("");
@@ -96,6 +154,8 @@ const TenantPortal = () => {
     setStatusFilter("");
     setIsStatusFilterOpen(false);
     setRequestFilter("");
+    setIsUnitFilterOpen(false);
+    setUnitFilter("");
     setIsRequestFilterOpen(false);
     setAssignedToFilter("");
     setIsAssignedToFilterOpen(false);
@@ -128,21 +188,25 @@ const TenantPortal = () => {
     setServiceTickets(sortedTickets);
   };
 
+  const tablerowSX = {
+    background: "#f1f1f1",
+    '&:hover': {
+      background: "#f00",
+    }
+  }
+
   return (
     <div className="page tenantportal">
-      <table className="ticket-portal-table">
-        <thead>
-          <tr className="table-row">
-            <th className="header-cell text-center">S No.</th>
-            <th className="header-cell text-center">
-              <div className="filter-header">
-                <span>Request</span>
-                <button
-                  className={`filter-arrow ${isRequestFilterOpen ? "up" : ""}`}
-                  onClick={() => setIsRequestFilterOpen(!isRequestFilterOpen)}
-                ></button>
-                {isRequestFilterOpen && (
-                  <div className="filter-dropdown">
+      
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead sx={{ height: 100}}>
+            <TableRow>
+              <TableCell sx={{ fontWeight: 'bold' }} align="left">S/N</TableCell>
+              <TableCell sx={{ fontWeight: 'bold' }} align="left">Request<IconButton
+                onClick={() => setIsRequestFilterOpen(!isRequestFilterOpen)}><SortIcon></SortIcon></IconButton>
+                {(
+                  <div className={`filter-dropdown${isRequestFilterOpen ? ' open' : ''}`}>
                     <input
                       type="text"
                       value={requestFilter}
@@ -151,21 +215,15 @@ const TenantPortal = () => {
                     />
                   </div>
                 )}
-              </div>
-            </th>
-            <th className="header-cell text-center">
-              <div className="filter-header">
-                <span>Category</span>
-                <button
-                  className={`filter-arrow ${isCategoryFilterOpen ? "up" : ""}`}
-                  onClick={() => setIsCategoryFilterOpen(!isCategoryFilterOpen)}
-                ></button>
-                {isCategoryFilterOpen && (
-                  <div className="filter-dropdown">
+              </TableCell>
+
+              <TableCell sx={{ fontWeight: 'bold' }} align="left">Category<IconButton onClick={() => setIsCategoryFilterOpen(!isCategoryFilterOpen)}>
+                <SortIcon></SortIcon></IconButton>
+                {(
+                  <div className={`filter-dropdown${isCategoryFilterOpen ? ' open' : ''}`}>
                     <select
                       value={categoryFilter}
-                      onChange={(e) => setCategoryFilter(e.target.value)}
-                    >
+                      onChange={(e) => setCategoryFilter(e.target.value)}>
                       <option value="">All</option>
                       <option value="Plumbing">Plumbing</option>
                       <option value="Toilet">Toilet</option>
@@ -175,19 +233,29 @@ const TenantPortal = () => {
                       <option value="Others">Others</option>
                     </select>
                   </div>
+                )}</TableCell>
+
+              <TableCell sx={{ fontWeight: 'bold' }} align="left">Unit<IconButton onClick={() => setIsUnitFilterOpen(!isUnitFilterOpen)}>
+                <SortIcon></SortIcon></IconButton>
+                {(
+                  <div className={`filter-dropdown${isUnitFilterOpen ? ' open' : ''}`}>
+                    <select
+                      value={unitFilter}
+                      onChange={(e) => setUnitFilter(e.target.value)}>
+                      <option value="">All</option>
+                      {units.map((unit) => (
+                        <option key={unit.UnitNumber} value={unit.UnitNumber}>
+                          {unit.UnitNumber}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 )}
-              </div>
-            </th>
-            <th className="header-cell text-center">Unit</th>
-            <th className="header-cell text-center">
-              <div className="filter-header">
-                <span>Status</span>
-                <button
-                  className={`filter-arrow ${isStatusFilterOpen ? "up" : ""}`}
-                  onClick={() => setIsStatusFilterOpen(!isStatusFilterOpen)}
-                ></button>
-                {isStatusFilterOpen && (
-                  <div className="filter-dropdown">
+              </TableCell>
+              <TableCell sx={{ fontWeight: 'bold' }} align="left">Status<IconButton onClick={() => setIsStatusFilterOpen(!isStatusFilterOpen)}>
+                <SortIcon></SortIcon></IconButton>
+                {(
+                  <div className={`filter-dropdown${isStatusFilterOpen ? ' open' : ''}`}>
                     <select
                       value={statusFilter}
                       onChange={(e) => setStatusFilter(e.target.value)}
@@ -204,18 +272,12 @@ const TenantPortal = () => {
                       <option value="Feedback Submitted">Feedback Submitted</option>
                     </select>
                   </div>
-                )}
-              </div>
-            </th>
-            <th className="header-cell text-center">
-              <div className="filter-header">
-                <span>Submitted Date</span>
-                <button
-                  className={`filter-arrow ${isDateFilterOpen ? "up" : ""}`}
-                  onClick={() => setIsDateFilterOpen(!isDateFilterOpen)}
-                ></button>
-                {isDateFilterOpen && (
-                  <div className="filter-dropdown">
+                )}</TableCell>
+
+              <TableCell sx={{ fontWeight: 'bold' }} align="left">Submitted Date<IconButton onClick={() => setIsDateFilterOpen(!isDateFilterOpen)}>
+                <SortIcon></SortIcon></IconButton>
+                {(
+                  <div className={`filter-dropdown${isDateFilterOpen ? ' open' : ''}`}>
                     <select
                       value={dateFilter}
                       onChange={(e) => setDateFilter(e.target.value)}
@@ -225,18 +287,12 @@ const TenantPortal = () => {
                       <option value="oldest">Oldest to Newest</option>
                     </select>
                   </div>
-                )}
-              </div>
-            </th>
-            <th className="header-cell text-center">
-              <div className="filter-header">
-                <span>Assigned To</span>
-                <button
-                  className={`filter-arrow ${isAssignedToFilterOpen ? "up" : ""}`}
-                  onClick={() => setIsAssignedToFilterOpen(!isAssignedToFilterOpen)}
-                ></button>
-                {isAssignedToFilterOpen && (
-                  <div className="filter-dropdown">
+                )}</TableCell>
+
+              <TableCell sx={{ fontWeight: 'bold' }} align="left">Assigned To<IconButton onClick={() => setIsAssignedToFilterOpen(!isAssignedToFilterOpen)}>
+                <SearchIcon></SearchIcon></IconButton>
+                {(
+                  <div className={`filter-dropdown${isAssignedToFilterOpen ? ' open' : ''}`}>
                     <input
                       type="text"
                       value={assignedToFilter}
@@ -244,56 +300,61 @@ const TenantPortal = () => {
                       placeholder="Filter by assigned..."
                     />
                   </div>
-                )}
-              </div>
-            </th>
-            <th className="header-cell text-center"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {isLoading ? (
-            <tr>
-              <td colSpan="8" className="text-center">
-                Loading...
-              </td>
-            </tr>
-          ) : fetchError ? (
-            <tr>
-              <td colSpan="8" className="text-center">
-                {fetchError}
-              </td>
-            </tr>
-          ) : filteredTickets.length === 0 ? (
-            <tr>
-              <td colSpan="8" className="text-center">
-                Empty!
-              </td>
-            </tr>
-          ) : (
-            filteredTickets.map((ticket, index) => (
-              <tr key={ticket.ServiceRequestID} className="table-row">
-                <td className="text-center">{index + 1}</td>
-                <td className="text-center">{ticket.Name}</td>
-                <td className="text-center">{ticket.Category}</td>
-                <td className="text-center">{ticket.Property}</td>
-                <td className="text-center">{ticket.Status}</td>
-                <td className="text-center">{new Date(ticket.SubmittedDateTime).toLocaleDateString()}</td>
-                <td className="text-center">{ticket.staffDetails ? ticket.staffDetails.StaffName : null}</td>
-                <td className="text-center">
-                  <Link to={`${getViewTicketsRoute()}/${TenantID}/${ticket.ServiceRequestID}`}>
-                    <button className="btn">
-                      View Ticket
-                    </button>
-                  </Link>
+                )}</TableCell>
+
+              <TableCell align="left"><Button
+              sx={{backgroundColor: '#e91e63', '&:hover': {
+                backgroundColor: '#a31545',
+              }, }}
+              variant="contained" onClick={removeFilters}>Remove Filters</Button></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {isLoading ? (
+              <tr>
+                <td colSpan="8" className="text-center">
+                  Loading...
                 </td>
               </tr>
-            ))
-          )}
-        </tbody>
-      </table>
-      <button onClick={removeFilters}>
-        Remove all Filters
-      </button>
+            ) : fetchError ? (
+              <tr>
+                <td colSpan="8" className="text-center">
+                  {fetchError}
+                </td>
+              </tr>
+            ) : filteredTickets.length === 0 ? (
+              <tr>
+                <td colSpan="8" className="text-center">
+                  Empty!
+                </td>
+              </tr>
+            ) :
+
+              (filteredTickets.map((ticket, index) => (
+                <TableRow
+                  hover
+                  key={ticket.ServiceRequestID}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell align="left">{index + 1}</TableCell>
+                  <TableCell align="left">{ticket.Name}</TableCell>
+                  <TableCell align="left">{ticket.Category}</TableCell>
+                  <TableCell align="left">{ticket.Property}</TableCell>
+                  <TableCell align="left">{ticket.Status}</TableCell>
+                  <TableCell align="left">{new Date(ticket.SubmittedDateTime).toLocaleDateString()}</TableCell>
+                  <TableCell align="left">{ticket.staffDetails ? ticket.staffDetails.StaffName : "Unassigned"}</TableCell>
+                  <TableCell align="left">
+                    <Link to={`${getViewTicketsRoute()}/${TenantID}/${ticket.ServiceRequestID}`}>
+                      <Button variant="contained" >View Ticket
+                      </Button>
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              )))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
     </div>
   );
 };

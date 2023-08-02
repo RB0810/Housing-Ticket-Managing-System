@@ -1,7 +1,9 @@
-import React, { useState } from "react";
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from 'react-router-dom';
 import TenantAccount from "../../objects/TenantAccount";
 import "./../../../src/styles/createtenantacc.css"
+import Cookies from "js-cookie";
+import {Button, Grid, TextField} from '@mui/material'
 
 const CreateTenantAcc = () => {
   const [tenantUsername, setTenantUsername] = useState("");
@@ -18,6 +20,28 @@ const CreateTenantAcc = () => {
   const [unitFields, setUnitFields] = useState([]);
   const [formError, setFormError] = useState(null);
   const { SupervisorID } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const userId = Cookies.get('userId');
+    const type = Cookies.get('type');
+
+    if (!userId || !type) {
+      // If any of the required cookies are missing, redirect to the login page
+      console.log('Unauthorized');
+      navigate("/unauthorize");
+    } else {
+      // Check if the user's ID and type match the expected values (e.g., SupervisorID and "Supervisor")
+      if (Number(userId) === parseInt(SupervisorID) && type === "Supervisor") {
+        // Proceed with rendering the component
+        console.log('Authorized');
+      } else {
+        // If not authorized, display "Unauthorized access" message
+        console.log('Unauthorized');
+        navigate("/unauthorize");
+      }
+    }
+  }, [navigate, SupervisorID]);
 
   const handleUnitFieldChange = (index, value) => {
     const updatedUnitFields = [...unitFields];
@@ -59,17 +83,23 @@ const CreateTenantAcc = () => {
 
   const renderUnitFields = () => {
     const fields = [];
-    for (let i = 0; i < numberOfUnits; i++) {
-      fields.push(
-        <input
-          key={i}
-          type="text"
-          value={unitFields[i] || ""}
-          className="create-tenant-acc-input-text"
-          onChange={(e) => handleUnitFieldChange(i, e.target.value)}
-        />
-      );
+    if (numberOfUnits>0){
+        for (let i = 0; i < numberOfUnits; i++) {
+        fields.push(
+            <Grid item xs = {12}>
+              <TextField 
+              type="text"
+              key={i}
+              className="create-tenant-acc-textfield"
+              id="outlined-basic" 
+              variant="outlined" 
+              value={unitFields[i] || ""}
+              onChange={(e) => handleUnitFieldChange(i,e.target.value)}/>
+            </Grid>
+        );
+      }
     }
+    
     return fields;
   };
 
@@ -83,12 +113,17 @@ const CreateTenantAcc = () => {
           </div>
           
           <div className="create-tenant-acc-col-75">
-            <input
-            type="text"
-            value={tenantUsername}
-            className="create-tenant-acc-input-text"
-            onChange={(e) => setTenantUsername(e.target.value)}
-          />
+            <Grid container spacing={1}>
+              <Grid item xs = {12}>
+                  <TextField 
+                  type="text"
+                  className="create-tenant-acc-textfield"
+                  id="outlined-basic" 
+                  variant="outlined" 
+                  value={tenantUsername}
+                  onChange={(e) => setTenantUsername(e.target.value)}/>
+              </Grid>
+            </Grid>
           </div>
         </div>
         
@@ -99,12 +134,17 @@ const CreateTenantAcc = () => {
           </div>
           
           <div className="create-tenant-acc-col-75">
-            <input
-            type="email"
-            value={tenantEmail}
-            className="create-tenant-acc-input-text"
-            onChange={(e) => setTenantEmail(e.target.value)}
-          />
+            <Grid container spacing={1}>
+              <Grid item xs = {12}>
+                  <TextField 
+                  type="email"
+                  className="create-tenant-acc-textfield"
+                  id="outlined-basic" 
+                  variant="outlined" 
+                  value={tenantEmail}
+                  onChange={(e) => setTenantEmail(e.target.value)}/>
+              </Grid>
+            </Grid>
           </div>
         </div>
         
@@ -115,12 +155,17 @@ const CreateTenantAcc = () => {
           </div>
           
           <div className="create-tenant-acc-col-75">
-            <input
-            type="password"
-            value={password}
-            className="create-tenant-acc-input-text"
-            onChange={(e) => setPassword(e.target.value)}
-          />
+            <Grid container spacing={1}>
+              <Grid item xs = {12}>
+                  <TextField 
+                  type="password"
+                  className="create-tenant-acc-textfield"
+                  id="outlined-basic" 
+                  variant="outlined" 
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}/>
+              </Grid>
+            </Grid>
           </div>
         </div>
         
@@ -131,12 +176,17 @@ const CreateTenantAcc = () => {
           </div>
           
           <div className="create-tenant-acc-col-75">
-            <input
-            type="password"
-            value={reEnterPassword}
-            className="create-tenant-acc-input-text"
-            onChange={(e) => setReEnterPassword(e.target.value)}
-          />
+            <Grid container spacing={1}>
+              <Grid item xs = {12}>
+                  <TextField 
+                  type="password"
+                  className="create-tenant-acc-textfield"
+                  id="outlined-basic" 
+                  variant="outlined" 
+                  value={reEnterPassword}
+                  onChange={(e) => setReEnterPassword(e.target.value)}/>
+              </Grid>
+            </Grid>
           </div>
         </div>
         
@@ -146,12 +196,17 @@ const CreateTenantAcc = () => {
           </div>
           
           <div className="create-tenant-acc-col-75">
-            <input
-            type="tel"
-            value={tenantPhone}
-            className="create-tenant-acc-input-text"
-            onChange={(e) => setTenantPhone(e.target.value)}
-          />
+            <Grid container spacing={1}>
+              <Grid item xs = {12}>
+                  <TextField 
+                  type="tel"
+                  className="create-tenant-acc-textfield"
+                  id="outlined-basic" 
+                  variant="outlined" 
+                  value={tenantPhone}
+                  onChange={(e) => setTenantPhone(e.target.value)}/>
+              </Grid>
+            </Grid>
           </div>
         </div>
         
@@ -161,12 +216,17 @@ const CreateTenantAcc = () => {
           </div>
           
           <div className="create-tenant-acc-col-75">
-            <input
-            type="text"
-            value={tradeType}
-            className="create-tenant-acc-input-text"
-            onChange={(e) => setTradeType(e.target.value)}
-          />
+            <Grid container spacing={1}>
+              <Grid item xs = {12}>
+                  <TextField 
+                  type="text"
+                  className="create-tenant-acc-textfield"
+                  id="outlined-basic" 
+                  variant="outlined" 
+                  value={tradeType}
+                  onChange={(e) => setTradeType(e.target.value)}/>
+              </Grid>
+            </Grid>
           </div>
         </div>
         
@@ -176,12 +236,17 @@ const CreateTenantAcc = () => {
           </div>
           
           <div className="create-tenant-acc-col-75">
-            <input
-            type="text"
-            value={monthlyRental}
-            className="create-tenant-acc-input-text"
-            onChange={(e) => setMonthlyRental(e.target.value)}
-          />
+            <Grid container spacing={1}>
+              <Grid item xs = {12}>
+                  <TextField 
+                  type="text"
+                  className="create-tenant-acc-textfield"
+                  id="outlined-basic" 
+                  variant="outlined" 
+                  value={monthlyRental}
+                  onChange={(e) => setMonthlyRental(e.target.value)}/>
+              </Grid>
+            </Grid>
           </div>
         </div>
         
@@ -191,12 +256,17 @@ const CreateTenantAcc = () => {
           </div>
           
           <div className="create-tenant-acc-col-75">
-            <input
-            type="date"
-            value={leaseCommencementDate}
-            className="create-tenant-acc-input-date"
-            onChange={(e) => setLeaseCommencementDate(e.target.value)}
-          />
+            <Grid container spacing={1}>
+              <Grid item xs = {12}>
+                  <TextField 
+                  type="date"
+                  className="create-tenant-acc-textfield"
+                  id="outlined-basic" 
+                  variant="outlined" 
+                  value={leaseCommencementDate}
+                  onChange={(e) => setLeaseCommencementDate(e.target.value)}/>
+              </Grid>
+            </Grid>
           </div>
         </div>
         
@@ -206,12 +276,17 @@ const CreateTenantAcc = () => {
           </div>
           
           <div className="create-tenant-acc-col-75">
-            <input
-            type="date"
-            value={leaseTerminationDate}
-            className="create-tenant-acc-input-date"
-            onChange={(e) => setLeaseTerminationDate(e.target.value)}
-          />
+            <Grid container spacing={1}>
+              <Grid item xs = {12}>
+                  <TextField 
+                  type="date"
+                  className="create-tenant-acc-textfield"
+                  id="outlined-basic" 
+                  variant="outlined" 
+                  value={leaseTerminationDate}
+                  onChange={(e) => setLeaseTerminationDate(e.target.value)}/>
+              </Grid>
+            </Grid>
           </div>
         </div>
         
@@ -221,12 +296,20 @@ const CreateTenantAcc = () => {
           </div>
           
           <div className="create-tenant-acc-col-75">
-            <input
-            type="text"
-            value={areaOfUnit}
-            className="create-tenant-acc-input-text"
-            onChange={(e) => setAreaOfUnit(e.target.value)}
-          />
+            <Grid container spacing={1}>
+              <Grid item xs = {12}>
+                  <TextField 
+                  type="number"
+                  className="create-tenant-acc-textfield"
+                  id="outlined-basic" 
+                  variant="outlined" 
+                  value={areaOfUnit}
+                  InputProps={{
+                    inputProps: {min: 0 }
+                  }}
+                  onChange={(e) => setAreaOfUnit(e.target.value)}/>
+              </Grid>
+            </Grid>
           </div>
         </div>
         
@@ -236,14 +319,21 @@ const CreateTenantAcc = () => {
           </div>
           
           <div className="create-tenant-acc-col-75">
-            <input
-            type="number"
-            value={numberOfUnits}
-            onChange={handleNumberOfUnitsChange}
-            min="1"
-            className="create-tenant-acc-input-text"
-            onKeyDown={(e) => e.preventDefault()}
-          />
+            <Grid container spacing={1}>
+              <Grid item xs = {12}>
+                  <TextField 
+                  className="create-tenant-acc-textfield"
+                  id="outlined-basic" 
+                  variant="outlined" 
+                  type="number"
+                  value={numberOfUnits}
+                  onChange={handleNumberOfUnitsChange}
+                  InputProps={{
+                    inputProps: {min: 1 }
+                  }}
+                  onKeyDown={(e) => e.preventDefault()}/>
+              </Grid>
+            </Grid>
           </div>
         </div>
         
@@ -253,16 +343,22 @@ const CreateTenantAcc = () => {
         </div>
         
         <div className="create-tenant-acc-col-75">
-          {renderUnitFields()}
+          <Grid container spacing={1}>
+            {renderUnitFields()}
+          </Grid>
         </div>
         </div>
         
         <div className="create-tenant-acc-row">
-          <input
-            type="submit"
-            value="Create Account"
-            className="create-tenant-acc-input-submit"
-          />
+          <Grid container spacing={1}>
+            <Grid item xs = {12}>
+              <Button
+              variant="contained"
+              className="create-tenant-acc-button">
+                Create Account
+              </Button>
+            </Grid>
+          </Grid>
         </div>
         
 

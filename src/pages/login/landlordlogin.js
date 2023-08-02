@@ -1,6 +1,9 @@
 import React, { useState } from "react";
-import  AccountManager  from '../../managers/accountmanager';
 import "../../styles/login.css";
+import Authentication from "../../managers/authentication";
+import {Button, Grid, TextField} from '@mui/material'
+import Swal from "sweetalert2";
+
 
 export default function LandlordLogin() {
   const [ID, setID] = useState("");
@@ -9,7 +12,7 @@ export default function LandlordLogin() {
   const handleLogin = async (event) => {
     event.preventDefault();
 
-    const accountManager = new AccountManager();
+    const authentication = new Authentication();
 
     const eventDataSupervisor = {
       ID,
@@ -18,7 +21,7 @@ export default function LandlordLogin() {
     };
 
     try {
-      await accountManager.loginAuth(eventDataSupervisor);
+      await authentication.loginAuth(eventDataSupervisor);
     } catch (error) {
       if (error.message === "Invalid credentials") {
         const eventDataStaff = {
@@ -28,14 +31,22 @@ export default function LandlordLogin() {
         };
 
         try {
-          await accountManager.loginAuth(eventDataStaff);
+          await authentication.loginAuth(eventDataStaff);
         } catch (error) {
           console.error("Login error:", error);
-          window.alert(`Error: ${error.message}`);
+          Swal.fire({
+            icon: "error",
+            title: "Login error",
+            text: error.message
+          });
         }
       } else {
         console.error("Login error:", error);
-        window.alert(`Error: ${error.message}`);
+        Swal.fire({
+          icon: "error",
+          title: "Login error",
+          text: error.message
+        });
       }
     }
   };
@@ -52,33 +63,33 @@ export default function LandlordLogin() {
           <p>Manage Tickets and Tenants!</p>
         </div>
 
-        <div>
-          <label></label>
-          <input
-            className="loginInput"
-            type="text"
-            value={ID}
-            onChange={(e) => setID(e.target.value)}
-            name="ID"
-            placeholder="ID Number/Email"
-          />
-        </div>
-
-        <div>
-          <label></label>
-          <input
-            className="loginInput"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            name="password"
-            placeholder="Password"
-          />
-        </div>
-
-        <button className="loginBtn" type="submit">
-          Login
-        </button>
+        <Grid container spacing={1}>
+          <Grid item xs = {12}>
+              <TextField 
+              className="login-portal-textfield"
+              id="outlined-basic" 
+              label="ID Number/Email"
+              onChange={(e) => setID(e.target.value)} 
+              variant="outlined" />
+          </Grid>
+          <Grid item xs = {12}>
+              <TextField 
+              type="password"
+              className="login-portal-textfield"
+              id="outlined-basic" 
+              label="Password" 
+              onChange={(e) => setPassword(e.target.value)}
+              variant="outlined" />
+          </Grid>
+          <Grid item xs = {12}>
+            <Button 
+            type="submit"
+            variant="contained"
+            className="login-portal-button">
+              Login
+            </Button>
+          </Grid>
+        </Grid>
       </form>
     </div>
   );

@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import React from "react";
 import "../styles/navbar.css"
+import Authentication from "../managers/authentication.js"
 
 export default function AdminNavbar() {
   const location = useLocation();
@@ -18,10 +19,15 @@ export default function AdminNavbar() {
       <ul>
       <DropdownLink label="Create Landlord Account" options={["Supervisor", "Staff"]} />
         <CustomLink to={`/adminportal/manageacc/${AdminID}`}>Manage Accounts</CustomLink>
-        <CustomLink to={`/`}>Logout</CustomLink>
+        <button onClick={handleLogout}>Logout</button>
       </ul>
     </nav>
   );
+}
+
+function handleLogout(){
+  const authentication = new Authentication();
+  authentication.logout();
 }
 
 function CustomLink({ to, children }) {

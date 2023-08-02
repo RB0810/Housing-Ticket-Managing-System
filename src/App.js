@@ -28,12 +28,34 @@ import BuildingDetailsPage from "./pages/admin/BuildingDetailsPage";
 import TenantProfile from "./pages/tenant/profile";
 import SupervisorProfile from "./pages/supervisor/profile";
 import StaffProfile from "./pages/staff/profile";
+import UnauthorizedAccess from "./pages/unauthorized_access";
+
+// MUI themes
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { CssBaseline } from "@mui/material";
+
+const theme = createTheme({
+  palette: {
+    mode: 'light',
+    primary: {
+      main: '#707c4f',
+    },
+    secondary: {
+      main: '#b7b09c',
+    },
+  },
+  typography: {
+    fontFamily: 'Montserrat',
+  },
+});
 
 function App() {
   // Routing
 
   return (
     <>
+    <ThemeProvider theme={theme}>
+      <CssBaseline enableColorScheme />
       <Routes>
         <Route path="/*" element={<Navbar />} />
         <Route path="/tenantportal/*" element={<TenantNavbar />} />
@@ -67,8 +89,10 @@ function App() {
           <Route path="/tenantportal/profile/:TenantID" element={<TenantProfile />} />
           <Route path="/supervisorportal/profile/:SupervisorID" element={<SupervisorProfile />} />
           <Route path="/staffportal/profile/:StaffID" element={<StaffProfile />} />
+          <Route path="/unauthorize" element={<UnauthorizedAccess />} />
           </Routes>
       </div>
+      </ThemeProvider>
     </>
   );
 }

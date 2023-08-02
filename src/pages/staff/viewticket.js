@@ -4,12 +4,17 @@ import AccountManager from "../../managers/accountmanager";
 import BasicTicketDetails from "../../components/BasicTicketDetails";
 import SubmittedByCard from "../../components/SubmittedByCard";
 import ViewFinalFeedbackDetails from "../../components/ViewFinalFeedbackDetails";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 import UploadQuotation from "../../components/UploadQuotation";
 import DisplayQuotation from "../../components/DisplayQuotation";
 import supabase from "../../config/supabaseClient";
 import Swal from "sweetalert2";
 import NotificationManager from "../../managers/notificationmanager";
+import { Grid,Button,TextField,MenuItem, Select, OutlinedInput } from "@mui/material";
+
+// // Styles
+import "./../../styles/viewticket.css";
 
 // Quotation-related imports
 import { Document, Page, pdfjs } from "react-pdf";
@@ -32,6 +37,30 @@ const ViewTicketStaff = () => {
   // Quotation Items
   const [quotationPath, setQuotationPath] = useState(null);
   const [file, setFile] = useState(null);
+
+  const navigate = useNavigate();
+  const {StaffID} = useParams();
+
+  useEffect(() => {
+    const userId = Cookies.get('userId');
+    const type = Cookies.get('type');
+
+    if (!userId || !type) {
+      // If any of the required cookies are missing, redirect to the login page
+      console.log('Unauthorized');
+      navigate("/unauthorize");
+    } else {
+      // Check if the user's ID and type match the expected values (e.g., StaffID and "Staff")
+      if (Number(userId) === parseInt(StaffID) && type === "Staff") {
+        // Proceed with rendering the component
+        console.log('Authorized');
+      } else {
+        // If not authorized, display "Unauthorized access" message
+        console.log('Unauthorized');
+        navigate("/unauthorize");
+      }
+    }
+  }, [navigate, StaffID]);
 
   useEffect(() => {
     const getTenantAndTicket = async () => {
@@ -67,7 +96,10 @@ const ViewTicketStaff = () => {
         setFetchError(null);
       } else if (ticketData.length === 0) {
         setFetchError("This ticket is EMPTY!");
-        window.alert("Ticket empty!");
+        Swal.fire({
+          icon: "error",
+          title: "Ticket is empty"
+        });
         setServiceTicket();
       } else {
         setFetchError("Error finding this ticket :(");
@@ -78,9 +110,12 @@ const ViewTicketStaff = () => {
     getTenantAndTicket();
   }, []);
 
+  const changeQuotationRequired = (value) => {
+    setQuotationRequired(value);
+  };
+
   const handleQuotationRequiredChange = (e) => {
-    setQuotationRequired(e.target.value);
-    console.log(quotationRequired);
+    changeQuotationRequired(e.target.value);
   };
 
   const handleContinue = async () => {
@@ -111,9 +146,11 @@ const ViewTicketStaff = () => {
         "ACTIVE"
       );
 
-      //const sendNotif = notificationmanager.QuotationUploadNotif(serviceTicket.ServiceRequestID);
+      // const sendNotif = notificationmanager.QuotationUploadNotif(
+      //   serviceTicket.ServiceRequestID
+      // );
 
-      // Execute all promises concurrently using Promise.all
+      //Execute all promises concurrently using Promise.all
       await Promise.all([
         updateQuotationRequiredPromise,
         updateStatusPromise,
@@ -121,10 +158,19 @@ const ViewTicketStaff = () => {
         //sendNotif,
       ]);
 
-      window.alert("QUOTATION UPDATE SUCCESSFUL!");
-      window.location.reload();
+      Swal.fire({
+        icon: "success",
+        title: "Update Quotation successful"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
     } catch (error) {
-      window.alert("ERROR IN CONTINUE FOR QUOTATION UPLOAD");
+      Swal.fire({
+        icon: "error",
+        title: "Error in continue for quotation upload"
+      });
     }
   };
 
@@ -135,15 +181,26 @@ const ViewTicketStaff = () => {
         "Status",
         "Quotation Uploaded"
       );
-      // try{
-      //   await notificationmanager.QuotationUploadNotif(serviceTicket.ServiceRequestID);
+      // try {
+      //   await notificationmanager.QuotationUploadNotif(
+      //     serviceTicket.ServiceRequestID
+      //   );
       // } catch (error) {
       //   console.log(error);
       // }
-      window.alert("QUOTATION UPDATE SUCCESSFUL!");
-      window.location.reload();
+      Swal.fire({
+        icon: "success",
+        title: "Update Quotation successful"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
     } catch (error) {
-      window.alert("ERROR IN REUPLOAD FOR QUOTATION UPLOAD");
+      Swal.fire({
+        icon: "error",
+        title: "Quotation reupload error"
+      });
     }
   };
 
@@ -156,18 +213,29 @@ const ViewTicketStaff = () => {
         "Works Started"
       );
 
-      // try{
-      //   await notificationmanager.WorksStartedNotif(serviceTicket.ServiceRequestID);
+      // try {
+      //   await notificationmanager.WorksStartedNotif(
+      //     serviceTicket.ServiceRequestID
+      //   );
       // } catch (error) {
       //   console.log(error);
       // }
 
       // Perform any additional actions or display a success message
-      window.alert("Works Started!");
-      window.location.reload();
+      Swal.fire({
+        icon: "success",
+        title: "Works started"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
     } catch (error) {
       // Handle errors appropriately
-      window.alert("Update Failed!");
+      Swal.fire({
+        icon: "error",
+        title: "Update failed"
+      });
     }
   };
 
@@ -180,22 +248,34 @@ const ViewTicketStaff = () => {
         "Works Ended"
       );
 
-      // try{
-      //   await notificationmanager.WorksEndedNotif(serviceTicket.ServiceRequestID);
+      // try {
+      //   await notificationmanager.WorksEndedNotif(
+      //     serviceTicket.ServiceRequestID
+      //   );
       // } catch (error) {
       //   console.log(error);
       // }
 
       // Perform any additional actions or display a success message
-      window.alert("Update Successful!");
-      window.location.reload();
+      Swal.fire({
+        icon: "success",
+        title: "Update successful"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
     } catch (error) {
       // Handle errors appropriately
-      window.alert("Update Failed!");
+      Swal.fire({
+        icon: "error",
+        title: "Update failed"
+      });
     }
   };
 
   const handleFileChange = async (event) => {
+    changeQuotationRequired("true");
     await uploadFileToBucket(event.target.files[0]);
   };
 
@@ -240,8 +320,7 @@ const ViewTicketStaff = () => {
         Swal.fire({
           // Display error alert
           icon: "error",
-          title: "Oops...",
-          text: "Failed to update the file path in the database!",
+          title: "Error uploading Quotation"
         });
         return { error: updateError };
       }
@@ -250,8 +329,7 @@ const ViewTicketStaff = () => {
       Swal.fire({
         // Display success alert
         icon: "success",
-        title: "Uploaded",
-        text: "Your file has been uploaded and the file path is updated.",
+        title: "Quotation Uploaded"
       });
       return { data: updateData };
     } catch (error) {
@@ -282,11 +360,17 @@ const ViewTicketStaff = () => {
       URL.revokeObjectURL(url);
 
       if (error) {
-        window.alert("Error downloading file!");
+        Swal.fire({
+          icon: "error",
+          title: "Error downloading file"
+        });
         return;
       }
     } catch (error) {
-      window.alert("Error downloading file!");
+      Swal.fire({
+        icon: "error",
+        title: "Error downloading file"
+      });
     }
   };
 
@@ -295,8 +379,10 @@ const ViewTicketStaff = () => {
     if (quotationRequired === "true" || quotationRequired === null) {
       return (
         <div>
+          {/* Attention!! */}
           <input type="file" onChange={handleFileChange} />
         </div>
+        
       );
     } else if (quotationRequired === "false") {
       return null;
@@ -306,9 +392,16 @@ const ViewTicketStaff = () => {
   if (status === "Awaiting Review") {
     return (
       <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        _______________________________________
-        <SubmittedByCard tenant={tenant} />
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs ={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <SubmittedByCard tenant={tenant} />
+            </Grid>
+          </Grid>
+        </Grid>
       </div>
     );
   }
@@ -317,39 +410,68 @@ const ViewTicketStaff = () => {
     if (quotationRequired === false) {
       return (
         <div>
-          <BasicTicketDetails ticket={serviceTicket} />
-          _______________________________________
-          <SubmittedByCard tenant={tenant} />
-          _______________________________________
-          <div>
-            <button onClick={handleStartWorks}>Start Works</button>
-          </div>
-          _______________________________________
+          <Grid container spacing={1} columns={10}>
+            <Grid item xs ={4}>
+              <Grid item xs={12}>
+                <BasicTicketDetails ticket={serviceTicket} />
+              </Grid>
+              <Grid item xs={12}>
+                <SubmittedByCard tenant={tenant} />
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                variant="contained"
+                onClick={handleStartWorks}>
+                  Start Works
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
         </div>
       );
     } else {
       return (
         <div>
-          <BasicTicketDetails ticket={serviceTicket} />
-          _______________________________________
-          <SubmittedByCard tenant={tenant} />
-          _______________________________________
-          <div>
-            <label>
-              Quotation Required:
-              <select
+          <Grid container spacing={1} columns={10}>
+            <Grid item xs ={4}>
+              <Grid item xs={12}>
+                <BasicTicketDetails ticket={serviceTicket} />
+              </Grid>
+              <Grid item xs={12}>
+                <SubmittedByCard tenant={tenant} />
+              </Grid>
+              <Grid item xs={12}>
+                <h2 className="quotationrequired-header">Quotation Required</h2>
+              </Grid>
+              <Grid item xs={12}>
+                {/* <Select
+                className="assignstaff-textfield"
                 value={quotationRequired}
+                variant='outlined'
                 onChange={handleQuotationRequiredChange}
-              >
-                <option value={true}>YES</option>
-                <option value={false}>NO</option>
-              </select>
-            </label>
-            {renderContent()}
-            <div>
-              <button onClick={handleContinue}>Submit</button>
-            </div>
-          </div>
+                input={<OutlinedInput value={quotationRequired}/>}>
+                  <MenuItem value={true}>YES</MenuItem>
+                  <MenuItem value={false}>NO</MenuItem>
+                </Select> */}
+                <select
+                  className="viewticket-select"
+                  value={quotationRequired}
+                  onChange={handleQuotationRequiredChange}>
+                  <option value={true}> Yes</option>
+                  <option value={false}>No</option>
+                </select>
+                
+              </Grid>
+              <Grid item xs={12}>
+              {renderContent()}
+                <Button
+                variant="contained"
+                onClick={handleContinue}>
+                  Submit
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
         </div>
       );
     }
@@ -358,63 +480,86 @@ const ViewTicketStaff = () => {
   if (status === "Quotation Uploaded") {
     return (
       <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        _______________________________________
-        <SubmittedByCard tenant={tenant} />
-        _______________________________________
-        <div>
-          <button onClick={handleFileDownload}>Download File</button>
-        </div>
-        <DisplayQuotation quotationPath={quotationPath} file={file} />
-        _______________________________________
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <SubmittedByCard tenant={tenant} />
+            </Grid>
+          </Grid>
+          <Grid item xs={6}>
+            <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+          </Grid>
+        </Grid>
       </div>
     );
   }
 
   if (status === "Quotation Accepted") {
     return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        _______________________________________
-        <SubmittedByCard tenant={tenant} />
-        _______________________________________
-        <div>
-          <button onClick={handleStartWorks}>Start Works</button>
-        </div>
-        _______________________________________
-        <div>
-          <button onClick={handleFileDownload}>Download File</button>
-        </div>
-        <DisplayQuotation quotationPath={quotationPath} file={file} />
-        _______________________________________
+      <div className="ticket-grid">
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <SubmittedByCard tenant={tenant} />
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+              variant="contained"
+              onClick={handleStartWorks}>
+                Start Works
+              </Button>
+            </Grid>
+          </Grid>
+          <Grid item xs={6}>
+            <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+          </Grid>
+        </Grid>
       </div>
     );
   }
 
   if (status === "Quotation Rejected") {
     return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        _______________________________________
-        <SubmittedByCard tenant={tenant} />
-        ____________________________________
-        <UploadQuotation
-          bucketName="quotation"
-          ServiceRequestID={serviceTicket.ServiceRequestID}
-        />
-        <div>
-          <button onClick={handleReuploadQuotation}>Reupload Quotation</button>
-        </div>
-        _______________________________________
-        <div>
-          <h2>Rejection Details</h2>
-          <p>Reason for rejection: {feedbackComments}</p>
-        </div>
-        <div>
-          <button onClick={handleFileDownload}>Download File</button>
-        </div>
-        <DisplayQuotation quotationPath={quotationPath} file={file} />
-        _______________________________________
+      <div class="ticket-grid">
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <SubmittedByCard tenant={tenant} />
+            </Grid>
+            <Grid item xs={12}>
+              <input type="file" onChange={handleFileChange} />
+            </Grid>
+            <Grid item xs={12}>
+              <Button 
+              variant="contained" 
+              onClick={handleReuploadQuotation}>
+                Reupload Quotation
+              </Button>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+              className="view-ticket-textfield"
+              id="outlined-basic"
+              multiline='true'
+              label ="Reason for Rejection"
+              variant="filled"
+              value={feedbackComments}
+              InputProps={{readOnly: true,}}/>
+            </Grid>
+          </Grid>
+          <Grid item xs={6}>
+            <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+          </Grid>
+        </Grid>
       </div>
     );
   }
@@ -422,22 +567,30 @@ const ViewTicketStaff = () => {
   if (status === "Works Started") {
     return (
       <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        _______________________________________
-        <SubmittedByCard tenant={tenant} />
-        _______________________________________
-        <div>
-          <button onClick={handleEndWorks}>End Works</button>
-        </div>
-        ____________________________________
-        {quotationRequired && (
-          <div>
-            <div>
-              <button onClick={handleFileDownload}>Download Quotation</button>
-            </div>
-            <DisplayQuotation quotationPath={quotationPath} file={file} />
-          </div>
-        )}
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <SubmittedByCard tenant={tenant} />
+            </Grid>
+            <Grid item xs ={12}>
+              <Button onClick={handleEndWorks} variant="contained">
+                End Works
+              </Button>
+            </Grid>
+          </Grid>
+          <Grid item xs={6}>
+            {quotationRequired && (
+              <div class="quotation">
+                <DisplayQuotation
+                  ServiceRequestID={serviceTicket.ServiceRequestID}
+                />
+              </div>
+            )}
+          </Grid>
+        </Grid>
       </div>
     );
   }
@@ -445,18 +598,25 @@ const ViewTicketStaff = () => {
   if (status === "Works Ended") {
     return (
       <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        _______________________________________
-        <SubmittedByCard tenant={tenant} />
-        _______________________________________
-        {quotationRequired && (
-          <div>
-            <div>
-              <button onClick={handleFileDownload}>Download Quotation</button>
-            </div>
-            <DisplayQuotation quotationPath={quotationPath} file={file} />
-          </div>
-        )}
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <SubmittedByCard tenant={tenant} />
+            </Grid>
+          </Grid>
+          <Grid item xs={6}>
+            {quotationRequired && (
+              <div class="quotation">
+                <DisplayQuotation
+                  ServiceRequestID={serviceTicket.ServiceRequestID}
+                />
+              </div>
+            )}
+          </Grid>
+        </Grid>
       </div>
     );
   }
@@ -464,49 +624,72 @@ const ViewTicketStaff = () => {
   if (status === "Works Rejected") {
     return (
       <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        _______________________________________
-        <SubmittedByCard tenant={tenant} />
-        _______________________________________
-        <div>
-          <h2>Rejection Details</h2>
-          <p>Reason for rejection: {feedbackComments}</p>
-
-          <button onClick={handleStartWorks}>Restart Works</button>
-        </div>
-        _______________________________________
-        {quotationRequired && (
-          <div>
-            <div>
-              <button onClick={handleFileDownload}>Download Quotation</button>
-            </div>
-            <DisplayQuotation quotationPath={quotationPath} file={file} />
-          </div>
-        )}
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <SubmittedByCard tenant={tenant} />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+              className="view-ticket-textfield"
+              id="outlined-basic"
+              multiline='true'
+              label ="Reason for Rejection"
+              variant="filled"
+              value={feedbackComments}
+              InputProps={{readOnly: true,}}/>
+            </Grid>
+            <Grid item xs ={12}>
+              <Button onClick={handleStartWorks} variant="contained">
+                Restart Works
+              </Button>
+            </Grid>
+          </Grid>
+          <Grid item xs={6}>
+            {quotationRequired && (
+              <div class="quotation">
+                <DisplayQuotation
+                  ServiceRequestID={serviceTicket.ServiceRequestID}
+                />
+              </div>
+            )}
+          </Grid>
+        </Grid>
       </div>
     );
   }
 
   if (status === "Feedback Submitted") {
     return (
-      <div>
-        <BasicTicketDetails ticket={serviceTicket} />
-        _______________________________________
-        <SubmittedByCard tenant={tenant} />
-        _______________________________________
-        <ViewFinalFeedbackDetails
-          rating={serviceTicket.FeedbackRating}
-          comments={serviceTicket.FeedbackComments}
-        />
-        _______________________________________
-        {quotationRequired && (
-          <div>
-            <div>
-              <button onClick={handleFileDownload}>Download Quotation</button>
-            </div>
-            <DisplayQuotation quotationPath={quotationPath} file={file} />
-          </div>
-        )}
+      <div class="ticket-grid">
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs ={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <SubmittedByCard tenant={tenant} /> 
+            </Grid>
+            <Grid item xs={12}>
+            <ViewFinalFeedbackDetails
+              rating={serviceTicket.FeedbackRating}
+              comments={serviceTicket.FeedbackComments}
+            />
+            </Grid>
+          </Grid>
+          <Grid item xs={6}>
+              {quotationRequired && (
+                <div class="quotation">
+                  <DisplayQuotation
+                    ServiceRequestID={serviceTicket.ServiceRequestID}
+                  />
+                </div>
+              )}
+            </Grid>
+        </Grid>
       </div>
     );
   }

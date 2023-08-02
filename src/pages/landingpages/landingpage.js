@@ -1,5 +1,6 @@
 import "../../styles/landingpage.css";
 import { Link } from 'react-router-dom';
+import { useTheme } from '@mui/material/styles';
 
 const LandingPageCard = ({ imageSrc, altText, heading, path }) => {
   return (
@@ -18,6 +19,7 @@ const LandingPageCard = ({ imageSrc, altText, heading, path }) => {
 };
 
 export default function LandingPage() {
+  const theme = useTheme();
   return (
     <>
       <div className="LandingPage-row">

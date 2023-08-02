@@ -1,5 +1,3 @@
-// src/managers/accountmanager.test.js
-
 import AccountManager from "./accountmanager";
 import supabase from "../config/supabaseClient";
 

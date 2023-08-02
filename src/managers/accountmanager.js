@@ -1,27 +1,6 @@
 import supabase from "../config/supabaseClient";
 
 class AccountManager {
-  async loginAuth(event) {
-    const { data, error } = await supabase
-      .from(`${event.Type}Users`)
-      .select("*")
-      .eq(`${event.Type}Email`, event.ID);
-
-    if (error) {
-      throw error;
-    }
-
-    const user = data[0];
-
-    if (user && user[`${event.Type}Password`] === event.password) {
-      const redirectUrl = `/${event.Type.toLowerCase()}portal/landingpage/${
-        user[`${event.Type}ID`]
-      }`;
-      window.location.href = redirectUrl;
-    } else {
-      throw new Error("Invalid credentials");
-    }
-  }
 
   async setPassword(Type, ID, password) {
     const { data, error } = await supabase
@@ -198,14 +177,17 @@ class AccountManager {
       .from("Lease")
       .select("*")
       .in("LeaseID", leaseIds);
-    const unitDataPromises = leaseData.map((lease) =>
+  
+    // Fetch all the unit data for each tenant concurrently
+    const unitDataPromises = tenantData.map((tenant) =>
       supabase
         .from("Unit")
         .select("UnitNumber")
-        .eq("LeaseID", lease.LeaseID)
+        .eq("LeaseID", tenant.Lease)
         .then((response) => response.data)
     );
     const unitData = await Promise.all(unitDataPromises);
+  
     const buildingDetails = {
       Building: buildingData[0],
       staff: staffData,
@@ -215,9 +197,13 @@ class AccountManager {
         Units: unitData[index],
       })),
     };
-
+  
     return buildingDetails;
   }
+  
+  
+  
+  
 
   async createStaffAccount(staff) {
     await supabase.from("StaffUsers").insert(staff);
