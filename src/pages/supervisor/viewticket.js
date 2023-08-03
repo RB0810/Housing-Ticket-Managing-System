@@ -191,29 +191,37 @@ const ViewTicketSupervisor = () => {
     if (rejectState === "reject") {
       return (
         <div>
-          <form onSubmit={handleReject}>
-              <TextField
-              className="view-ticket-textfield"
-              id="supervisor-portal-reject-reason-textfield"
-              multiline='true'
-              label ="Reason for Reject"
-              variant="filled"
-              value={rejectComments}
-              onChange={(e) => setRejectComments(e.target.value)}/>
-            <Button
-            id="supervisor-portal-submit-reject-reason-button"
-            className="view-ticket-button"
-            variant="contained"
-            onClick={handleReject}>
-              Submit
-            </Button>
-            <Button
-            id="supervisor-portal-cancel-reject-reason-button"
-            className="view-ticket-button"
-            variant="contained"
-            onClick={handleCancel}>
-              Cancel
-            </Button>
+          <form onSubmit={handleReject} className="supervisor-portal-view-ticket-form">
+            <Grid container spacing={1}>
+              <Grid item xs={12}>
+                <TextField
+                className="view-ticket-textfield"
+                id="supervisor-portal-reject-reason-textfield"
+                multiline='true'
+                label ="Reason for Reject"
+                variant="filled"
+                value={rejectComments}
+                onChange={(e) => setRejectComments(e.target.value)}/>
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                id="supervisor-portal-submit-reject-reason-button"
+                className="view-ticket-button"
+                variant="contained"
+                onClick={handleReject}>
+                  Submit
+                </Button>
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                id="supervisor-portal-cancel-reject-reason-button"
+                className="view-ticket-button"
+                variant="contained"
+                onClick={handleCancel}>
+                  Cancel
+                </Button>
+              </Grid>
+            </Grid>
           </form>
         </div>
       );
