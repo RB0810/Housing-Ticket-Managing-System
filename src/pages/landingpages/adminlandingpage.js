@@ -44,7 +44,7 @@ export default function AdminLandingPage() {
   return (
     <div>
       <div className="centered-card">
-      <button className="card" onClick={handleButtonClickManage} id="createsupervisor">
+      <button className="card" id="admin-landing-page-manage-account" onClick={handleButtonClickManage}>
         <img src="/manageaccount.jpg" alt="Card" className="card-image" />
         <div>
           <button>Manage Accounts</button>
@@ -52,13 +52,13 @@ export default function AdminLandingPage() {
       </button>
     </div>
       <div className="card-container">
-        <button className="card" onClick={handleButtonClickCreate}>
+        <button className="card" id="admin-landing-page-create-supervisor-account" onClick={handleButtonClickCreate}>
           <img src="/addlandlord.png" alt="Card" className="card-image" />
           <div>
             <button>Create Landlord Account <br />(Building Supervisor)</button>
           </div>
         </button>
-        <button className="card" onClick={handleButtonClickDelete}>
+        <button className="card" id="admin-landing-page-create-staff-account" onClick={handleButtonClickDelete}>
           <img src="/addstaff.png" alt="Card" className="card-image" />
           <div>
             <button>Create Landlord Account <br />(Staff/Engineers)</button>
