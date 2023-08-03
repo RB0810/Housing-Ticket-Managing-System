@@ -46,3 +46,7 @@
   text-align: left;
   margin-left: 5%;
 }
+
+.underlined-text{
+  text-decoration: underline;
+}
