@@ -11,7 +11,7 @@ const BuildingCard = ({ building, onClick }) => {
     <button className="building-card" onClick={onClick}>
       <Grid container spacing={1}>
         <Grid item xs={12} >
-          <h2>{building.BuildingName}</h2>
+          <h2 class="underlined-text">{building.BuildingName}</h2>
         </Grid>
         <Grid item xs={12}>
           <TextField 

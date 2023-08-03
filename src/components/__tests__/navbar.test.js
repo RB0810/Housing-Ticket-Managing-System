@@ -5,6 +5,7 @@ import Navbar from '../Navbar';
 import LandingPage from '../../pages/landingpages/landingpage';
 import AdminLogin from '../../pages/login/adminlogin';
 import LandlordLogin from '../../pages/login/landlordlogin';
+import TenantLogin from '../../pages/login/tenantlogin';
 
 const MockNavBar= ()=>{
     return (
@@ -17,6 +18,7 @@ const MockNavBar= ()=>{
                     <Route path="/" element={<LandingPage />} />
                     <Route path="/landlordlogin" element={<LandlordLogin />} />
                     <Route path="/adminlogin" element={<AdminLogin />} />
+                    <Route path="/tenantlogin" element={<TenantLogin />} />
                 </Routes>
             </div>
         </MemoryRouter>
@@ -38,11 +40,18 @@ describe("We test if the navigation bar directs users to the selected pages",()=
         expect(screen.getByText("Manage Tickets and Tenants!")).toBeInTheDocument()
     })
 
-    test("Click Admin Login brings you to Tenant Login Page", ()=>{
+    test("Click Admin Login brings you to Admin Login Page", ()=>{
         render(<MockNavBar/>)
         const admin = screen.getByText("Admin Login")
         fireEvent.click(admin)
         expect(screen.getByText("Manage Landlords and Properties!")).toBeInTheDocument()
+    })
+
+    test("Click Tenant Login brings you to Tenant Login Page", ()=>{
+        render(<MockNavBar/>)
+        const tenant = screen.getByText("Tenant Login")
+        fireEvent.click(tenant)
+        expect(screen.getByText("Tenant Portal Login")).toBeInTheDocument()
     })
 
 })

@@ -1,6 +1,7 @@
 import "../../styles/landingpage.css";
 import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
+import { Button } from "@mui/material";
 
 const LandingPageCard = ({ imageSrc, altText, heading, path }) => {
   return (
@@ -9,9 +10,13 @@ const LandingPageCard = ({ imageSrc, altText, heading, path }) => {
       <div className="page-card-container">
         <h3 className="card-heading">{heading}</h3>
         <Link to={path}>
-          <button className="login-button" useRef={{ path }}>
+          <Button 
+          id={altText}
+          className="login-button" 
+          variant="contained"
+          useRef={{ path }}>
             Login
-          </button>
+          </Button>
         </Link>
       </div>
     </div>

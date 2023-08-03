@@ -28,7 +28,6 @@
 }
 
 .card-heading {
-    font-family: Montserrat;
     font-size: 24px;
     font-style: normal;
     font-weight: 700;
@@ -36,22 +35,6 @@
     letter-spacing: 0.1px;
 }
 
-.login-button {
-    background-color: #0780FE;
-    padding: 15px 30px;
-    border-radius: 12px;
-    border-radius: 10px;
-
-    color: white;
-    font-family: Montserrat;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 28px;
-    letter-spacing: 0.2px;
-    text-decoration: none;
-}
-
-.login-button:hover {
-    background-color: #0A66D9;
+.login-button{
+    width: 40%;
 }

@@ -1,4 +1,12 @@
-const { Given, When, Then, Before, After } = require("@cucumber/cucumber");
+const {
+  Given,
+  When,
+  Then,
+  Before,
+  After,
+  BeforeAll,
+  AfterAll,
+} = require("@cucumber/cucumber");
 const { Builder, By, Key, until, Select } = require("selenium-webdriver");
 const assert = require("assert");
 const chrome = require("selenium-webdriver/chrome");
@@ -12,12 +20,13 @@ const supabaseKey =
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 let driver;
+let wait_value = 400;
 
 async function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-Before(async function () {
+BeforeAll(async function () {
   let { data, error } = await supabase // Create a new ticket
     .from("Service Request")
     .insert([
@@ -76,7 +85,7 @@ Before(async function () {
   }
 });
 
-After(async function () {
+AfterAll(async function () {
   let { data, error } = await supabase // Delete Created Tickets
     .from("Service Request")
     .delete()
@@ -116,6 +125,8 @@ After(async function () {
   } else {
     console.log("Deleted created ticket for testing.");
   }
+
+  driver.quit();
 });
 
 Given("Tenant has loaded the login page for Tenant Portal", async function () {
@@ -131,7 +142,7 @@ Given("Tenant has loaded the login page for Tenant Portal", async function () {
     "Tenant Portal\nLogin"
   );
 
-  await delay(1000); // Wait for 1 second (1000 milliseconds
+  await delay(wait_value); // Wait for 1 second (wait_value milliseconds
 });
 
 When("Tenant enters valid account credentials", async function () {
@@ -141,27 +152,26 @@ When("Tenant enters valid account credentials", async function () {
   const passwordInput = await driver.findElement(
     By.css('input[type="password"].MuiInputBase-input')
   );
+
   await usernameInput.sendKeys("testtenant@gmail.com");
   await passwordInput.sendKeys("testtenant123");
 
-  await delay(1000); // Wait for 1 second (1000 milliseconds
+  await delay(wait_value); // Wait for 1 second (wait_value milliseconds
 });
 
 When('Tenant clicks "login" button', async function () {
   await driver.findElement(By.className("login-portal-button")).click();
 
-  await delay(1000); // Wait for 1 second (1000 milliseconds
+  await delay(wait_value); // Wait for 1 second (wait_value milliseconds
 });
 
 Then("Tenant should be redirected to the Tenant home page", async function () {
-  await assert.equal(
-    assert.equal(
-      await driver.findElement(By.className("site-title")).getText(),
-      "Tenant Portal"
-    )
-  );
+  let portal_name = await driver
+    .findElement(By.className("site-title"))
+    .getText();
+  assert.equal(portal_name, "Tenant Portal");
 
-  await delay(1000);
+  await delay(wait_value);
 });
 
 Given('Tenant clicks on "Create Ticket"', async function () {
@@ -170,7 +180,7 @@ Given('Tenant clicks on "Create Ticket"', async function () {
   );
   await linkElement.click();
 
-  await delay(1000);
+  await delay(wait_value);
 });
 
 When("Tenant fills in the required information", async function () {
@@ -178,41 +188,117 @@ When("Tenant fills in the required information", async function () {
     .findElement(By.id("tenant-create-ticket-name-textfield"))
     .sendKeys("DELETEME");
 
-  await driver.findElement(By.id("tenant-create-ticket-request-type-select"));
+  await driver
+    .findElement(By.id("tenant-create-ticket-request-type-select"))
+    .click();
+
+  await driver.findElement(By.id("toilet")).click();
 
   await driver
-    .findElement(By.id("tenant-create-ticket-category-textfield"))
+    .findElement(By.id("tenant-create-ticket-description-textfield"))
+    .sendKeys("DELETEME");
+
+  await driver
+    .findElement(By.id("tenant-create-ticket-property-type-select"))
     .click();
+
+  await driver.findElement(By.id("TESTUNITDONTDELETE")).click();
 });
 
-When("Tenant clicks on 'Submit'", async function () {});
+When('Tenant clicks "Create Service Ticket"', async function () {
+  await driver.findElement(By.id("tenant-create-ticket-submit-button")).click();
+  await delay(wait_value);
+});
 
-When("Tenant clicks on 'View Pending Tickets'", async function () {
-  await driver
-    .findElement(By.xpath("//img[contains(@src, 'pendingticket.png')]"))
-    .click();
+Then("Database should be updated with new service ticket", async function () {
+  let { data, error } = await supabase
+    .from("Service Request")
+    .select()
+    .match({ Name: "DELETEME" });
+  if (error) {
+    throw error;
+  }
+  assert.equal(data[0].Name, "DELETEME");
+
+  await driver.findElement(By.className("swal2-confirm")).click();
+
+  await delay(wait_value);
+});
+
+Given('Tenant clicks on "View Pending Tickets"', async function () {
+  // Write code here that turns the phrase above into concrete actions
+  await driver.get("http://localhost:3000/tenantportal/landingpage/999");
+  await driver.findElement(By.id("pending-tickets-button")).click();
+
+  await delay(wait_value);
 });
 
 Then(
   "Tenant should see all pending tickets in a table format",
-  async function () {}
-);
-
-Given(
-  "Tenant has logged into their tenant account successfully",
   async function () {
-    let site_title = await driver.findElement(By.className("site-title"));
-    assert.equal(await site_title.getText(), "Tenant Portal");
+    let table = await driver.findElement(By.className("MuiTable-root"));
+    let table_rows = await table.findElements(By.tagName("tr"));
+    assert.equal(table_rows.length, 3);
+
+    await delay(wait_value);
   }
 );
 
-When("Tenant navigates to the landing page'", async function () {
-  await driver.findElement(By.className("viewPendingTicketsBtn")).click();
+Given('Tenant clicks on "View Active Tickets"', async function () {
+  // Write code here that turns the phrase above into concrete actions
+  await driver.get("http://localhost:3000/tenantportal/landingpage/999");
+  await driver.findElement(By.id("active-tickets-button")).click();
+
+  await delay(wait_value);
 });
 
-When("Tenant clicks on 'View Pending Tickets'", async function () {});
+Then(
+  "Tenant should see all active tickets in a table format",
+  async function () {
+    let table = await driver.findElement(By.className("MuiTable-root"));
+    let table_rows = await table.findElements(By.tagName("tr"));
+    assert.equal(table_rows.length, 2);
+
+    await delay(wait_value);
+  }
+);
+
+Given('Tenant clicks on "View Closed Tickets"', async function () {
+  // Write code here that turns the phrase above into concrete actions
+  await driver.get("http://localhost:3000/tenantportal/landingpage/999");
+  await driver.findElement(By.id("closed-tickets-button")).click();
+
+  await delay(wait_value);
+});
 
 Then(
-  "Tenant should see all pending tickets in a table format",
-  async function () {}
+  "Tenant should see all closed tickets in a table format",
+  async function () {
+    let table = await driver.findElement(By.className("MuiTable-root"));
+    let table_rows = await table.findElements(By.tagName("tr"));
+    assert.equal(table_rows.length, 2);
+
+    await delay(wait_value);
+  }
 );
+
+Given(
+  'Tenant navigates to the "Profile" section through the Navbar',
+  async function () {
+    let profileLink = await driver.findElement(
+      By.css(`a[href="/tenantportal/landingpage/999"]`)
+    );
+
+    await profileLink.click();
+    await delay(wait_value);
+  }
+);
+
+Then("Tenant's account information should be displayed", async function () {
+  await driver.wait(until.elementLocated(By.tagName("input")));
+  let tenantUsernameInput = await driver.findElement(By.tagName("input"));
+
+  let tenantUsername = await tenantUsernameInput.getAttribute("value");
+
+  assert.equal(tenantUsername, "TESTTENANTDONTDELETE");
+});
