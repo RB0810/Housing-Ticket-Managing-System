@@ -1,5 +1,5 @@
 const { Given, When, Then } = require("@cucumber/cucumber");
-const { Builder, By, Key, until, Select } = require("selenium-webdriver");
+const { Builder, By, Key, until, Select, Browser, WebDriverWait,TimeUnit } = require("selenium-webdriver");
 const assert = require("assert");
 const chrome = require("selenium-webdriver/chrome");
 
@@ -25,9 +25,12 @@ let driver;
       return 'pending';
     });
 
-    Then('Staff Landing Page renders', function () {
+    Then('Staff Landing Page renders',async function () {
       // Write code here that turns the phrase above into concrete actions
-      return 'pending';
+      WebDriverWait(driver,
+        TimeUnit.SECONDS(10),
+        until(driver.getCurrentUrl()===
+        "http://localhost:3000/staffportal/landingpage/16"))
     });
 
   //Scenario 2:
