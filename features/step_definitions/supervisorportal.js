@@ -65,13 +65,13 @@ Given('I am in the Create Tenant account page', async function () {
 
 When('I fill in all required details', async function () {
     const usernamefield = await driver.findElement(By.id("supervisor-portal-create-tenant-username-textfield"))
-    usernamefield.sendKeys("testtenant")
+    usernamefield.sendKeys("## what should")
     
 });
 
 When('click on the Create Tenant Account button', async function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+    let create_tenant_button = await driver.findElement(By.id("supervisor-portal-create-tenant-submit-button"))
+    create_tenant_button.click();
 });
 
 Then('a new Tenant account is created and the credentials are recorded in the supabase table', async function () {

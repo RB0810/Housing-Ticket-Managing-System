@@ -7,7 +7,7 @@ Feature: Supervisor Portal
 
   Scenario: Go to Create Tenant account
     Given I am at the Supervisor Portal landing page
-    When I click on "Create Tenant Account"
+    When I click on Create Tenant Account
     Then I should be redirected to the Create Tenant Account page 
 
   Scenario: Create Tenant account
