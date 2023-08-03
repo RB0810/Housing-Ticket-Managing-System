@@ -194,18 +194,22 @@ const ViewTicketSupervisor = () => {
           <form onSubmit={handleReject}>
               <TextField
               className="view-ticket-textfield"
-              id="rejectComments-textfield"
+              id="supervisor-portal-reject-reason-textfield"
               multiline='true'
               label ="Reason for Reject"
               variant="filled"
               value={rejectComments}
               onChange={(e) => setRejectComments(e.target.value)}/>
             <Button
+            id="supervisor-portal-submit-reject-reason-button"
+            className="view-ticket-button"
             variant="contained"
             onClick={handleReject}>
               Submit
             </Button>
             <Button
+            id="supervisor-portal-cancel-reject-reason-button"
+            className="view-ticket-button"
             variant="contained"
             onClick={handleCancel}>
               Cancel
@@ -241,41 +245,49 @@ const ViewTicketSupervisor = () => {
             <div>
               {showOptions && (
                 <div>
-                  <Grid item xs={12}>
-                    <h2 className="assignstaff-header">Assign Staff:</h2>
+                  <Grid container spacing={1}>
+                    <Grid item xs={12}>
+                      <h2 className="assignstaff-header">Assign Staff:</h2>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Select
+                      id="supervisor-portal-building-ID-select"
+                      className="assignstaff-textfield"
+                      value={selectedStaff}
+                      variant='outlined'
+                      onChange={(e) => setSelectedStaff(e.target.value)}
+                      input={<OutlinedInput value='--Select Staff--'/>}>
+                        {staffMembers.map((staff) => (
+                          <MenuItem
+                          key={staff.StaffID}
+                          value={staff.StaffID}
+                          id={staff.StaffID}>
+                          {staff.StaffName}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                      {assignStatus && <p>{assignStatus}</p>}
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Button
+                      className="view-ticket-button"
+                      id="assignstaff-button"
+                      variant="contained"
+                      onClick={handleAssign}>
+                        Assign
+                      </Button>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Button
+                      className="view-ticket-button"
+                      id="reject-button"
+                      variant="contained"
+                      onClick={handleRejectClick}>
+                        Reject
+                      </Button>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12}>
-                    <Select
-                    id="buildingID"
-                    className="assignstaff-textfield"
-                    value={selectedStaff}
-                    variant='outlined'
-                    onChange={(e) => setSelectedStaff(e.target.value)}
-                    input={<OutlinedInput value='--Select Staff--'/>}>
-                      {staffMembers.map((staff) => (
-                        <MenuItem
-                        key={staff.StaffID}
-                        value={staff.StaffID}>
-                        {staff.StaffName}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                    {assignStatus && <p>{assignStatus}</p>}
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Button
-                    id="assignstaff-button"
-                    variant="contained"
-                    onClick={handleAssign}>
-                      Assign
-                    </Button>
-                    <Button
-                    id="reject-button"
-                    variant="contained"
-                    onClick={handleRejectClick}>
-                      Reject
-                    </Button>
-                  </Grid>
+                  
                 </div>
               )}
               <div>{renderContent()}</div>

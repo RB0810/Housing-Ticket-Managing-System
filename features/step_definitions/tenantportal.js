@@ -37,7 +37,3 @@ Given("Tenant has loaded the Tenant home page", async function () {
   );
 });
 
-And("Tenant clicks on 'View Pending Tickets'", async function () {
-    await driver.findElement(By.className("viewPendingTicketsBtn")).click();
-    
-});
