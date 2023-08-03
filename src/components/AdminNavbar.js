@@ -17,9 +17,9 @@ export default function AdminNavbar() {
       </Link>
 
       <ul>
-      <DropdownLink label="Create Landlord Account" options={["Supervisor", "Staff"]} />
-        <CustomLink to={`/adminportal/manageacc/${AdminID}`}>Manage Accounts</CustomLink>
-        <button onClick={handleLogout}>Logout</button>
+      <DropdownLink label="Create Landlord Account" options={["Supervisor", "Staff"]} id="nav-bar-admin-portal-create-account" />
+        <CustomLink to={`/adminportal/manageacc/${AdminID}`} id="nav-bar-manage-accounts">Manage Accounts</CustomLink>
+        <button onClick={handleLogout} id="admin-portal-logout-button">Logout</button>
       </ul>
     </nav>
   );
@@ -33,7 +33,7 @@ function handleLogout(){
 function CustomLink({ to, children }) {
   return (
     <li>
-      <Link to={to}>{children}</Link>
+      <Link to={to} id={children}>{children}</Link>
     </li>
   );
 }
@@ -61,13 +61,13 @@ function DropdownLink({ label, options }) {
   
     return (
       <li className={`dropdown ${isOpen ? "open" : ""}`}>
-        <button className="dropdown-toggle" onClick={toggleDropdown}>
+        <button className="dropdown-toggle" id={label} onClick={toggleDropdown}>
           {label} <span className="arrow">&#9662;</span>
         </button>
         {isOpen && (
           <ul className="dropdown-menu vertical">
             {resolvedPaths.map((resolvedPath) => (
-              <li key={resolvedPath.label} onClick={handleOptionClick}>
+              <li key={resolvedPath.label} id={resolvedPath.label} onClick={handleOptionClick}>
                 <Link to={resolvedPath.path}>{resolvedPath.label}</Link>
               </li>
             ))}

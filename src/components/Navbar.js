@@ -3,15 +3,15 @@ import { Link, useMatch, useResolvedPath } from "react-router-dom";
 export default function Navbar() {
   return (
     <nav className="nav">
-      <Link to="/" className="site-title">
+      <Link to="/" className="site-title" id="nav-bar-homepage">
         <img src="/housingportallogo.png"></img>
         <h1 className="site-title">Housing Portal</h1>
       </Link>
 
       <ul>
-        <CustomLink to="/tenantlogin">Tenant Login</CustomLink>
-        <CustomLink to="/landlordlogin">Landlord Login</CustomLink>
-        <CustomLink to="/adminlogin">Admin Login</CustomLink>
+        <CustomLink to="/tenantlogin" id="nav-bar-tenant-page">Tenant Login</CustomLink>
+        <CustomLink to="/landlordlogin" id="nav-bar-landlord-page">Landlord Login</CustomLink>
+        <CustomLink to="/adminlogin" id="nav-bar-admin-page">Admin Login</CustomLink>
       </ul>
     </nav>
   );

@@ -179,7 +179,7 @@ const ViewTicketTenant = () => {
               <Grid item xs={12}>
                 <TextField
                 className="view-ticket-textfield"
-                id="outlined-basic"
+                id="view-ticket-reject-reason-textfield"
                 multiline='true'
                 label='Reason for Reject'
                 variant="filled"
@@ -188,6 +188,7 @@ const ViewTicketTenant = () => {
               </Grid>
               <Grid item xs={12}>
                 <Button
+                id="view-ticket-reject-reason-submit-button"
                 variant="contained"
                 type="submit"
                 className="view-ticket-button">
@@ -196,6 +197,7 @@ const ViewTicketTenant = () => {
               </Grid>
               <Grid item xs={12}>
                 <Button
+                id="view-ticket-reject-reason-cancel-button"
                 variant="contained"
                 className="view-ticket-button"
                 onClick={handleCancel}>
@@ -215,6 +217,7 @@ const ViewTicketTenant = () => {
           <form onSubmit={handleSuccessFeedback}>
             <label>
               <Rating
+                id="view-ticket-feedback-rating"
                 name="simple-controlled"
                 value={rating}
                 onChange={(event, newValue) => {
@@ -228,7 +231,7 @@ const ViewTicketTenant = () => {
                 <Grid item xs={12}>
                   <TextField
                   className="view-ticket-textfield"
-                  id="outlined-basic"
+                  id="view-ticket-feedback-textfield"
                   multiline='true'
                   label='Comment'
                   variant="filled"
@@ -237,6 +240,7 @@ const ViewTicketTenant = () => {
                 </Grid>
                 <Grid item xs={12}>
                   <Button
+                  id="view-ticket-submit-feedback-button"
                   variant="contained"
                   type="submit"
                   className="view-ticket-button">
@@ -245,6 +249,7 @@ const ViewTicketTenant = () => {
                 </Grid>
                 <Grid item xs={12}>
                   <Button
+                  id="view-ticket-cancel-feedback-button"
                   variant="contained"
                   className="view-ticket-button"
                   onClick={handleCancel}>
@@ -265,7 +270,7 @@ const ViewTicketTenant = () => {
                 <Grid item xs={12}>
                   <TextField
                   className="view-ticket-textfield"
-                  id="outlined-basic"
+                  id="view-ticket-reject-reason-textfield"
                   multiline='true'
                   label='Reason'
                   variant="filled"
@@ -274,6 +279,7 @@ const ViewTicketTenant = () => {
                 </Grid>
                 <Grid item xs={12}>
                   <Button
+                  id="view-ticket-submit-reject-reason-button"
                   variant="contained"
                   type="submit"
                   className="view-ticket-button">
@@ -282,6 +288,7 @@ const ViewTicketTenant = () => {
                 </Grid>
                 <Grid item xs={12}>
                   <Button
+                  id="view-ticket-cancel-reject-reason-textfield"
                   variant="contained"
                   className="view-ticket-button"
                   onClick={handleCancel}>
@@ -507,6 +514,7 @@ const ViewTicketTenant = () => {
             </Grid>
             <Grid item xs={12}>
               <Button
+              id="view-ticket-delete-ticket-button"
               onClick={() => handleDeleteTicket()}
               variant="contained"
               className="view-ticket-button">
@@ -553,6 +561,7 @@ const ViewTicketTenant = () => {
                   <Grid container spacing={1} >
                     <Grid item xs={12}>
                       <Button
+                      id="view-ticket-accept-quotation-button"
                       variant="contained"
                       onClick={() => handleAcceptQuotation()}
                       className="view-ticket-button">
@@ -561,6 +570,7 @@ const ViewTicketTenant = () => {
                     </Grid>
                     <Grid item xs={12}>
                       <Button
+                      id="view-ticket-accept-quotation-button"
                       variant="contained"
                       className="view-ticket-button"
                       onClick={() => handleQuotationAcceptRejectClick("reject")}>
@@ -602,7 +612,7 @@ const ViewTicketTenant = () => {
           <Grid item xs={4}>
             <TextField
               className="view-ticket-textfield"
-              id="outlined-basic"
+              id="view-ticket-reason-reject-textfield"
               multiline='true'
               label='Reason for Reject Quotation'
               variant="filled"
@@ -679,6 +689,7 @@ const ViewTicketTenant = () => {
                   <Grid container spacing={1} columnSpacing={0}>
                     <Grid item xs={12}>
                       <Button
+                      id="view-ticket-feedback-button"
                       variant="contained"
                       onClick={() => handleFeedbackClick("feedback")}
                       className="view-ticket-button">
@@ -687,6 +698,7 @@ const ViewTicketTenant = () => {
                     </Grid>
                     <Grid item xs={12}>
                       <Button
+                      id="view-ticket-reject-button"
                       variant="contained"
                       className="view-ticket-button"
                       onClick={() => handleFeedbackClick("reject")}>
@@ -738,7 +750,7 @@ const ViewTicketTenant = () => {
                 <TextField
                 className="view-ticket-textfield"
                 multiline='true'
-                id="outlined-basic"
+                id="view-ticket-reject-reason-textfield"
                 label='Reason for Reject'
                 variant="filled"
                 value={serviceTicket.FeedbackComments}/>

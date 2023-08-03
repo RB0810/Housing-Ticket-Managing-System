@@ -10,15 +10,15 @@ export default function TenantNavbar() {
 
   return (
     <nav className="nav">
-      <Link to={`/tenantportal/landingpage/${TenantID}`} className="site-title">
+      <Link to={`/tenantportal/landingpage/${TenantID}`} className="site-title" id="nav-bar-tenant-portal-homepage">
         <img src="/housingportallogo.png" alt="Logo" />
         <h1 className="site-title">Tenant Portal</h1>
       </Link>
 
       <ul>
-        <CustomLink to={`/tenantportal/createticket/${TenantID}`}>Create Ticket</CustomLink>
-        <DropdownLink label="View Tickets" options={["Pending", "Active", "Closed"]} />
-        <CustomLink to={`/tenantportal/profile/${TenantID}`}>Profile</CustomLink>
+        <CustomLink to={`/tenantportal/createticket/${TenantID}`} id="nav-bar-create-ticket-page">Create Ticket</CustomLink>
+        <DropdownLink label="View Tickets" options={["Pending", "Active", "Closed"]} id="nav-bar-view-tickets-page" />
+        <CustomLink to={`/tenantportal/profile/${TenantID}`} id="nav-bar-tenant-portal-profile-page">Profile</CustomLink>
       </ul>
     </nav>
   );
@@ -55,13 +55,13 @@ function DropdownLink({ label, options }) {
   
     return (
       <li className={`dropdown ${isOpen ? "open" : ""}`}>
-        <button className="dropdown-toggle" onClick={toggleDropdown}>
+        <button className="dropdown-toggle" onClick={toggleDropdown} id={label}>
           {label} <span className="arrow">&#9662;</span>
         </button>
         {isOpen && (
           <ul className="dropdown-menu vertical">
             {resolvedPaths.map((resolvedPath) => (
-              <li key={resolvedPath.label} onClick={handleOptionClick}>
+              <li key={resolvedPath.label} onClick={handleOptionClick} id={resolvedPath.label}>
                 <Link to={resolvedPath.path}>{resolvedPath.label}</Link>
               </li>
             ))}

@@ -67,7 +67,7 @@ export default function LandlordLogin() {
           <Grid item xs = {12}>
               <TextField 
               className="login-portal-textfield"
-              id="outlined-basic" 
+              id="landlord-login-email-textfield" 
               label="ID Number/Email"
               onChange={(e) => setID(e.target.value)} 
               variant="outlined" />
@@ -76,13 +76,14 @@ export default function LandlordLogin() {
               <TextField 
               type="password"
               className="login-portal-textfield"
-              id="outlined-basic" 
+              id="landlord-login-password-textfield" 
               label="Password" 
               onChange={(e) => setPassword(e.target.value)}
               variant="outlined" />
           </Grid>
           <Grid item xs = {12}>
             <Button 
+            id="landlord-login-login-button" 
             type="submit"
             variant="contained"
             className="login-portal-button">

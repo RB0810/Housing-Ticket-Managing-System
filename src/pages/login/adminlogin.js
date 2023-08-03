@@ -47,7 +47,7 @@ export default function AdminLogin() {
           <Grid item xs = {12}>
               <TextField 
               className="login-portal-textfield"
-              id="outlined-basic" 
+              id="admin-login-email-textfield" 
               label="ID Number/Email"
               onChange={(e) => setID(e.target.value)} 
               variant="outlined" />
@@ -56,13 +56,14 @@ export default function AdminLogin() {
               <TextField 
               type="password"
               className="login-portal-textfield"
-              id="outlined-basic" 
+              id="admin-login-password-textfield" 
               label="Password" 
               onChange={(e) => setPassword(e.target.value)}
               variant="outlined" />
           </Grid>
           <Grid item xs = {12}>
             <Button 
+            id="admin-login-login-button"
             type="submit"
             variant="contained"
             onClick={handleLogin}
