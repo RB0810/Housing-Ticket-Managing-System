@@ -27,7 +27,9 @@ export default function TenantLogin() {
       Swal.fire({
         icon: "error",
         title: "Login error",
-        text: error.message
+        text: error.message,
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f"
       });
     }
   };

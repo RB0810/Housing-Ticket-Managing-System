@@ -58,6 +58,8 @@ const CreateSupervisor = () => {
       Swal.fire({
         icon: "success",
         title: "Supervisor Account created successfully!",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f"
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();

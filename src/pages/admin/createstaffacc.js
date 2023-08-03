@@ -65,6 +65,8 @@ const CreateStaffAcc = () => {
       Swal.fire({
         icon: "success",
         title: "Staff Account created successfully!",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f"
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();

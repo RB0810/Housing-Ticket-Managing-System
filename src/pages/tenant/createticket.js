@@ -12,6 +12,7 @@ import Box from "@mui/material/Box";
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { Button, Grid } from "@mui/material";
+import { green } from "@mui/material/colors";
 
 const CreateTicket = () => {
   const navigate = useNavigate();
@@ -104,6 +105,8 @@ const CreateTicket = () => {
         // }
         Swal.fire({
           icon: "success",
+          showConfirmButton: true,
+          confirmButtonColor: "#707c4f",
           title: "Ticket submitted successfully!",
         }).then((result) => {
           if (result.isConfirmed) {
@@ -113,6 +116,8 @@ const CreateTicket = () => {
     } catch (error) {
       Swal.fire({
         icon: "error",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f",
         title: "Error submitting ticket",
       });
     } finally {

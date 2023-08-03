@@ -128,7 +128,9 @@ const ViewTicketSupervisor = () => {
 
       Swal.fire({
         icon: "success",
-        title: "Ticket Assigned"
+        title: "Ticket Assigned",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f"
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -172,7 +174,9 @@ const ViewTicketSupervisor = () => {
       ]);
       Swal.fire({
         icon: "success",
-        title: "Ticket rejected"
+        title: "Ticket rejected",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f"
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();

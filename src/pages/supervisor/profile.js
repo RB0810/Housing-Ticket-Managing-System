@@ -92,6 +92,8 @@ const SupervisorProfile = () => {
           Swal.fire({
             icon: "success",
             title: "Password changed successfully!",
+            showConfirmButton: true,
+            confirmButtonColor: "#707c4f"
           }).then((result) => {
             if (result.isConfirmed) {
               window.location.reload();
