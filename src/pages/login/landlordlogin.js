@@ -83,7 +83,7 @@ export default function LandlordLogin() {
           </Grid>
           <Grid item xs = {12}>
             <Button 
-            id="landlord-login-login-button" 
+            id="landlord-login-button" 
             type="submit"
             variant="contained"
             className="login-portal-button">

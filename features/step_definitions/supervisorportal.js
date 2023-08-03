@@ -1,7 +1,8 @@
-const { Given, When, Then } = require("@cucumber/cucumber");
+const { Given, When, Then, After } = require("@cucumber/cucumber");
 const { Builder, By, Key, until, Select } = require("selenium-webdriver");
 const assert = require("assert");
 const chrome = require("selenium-webdriver/chrome");
+const { async } = require("q");
 
 let driver;
 
@@ -24,290 +25,302 @@ When('I enter valid credentials', async function () {
     passwordfield.sendKeys("testsupervisor123")
 });
 
-When('click on the login button', function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+When('click on the login button', async function () {
+    let login_button = await driver.findElement(By.id("landlord-login-button"))
+    login_button.click();
   });
 
-Then('I should be redirected to Supervisor portal landing page \\(and receive successful login alert)', function () {
+Then('I should be redirected to Supervisor portal landing page \\(and receive successful login alert)', async function () {
+    assert.equal(
+        await driver.getCurrentUrl(),
+        "http://localhost:3000/supervisorportal/landingpage/999"
+      );
+});
+
+Given('I am at the Supervisor Portal landing page', async function () {
+    assert.equal(
+        await driver.getCurrentUrl(),
+        "http://localhost:3000/supervisorportal/landingpage/999"
+      );
+});
+
+When('I click on create tenant account', async function () {
+    let create_tenant_button = await driver.findElement(By.id("create-tenant-button"))
+    create_tenant_button.click();
+});
+
+Then('I should be redirected to the Create Tenant Account page', async function () {
+    assert.equal(
+        await driver.getCurrentUrl(),
+        "http://localhost:3000/supervisorportal/createtennantacc/999"
+      );
+});
+
+Given('I am in the Create Tenant account page', async function () {
+    assert.equal(
+        await driver.getCurrentUrl(),
+        "http://localhost:3000/supervisorportal/createtennantacc/999"
+      );
+});
+
+When('I fill in all required details', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
-Given('I am at the Supervisor Portal landing page', function () {
+When('click on the Create Tenant Account button', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
-When('I click on {string}', function (string) {
+Then('a new Tenant account is created and the credentials are recorded in the supabase table', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
-Then('I should be redirected to the Create Tenant Account page', function () {
+Given('that I am on the Supevisor Portal Landing page', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
-Given('I am in the Create Tenant account page', function () {
+When('I click on Pending tickets', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
-When('I fill in all required details', function () {
+Then('I am redirected to the view ticket page', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
-When('click on the Create Tenant Account button', function () {
+Given('that I am in the View Tickets \\(Pending) page', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
-Then('a new Tenant account is created and the credentials are recorded in the supabase table', function () {
+When('there are pending tickets', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
-Given('that I am on the Supevisor Portal Landing page', function () {
+Then('the tickets are displayed', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
-When('I click on Pending tickets', function () {
+Given('that I am in the View Tickets \\(Pending) page', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
-Then('I am redirected to the view ticket page', function () {
+When('I click on View Ticket', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
-Given('that I am in the View Tickets \\(Pending) page', function () {
+Then('I am redirected to the View ticket page for that ticket', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
-When('there are pending tickets', function () {
+Given('that I am in the View Ticket \\(Pending) page', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
-Then('the tickets are displayed', function () {
+Given('PARC status is Pending', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
-Given('that I am in the View Tickets \\(Pending) page', function () {
+Given('Status is Awaiting Review', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
-When('I click on View Ticket', function () {
+When('I choose a staff', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
-Then('I am redirected to the View ticket page for that ticket', function () {
+When('click on the assign button', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
-Given('that I am in the View Ticket \\(Pending) page', function () {
+Then('I assign that particular ticket to a staff', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
-Given('PARC status is Pending', function () {
+Given('that I am in the View Ticket \\(Pending) page', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
-Given('Status is Awaiting Review', function () {
+Given('PARC status is Pending', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
-When('I choose a staff', function () {
+Given('Status is Awaiting Review', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
-When('click on the assign button', function () {
+When('I click on the reject button', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
-Then('I assign that particular ticket to a staff', function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
-});
-
-Given('that I am in the View Ticket \\(Pending) page', function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
-});
-
-Given('PARC status is Pending', function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
-});
-
-Given('Status is Awaiting Review', function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
-});
-
-When('I click on the reject button', function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
-});
-
-Then('I am redirected to a reason for reject form', function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
-});
-
-
-Given('that I have filled in the reason for reject', function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
-});
-
-
-When('I click on Submit button', function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
-});
-
-
-Then('the page refreshes', function () {
+Then('I am redirected to a reason for reject form', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
 
-Then('PARC status changed to CLOSED', function () {
+Given('that I have filled in the reason for reject', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
 
-Then('ticket status changed to ticket rejected', function () {
+When('I click on Submit button', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
 
-Then('', function () {
+Then('the page refreshes', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
 
-Given('that I am on the Supervisor Portal Landing page', function () {
+Then('PARC status changed to CLOSED', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
 
-When('I click on Active tickets', function () {
+Then('ticket status changed to ticket rejected', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
 
-Then('I am redirected to the view ticket page', function () {
+Then('', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
 
-Given('that I am in the View Tickets \\(Active) page', function () {
+Given('that I am on the Supervisor Portal Landing page', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
 
-When('there are Active tickets', function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
-});
-
-Then('the tickets are displayed', function () {
+When('I click on Active tickets', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
 
-Given('that I am in the View Tickets \\(Active) page', function () {
+Then('I am redirected to the view ticket page', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
 
-When('I click on View Ticket', function () {
+Given('that I am in the View Tickets \\(Active) page', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
 
-Then('I am redirected to the View ticket page for that ticket', function () {
+When('there are Active tickets', async function () {
+    // Write code here that turns the phrase above into concrete actions
+    return 'pending';
+});
+
+Then('the tickets are displayed', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
 
-Given('that I am on the Supevisor Portal Landing page', function () {
+Given('that I am in the View Tickets \\(Active) page', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
 
-When('I click on Closed tickets', function () {
+When('I click on View Ticket', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
 
-Then('I am redirected to the view ticket page', function () {
+Then('I am redirected to the View ticket page for that ticket', async function () {
+    // Write code here that turns the phrase above into concrete actions
+    return 'pending';
+});
+
+
+Given('that I am on the Supevisor Portal Landing page', async function () {
+    // Write code here that turns the phrase above into concrete actions
+    return 'pending';
+});
+
+
+When('I click on Closed tickets', async function () {
+    // Write code here that turns the phrase above into concrete actions
+    return 'pending';
+});
+
+
+Then('I am redirected to the view ticket page', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
 
 
-Given('that I am in the View Tickets \\(Closed) page', function () {
+Given('that I am in the View Tickets \\(Closed) page', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
 
-When('there are closed tickets', function () {
+When('there are closed tickets', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
 
-Then('the tickets are displayed', function () {
+Then('the tickets are displayed', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
 
-Given('that I am in the View Tickets \\(Closed) page', function () {
+Given('that I am in the View Tickets \\(Closed) page', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
 
-When('I click on View Ticket', function () {
+When('I click on View Ticket', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
-Then('I am redirected to the View ticket page for that ticket', function () {
+Then('I am redirected to the View ticket page for that ticket', async function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
+
+// After(async function () {
+//     await driver.quit();
+// });
