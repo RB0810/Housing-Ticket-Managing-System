@@ -64,8 +64,9 @@ Given('I am in the Create Tenant account page', async function () {
 });
 
 When('I fill in all required details', async function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+    const usernamefield = await driver.findElement(By.id("supervisor-portal-create-tenant-username-textfield"))
+    usernamefield.sendKeys("testtenant")
+    
 });
 
 When('click on the Create Tenant Account button', async function () {
