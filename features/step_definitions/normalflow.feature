@@ -2,7 +2,7 @@ Feature: Sequence Diagram Flow
     Scenario: Log into Admin Portal
         Given I am on the Admin Portal login page
         When I enter valid admin credentials
-        Then I should be redirected to Admin portal landing page 
+        Then I am redirected to Admin portal landing page 
  
     Scenario: Go to Create Supervisor account
         Given I am logged in as an admin and at the admin landing page

@@ -2,6 +2,7 @@ const { Given, When, Then } = require("@cucumber/cucumber");
 const { Builder, By, Key, until, Select } = require("selenium-webdriver");
 const assert = require("assert");
 const chrome = require("selenium-webdriver/chrome");
+const { expect } = require('chai')
 
 let driver;
 // Scenario: Log into Admin Portal
@@ -25,31 +26,14 @@ When("I enter valid admin credentials", async function () {
   });
   
 
-Then("I should be redirected to Admin portal landing page", async function () {
-  assert.equal(
-    await driver.getCurrentUrl(),
-    "http://localhost:3000/adminportal/landingpage/999"
-  );
+Then("I am redirected to Admin portal landing page", async function () {
+  const landingURL = "http://localhost:3000/adminportal/landingpage/999";
+  await driver.wait(until.urlIs(landingURL), 5000); // Wait up to 5 seconds
+  const currentUrl = await driver.getCurrentUrl();
+  expect(currentUrl).to.equal(landingURL);
 });
 
 // Scenario: Go to Create Supervisor account
-Given("I click on create supervisor account", async function () {
-    assert.equal(
-        await driver.getCurrentUrl(),
-        "http://localhost:3000/adminportal/landingpage/999"
-      );
-  });
-  
-  When("Page reloads", async function () {
-    await driver.findElement(By.id("createsupervisor")).click();
-  });
-  
-  Then("I should be redirected to the Create Supervisor Account page", async function () {
-    assert.equal(
-      await driver.getCurrentUrl(),
-      "http://localhost:3000/adminportal/createsupervisoracc/999"
-    );
-  });
 
 
 
