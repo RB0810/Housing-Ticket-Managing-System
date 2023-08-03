@@ -81,7 +81,7 @@ const CreateTenantAcc = () => {
         title: "Tenant Account created successfully!",
       }).then((result) => {
         if (result.isConfirmed) {
-          //window.location.reload();
+          window.location.reload();
         }
       });
     } catch (error) {
