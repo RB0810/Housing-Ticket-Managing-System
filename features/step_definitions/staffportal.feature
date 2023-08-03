@@ -2,7 +2,7 @@ Feature: Staff Portal
 
     Scenario: Staff Logins in to Staff account via Staff Login Page
         Given Staff is on Landlord Login Page and Landlord Portal Login Page loads
-        When Staff types in valid login credentials and Staff presses the "Login" button
+        When Staff types in valid login credentials and Staff presses the Login button
         Then Staff Landing Page renders
 
     Scenario: View Staff Profile Page

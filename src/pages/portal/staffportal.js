@@ -191,6 +191,7 @@ export default function StaffPortal() {
                   <div className={`filter-dropdown${isRequestFilterOpen ? ' open' : ''}`}>
                     <input
                       type="text"
+                      id="request-filter"
                       value={requestFilter}
                       onChange={(e) => setRequestFilter(e.target.value)}
                       placeholder="Filter by request..."
@@ -204,15 +205,16 @@ export default function StaffPortal() {
                 {(
                   <div className={`filter-dropdown${isCategoryFilterOpen ? ' open' : ''}`}>
                     <select
+                      id="category-filter"
                       value={categoryFilter}
                       onChange={(e) => setCategoryFilter(e.target.value)}>
-                      <option value="">All</option>
-                      <option value="Plumbing">Plumbing</option>
-                      <option value="Toilet">Toilet</option>
-                      <option value="Pest">Pest</option>
-                      <option value="Electric">Electric</option>
-                      <option value="Aircon">Aircon</option>
-                      <option value="Others">Others</option>
+                      <option value="" id="all">All</option>
+                      <option value="Plumbing" id="plumbing">Plumbing</option>
+                      <option value="Toilet" id="toilet">Toilet</option>
+                      <option value="Pest" id="pest">Pest</option>
+                      <option value="Electric" id="electric">Electric</option>
+                      <option value="Aircon" id="aircon">Aircon</option>
+                      <option value="Others" id="other">Others</option>
                     </select>
                   </div>
                 )}</TableCell>
@@ -222,9 +224,10 @@ export default function StaffPortal() {
                 {(
                   <div className={`filter-dropdown${isUnitFilterOpen ? ' open' : ''}`}>
                     <select
+                    id="unit-filter"
                       value={unitFilter}
                       onChange={(e) => setUnitFilter(e.target.value)}>
-                      <option value="">All</option>
+                      <option value="" id="all">All</option>
                       {/* {units.map((unit) => (
                         <option key={unit.UnitNumber} value={unit.UnitNumber}>
                           {unit.UnitNumber}
@@ -239,19 +242,20 @@ export default function StaffPortal() {
                 {(
                   <div className={`filter-dropdown${isStatusFilterOpen ? ' open' : ''}`}>
                     <select
+                    id="status-filter"
                       value={statusFilter}
                       onChange={(e) => setStatusFilter(e.target.value)}
                     >
-                      <option value="">All</option>
-                      <option value="Awaiting Review">Awaiting Review</option>
-                      <option value="Ticket Assigned">Ticket Assigned</option>
-                      <option value="Quotation Uploaded">Quotation Uploaded</option>
-                      <option value="Quotation Accepted">Quotation Accepted</option>
-                      <option value="Quotation Rejected">Quotation Rejected</option>
-                      <option value="Works Started">Works Started</option>
-                      <option value="Works Ended">Works Ended</option>
-                      <option value="Works Rejected">Works Rejected</option>
-                      <option value="Feedback Submitted">Feedback Submitted</option>
+                      <option value="" id="all">All</option>
+                      <option value="Awaiting Review" id="Awaiting-Review">Awaiting Review</option>
+                      <option value="Ticket Assigned" id="Ticket-Assigned">Ticket Assigned</option>
+                      <option value="Quotation Uploaded" id="Quotation-Uploaded">Quotation Uploaded</option>
+                      <option value="Quotation Accepted" id="Quotation-Accepted">Quotation Accepted</option>
+                      <option value="Quotation Rejected" id="Quotation-Rejected">Quotation Rejected</option>
+                      <option value="Works Started" id="Works-Started">Works Started</option>
+                      <option value="Works Ended" id="Works-Ended">Works Ended</option>
+                      <option value="Works Rejected" id="Works-Rejected">Works Rejected</option>
+                      <option value="Feedback Submitted" id="Feedback-Submitted">Feedback Submitted</option>
                     </select>
                   </div>
                 )}</TableCell>
@@ -263,12 +267,13 @@ export default function StaffPortal() {
                 {(
                   <div className={`filter-dropdown${isDateFilterOpen ? ' open' : ''}`}>
                     <select
+                    id="submitted-date-filter"
                       value={dateFilter}
                       onChange={(e) => setDateFilter(e.target.value)}
                     >
-                      <option value="">Sort according to Date Submitted</option>
-                      <option value="newest">Newest to Oldest</option>
-                      <option value="oldest">Oldest to Newest</option>
+                      <option value="" id="sort">Sort according to Date Submitted</option>
+                      <option value="newest" id="newest">Newest to Oldest</option>
+                      <option value="oldest" id="oldest">Oldest to Newest</option>
                     </select>
                   </div>
                 )}
@@ -279,6 +284,7 @@ export default function StaffPortal() {
                 {(
                   <div className={`filter-dropdown${isSubmittedByFilterOpen ? ' open' : ''}`}>
                     <input
+                    id="submitted-by-filter"
                       type="text"
                       value={submittedByFilter}
                       onChange={(e) => setSubmittedByFilter(e.target.value)}
