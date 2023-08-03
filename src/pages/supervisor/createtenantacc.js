@@ -4,6 +4,7 @@ import TenantAccount from "../../objects/TenantAccount";
 import "./../../../src/styles/createtenantacc.css"
 import Cookies from "js-cookie";
 import {Button, Grid, TextField} from '@mui/material'
+import Swal from "sweetalert2";
 
 const CreateTenantAcc = () => {
   const [tenantUsername, setTenantUsername] = useState("");
@@ -75,7 +76,14 @@ const CreateTenantAcc = () => {
 
     try {
       const message = await tenantAccount.createAccount();
-      setFormError(message);
+      Swal.fire({
+        icon: "success",
+        title: "Tenant Account created successfully!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
     } catch (error) {
       setFormError(error.message);
     }
@@ -91,7 +99,7 @@ const CreateTenantAcc = () => {
               type="text"
               key={i}
               className="create-tenant-acc-textfield"
-              id="outlined-basic" 
+              id= {i}
               variant="outlined" 
               value={unitFields[i] || ""}
               onChange={(e) => handleUnitFieldChange(i,e.target.value)}/>
@@ -118,7 +126,7 @@ const CreateTenantAcc = () => {
                   <TextField 
                   type="text"
                   className="create-tenant-acc-textfield"
-                  id="outlined-basic" 
+                  id="supervisor-portal-create-tenant-username-textfield" 
                   variant="outlined" 
                   value={tenantUsername}
                   onChange={(e) => setTenantUsername(e.target.value)}/>
@@ -139,7 +147,7 @@ const CreateTenantAcc = () => {
                   <TextField 
                   type="email"
                   className="create-tenant-acc-textfield"
-                  id="outlined-basic" 
+                  id="supervisor-portal-create-tenant-email-textfield" 
                   variant="outlined" 
                   value={tenantEmail}
                   onChange={(e) => setTenantEmail(e.target.value)}/>
@@ -160,7 +168,7 @@ const CreateTenantAcc = () => {
                   <TextField 
                   type="password"
                   className="create-tenant-acc-textfield"
-                  id="outlined-basic" 
+                  id="supervisor-portal-create-tenant-password-textfield" 
                   variant="outlined" 
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}/>
@@ -181,7 +189,7 @@ const CreateTenantAcc = () => {
                   <TextField 
                   type="password"
                   className="create-tenant-acc-textfield"
-                  id="outlined-basic" 
+                  id="supervisor-portal-create-tenant-repassword-textfield" 
                   variant="outlined" 
                   value={reEnterPassword}
                   onChange={(e) => setReEnterPassword(e.target.value)}/>
@@ -201,7 +209,7 @@ const CreateTenantAcc = () => {
                   <TextField 
                   type="tel"
                   className="create-tenant-acc-textfield"
-                  id="outlined-basic" 
+                  id="supervisor-portal-create-tenant-phone-number-textfield" 
                   variant="outlined" 
                   value={tenantPhone}
                   onChange={(e) => setTenantPhone(e.target.value)}/>
@@ -221,7 +229,7 @@ const CreateTenantAcc = () => {
                   <TextField 
                   type="text"
                   className="create-tenant-acc-textfield"
-                  id="outlined-basic" 
+                  id="supervisor-portal-create-tenant-trade-type-textfield" 
                   variant="outlined" 
                   value={tradeType}
                   onChange={(e) => setTradeType(e.target.value)}/>
@@ -241,7 +249,7 @@ const CreateTenantAcc = () => {
                   <TextField 
                   type="text"
                   className="create-tenant-acc-textfield"
-                  id="outlined-basic" 
+                  id="supervisor-portal-create-monthly-rent-textfield" 
                   variant="outlined" 
                   value={monthlyRental}
                   onChange={(e) => setMonthlyRental(e.target.value)}/>
@@ -261,7 +269,7 @@ const CreateTenantAcc = () => {
                   <TextField 
                   type="date"
                   className="create-tenant-acc-textfield"
-                  id="outlined-basic" 
+                  id="supervisor-portal-create-tenant-commencement-date-textfield" 
                   variant="outlined" 
                   value={leaseCommencementDate}
                   onChange={(e) => setLeaseCommencementDate(e.target.value)}/>
@@ -281,7 +289,7 @@ const CreateTenantAcc = () => {
                   <TextField 
                   type="date"
                   className="create-tenant-acc-textfield"
-                  id="outlined-basic" 
+                  id="supervisor-portal-create-tenant-termination-date-textfield" 
                   variant="outlined" 
                   value={leaseTerminationDate}
                   onChange={(e) => setLeaseTerminationDate(e.target.value)}/>
@@ -301,7 +309,7 @@ const CreateTenantAcc = () => {
                   <TextField 
                   type="number"
                   className="create-tenant-acc-textfield"
-                  id="outlined-basic" 
+                  id="supervisor-portal-create-tenant-unit-area-textfield" 
                   variant="outlined" 
                   value={areaOfUnit}
                   InputProps={{
@@ -323,7 +331,7 @@ const CreateTenantAcc = () => {
               <Grid item xs = {12}>
                   <TextField 
                   className="create-tenant-acc-textfield"
-                  id="outlined-basic" 
+                  id="supervisor-portal-create-tenant-number-of-units-textfield" 
                   variant="outlined" 
                   type="number"
                   value={numberOfUnits}
@@ -353,6 +361,7 @@ const CreateTenantAcc = () => {
           <Grid container spacing={1}>
             <Grid item xs = {12}>
               <Button
+              id="supervisor-portal-create-tenant-submit-button" 
               variant="contained"
               className="create-tenant-acc-button"
               onClick={handleSubmit}>

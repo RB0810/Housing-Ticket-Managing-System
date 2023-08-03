@@ -6,6 +6,7 @@ import './../../styles/profile.css'
 import Authentication from "../../managers/authentication";
 import Cookies from "js-cookie";
 import {Button, Grid, TextField} from '@mui/material'
+import Swal from "sweetalert2";
 
 const SupervisorProfile = () => {
   const { SupervisorID } = useParams();
@@ -88,7 +89,14 @@ const SupervisorProfile = () => {
           await accountManager.setPassword("Supervisor", SupervisorID, newPassword);
           setNewPassword("");
           setConfirmPassword("");
-          setFormError("Password Changed Successfully!");
+          Swal.fire({
+            icon: "success",
+            title: "Password changed successfully!",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
         } catch (error) {
           setFormError("Database Error");
         }
@@ -163,7 +171,7 @@ const SupervisorProfile = () => {
               <TextField 
               type="password"
               className="supervisor-profile-textfield"
-              id="outlined-basic" 
+              id="supervisor-profile-new-password-textfield" 
               label="New Password" 
               variant="outlined" 
               defaultValue={newPassword}
@@ -173,7 +181,7 @@ const SupervisorProfile = () => {
               <TextField 
               type="password"
               className="supervisor-profile-textfield"
-              id="filled-basic" 
+              id="supervisor-profile-confirm-password-textfield" 
               label="Confirm Password" 
               variant="outlined" 
               defaultValue={newPassword}
@@ -181,6 +189,7 @@ const SupervisorProfile = () => {
             </Grid>
             <Grid item xs = {12}>
               <Button 
+              id="supervisor-profile-reset-password-button" 
               variant="contained"
               className="supervisor-profile-button"
               onClick={handleSetPassword}>
@@ -200,7 +209,13 @@ const SupervisorProfile = () => {
 
       <hr></hr>
 
-      <Button variant="contained" className="supervisor-profile-button" onClick={logout}>Logout</Button>
+      <Button
+      id="supervisor-profile-logout-button"  
+      variant="contained" 
+      className="supervisor-profile-button" 
+      onClick={logout}>
+        Logout
+      </Button>
     
     </div>
   );

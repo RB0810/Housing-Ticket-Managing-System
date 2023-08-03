@@ -48,19 +48,19 @@ export default function StaffLandingPage() {
   return (
     <div>
       <div className="card-container">
-        <button className="card" onClick={handleButtonClickPending}>
+        <button id='button-pending-tickets' className="card" onClick={handleButtonClickPending}>
           <img src="/pendingticket.png" alt="Card" className="card-image" />
           <div>
             <button>Pending Tickets</button>
           </div>
         </button>
-        <button className="card" onClick={handleButtonClickActive}>
+        <button id='button-active-tickets' className="card" onClick={handleButtonClickActive}>
           <img src="/activeticket.png" alt="Card" className="card-image" />
           <div>
             <button>Active Tickets</button>
           </div>
         </button>
-        <button className="card" onClick={handleButtonClickClosed}>
+        <button id='button-closed-tickets' className="card" onClick={handleButtonClickClosed}>
           <img src="/closedticket.png" alt="Card" className="card-image" />
           <div>
             <button>Closed Tickets</button>

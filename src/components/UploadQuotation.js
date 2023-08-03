@@ -71,8 +71,8 @@ const UploadQuotation = ({ bucketName, ServiceRequestID }) => {
 
   return (
     <div>
-      <input type="file" onChange={handleFileChange} />
-      <button onClick={uploadFileToBucket}>Upload</button>
+      <input type="file" onChange={handleFileChange} id='upload-quotation-input'/>
+      <button onClick={uploadFileToBucket} id='upload-quotation-button'>Upload</button>
     </div>
   );
 };

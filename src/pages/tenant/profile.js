@@ -5,6 +5,7 @@ import Authentication from "../../managers/authentication";
 import "./../../styles/profile.css"
 import Cookies from "js-cookie";
 import {Button, Grid, TextField} from '@mui/material'
+import Swal from "sweetalert2";
 
 const TenantProfile = () => {
   const { TenantID } = useParams();
@@ -67,7 +68,14 @@ const TenantProfile = () => {
           await accountManager.setPassword("Tenant", TenantID, newPassword);
           setNewPassword("");
           setConfirmPassword("");
-          setFormError("Password Changed Successfully!");
+          Swal.fire({
+            icon: "success",
+            title: "Password changed successfully!",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
         } catch (error) {
           setFormError("Database Error");
         }
@@ -134,7 +142,7 @@ const TenantProfile = () => {
               <TextField 
               type="password"
               className="tenant-profile-textfield"
-              id="outlined-basic" 
+              id="tenant-profile-new-password-textfield" 
               label="New Password" 
               variant="outlined" 
               defaultValue={newPassword}
@@ -144,7 +152,7 @@ const TenantProfile = () => {
               <TextField 
               type="password"
               className="tenant-profile-textfield"
-              id="filled-basic" 
+              id="tenant-profile-confirm-password-textfield" 
               label="Confirm Password" 
               variant="outlined" 
               defaultValue={newPassword}
@@ -152,6 +160,7 @@ const TenantProfile = () => {
             </Grid>
             <Grid item xs = {12}>
               <Button 
+              id="tenant-profile-reset-password-button"
               variant="contained"
               className="tenant-profile-button"
               onClick={handleSetPassword}>
@@ -283,7 +292,11 @@ const TenantProfile = () => {
       <hr></hr>
 
       <div className="tenant-profile-row">
-        <Button variant="contained" className="tenant-profile-button"onClick={logout}>Logout</Button>
+        <Button
+        id="tenant-profile-logout-button" 
+        variant="contained" 
+        className="tenant-profile-button"
+        onClick={logout}>Logout</Button>
       </div>
     </div>
   );

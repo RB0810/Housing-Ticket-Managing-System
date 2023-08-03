@@ -420,6 +420,8 @@ const ViewTicketStaff = () => {
               </Grid>
               <Grid item xs={12}>
                 <Button
+                className="view-ticket-button"
+                id="staff-portal-start-works-button"
                 variant="contained"
                 onClick={handleStartWorks}>
                   Start Works
@@ -454,17 +456,20 @@ const ViewTicketStaff = () => {
                   <MenuItem value={false}>NO</MenuItem>
                 </Select> */}
                 <select
-                  className="viewticket-select"
-                  value={quotationRequired}
-                  onChange={handleQuotationRequiredChange}>
-                  <option value={true}> Yes</option>
-                  <option value={false}>No</option>
+                id="staff-portal-quotation-required-select"
+                className="viewticket-select"
+                value={quotationRequired}
+                onChange={handleQuotationRequiredChange}>
+                <option value={true} id='yes'> Yes</option>
+                <option value={false} id='no'>No</option>
                 </select>
                 
               </Grid>
               <Grid item xs={12}>
               {renderContent()}
                 <Button
+                className="view-ticket-button"
+                id="staff-portal-submit-quotation-button"
                 variant="contained"
                 onClick={handleContinue}>
                   Submit
@@ -510,6 +515,8 @@ const ViewTicketStaff = () => {
             </Grid>
             <Grid item xs={12}>
               <Button
+              className="view-ticket-button"
+              id="staff-portal-start-works-button"
               variant="contained"
               onClick={handleStartWorks}>
                 Start Works
@@ -536,10 +543,12 @@ const ViewTicketStaff = () => {
               <SubmittedByCard tenant={tenant} />
             </Grid>
             <Grid item xs={12}>
-              <input type="file" onChange={handleFileChange} />
+              <input type="file" id="staff-portal-upload-file-input" onChange={handleFileChange} />
             </Grid>
             <Grid item xs={12}>
               <Button 
+              className="view-ticket-button"
+              id="staff-portal-reupload-quotation-button"
               variant="contained" 
               onClick={handleReuploadQuotation}>
                 Reupload Quotation
@@ -576,7 +585,11 @@ const ViewTicketStaff = () => {
               <SubmittedByCard tenant={tenant} />
             </Grid>
             <Grid item xs ={12}>
-              <Button onClick={handleEndWorks} variant="contained">
+              <Button 
+              className="view-ticket-button"
+              id="staff-portal-end-works-button"
+              onClick={handleEndWorks} 
+              variant="contained">
                 End Works
               </Button>
             </Grid>
@@ -643,7 +656,11 @@ const ViewTicketStaff = () => {
               InputProps={{readOnly: true,}}/>
             </Grid>
             <Grid item xs ={12}>
-              <Button onClick={handleStartWorks} variant="contained">
+              <Button
+              className="view-ticket-button" 
+              id="staff-portal-restart-works-button"
+              onClick={handleStartWorks} 
+              variant="contained">
                 Restart Works
               </Button>
             </Grid>

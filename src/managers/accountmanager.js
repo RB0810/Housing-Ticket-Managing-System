@@ -210,29 +210,39 @@ class AccountManager {
   }
 
   async createTenantAccount(tenant, lease, units) {
-    console.log(tenant, lease, units);
-    const { data } = await supabase.from("Lease").insert(lease).select();
-    const leaseID = data[0].LeaseID;
-    tenant.Lease = leaseID;
-    await supabase.from("TenantUsers").insert(tenant);
-    const supervisorID = tenant.UnderSupervisor;
-    console.log(supervisorID);
-    const { data: dataBuilding } = await supabase
-      .from("SupervisorUsers")
-      .select("*")
-      .eq("SupervisorID", parseInt(supervisorID));
-    console.log(dataBuilding[0].BuildingID);
-    var unitInsert = {
-      LeaseID: leaseID,
-      BuildingID: dataBuilding[0].BuildingID,
-      UnitNumber: null,
-    };
-    for (var i = 0; i < units.number; i++) {
-      unitInsert.UnitNumber = units.unit[i];
-      console.log(unitInsert);
-      await supabase.from("Unit").insert(unitInsert);
-    }
+      const { data } = await supabase.from("Lease").insert(lease).select();
+      const leaseID = data[0].LeaseID;
+      tenant.Lease = leaseID;
+  
+      // Use a transaction to ensure all operations are performed together
+      const { data: tenantData, error: tenantError } = await supabase
+        .from("TenantUsers")
+        .insert(tenant)
+        .single();
+  
+      if (tenantError) {
+        throw new Error("Error creating tenant account.");
+      }
+  
+      const supervisorID = tenant.UnderSupervisor;
+      const { data: dataBuilding } = await supabase
+        .from("SupervisorUsers")
+        .select("*")
+        .eq("SupervisorID", parseInt(supervisorID));
+  
+      const buildingID = dataBuilding[0].BuildingID;
+  
+      // Use a loop to insert each unit separately
+      for (var i = 0; i < units.number; i++) {
+        const unitInsert = {
+          LeaseID: leaseID,
+          BuildingID: buildingID,
+          UnitNumber: units.unit[i],
+        };
+        await supabase.from("Unit").insert(unitInsert);
+      }
   }
+  
 
   async getAllStaffForSupervisorID(supervisorID) {
     // Get building ID of supervisor
