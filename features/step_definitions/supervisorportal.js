@@ -1,12 +1,33 @@
-Given('I am on the Supervisor Portal login page', function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+const { Given, When, Then } = require("@cucumber/cucumber");
+const { Builder, By, Key, until, Select } = require("selenium-webdriver");
+const assert = require("assert");
+const chrome = require("selenium-webdriver/chrome");
+
+let driver;
+
+Given('I am on the Supervisor Portal login page', async function () {
+    driver = await new Builder()
+    .forBrowser("chrome")
+    .setChromeOptions(new chrome.Options())
+    .build();
+    
+    await driver.get("http://localhost:3000/landlordlogin");
+    let welctext = await driver.findElement(By.className("wlcText")).getText();
+    assert.equal(welctext, "Landlord Portal\nLogin");
 });
 
-When('I enter valid credentials', function () {
+When('I enter valid credentials', async function () {
+    const emailfield = await driver.findElement(By.id("landlord-login-email-textfield"))
+    emailfield.sendKeys("testsupervisor@gmail.com")
+
+    const passwordfield = await driver.findElement(By.id("landlord-login-password-textfield"))
+    passwordfield.sendKeys("testsupervisor123")
+});
+
+When('click on the login button', function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
-});
+  });
 
 Then('I should be redirected to Supervisor portal landing page \\(and receive successful login alert)', function () {
     // Write code here that turns the phrase above into concrete actions
