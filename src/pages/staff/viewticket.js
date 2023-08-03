@@ -420,7 +420,8 @@ const ViewTicketStaff = () => {
               </Grid>
               <Grid item xs={12}>
                 <Button
-                id="staff-portal-new-password-textfield"
+                className="view-ticket-button"
+                id="staff-portal-start-works-button"
                 variant="contained"
                 onClick={handleStartWorks}>
                   Start Works
@@ -467,6 +468,7 @@ const ViewTicketStaff = () => {
               <Grid item xs={12}>
               {renderContent()}
                 <Button
+                className="view-ticket-button"
                 id="staff-portal-submit-quotation-button"
                 variant="contained"
                 onClick={handleContinue}>
@@ -513,6 +515,7 @@ const ViewTicketStaff = () => {
             </Grid>
             <Grid item xs={12}>
               <Button
+              className="view-ticket-button"
               id="staff-portal-start-works-button"
               variant="contained"
               onClick={handleStartWorks}>
@@ -544,6 +547,7 @@ const ViewTicketStaff = () => {
             </Grid>
             <Grid item xs={12}>
               <Button 
+              className="view-ticket-button"
               id="staff-portal-reupload-quotation-button"
               variant="contained" 
               onClick={handleReuploadQuotation}>
@@ -582,6 +586,7 @@ const ViewTicketStaff = () => {
             </Grid>
             <Grid item xs ={12}>
               <Button 
+              className="view-ticket-button"
               id="staff-portal-end-works-button"
               onClick={handleEndWorks} 
               variant="contained">
@@ -651,7 +656,11 @@ const ViewTicketStaff = () => {
               InputProps={{readOnly: true,}}/>
             </Grid>
             <Grid item xs ={12}>
-              <Button onClick={handleStartWorks} variant="contained">
+              <Button
+              className="view-ticket-button" 
+              id="staff-portal-restart-works-button"
+              onClick={handleStartWorks} 
+              variant="contained">
                 Restart Works
               </Button>
             </Grid>

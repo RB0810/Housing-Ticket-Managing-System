@@ -171,7 +171,7 @@ const SupervisorProfile = () => {
               <TextField 
               type="password"
               className="supervisor-profile-textfield"
-              id="outlined-basic" 
+              id="supervisor-profile-new-password-textfield" 
               label="New Password" 
               variant="outlined" 
               defaultValue={newPassword}
@@ -181,7 +181,7 @@ const SupervisorProfile = () => {
               <TextField 
               type="password"
               className="supervisor-profile-textfield"
-              id="filled-basic" 
+              id="supervisor-profile-confirm-password-textfield" 
               label="Confirm Password" 
               variant="outlined" 
               defaultValue={newPassword}
@@ -189,6 +189,7 @@ const SupervisorProfile = () => {
             </Grid>
             <Grid item xs = {12}>
               <Button 
+              id="supervisor-profile-reset-password-button" 
               variant="contained"
               className="supervisor-profile-button"
               onClick={handleSetPassword}>
@@ -208,7 +209,13 @@ const SupervisorProfile = () => {
 
       <hr></hr>
 
-      <Button variant="contained" className="supervisor-profile-button" onClick={logout}>Logout</Button>
+      <Button
+      id="supervisor-profile-logout-button"  
+      variant="contained" 
+      className="supervisor-profile-button" 
+      onClick={logout}>
+        Logout
+      </Button>
     
     </div>
   );

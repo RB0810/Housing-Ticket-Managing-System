@@ -20,9 +20,11 @@ let driver;
     });
 
 
-    When('Staff types in valid login credentials and Staff presses the {string} button', function (string) {
+    When("Staff types in valid login credentials and Staff presses the Login button", async function () {
       // Write code here that turns the phrase above into concrete actions
-      return 'pending';
+      await driver.findElement(By.id("landlord-login-email-textfield" )).sendKeys("smith@gmail.com");
+      await driver.findElement(By.id("landlord-login-password-textfield" )).sendKeys("smith123");
+      await driver.findElement(By.id("landlord-login-login-button" )).click();
     });
 
     Then('Staff Landing Page renders', function () {
