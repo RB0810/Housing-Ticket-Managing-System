@@ -5,8 +5,7 @@ const chrome = require("selenium-webdriver/chrome");
 const { expect } = require('chai')
 
 let driver;
-// Scenario: Log into Admin Portal
-Given("I am on the Admin Portal login page", async function () {
+Given("I am at the admin landing page", async function () {
   driver = await new Builder()
     .forBrowser("chrome")
     .setChromeOptions(new chrome.Options())
@@ -14,26 +13,25 @@ Given("I am on the Admin Portal login page", async function () {
   await driver.get("http://localhost:3000/adminlogin");
 });
 
-When("I enter valid admin credentials", async function () {
-    const emailField = await driver.findElement(By.id('admin-login-email-textfield'));
-    await emailField.sendKeys("testadmin@gmail.com");
+When('I click on Create Supervisor Account', async function () {
+   const emailField = await driver.findElement(By.id('admin-login-email-textfield'));
+   await emailField.sendKeys("testadmin@gmail.com");
     
-    const passwordField = await driver.findElement(By.id("admin-login-password-textfield"));
-    await passwordField.sendKeys("testadmin123");
-    
-    const loginButton = await driver.findElement(By.id("admin-login-login-button"));
-    await loginButton.click();
-  });
+   const passwordField = await driver.findElement(By.id("admin-login-password-textfield"));
+   await passwordField.sendKeys("testadmin123");
+     
+   const loginButton = await driver.findElement(By.id("admin-login-login-button"));
+   await loginButton.click();
+});
   
 
-Then("I am redirected to Admin portal landing page", async function () {
-  const landingURL = "http://localhost:3000/adminportal/landingpage/999";
-  await driver.wait(until.urlIs(landingURL), 5000); // Wait up to 5 seconds
-  const currentUrl = await driver.getCurrentUrl();
-  expect(currentUrl).to.equal(landingURL);
+Then('I am redirected to Admin portal landing page', async function () {
+   const landingURL = "http://localhost:3000/adminportal/landingpage/999";
+   await driver.wait(until.urlIs(landingURL), 5000); // Wait up to 5 seconds
+   const currentUrl = await driver.getCurrentUrl();
+   expect(currentUrl).to.equal(landingURL);
 });
 
-// Scenario: Go to Create Supervisor account
 
 
 
