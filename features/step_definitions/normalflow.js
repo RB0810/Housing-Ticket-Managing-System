@@ -81,7 +81,48 @@ When("I fill in all required details", async function () {
 Then("a new supervisor account is created and the credentials are recorded in the supabase table", async function () {
   const credentials = await querySupabaseForCredentials("testcreatesupervisor@gmail.com");
   expect(credentials).to.exist;
+  const sweetAlert = await driver.wait(until.elementLocated(By.className('createSupervisorAcc')), 10000);
+  const okButton = await sweetAlert.findElement(By.css('.swal2-confirm'));
+  await okButton.click();
 });
 
 
+Given("I am in the Create Staff account page", async function () {
+  await driver.get("http://localhost:3000/adminportal/landingpage/999");
+  const createStaffLink = await driver.findElement(By.id("admin-landing-page-create-staff-account"));
+  await createStaffLink.click();
+  await driver.get("http://localhost:3000/adminportal/createstaffacc/999");
+});
+
+When("I fill in all required details for Staff", async function () {
+  const emailField = await driver.findElement(By.id("create-staff-email-textfield"));
+  await emailField.sendKeys("testcreatestaff@gmail.com");
+  const userField = await driver.findElement(By.id("create-staff-username-textfield"));
+  await userField.sendKeys("teststaff");
+  const pwField = await driver.findElement(By.id("create-staff-password-textfield"));
+  await pwField.sendKeys("teststaff");
+  const repwField = await driver.findElement(By.id("create-staff-repassword-textfield"));
+  await repwField.sendKeys("teststaff");
+  const phoneField = await driver.findElement(By.id("create-staff-phone-number-textfield"));
+  await phoneField.sendKeys("11111111");
+  const buildingField = await driver.findElement(By.id("create-staff-building-id-select"));
+  const selectBuildingId = new Select(buildingField);
+  await selectBuildingId.selectByValue('1');
+  const createButton = await driver.findElement(By.id("create-staff-submit-button"));
+  await createButton.click();
+});
+
+Then("a new staff account is created and the credentials are recorded in the supabase table", async function () {
+  const { data, error } = await supabase
+    .from('StaffUsers')
+    .select('*')
+    .eq('StaffEmail', "testcreatestaff@gmail.com");
+  
+  if (error) {
+    console.error('Error querying Supabase:', error);
+    return null;
+  }
+
+  expect(data).to.exist;
+});
 

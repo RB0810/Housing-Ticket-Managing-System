@@ -58,6 +58,10 @@ const CreateSupervisor = () => {
       Swal.fire({
         icon: "success",
         title: "Supervisor Account created successfully!",
+        customClass: {
+          container: 'createSupervisorAcc'
+        },
+        id: 'createSupervisorAcc'
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
