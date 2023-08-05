@@ -344,6 +344,39 @@ class NotificationManager{
     }
   }
 
+  async sendOTP(TypeUpper, UserID, body){
+    const { data, error } = await supabase
+      .from(`${TypeUpper}Users`)
+      .select(`${TypeUpper}Email`)
+      .eq(`${TypeUpper}ID`, UserID);
+
+    if (error) {
+      throw error;
+    }
+
+    const user = data[0];
+    const emailID = user[`${TypeUpper}Email`];
+    console.log(emailID);
+
+    const emailParams = {
+      to_email: emailID,
+      message: body,
+    };
+
+    emailjs.init("w8QvO03M79syyzy63");
+
+    try {
+      const response = await emailjs.send(
+        "service_nklr1zv",
+        "template_776mx6q",
+        emailParams
+      );
+      console.log("Email sent successfully!", response);
+    } catch (error) {
+      console.error("Error sending email:", error);
+    }
+  }
+
 
 
   

@@ -29,6 +29,7 @@ import TenantProfile from "./pages/tenant/profile";
 import SupervisorProfile from "./pages/supervisor/profile";
 import StaffProfile from "./pages/staff/profile";
 import UnauthorizedAccess from "./pages/unauthorized_access";
+import TwoFactorAuth from "./pages/login/TwoFactorAuth";
 
 // MUI themes
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -90,6 +91,7 @@ function App() {
           <Route path="/supervisorportal/profile/:SupervisorID" element={<SupervisorProfile />} />
           <Route path="/staffportal/profile/:StaffID" element={<StaffProfile />} />
           <Route path="/unauthorize" element={<UnauthorizedAccess />} />
+          <Route path="/twofactorauth/:UserType/:UserID" element={<TwoFactorAuth />} />
           </Routes>
       </div>
       </ThemeProvider>
