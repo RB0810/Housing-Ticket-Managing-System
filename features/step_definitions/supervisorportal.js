@@ -3,11 +3,12 @@ const { Builder, By, Key, until, Select } = require("selenium-webdriver");
 const assert = require("assert");
 const chrome = require("selenium-webdriver/chrome");
 const { async } = require("q");
+const { createClient } = require("@supabase/supabase-js");
+
 
 // supabase client
 const supabaseUrl = 'https://mnfsjgaziftztwiarlys.supabase.co'
-require('dotenv').config(); // Load variables from .env file
-const supabaseKey = process.env.SUPABASE_KEY
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1uZnNqZ2F6aWZ0enR3aWFybHlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODY4MjkwODgsImV4cCI6MjAwMjQwNTA4OH0.Mrvmdish7OlO5-m1WIZTNwVFUnEcF7aoHE53ZVwiOY8'
 const supabase = createClient(supabaseUrl, supabaseKey)
 
 // TODO: create a new tenant account for testing
@@ -31,16 +32,55 @@ BeforeAll(async function () {
     } else {
       console.log("Created a new PENDING ticket for testing.");
     }
-});
+  
+    let { data2, error2 } = await supabase // Create a new ticket
+      .from("Service Request")
+      .insert([
+        {
+          ServiceRequestID: 999998,
+          Name: "TESTINGTICKETJEST",
+          TenantID: 999,
+          PARCStatus: "ACTIVE",
+          SubmittedDateTime: "2021-04-01 00:00:00",
+          Category: "TESTINGCATEGORYJEST",
+        },
+      ])
+      .select();
+    if (error2) {
+      throw error2;
+    } else {
+      console.log("Created a new ACTIVE ticket for testing.");
+    }
+  
+    let { data3, error3 } = await supabase // Create a new ticket
+      .from("Service Request")
+      .insert([
+        {
+          ServiceRequestID: 999997,
+          Name: "TESTINGTICKETJEST",
+          TenantID: 999,
+          PARCStatus: "CLOSED",
+          SubmittedDateTime: "2021-04-01 00:00:00",
+          Category: "TESTINGCATEGORYJEST",
+        },
+      ])
+      .select();
+    if (error3) {
+      throw error3;
+    } else {
+      console.log("Created a new CLOSED ticket for testing.");
+    }
+  });
+
 
 let driver;
 
 Given('I am on the Supervisor Portal login page', async function () {
     driver = await new Builder()
-    .forBrowser("chrome")
-    .setChromeOptions(new chrome.Options())
-    .build();
-    
+        .forBrowser("chrome")
+        .setChromeOptions(new chrome.Options())
+        .build();
+
     await driver.get("http://localhost:3000/landlordlogin");
     let welctext = await driver.findElement(By.className("wlcText")).getText();
     assert.equal(welctext, "Landlord Portal\nLogin");
@@ -57,13 +97,13 @@ When('I enter valid credentials', async function () {
 When('click on the login button', async function () {
     let login_button = await driver.findElement(By.id("landlord-login-button"))
     login_button.click();
-  });
+});
 
 Then('I should be redirected to Supervisor portal landing page \\(and receive successful login alert)', async function () {
     assert.equal(
         await driver.getCurrentUrl(),
         "http://localhost:3000/supervisorportal/landingpage/999"
-      );
+    );
 });
 
 Given('I am at the Supervisor Portal landing page', async function () {
@@ -79,20 +119,20 @@ Then('I should be redirected to the Create Tenant Account page', async function 
     assert.equal(
         await driver.getCurrentUrl(),
         "http://localhost:3000/supervisorportal/createtennantacc/999"
-      );
+    );
 });
 
 Given('I am in the Create Tenant account page', async function () {
     assert.equal(
         await driver.getCurrentUrl(),
         "http://localhost:3000/supervisorportal/createtennantacc/999"
-      );
+    );
 });
 
 When('I fill in all required details', async function () {
     const usernamefield = await driver.findElement(By.id("supervisor-portal-create-tenant-username-textfield"));
     usernamefield.sendKeys('testtenant998');
-    const  emailfield = await driver.findElement(By.id("supervisor-portal-create-tenant-email-textfield"));
+    const emailfield = await driver.findElement(By.id("supervisor-portal-create-tenant-email-textfield"));
     emailfield.sendKeys('testtenant998@gmail.com');
     const passwordfield = await driver.findElement(By.id("supervisor-portal-create-tenant-password-textfield"));
     passwordfield.sendKeys('password123');
@@ -117,7 +157,7 @@ When('I fill in all required details', async function () {
 
 });
 
-And('click on the Create Tenant Account button', async function () {
+When('click on the Create Tenant Account button', async function () {
     let create_tenant_button = await driver.findElement(By.id("supervisor-portal-create-tenant-submit-button"))
     create_tenant_button.click();
 });
