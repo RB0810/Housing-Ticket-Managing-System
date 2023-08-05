@@ -31,18 +31,35 @@ const MockNavBar= ()=>{
 
 
 describe("Testing if routing works for the staff navbar",()=>{
-        beforeEach(() => {
-            Cookies.get.mockImplementation((key) => {
-            switch (key) {
-                case 'userId':
-                return '123';  // The ID must match with TenantID
-                case 'type':
-                return 'Tenant';  // The user type must be "Tenant"
-                default:
-                return null;
-            }
-            });
+    beforeEach(() => {
+        const SHA256 = require('crypto-js').SHA256;
+        console.log('After test is called');
+        Cookies.get.mockImplementation((key) => {
+          switch (key) {
+            case 'userId':
+              return SHA256('123').toString(); // The ID must match with StaffID
+            case 'type':
+              return 'Tenant'; // The user type must be "Supervisor"
+            default:
+              return null;
+          }
         });
+      });
+
+
+        // beforeEach(() => {
+        //     Cookies.get.mockImplementation((key) => {
+        //     switch (key) {
+        //         case 'userId':
+        //         return '123';  // The ID must match with TenantID
+        //         case 'type':
+        //         return 'Tenant';  // The user type must be "Tenant"
+        //         default:
+        //         return null;
+        //     }
+        //     });
+        // });
+
 
         test("Test if can route to Tenant Portal",async ()=>{
             render(<MockNavBar/>)

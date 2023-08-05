@@ -31,18 +31,33 @@ const MockGoToAdmin= ()=>{
 //   }));
 
 describe("Admin landingpage should send Admin to the right page",()=>{
+    // beforeEach(() => {
+    //     Cookies.get.mockImplementation((key) => {
+    //     switch (key) {
+    //         case 'userId':
+    //         return '123';  // The ID must match with AdminID
+    //         case 'type':
+    //         return 'Admin';  // The user type must be "Admin"
+    //         default:
+    //         return null;
+    //     }
+    //     });
+    // });
+
     beforeEach(() => {
+        const SHA256 = require('crypto-js').SHA256;
+        console.log('After test is called');
         Cookies.get.mockImplementation((key) => {
-        switch (key) {
+          switch (key) {
             case 'userId':
-            return '123';  // The ID must match with AdminID
+              return SHA256('123').toString(); // The ID must match with StaffID
             case 'type':
-            return 'Admin';  // The user type must be "Admin"
+              return 'Admin'; // The user type must be "Staff"
             default:
-            return null;
-        }
+              return null;
+          }
         });
-    });
+      });
 
     test("Go to manageaccount", ()=>{
         render(<MockGoToAdmin/>)

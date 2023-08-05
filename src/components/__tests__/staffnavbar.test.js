@@ -26,18 +26,33 @@ const MockNavBar= ()=>{
 
 
 describe("Testing if routing works for the staff navbar",()=>{
+        // beforeEach(() => {
+        //     Cookies.get.mockImplementation((key) => {
+        //     switch (key) {
+        //         case 'userId':
+        //         return '123';  // The ID must match with StaffID
+        //         case 'type':
+        //         return 'Staff';  // The user type must be "Staff"
+        //         default:
+        //         return null;
+        //     }
+        //     });
+        // });
+
         beforeEach(() => {
+            const SHA256 = require('crypto-js').SHA256;
+            console.log('After test is called');
             Cookies.get.mockImplementation((key) => {
-            switch (key) {
+              switch (key) {
                 case 'userId':
-                return '123';  // The ID must match with StaffID
+                  return SHA256('123').toString(); // The ID must match with StaffID
                 case 'type':
-                return 'Staff';  // The user type must be "Staff"
+                  return 'Staff'; // The user type must be "Staff"
                 default:
-                return null;
-            }
+                  return null;
+              }
             });
-        });
+          });
 
         test("Test if can route to Staff Portal",async ()=>{
             render(<MockNavBar/>)
