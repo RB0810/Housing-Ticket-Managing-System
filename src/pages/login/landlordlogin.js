@@ -37,7 +37,9 @@ export default function LandlordLogin() {
           Swal.fire({
             icon: "error",
             title: "Login error",
-            text: error.message
+            text: error.message,
+            showConfirmButton: true,
+            confirmButtonColor: "#707c4f"
           });
         }
       } else {
@@ -45,7 +47,9 @@ export default function LandlordLogin() {
         Swal.fire({
           icon: "error",
           title: "Login error",
-          text: error.message
+          text: error.message,
+          showConfirmButton: true,
+          confirmButtonColor: "#707c4f"
         });
       }
     }

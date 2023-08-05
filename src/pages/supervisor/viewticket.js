@@ -11,6 +11,7 @@ import UploadQuotation from "../../components/UploadQuotation";
 import DisplayQuotation from "../../components/DisplayQuotation";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
+import { SHA256 } from "crypto-js";
 
 import "./../../styles/viewticket.css";
 import { Grid, Button, Select, MenuItem, OutlinedInput, TextField} from "@mui/material";
@@ -52,8 +53,11 @@ const ViewTicketSupervisor = () => {
       console.log('Unauthorized');
       navigate("/unauthorize");
     } else {
+      const userIdAsString = String(SupervisorID);
+      // Use SHA-256 to hash the userId
+      const hashedUserId = SHA256(userIdAsString).toString();
       // Check if the user's ID and type match the expected values (e.g., SupervisorID and "Supervisor")
-      if (Number(userId) === parseInt(SupervisorID) && type === "Supervisor") {
+      if (userId === hashedUserId && type === "Supervisor") {
         // Proceed with rendering the component
         console.log('Authorized');
       } else {
@@ -128,7 +132,9 @@ const ViewTicketSupervisor = () => {
 
       Swal.fire({
         icon: "success",
-        title: "Ticket Assigned"
+        title: "Ticket Assigned",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f"
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -172,7 +178,9 @@ const ViewTicketSupervisor = () => {
       ]);
       Swal.fire({
         icon: "success",
-        title: "Ticket rejected"
+        title: "Ticket rejected",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f"
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
