@@ -70,9 +70,9 @@ When("I enter all Supervisor information", async function () {
   const phoneField = await driver.findElement(By.id("create-supervisor-phone-number-textfield"));
   await phoneField.sendKeys("11111111");
   const buildingField = await driver.findElement(By.id("create-supervisor-building-name-textfield"));
-  await buildingField.sendKeys("Building 1");
+  await buildingField.sendKeys("Test Building");
   const supbuildField = await driver.findElement(By.id("create-supervisor-building-address-textfield"));
-  await supbuildField.sendKeys("111 Address");
+  await supbuildField.sendKeys("Test Building Address");
   const postalcodeField = await driver.findElement(By.id("create-supervisor-postal-code-textfield"));
   await postalcodeField.sendKeys("111111");
 
@@ -152,5 +152,15 @@ AfterAll(async function(){
   if (staffError) {
     console.error('Error deleting staff account from Supabase:', staffError);
   }
+
+  const { error: buildingError } = await supabase
+    .from('Buildings')
+    .delete()
+    .eq('BuildingName', "Test Building");
+
+  if (buildingError) {
+    console.error('Error deleting building entry from Supabase:', buildingError);
+  }
+
   await driver.quit();
 });
