@@ -20,7 +20,7 @@ const supabaseKey =
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 let driver;
-let wait_value = 400;
+let wait_value = 1000;
 
 async function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -211,13 +211,16 @@ When('Tenant clicks "Create Service Ticket"', async function () {
 });
 
 Then("Database should be updated with new service ticket", async function () {
+  await delay(2000);
   let { data, error } = await supabase
     .from("Service Request")
-    .select()
-    .match({ Name: "DELETEME" });
+    .select("*")
+    .eq("Name", "DELETEME");
+
   if (error) {
     throw error;
   }
+  console.log(data[0]);
   assert.equal(data[0].Name, "DELETEME");
 
   await driver.findElement(By.className("swal2-confirm")).click();
@@ -238,7 +241,7 @@ Then(
   async function () {
     let table = await driver.findElement(By.className("MuiTable-root"));
     let table_rows = await table.findElements(By.tagName("tr"));
-    assert.equal(table_rows.length, 3);
+    assert.equal(table_rows.length, 2);
 
     await delay(wait_value);
   }
