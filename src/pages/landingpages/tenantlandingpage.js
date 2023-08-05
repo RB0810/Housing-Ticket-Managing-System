@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import '../../styles/tenantlandingpage.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { SHA256 } from 'crypto-js';
 
 export default function TenantLandingPage() {
   const navigate = useNavigate();
@@ -18,8 +19,12 @@ export default function TenantLandingPage() {
       console.log('Unauthorized');
       navigate("/unauthorize");
     } else {
+      const userIdAsString = String(TenantID);
+      // Use SHA-256 to hash the userId
+      const hashedUserId = SHA256(userIdAsString).toString();
+      console.log(hashedUserId)
       // Check if the user's ID and type match the expected values (e.g., TenantID and "tenant")
-      if (Number(userId) === parseInt(TenantID) && type === "Tenant") {
+      if (userId === hashedUserId && type === "Tenant") {
         // Proceed with rendering the component
         console.log('Authorized');
       } else {
@@ -66,13 +71,13 @@ export default function TenantLandingPage() {
             <button>Pending Tickets</button>
           </div>
         </button>
-        <button className="card" onClick={handleButtonClickActive}>
+        <button className="card" id='active-tickets-button' onClick={handleButtonClickActive}>
           <img id='active-tickets-button' src="/activeticket.png" alt="Card" className="card-image" />
           <div>
             <button>Active Tickets</button>
           </div>
         </button>
-        <button className="card" onClick={handleButtonClickClosed}>
+        <button className="card" id='closed-tickets-button' onClick={handleButtonClickClosed}>
           <img id='closed-tickets-button' src="/closedticket.png" alt="Card" className="card-image" />
           <div>
             <button>Closed Tickets</button>

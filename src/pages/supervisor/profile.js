@@ -7,6 +7,7 @@ import Authentication from "../../managers/authentication";
 import Cookies from "js-cookie";
 import {Button, Grid, TextField} from '@mui/material'
 import Swal from "sweetalert2";
+import { SHA256 } from "crypto-js";
 
 const SupervisorProfile = () => {
   const { SupervisorID } = useParams();
@@ -27,8 +28,11 @@ const SupervisorProfile = () => {
       console.log('Unauthorized');
       navigate("/unauthorize");
     } else {
+      const userIdAsString = String(SupervisorID);
+      // Use SHA-256 to hash the userId
+      const hashedUserId = SHA256(userIdAsString).toString();
       // Check if the user's ID and type match the expected values (e.g., SupervisorID and "Supervisor")
-      if (Number(userId) === parseInt(SupervisorID) && type === "Supervisor") {
+      if (userId === hashedUserId && type === "Supervisor") {
         // Proceed with rendering the component
         console.log('Authorized');
       } else {
@@ -92,6 +96,8 @@ const SupervisorProfile = () => {
           Swal.fire({
             icon: "success",
             title: "Password changed successfully!",
+            showConfirmButton: true,
+            confirmButtonColor: "#707c4f"
           }).then((result) => {
             if (result.isConfirmed) {
               window.location.reload();
@@ -171,7 +177,7 @@ const SupervisorProfile = () => {
               <TextField 
               type="password"
               className="supervisor-profile-textfield"
-              id="outlined-basic" 
+              id="supervisor-profile-new-password-textfield" 
               label="New Password" 
               variant="outlined" 
               defaultValue={newPassword}
@@ -181,7 +187,7 @@ const SupervisorProfile = () => {
               <TextField 
               type="password"
               className="supervisor-profile-textfield"
-              id="filled-basic" 
+              id="supervisor-profile-confirm-password-textfield" 
               label="Confirm Password" 
               variant="outlined" 
               defaultValue={newPassword}
@@ -189,6 +195,7 @@ const SupervisorProfile = () => {
             </Grid>
             <Grid item xs = {12}>
               <Button 
+              id="supervisor-profile-reset-password-button" 
               variant="contained"
               className="supervisor-profile-button"
               onClick={handleSetPassword}>
@@ -208,7 +215,13 @@ const SupervisorProfile = () => {
 
       <hr></hr>
 
-      <Button variant="contained" className="supervisor-profile-button" onClick={logout}>Logout</Button>
+      <Button
+      id="supervisor-profile-logout-button"  
+      variant="contained" 
+      className="supervisor-profile-button" 
+      onClick={logout}>
+        Logout
+      </Button>
     
     </div>
   );

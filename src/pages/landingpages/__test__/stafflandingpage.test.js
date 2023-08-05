@@ -4,6 +4,9 @@ import StaffLandingPage from "../stafflandingpage";
 import StaffPortal from "../../portal/staffportal";
 import { createMemoryRouter } from "react-router-dom";
 import { RouterProvider } from "react-router-dom";
+import Cookies from 'js-cookie';
+jest.mock('js-cookie');
+
 
 function setUpMemRoute() {
     const routes = [
@@ -28,6 +31,19 @@ function setUpMemRoute() {
   
 
 describe("Testing routing functions", ()=>{
+    beforeEach(() => {
+        Cookies.get.mockImplementation((key) => {
+          switch (key) {
+            case 'userId':
+              return '123';  // The ID must match with StaffID
+            case 'type':
+              return 'Staff';  // The user type must be "Staff"
+            default:
+              return null;
+          }
+        });
+    });
+
     test("Click on pending tickets", async ()=>{
 
         const {router} = setUpMemRoute()

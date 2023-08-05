@@ -143,6 +143,7 @@ let driver;
 
 //Scenario 5:
 
+
     Given('Staff clicks on View Active Ticket button', async function () {
       // Write code here that turns the phrase above into concrete actions
       driver = await new Builder()
@@ -166,10 +167,10 @@ let driver;
         await driver.getCurrentUrl(),
         "http://localhost:3000/staffportal/ticket/16/999");
       driver.quit();
+
     });
 
 //Scenario 6:
-
     Given('Staff clicks on Pending tickets button', async function () {
       // Write code here that turns the phrase above into concrete actions
       driver = await new Builder()
@@ -191,6 +192,7 @@ let driver;
         await driver.getCurrentUrl(),
         "http://localhost:3000/staffportal/tickets/16/pending");
         driver.quit();
+
     });
 
 //Scenario 7:
@@ -218,6 +220,7 @@ let driver;
         await driver.getCurrentUrl(),
         "http://localhost:3000/staffportal/tickets/16/999");
         driver.quit();
+
     });
 
 //Scenario 8:
@@ -304,7 +307,6 @@ let driver;
         "Works Started"
        )
        driver.quit();
-       
      });
 
 //Scenario 11:
@@ -381,7 +383,6 @@ let driver;
 
 
 //Scenario 13:
-
      Given('Staff is on the view ticket page and Ticket status is Works Rejected',async function () {
        // Write code here that turns the phrase above into concrete actions
        driver = await new Builder()

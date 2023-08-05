@@ -5,6 +5,9 @@ import { RouterProvider } from "react-router-dom";
 import TenantLandingPage from "../tenantlandingpage";
 import TenantPortal from "../../portal/tenantportal";
 import CreateTicket from "../../tenant/createticket";
+import Cookies from 'js-cookie';
+jest.mock('js-cookie');
+
 
 function setup(){
     const routes = [
@@ -13,7 +16,7 @@ function setup(){
           element:<TenantLandingPage/>
         },
         {
-          path:"/tenantportal/createticket/:TenantID",
+          path:"/tenantportal/tickets/:TenantID/:PARCStatus",
           element:<TenantPortal/>
         },
         {
@@ -32,6 +35,19 @@ function setup(){
     }
 
 describe("Testing if routing works for supervisor portal",()=>{
+        beforeEach(() => {
+            Cookies.get.mockImplementation((key) => {
+            switch (key) {
+                case 'userId':
+                return '123';  // The ID must match with TenantID
+                case 'type':
+                return 'Tenant';  // The user type must be "Tenant"
+                default:
+                return null;
+            }
+            });
+        });
+    
         test("Test if can route to pending tickets",async ()=>{
             const {router} = setup()
             const buttontoclick = screen.getByRole("button",{name:"Pending Tickets"})

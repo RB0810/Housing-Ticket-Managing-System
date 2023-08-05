@@ -11,6 +11,7 @@ import UploadQuotation from "../../components/UploadQuotation";
 import DisplayQuotation from "../../components/DisplayQuotation";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
+import { SHA256 } from "crypto-js";
 
 import "./../../styles/viewticket.css";
 import { Grid, Button, Select, MenuItem, OutlinedInput, TextField} from "@mui/material";
@@ -52,8 +53,11 @@ const ViewTicketSupervisor = () => {
       console.log('Unauthorized');
       navigate("/unauthorize");
     } else {
+      const userIdAsString = String(SupervisorID);
+      // Use SHA-256 to hash the userId
+      const hashedUserId = SHA256(userIdAsString).toString();
       // Check if the user's ID and type match the expected values (e.g., SupervisorID and "Supervisor")
-      if (Number(userId) === parseInt(SupervisorID) && type === "Supervisor") {
+      if (userId === hashedUserId && type === "Supervisor") {
         // Proceed with rendering the component
         console.log('Authorized');
       } else {
@@ -128,7 +132,9 @@ const ViewTicketSupervisor = () => {
 
       Swal.fire({
         icon: "success",
-        title: "Ticket Assigned"
+        title: "Ticket Assigned",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f"
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -172,7 +178,9 @@ const ViewTicketSupervisor = () => {
       ]);
       Swal.fire({
         icon: "success",
-        title: "Ticket rejected"
+        title: "Ticket rejected",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f"
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -191,25 +199,37 @@ const ViewTicketSupervisor = () => {
     if (rejectState === "reject") {
       return (
         <div>
-          <form onSubmit={handleReject}>
-              <TextField
-              className="view-ticket-textfield"
-              id="rejectComments-textfield"
-              multiline='true'
-              label ="Reason for Reject"
-              variant="filled"
-              value={rejectComments}
-              onChange={(e) => setRejectComments(e.target.value)}/>
-            <Button
-            variant="contained"
-            onClick={handleReject}>
-              Submit
-            </Button>
-            <Button
-            variant="contained"
-            onClick={handleCancel}>
-              Cancel
-            </Button>
+          <form onSubmit={handleReject} className="supervisor-portal-view-ticket-form">
+            <Grid container spacing={1}>
+              <Grid item xs={12}>
+                <TextField
+                className="view-ticket-textfield"
+                id="supervisor-portal-reject-reason-textfield"
+                multiline='true'
+                label ="Reason for Reject"
+                variant="filled"
+                value={rejectComments}
+                onChange={(e) => setRejectComments(e.target.value)}/>
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                id="supervisor-portal-submit-reject-reason-button"
+                className="view-ticket-button"
+                variant="contained"
+                onClick={handleReject}>
+                  Submit
+                </Button>
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                id="supervisor-portal-cancel-reject-reason-button"
+                className="view-ticket-button"
+                variant="contained"
+                onClick={handleCancel}>
+                  Cancel
+                </Button>
+              </Grid>
+            </Grid>
           </form>
         </div>
       );
@@ -241,41 +261,49 @@ const ViewTicketSupervisor = () => {
             <div>
               {showOptions && (
                 <div>
-                  <Grid item xs={12}>
-                    <h2 className="assignstaff-header">Assign Staff:</h2>
+                  <Grid container spacing={1}>
+                    <Grid item xs={12}>
+                      <h2 className="assignstaff-header">Assign Staff:</h2>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Select
+                      id="supervisor-portal-building-ID-select"
+                      className="assignstaff-textfield"
+                      value={selectedStaff}
+                      variant='outlined'
+                      onChange={(e) => setSelectedStaff(e.target.value)}
+                      input={<OutlinedInput value='--Select Staff--'/>}>
+                        {staffMembers.map((staff) => (
+                          <MenuItem
+                          key={staff.StaffID}
+                          value={staff.StaffID}
+                          id={staff.StaffID}>
+                          {staff.StaffName}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                      {assignStatus && <p>{assignStatus}</p>}
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Button
+                      className="view-ticket-button"
+                      id="assignstaff-button"
+                      variant="contained"
+                      onClick={handleAssign}>
+                        Assign
+                      </Button>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Button
+                      className="view-ticket-button"
+                      id="reject-button"
+                      variant="contained"
+                      onClick={handleRejectClick}>
+                        Reject
+                      </Button>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12}>
-                    <Select
-                    id="buildingID"
-                    className="assignstaff-textfield"
-                    value={selectedStaff}
-                    variant='outlined'
-                    onChange={(e) => setSelectedStaff(e.target.value)}
-                    input={<OutlinedInput value='--Select Staff--'/>}>
-                      {staffMembers.map((staff) => (
-                        <MenuItem
-                        key={staff.StaffID}
-                        value={staff.StaffID}>
-                        {staff.StaffName}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                    {assignStatus && <p>{assignStatus}</p>}
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Button
-                    id="assignstaff-button"
-                    variant="contained"
-                    onClick={handleAssign}>
-                      Assign
-                    </Button>
-                    <Button
-                    id="reject-button"
-                    variant="contained"
-                    onClick={handleRejectClick}>
-                      Reject
-                    </Button>
-                  </Grid>
+                  
                 </div>
               )}
               <div>{renderContent()}</div>

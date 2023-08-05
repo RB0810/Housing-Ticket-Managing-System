@@ -8,6 +8,7 @@ import { useParams, useNavigate } from "react-router-dom";
 // import DownloadQuotation from "../../components/DownloadQuotation";
 import { Rating, TextField, Grid, Button } from "@mui/material";
 import supabase from "../../config/supabaseClient";
+import { SHA256 } from "crypto-js";
 import { Typography } from "@mui/material";
 import DisplayQuotation from "../../components/DisplayQuotation";
 import NotificationManager from "../../managers/notificationmanager";
@@ -54,8 +55,11 @@ const ViewTicketTenant = () => {
       console.log('Unauthorized');
       navigate("/unauthorize");
     } else {
+      const userIdAsString = String(TenantID);
+      // Use SHA-256 to hash the userId
+      const hashedUserId = SHA256(userIdAsString).toString();
       // Check if the user's ID and type match the expected values (e.g., TenantID and "tenant")
-      if (Number(userId) === parseInt(TenantID) && type === "Tenant") {
+      if (userId === hashedUserId && type === "Tenant") {
         // Proceed with rendering the component
         console.log('Authorized');
       } else {
@@ -120,6 +124,8 @@ const ViewTicketTenant = () => {
       Swal.fire({
         icon: "success",
         title: "Ticket deleted",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f"
       });
       navigate(`/tenantportal/landingpage/${serviceTicket.TenantID}`);
       // Probably need to redirect to main page here
@@ -127,6 +133,8 @@ const ViewTicketTenant = () => {
       Swal.fire({
         icon: "error",
         title: "Error in deleting Quotation",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f",
         text: error.message
       });
     }
@@ -151,6 +159,8 @@ const ViewTicketTenant = () => {
         Swal.fire({
           icon: "error",
           title: "Error downloading file",
+          showConfirmButton: true,
+          confirmButtonColor: "#707c4f"
         });
         return;
       }
@@ -158,6 +168,8 @@ const ViewTicketTenant = () => {
       Swal.fire({
         icon: "error",
         title: "Error downloading file",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f"
       });
     }
   };
@@ -329,7 +341,9 @@ const ViewTicketTenant = () => {
 
       Swal.fire({
         icon: "success",
-        title: "Quotation accepted"
+        title: "Quotation accepted",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f"
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -339,6 +353,8 @@ const ViewTicketTenant = () => {
       Swal.fire({
         icon: "error",
         title: "Error accepting Quotation",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f",
         text: error.message
       });
     }
@@ -377,7 +393,9 @@ const ViewTicketTenant = () => {
 
       Swal.fire({
         icon: "success",
-        title: "Quotation rejected"
+        title: "Quotation rejected",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f"
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -387,6 +405,8 @@ const ViewTicketTenant = () => {
       Swal.fire({
         icon: "error",
         title: "Reject Quotation error",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f",
         text: error.message
       });
     }
@@ -447,6 +467,8 @@ const ViewTicketTenant = () => {
       Swal.fire({
         icon: "success",
         title: "Feedback submitted",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f"
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -456,6 +478,8 @@ const ViewTicketTenant = () => {
       Swal.fire({
         icon: "error",
         title: "Error in submitting feedback",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f",
         text: error.message
       });
     }
@@ -489,7 +513,9 @@ const ViewTicketTenant = () => {
 
       Swal.fire({
         icon: "success",
-        title: "Feedback submitted"
+        title: "Feedback submitted",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f"
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -499,6 +525,8 @@ const ViewTicketTenant = () => {
       Swal.fire({
         icon: "success",
         title: "Error in submitting feedback",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f",
         text: error.message
       });
     }

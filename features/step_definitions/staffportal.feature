@@ -58,3 +58,4 @@ Feature: Staff Portal
         Given Staff is on the view ticket page and Ticket status is Works Rejected
         When Staff clicks on Restart Works button
         Then Ticket status changes to Works Started and Ticket with Works Started status is rendered
+
