@@ -47,20 +47,18 @@ Feature: Tenant Portal Functionality
 
     Scenario: Accept Quotation
         Given Tenant clicks on "Accept Quotation"
-        Then Ticket status should change to Quotation Accepted
+        Then Ticket status should change to "Quotation Accepted"
 
     Scenario: Reject Quotation
-        Given Ticket status is "Quotation Uploaded"
-        When Tenant clicks on "Reject Quotation"
-        Then Ticket status should change to Quotation Rejected
+        Given Tenant clicks on "Reject Quotation"
+        Then Ticket status should change to "Quotation Rejected"
 
     Scenario: Submit feedback survey
         Given Ticket status is "Works Ended"
         When Tenant fills in the feedback survey
         When Tenant submits the feedback
-        Then Feedback rating and comments should be updated in the system
+        Then Ticket Status should change to "Feedback Submitted"
 
     Scenario: Reject work
-        Given Ticket status is Works Ended
-        When Tenant clicks on "Reject Work"
-        Then Ticket status should change to Work Rejected
+        Given Tenant clicks on "Reject Work"
+        Then Ticket status should change to "Work Rejected"

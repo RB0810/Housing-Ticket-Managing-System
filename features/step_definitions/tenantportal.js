@@ -11,7 +11,9 @@ const { Builder, By, Key, until, Select } = require("selenium-webdriver");
 const assert = require("assert");
 const chrome = require("selenium-webdriver/chrome");
 const { createClient } = require("@supabase/supabase-js");
-const { error } = require("console");
+const fs = require("fs");
+const path = require("path");
+const { async } = require("q");
 
 // Setup Supabase for Testing
 const supabaseUrl = "https://mnfsjgaziftztwiarlys.supabase.co";
@@ -19,6 +21,7 @@ const supabaseKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1uZnNqZ2F6aWZ0enR3aWFybHlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODY4MjkwODgsImV4cCI6MjAwMjQwNTA4OH0.Mrvmdish7OlO5-m1WIZTNwVFUnEcF7aoHE53ZVwiOY8";
 
 const supabase = createClient(supabaseUrl, supabaseKey);
+const downloadPath = path.join(__dirname, "testdownloadsdir"); // Set up the test directory
 
 let driver;
 let wait_value = 1000;
@@ -134,16 +137,28 @@ AfterAll(async function () {
     console.log("Deleted created ticket for testing.");
   }
 
+  // Then do cleanup of files
+  const files = fs.readdirSync(downloadPath);
+  for (const file of files) {
+    fs.unlinkSync(path.join(downloadPath, file));
+  }
+
   driver.quit();
 });
 
 Given("Tenant has loaded the login page for Tenant Portal", async function () {
   driver = await new Builder()
     .forBrowser("chrome")
-    .setChromeOptions(new chrome.Options())
+    .setChromeOptions(
+      new chrome.Options().setUserPreferences(
+        {
+          "download.default_directory": downloadPath,
+        } // Set download path to test directory
+      )
+    )
     .build();
   await driver.get("http://localhost:3000/tenantlogin");
-  await driver.manage().setTimeouts({ implicit: 1 }); // Set a timeout for implicit waits (e.g., 10 seconds)
+  await driver.manage().setTimeouts({ implicit: 10000 }); // Set a timeout for implicit waits (e.g., 10 seconds)
   await driver.wait(until.elementLocated(By.className("wlcText")));
   assert.equal(
     await driver.findElement(By.className("wlcText")).getText(),
@@ -170,7 +185,7 @@ When("Tenant enters valid account credentials", async function () {
 When('Tenant clicks "login" button', async function () {
   await driver.findElement(By.className("login-portal-button")).click();
 
-  await delay(wait_value); // Wait for 1 second (wait_value milliseconds
+  await delay(wait_value * 2); // Wait for 1 second (wait_value milliseconds
 });
 
 Then("Tenant should be redirected to the Tenant home page", async function () {
@@ -305,6 +320,7 @@ Given(
 );
 
 Then("Tenant's account information should be displayed", async function () {
+  await driver.wait(until.elementLocated(By.id("outlined-basic")));
   let tenantUsernameInput = await driver.findElement(By.id("outlined-basic"));
   let tenantUsername = await tenantUsernameInput.getAttribute("value");
   assert.equal(tenantUsername, "TESTTENANTDONTDELETE");
@@ -321,6 +337,9 @@ Given(
 );
 
 When("Tenant enters a new password", async function () {
+  await driver.wait(
+    until.elementLocated(By.id("tenant-profile-new-password-textfield"))
+  );
   let tenantPasswordInput = await driver.findElement(
     By.id("tenant-profile-new-password-textfield")
   );
@@ -400,23 +419,207 @@ Then(
       pdfExists = false;
     }
     assert.equal(pdfExists, true);
+
+    // Wait for PDF to load
+    await delay(wait_value * 3);
   }
 );
 
 Given(
   "Tenant sees the Quotation rendered using ReactPDFViewer",
-  async function () {}
+  async function () {
+    await delay(wait_value * 3);
+  }
 );
 
 When("Tenant clicks on the Download button", async function () {
+  await driver.wait(
+    until.elementLocated(By.css('[data-testid="get-file__download-button"]')),
+    50000
+  );
+
   let buttonElement = await driver.findElement(
     By.css('[data-testid="get-file__download-button"]')
   );
 
   await buttonElement.click();
+
+  // Give time for file to download
+  await delay(wait_value);
 });
 
 Then(
   "Tenant should download the Quotation into their local computer",
-  async function () {}
+  async function () {
+    // Check if downloaded file does indeed exists
+    const newItemCount = fs.readdirSync(downloadPath).length;
+
+    // Check that downloaded file is in the directory
+    assert.equal(newItemCount, 1);
+  }
 );
+
+Given('Tenant clicks on "Accept Quotation"', async function () {
+  await driver.wait(
+    until.elementLocated(By.id("view-ticket-accept-quotation-button"))
+  );
+  await driver
+    .findElement(By.id("view-ticket-accept-quotation-button"))
+    .click();
+
+  // Let it upload to Database
+  await delay(wait_value * 2);
+});
+
+Then('Ticket status should change to "Quotation Accepted"', async function () {
+  let { data, error } = await supabase
+    .from("Service Request")
+    .select("*")
+    .eq("ServiceRequestID", 999998);
+
+  if (error) {
+    throw error;
+  }
+  assert.equal(data[0].Status, "Quotation Accepted");
+
+  // Reset Ticket Status
+  let { data2, error2 } = await supabase
+    .from("Service Request")
+    .update({ Status: "Quotation Uploaded" })
+    .eq("ServiceRequestID", 999998);
+
+  if (error2) {
+    throw error2;
+  }
+});
+
+Given('Tenant clicks on "Reject Quotation"', async function () {
+  await driver.get("http://localhost:3000/tenantportal/ticket/999/999998");
+
+  await driver.wait(
+    until.elementLocated(By.id("view-ticket-reject-quotation-button"))
+  );
+  await driver
+    .findElement(By.id("view-ticket-reject-quotation-button"))
+    .click();
+
+  // Update reason
+  await driver.wait(
+    until.elementLocated(By.id("view-ticket-reject-reason-textfield"))
+  );
+
+  await driver
+    .findElement(By.id("view-ticket-reject-reason-textfield"))
+    .click();
+
+  await driver
+    .findElement(By.id("view-ticket-reject-reason-textfield"))
+    .sendKeys("TESTREJECTREASON");
+
+  await driver.wait(
+    until.elementLocated(By.id("view-ticket-reject-reason-submit-button"))
+  );
+  await driver
+    .findElement(By.id("view-ticket-reject-reason-submit-button"))
+    .click();
+
+  // Let it upload to Database
+  await delay(wait_value * 3);
+});
+
+Then('Ticket status should change to "Quotation Rejected"', async function () {
+  await delay(wait_value * 3);
+  let { data, error } = await supabase
+    .from("Service Request")
+    .select("*")
+    .eq("ServiceRequestID", 999998);
+
+  if (error) {
+    throw error;
+  }
+  assert.equal(data[0].Status, "Quotation Rejected");
+});
+
+Given('Ticket status is "Works Ended"', async function () {
+  let { data, error } = await supabase
+    .from("Service Request")
+    .update({ Status: "Works Ended" })
+    .eq("ServiceRequestID", 999998);
+
+  if (error) {
+    throw error;
+  }
+
+  await delay(wait_value);
+});
+
+When("Tenant fills in the feedback survey", async function () {
+  // Refresh page
+  await driver.get("http://localhost:3000/tenantportal/ticket/999/999998");
+  await driver.wait(until.elementLocated(By.id("view-ticket-feedback-button")));
+  await driver.findElement(By.id("view-ticket-feedback-button")).click();
+
+  await driver
+    .findElement(By.id("view-ticket-feedback-textfield"))
+    .sendKeys("TEST");
+});
+
+When("Tenant submits the feedback", async function () {
+  await driver.findElement(By.id("view-ticket-submit-feedback-button")).click();
+  // Some time for database to update
+  await delay(wait_value * 3);
+});
+
+Then('Ticket Status should change to "Feedback Submitted"', async function () {
+  let { data, error } = await supabase
+    .from("Service Request")
+    .select("*")
+    .eq("ServiceRequestID", 999998);
+
+  if (error) {
+    throw error;
+  }
+  assert.equal(data[0].Status, "Feedback Submitted");
+});
+
+Given('Tenant clicks on "Reject Work"', async function () {
+  // Remodify database and refresh
+  let { data, error } = await supabase
+    .from("Service Request")
+    .update({ Status: "Works Ended" })
+    .eq("ServiceRequestID", 999998);
+
+  if (error) {
+    throw error;
+  }
+
+  await driver.get("http://localhost:3000/tenantportal/ticket/999/999998");
+  await driver.wait(until.elementLocated(By.id("view-ticket-reject-button")));
+  await driver.findElement(By.id("view-ticket-reject-button")).click();
+  await driver
+    .findElement(By.id("view-ticket-reject-reason-textfield"))
+    .sendKeys("TESTREJECTREASON");
+  await driver.wait(
+    until.elementLocated(By.id("view-ticket-submit-reject-reason-button"))
+  );
+  await driver
+    .findElement(By.id("view-ticket-submit-reject-reason-button"))
+    .click();
+
+  // Some time for Supabase to update
+  await delay(wait_value * 3);
+});
+
+Then('Ticket status should change to "Work Rejected"', async function () {
+  // Some time for Supabase to update
+  await delay(wait_value * 3);
+  let { data, error } = await supabase
+    .from("Service Request")
+    .select("*")
+    .eq("ServiceRequestID", 999998);
+
+  if (error) {
+    throw error;
+  }
+  assert.equal(data[0].Status, "Works Rejected");
+});
