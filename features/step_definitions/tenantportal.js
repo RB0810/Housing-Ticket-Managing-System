@@ -146,23 +146,9 @@ Given("Tenant has loaded the login page for Tenant Portal", async function () {
 });
 
 When("Tenant enters valid account credentials", async function () {
-  const usernameInput = await driver.findElement(
-    By.css('input[type="text"].MuiInputBase-input')
-  );
-  const passwordInput = await driver.findElement(
-    By.css('input[type="password"].MuiInputBase-input')
-  );
-
-  await usernameInput.sendKeys("testtenant@gmail.com");
-  await passwordInput.sendKeys("testtenant123");
-
-  await delay(wait_value); // Wait for 1 second (wait_value milliseconds
-});
-
-When('Tenant clicks "login" button', async function () {
-  await driver.findElement(By.className("login-portal-button")).click();
-
-  await delay(wait_value); // Wait for 1 second (wait_value milliseconds
+  await driver.findElement(By.id("tenant-login-email-textfield" )).sendKeys("testtenant@gmail.com");
+  await driver.findElement(By.id("tenant-login-password-textfield")).sendKeys("testtenant123");
+  await driver.findElement(By.id("tenant-login-login-button")).click();
 });
 
 Then("Tenant should be redirected to the Tenant home page", async function () {

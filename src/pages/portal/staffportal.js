@@ -344,7 +344,10 @@ export default function StaffPortal() {
                   <TableCell className="text-center">{ticket.tenantDetails ? ticket.tenantDetails.TenantName : null}</TableCell>
                   <TableCell align="left">
                     <Link to={`${getViewTicketsRoute()}/${StaffID}/${ticket.ServiceRequestID}`}>
-                      <Button variant="contained" >View Ticket
+                      <Button 
+                      variant="contained" 
+                      id={ticket.id}>
+                        View Ticket
                       </Button>
                     </Link>
                   </TableCell>

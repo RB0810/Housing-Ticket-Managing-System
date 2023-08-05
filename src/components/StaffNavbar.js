@@ -26,7 +26,7 @@ export default function StaffNavbar() {
 function CustomLink({ to, children }) {
   return (
     <li>
-      <Link to={to}>{children}</Link>
+      <Link to={to} id="nav-bar-profile-page">{children}</Link>
     </li>
   );
 }

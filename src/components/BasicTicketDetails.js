@@ -2,6 +2,15 @@ import { Grid,TextField } from "@mui/material";
 import React from "react";
 
 const BasicTicketDetails = (ticket) => {
+
+  function formatDateTime(timestamp) {
+    var [datePart, timePart] = timestamp.split("T");
+    const [hrs, mins, secs] = timePart.split(":");
+    datePart = new Date(datePart).toLocaleDateString();
+    const modifiedString = `${datePart}, ${hrs}:${mins}:${secs}`;
+    return modifiedString;
+  }
+
   return (
     <div>
       <h2 className="basicticketdetails-header">Basic Ticket Details</h2>
@@ -18,7 +27,7 @@ const BasicTicketDetails = (ticket) => {
         <Grid item xs={12}>
           <TextField
           className="basicticketdetails-textfield"
-          id="outlined-basic"
+          id="basic-ticket-details-status-textfield"
           label='Status'
           variant="filled"
           value={ticket.ticket.Status}
@@ -57,7 +66,7 @@ const BasicTicketDetails = (ticket) => {
           id="outlined-basic"
           label='Submitted'
           variant="filled"
-          value={new Date(ticket.ticket.SubmittedDateTime).toLocaleDateString()}
+          value={formatDateTime(ticket.ticket.SubmittedDateTime)}
           InputProps={{readOnly: true,}}/>
         </Grid>
         <Grid item xs={12}>
@@ -68,6 +77,17 @@ const BasicTicketDetails = (ticket) => {
             label='Quotation Required'
             variant="filled"
             value={ticket.ticket.QuotationRequired ? "YES" : "NO"}
+            InputProps={{readOnly: true,}}/>
+          )}
+        </Grid>
+        <Grid item xs={12}>
+          {ticket.ticket.QuotationAcceptanceDate !== null && (
+            <TextField
+            className="basicticketdetails-textfield"
+            id="outlined-basic"
+            label='Quotation Accepted'
+            variant="filled"
+            value={formatDateTime(ticket.ticket.QuotationAcceptanceDate)}
             InputProps={{readOnly: true,}}/>
           )}
         </Grid>

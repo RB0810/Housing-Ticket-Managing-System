@@ -414,7 +414,7 @@ const ViewTicketStaff = () => {
       return (
         <div>
           {/* Attention!! */}
-          <input type="file" onChange={handleFileChange} />
+          <input type="file" id="staff-portal-upload-quotation-input" onChange={handleFileChange} />
         </div>
         
       );
@@ -473,9 +473,7 @@ const ViewTicketStaff = () => {
               <Grid item xs={12}>
                 <BasicTicketDetails ticket={serviceTicket} />
               </Grid>
-              <Grid item xs={12}>
-                <SubmittedByCard tenant={tenant} />
-              </Grid>
+              <p></p>
               <Grid item xs={12}>
                 <h2 className="quotationrequired-header">Quotation Required</h2>
               </Grid>
@@ -494,7 +492,7 @@ const ViewTicketStaff = () => {
                 className="viewticket-select"
                 value={quotationRequired}
                 onChange={handleQuotationRequiredChange}>
-                <option value={true} id='yes'> Yes</option>
+                <option value={true} id='yes'>Yes</option>
                 <option value={false} id='no'>No</option>
                 </select>
                 
@@ -508,6 +506,9 @@ const ViewTicketStaff = () => {
                 onClick={handleContinue}>
                   Submit
                 </Button>
+              </Grid>
+              <Grid item xs={12}>
+                <SubmittedByCard tenant={tenant} />
               </Grid>
             </Grid>
           </Grid>
@@ -544,9 +545,7 @@ const ViewTicketStaff = () => {
             <Grid item xs={12}>
               <BasicTicketDetails ticket={serviceTicket} />
             </Grid>
-            <Grid item xs={12}>
-              <SubmittedByCard tenant={tenant} />
-            </Grid>
+            <p></p>
             <Grid item xs={12}>
               <Button
               className="view-ticket-button"
@@ -555,6 +554,9 @@ const ViewTicketStaff = () => {
               onClick={handleStartWorks}>
                 Start Works
               </Button>
+            </Grid>
+            <Grid item xs={12}>
+              <SubmittedByCard tenant={tenant} />
             </Grid>
           </Grid>
           <Grid item xs={6}>
@@ -573,8 +575,16 @@ const ViewTicketStaff = () => {
             <Grid item xs={12}>
               <BasicTicketDetails ticket={serviceTicket} />
             </Grid>
+            <p></p>
             <Grid item xs={12}>
-              <SubmittedByCard tenant={tenant} />
+              <TextField
+              className="view-ticket-textfield"
+              id="outlined-basic"
+              multiline='true'
+              label ="Reason for Rejection"
+              variant="filled"
+              value={feedbackComments}
+              InputProps={{readOnly: true,}}/>
             </Grid>
             <Grid item xs={12}>
               <input type="file" id="staff-portal-upload-file-input" onChange={handleFileChange} />
@@ -589,15 +599,9 @@ const ViewTicketStaff = () => {
               </Button>
             </Grid>
             <Grid item xs={12}>
-              <TextField
-              className="view-ticket-textfield"
-              id="outlined-basic"
-              multiline='true'
-              label ="Reason for Rejection"
-              variant="filled"
-              value={feedbackComments}
-              InputProps={{readOnly: true,}}/>
+              <SubmittedByCard tenant={tenant} />
             </Grid>
+            
           </Grid>
           <Grid item xs={6}>
             <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
@@ -615,9 +619,7 @@ const ViewTicketStaff = () => {
             <Grid item xs={12}>
               <BasicTicketDetails ticket={serviceTicket} />
             </Grid>
-            <Grid item xs={12}>
-              <SubmittedByCard tenant={tenant} />
-            </Grid>
+            <p></p>
             <Grid item xs ={12}>
               <Button 
               className="view-ticket-button"
@@ -626,6 +628,9 @@ const ViewTicketStaff = () => {
               variant="contained">
                 End Works
               </Button>
+            </Grid>
+            <Grid item xs={12}>
+              <SubmittedByCard tenant={tenant} />
             </Grid>
           </Grid>
           <Grid item xs={6}>
@@ -676,9 +681,7 @@ const ViewTicketStaff = () => {
             <Grid item xs={12}>
               <BasicTicketDetails ticket={serviceTicket} />
             </Grid>
-            <Grid item xs={12}>
-              <SubmittedByCard tenant={tenant} />
-            </Grid>
+            <p></p>
             <Grid item xs={12}>
               <TextField
               className="view-ticket-textfield"
@@ -697,6 +700,9 @@ const ViewTicketStaff = () => {
               variant="contained">
                 Restart Works
               </Button>
+            </Grid>
+            <Grid item xs={12}>
+              <SubmittedByCard tenant={tenant} />
             </Grid>
           </Grid>
           <Grid item xs={6}>
@@ -721,14 +727,15 @@ const ViewTicketStaff = () => {
             <Grid item xs={12}>
               <BasicTicketDetails ticket={serviceTicket} />
             </Grid>
-            <Grid item xs={12}>
-              <SubmittedByCard tenant={tenant} /> 
-            </Grid>
+            
             <Grid item xs={12}>
             <ViewFinalFeedbackDetails
               rating={serviceTicket.FeedbackRating}
               comments={serviceTicket.FeedbackComments}
             />
+            </Grid>
+            <Grid item xs={12}>
+              <SubmittedByCard tenant={tenant} /> 
             </Grid>
           </Grid>
           <Grid item xs={6}>

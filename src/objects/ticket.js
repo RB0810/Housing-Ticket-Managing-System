@@ -21,15 +21,12 @@ export default class Ticket {
     this.PARCstatus = ticket.PARCstatus;
     this.supervisorID = ticket.SupervisorID;
     this.staffID = ticket.StaffID;
-    this.contact = ticket.Contact;
     this.status = ticket.Status;
+    this.property = ticket.Property;
     this.quotationRequired = ticket.QuotationRequired;
-    this.quotationAmount = ticket.QuotationAmount;
-    this.quotationUploadedBy = ticket.QotationUploadedBy;
     this.quotationAccepted = ticket.QuotationAccepted;
     this.quotationAcceptanceDate = ticket.QuotationAcceptanceDate;
     this.quotationAttachmentPath = ticket.QuotationAttachmentPath;
-    this.completionDateTime = ticket.CompletionDateTime;
     this.feedbackRating = ticket.FeedbackRating;
     this.feedbackComments = ticket.FeedbackComments;
   }
@@ -60,13 +57,10 @@ export default class Ticket {
 
     // Other attributes to be filled in later
     this.staffID = null;
-    this.contact = null;
     this.quotationRequired = null;
-    this.quotationAmount = null;
     this.quotationAccepted = null;
     this.quotationAcceptanceDate = null;
     this.quotationAttachmentPath = null;
-    this.completionDateTime = null;
     this.feedbackRating = null;
     this.feedbackComments = null;
   }
@@ -82,17 +76,14 @@ export default class Ticket {
       PARCstatus: this.PARCstatus,
       supervisorID: this.supervisorID,
       staffID: this.staffID,
-      contact: this.contact,
       status: this.status,
       quotationRequired: this.quotationRequired,
-      quotationAmount: this.quotationAmount,
-      quotationUploadedBy: this.quotationUploadedBy,
       quotationAccepted: this.quotationAccepted,
       quotationAcceptanceDate: this.quotationAcceptanceDate,
       quotationAttachmentPath: this.quotationAttachmentPath,
-      completionDateTime: this.completionDateTime,
       feedbackRating: this.feedbackRating,
       feedbackComments: this.feedbackComments,
+      property: this.property,
     };
   }
 }
