@@ -10,6 +10,7 @@ import UploadQuotation from "../../components/UploadQuotation";
 import DisplayQuotation from "../../components/DisplayQuotation";
 import supabase from "../../config/supabaseClient";
 import Swal from "sweetalert2";
+import { SHA256 } from "crypto-js";
 import NotificationManager from "../../managers/notificationmanager";
 import { Grid,Button,TextField,MenuItem, Select, OutlinedInput } from "@mui/material";
 
@@ -50,8 +51,11 @@ const ViewTicketStaff = () => {
       console.log('Unauthorized');
       navigate("/unauthorize");
     } else {
+      const userIdAsString = String(StaffID);
+      // Use SHA-256 to hash the userId
+      const hashedUserId = SHA256(userIdAsString).toString();
       // Check if the user's ID and type match the expected values (e.g., StaffID and "Staff")
-      if (Number(userId) === parseInt(StaffID) && type === "Staff") {
+      if (userId === hashedUserId && type === "Staff") {
         // Proceed with rendering the component
         console.log('Authorized');
       } else {

@@ -1,5 +1,6 @@
 import supabase from "../config/supabaseClient";
 import Cookies from "js-cookie";
+import { SHA256 } from "crypto-js";
 
 class Authentication {
   async loginAuth(event) {
@@ -15,8 +16,13 @@ class Authentication {
     const user = data[0];
 
     if (user && user[`${event.Type}Password`] === event.password) {
+
+      const userIdAsString = String(user[`${event.Type}ID`]);
+      // Use SHA-256 to hash the userId
+      const hashedUserId = SHA256(userIdAsString).toString();
+    
       // Store the user's ID and type in cookies (secure and not accessible from JavaScript)
-      Cookies.set('userId', user[`${event.Type}ID`], { expires: 1 });
+      Cookies.set('userId', hashedUserId, { expires: 1 });
       Cookies.set("type", event.Type, { expires: 1 });
 
       const redirectUrl = `/${event.Type.toLowerCase()}portal/landingpage/${user[`${event.Type}ID`]}`;

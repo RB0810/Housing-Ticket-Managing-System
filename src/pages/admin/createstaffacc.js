@@ -5,6 +5,7 @@ import { useParams, useNavigate } from "react-router";
 import Cookies from "js-cookie";
 import {Grid,TextField,MenuItem,Select,OutlinedInput,Button} from '@mui/material';
 import Swal from "sweetalert2";
+import { SHA256 } from "crypto-js";
 
 const CreateStaffAcc = () => {
   const [formError, setFormError] = useState(null);
@@ -27,8 +28,11 @@ const CreateStaffAcc = () => {
       console.log('Unauthorized');
       navigate("/unauthorize");
     } else {
+      const userIdAsString = String(AdminID);
+      // Use SHA-256 to hash the userId
+      const hashedUserId = SHA256(userIdAsString).toString();
       // Check if the user's ID and type match the expected values (e.g., TenantID and "tenant")
-      if (Number(userId) === parseInt(AdminID) && type === "Admin") {
+      if (userId === hashedUserId && type === "Admin") {
         // Proceed with rendering the component
         console.log('Authorized');
       } else {

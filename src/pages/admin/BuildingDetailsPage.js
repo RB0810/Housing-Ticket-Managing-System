@@ -3,9 +3,11 @@ import { useParams, useNavigate } from "react-router-dom";
 import AccountManager from "../../managers/accountmanager";
 import BuildingDetails from "../../components/BuildingDetails";
 import Cookies from "js-cookie";
+import { SHA256 } from "crypto-js";
 
 const BuildingDetailsPage = () => {
   const [buildingDetails, setBuildingDetails] = useState(null);
+  const [loading, setLoading] = useState(true); // New loading state
   const { BuildingID } = useParams();
   const { AdminID } = useParams();
   const accountManager = new AccountManager();
@@ -16,16 +18,14 @@ const BuildingDetailsPage = () => {
     const type = Cookies.get('type');
 
     if (!userId || !type) {
-      // If any of the required cookies are missing, redirect to the login page
       console.log('Unauthorized');
       navigate("/unauthorize");
     } else {
-      // Check if the user's ID and type match the expected values (e.g., TenantID and "tenant")
-      if (Number(userId) === parseInt(AdminID) && type === "Admin") {
-        // Proceed with rendering the component
+      const userIdAsString = String(AdminID);
+      const hashedUserId = SHA256(userIdAsString).toString();
+      if (userId === hashedUserId && type === "Admin") {
         console.log('Authorized');
       } else {
-        // If not authorized, display "Unauthorized access" message
         console.log('Unauthorized');
         navigate("/unauthorize");
       }
@@ -39,6 +39,7 @@ const BuildingDetailsPage = () => {
           BuildingID
         );
         setBuildingDetails(buildingData);
+        setLoading(false); // Set loading to false once data is fetched
       } catch (error) {
         console.error("Error fetching building details:", error);
       }
@@ -49,13 +50,17 @@ const BuildingDetailsPage = () => {
 
   return (
     <div>
-      {buildingDetails && (
-        <>
-          <h1>{buildingDetails.Building.BuildingName}</h1>
-          <h2>{buildingDetails.Building.Address}, {buildingDetails.Building.PostalCode}</h2>
-          <hr></hr>
-          <BuildingDetails building={buildingDetails} />
-        </>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        buildingDetails && (
+          <>
+            <h1>{buildingDetails.Building.BuildingName}</h1>
+            <h2>{buildingDetails.Building.Address}, {buildingDetails.Building.PostalCode}</h2>
+            <hr></hr>
+            <BuildingDetails building={buildingDetails} />
+          </>
+        )
       )}
     </div>
   );

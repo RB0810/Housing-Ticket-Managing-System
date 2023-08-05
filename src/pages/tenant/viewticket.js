@@ -8,6 +8,7 @@ import { useParams, useNavigate } from "react-router-dom";
 // import DownloadQuotation from "../../components/DownloadQuotation";
 import { Rating, TextField, Grid, Button } from "@mui/material";
 import supabase from "../../config/supabaseClient";
+import { SHA256 } from "crypto-js";
 import { Typography } from "@mui/material";
 import DisplayQuotation from "../../components/DisplayQuotation";
 import NotificationManager from "../../managers/notificationmanager";
@@ -54,8 +55,11 @@ const ViewTicketTenant = () => {
       console.log('Unauthorized');
       navigate("/unauthorize");
     } else {
+      const userIdAsString = String(TenantID);
+      // Use SHA-256 to hash the userId
+      const hashedUserId = SHA256(userIdAsString).toString();
       // Check if the user's ID and type match the expected values (e.g., TenantID and "tenant")
-      if (Number(userId) === parseInt(TenantID) && type === "Tenant") {
+      if (userId === hashedUserId && type === "Tenant") {
         // Proceed with rendering the component
         console.log('Authorized');
       } else {
