@@ -134,6 +134,96 @@ Then('a Staff is created', async function () {
   expect(data).to.exist;
 });
 
+Given("I click on Manage Accounts", async function () {
+  await driver.get("http://localhost:3000/adminportal/landingpage/999");
+  const createSupervisorLink = await driver.findElement(By.id("admin-landing-page-manage-account"));
+  await createSupervisorLink.click();
+  await driver.get("http://localhost:3000/adminportal/manageacc/999");
+});
+
+When("I click on a specific card", async function () {
+  await driver.get("http://localhost:3000/adminportal/manageacc/999/building/999");
+});
+
+Then("I see Building details", async function () {
+  // const buildingID = '999'
+
+  // // Fetch info from Buildings
+  // let { data: buildingData, error: buildingError } = await supabase
+  //   .from('Buildings')
+  //   .select('*')
+  //   .eq('BuildingID', buildingID);
+  // // Handle errors from Buildings fetch
+  // if (buildingError) {
+  //   throw buildingError;
+  // }
+
+  // // Fetch info from StaffUsers
+  // let { data: staffData, error: staffError } = await supabase
+  //   .from('StaffUsers')
+  //   .select('*')
+  //   .eq('BuildingID', buildingID);
+  // // Handle errors from StaffUsers fetch
+  // if (staffError) {
+  //   throw staffError;
+  // }
+
+  // // Fetch info from SupervisorUsers
+  // let { data: supervisorData, error: supervisorError } = await supabase
+  //   .from('SupervisorUsers')
+  //   .select('*')
+  //   .eq('BuildingID', buildingID);
+  // // Handle errors from SupervisorUsers fetch
+  // if (supervisorError) {
+  //   throw supervisorError;
+  // }
+
+  // // Fetch info from TenantUsers
+  // let { data: tenantData, error: tenantError } = await supabase
+  //   .from('TenantUsers')
+  //   .select('*')
+  //   .eq('BuildingID', buildingID);
+  // // Handle errors from TenantUsers fetch
+  // if (tenantError) {
+  //   throw tenantError;
+  // }
+
+  const staffEmailElement = await driver.wait(until.elementLocated(By.id("999-staffemail")), 10000);
+  const staffPhoneElement = await driver.wait(until.elementLocated(By.id("999-staffphone")), 5000);
+  const tenantEmailElement = await driver.wait(until.elementLocated(By.id("999-tenantemail")), 5000);
+  const tenantPhoneElement = await driver.wait(until.elementLocated(By.id("999-tenantphone")), 5000);
+  const commdateElement = await driver.wait(until.elementLocated(By.id("999-commdate")), 5000);
+  const termdateElement = await driver.wait(until.elementLocated(By.id("999-termdate")), 5000);
+  const rentElement = await driver.wait(until.elementLocated(By.id("999-rent")), 5000);
+  const bizElement = await driver.wait(until.elementLocated(By.id("999-biz")), 5000);
+  const areaElement = await driver.wait(until.elementLocated(By.id("999-area")), 5000);
+  const unitElement = await driver.wait(until.elementLocated(By.id("999-unit")), 5000);  
+
+  const staffEmail = await staffEmailElement.getAttribute("value");
+  const staffPhone = await staffPhoneElement.getAttribute('value');
+  const tenantEmail = await tenantEmailElement.getAttribute('value');
+  const tenantPhone = await tenantPhoneElement.getAttribute("value");
+  const commdate = await commdateElement.getAttribute('value');
+  const termdate = await termdateElement.getAttribute('value');
+  const rent = await rentElement.getAttribute("value");
+  const biz = await bizElement.getAttribute('value');
+  const area = await areaElement.getAttribute('value');
+  const unit = await unitElement.getAttribute('value');
+
+  // Validate that the values match
+  expect(staffEmail).to.equal("teststaff@gmail.com");
+  expect(staffPhone).to.equal("12345678");
+  expect(tenantEmail).to.equal("testtenant@gmail.com");
+  expect(tenantPhone).to.equal("12345678");
+  expect(commdate).to.equal("8/2/2023");
+  expect(termdate).to.equal("7/2/2026");
+  expect(rent).to.equal("1000");
+  expect(biz).to.equal("TESTLEASEDONTDELETE");
+  expect(area).to.equal("1000");
+  expect(unit).to.equal("TESTUNITDONTDELETE");
+  
+});
+
 AfterAll(async function(){
   const { error: supervisorError } = await supabase
     .from('SupervisorUsers')

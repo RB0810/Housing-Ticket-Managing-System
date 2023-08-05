@@ -17,7 +17,7 @@ Feature: Admin Portal
   Scenario: Manage Accounts 
     Given I click on Manage Accounts
     When I click on a specific card 
-    Then I am redirected to the Manage Accounts page 
+    Then I see Building details 
   
 
 
