@@ -4,6 +4,15 @@ const assert = require("assert");
 const chrome = require("selenium-webdriver/chrome");
 const { async } = require("q");
 
+// supabase client
+
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = 'https://mnfsjgaziftztwiarlys.supabase.co'
+require('dotenv').config(); // Load variables from .env file
+const supabaseKey = process.env.SUPABASE_KEY
+const supabase = createClient(supabaseUrl, supabaseKey)
+
 let driver;
 
 // get todays date and store in today date
@@ -69,33 +78,45 @@ Given('I am in the Create Tenant account page', async function () {
 
 When('I fill in all required details', async function () {
     const usernamefield = await driver.findElement(By.id("supervisor-portal-create-tenant-username-textfield"));
-    usernamefield.sendKeys("##username");
+    usernamefield.sendKeys('testtenant998');
     const  emailfield = await driver.findElement(By.id("supervisor-portal-create-tenant-email-textfield"));
-    emailfield.sendKeys("##email")
+    emailfield.sendKeys('testtenant998@gmail.com');
     const passwordfield = await driver.findElement(By.id("supervisor-portal-create-tenant-password-textfield"));
-    passwordfield.sendKeys("##password")
+    passwordfield.sendKeys('password123');
     const confirmpasswordfield = await driver.findElement(By.id("supervisor-portal-create-tenant-repassword-textfield"));
-    confirmpasswordfield.sendKeys("##password")
+    confirmpasswordfield.sendKeys('password123');
     const phonefield = await driver.findElement(By.id("supervisor-portal-create-tenant-phone-number-textfield"));
-    phonefield.sendKeys("##phone")
+    phonefield.sendKeys('3757');
     const tradetypefield = await driver.findElement(By.id("supervisor-portal-create-tenant-trade-type-textfield"));
-    tradetypefield.sendKeys("##tradetype")
+    tradetypefield.sendKeys('test trade');
     const monthlyrentalfield = await driver.findElement(By.id("supervisor-portal-create-monthly-rent-textfield"));
-    monthlyrentalfield.sendKeys("##monthlyrental")
+    monthlyrentalfield.sendKeys('999');
     const commencementdatefield = await driver.findElement(By.id("supervisor-portal-create-tenant-commencement-date-textfield"));
-    
+    commencementdatefield.sendKeys('2023-08-05');
+    const terminationdatefield = await driver.findElement(By.id("supervisor-portal-create-tenant-termination-date-textfield"));
+    terminationdatefield.sendKeys('2023-08-06');
+    const unitareatextfield = await driver.findElement(By.id("supervisor-portal-create-tenant-unit-area-textfield"));
+    unitareatextfield.sendKeys('999');
+    const numberofunitstextfield = await driver.findElement(By.id("supervisor-portal-create-tenant-number-of-units-textfield"));
+    numberofunitstextfield.sendKeys('1');
+    const unitnumbertextfield = await driver.findElement(By.id("0"));
+    unitnumbertextfield.sendKeys("test unit 999");
 
-    
 });
 
-When('click on the Create Tenant Account button', async function () {
+And('click on the Create Tenant Account button', async function () {
     let create_tenant_button = await driver.findElement(By.id("supervisor-portal-create-tenant-submit-button"))
     create_tenant_button.click();
 });
 
 Then('a new Tenant account is created and the credentials are recorded in the supabase table', async function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+
+    let { data: TenantUsers, error } = await supabase
+        .from('TenantUsers')
+        .select('*')
+
+    // code for checking if the tenant account is created
+
 });
 
 Given('that I am on the Supevisor Portal Landing page', async function () {
