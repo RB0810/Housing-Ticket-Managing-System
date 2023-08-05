@@ -1,10 +1,14 @@
-const { Given, When, Then, After } = require("@cucumber/cucumber");
+const { Given, When, Then, After, BeforeAll } = require("@cucumber/cucumber");
 const { Builder, By, Key, until, Select } = require("selenium-webdriver");
 const assert = require("assert");
 const chrome = require("selenium-webdriver/chrome");
 const { async } = require("q");
 
 let driver;
+
+// get todays date and store in today date
+const today_date = new Date();
+
 
 Given('I am on the Supervisor Portal login page', async function () {
     driver = await new Builder()
@@ -64,8 +68,23 @@ Given('I am in the Create Tenant account page', async function () {
 });
 
 When('I fill in all required details', async function () {
-    const usernamefield = await driver.findElement(By.id("supervisor-portal-create-tenant-username-textfield"))
-    usernamefield.sendKeys("## what should")
+    const usernamefield = await driver.findElement(By.id("supervisor-portal-create-tenant-username-textfield"));
+    usernamefield.sendKeys("##username");
+    const  emailfield = await driver.findElement(By.id("supervisor-portal-create-tenant-email-textfield"));
+    emailfield.sendKeys("##email")
+    const passwordfield = await driver.findElement(By.id("supervisor-portal-create-tenant-password-textfield"));
+    passwordfield.sendKeys("##password")
+    const confirmpasswordfield = await driver.findElement(By.id("supervisor-portal-create-tenant-repassword-textfield"));
+    confirmpasswordfield.sendKeys("##password")
+    const phonefield = await driver.findElement(By.id("supervisor-portal-create-tenant-phone-number-textfield"));
+    phonefield.sendKeys("##phone")
+    const tradetypefield = await driver.findElement(By.id("supervisor-portal-create-tenant-trade-type-textfield"));
+    tradetypefield.sendKeys("##tradetype")
+    const monthlyrentalfield = await driver.findElement(By.id("supervisor-portal-create-monthly-rent-textfield"));
+    monthlyrentalfield.sendKeys("##monthlyrental")
+    const commencementdatefield = await driver.findElement(By.id("supervisor-portal-create-tenant-commencement-date-textfield"));
+    
+
     
 });
 
