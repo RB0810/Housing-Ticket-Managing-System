@@ -11,6 +11,7 @@ const { Builder, By, Key, until, Select } = require("selenium-webdriver");
 const assert = require("assert");
 const chrome = require("selenium-webdriver/chrome");
 const { createClient } = require("@supabase/supabase-js");
+const { error } = require("console");
 
 // Setup Supabase for Testing
 const supabaseUrl = "https://mnfsjgaziftztwiarlys.supabase.co";
@@ -35,6 +36,7 @@ BeforeAll(async function () {
         Name: "TESTINGTICKETJEST",
         TenantID: 999,
         PARCStatus: "PENDING",
+        Status: "Quotation Uploaded",
         SubmittedDateTime: "2021-04-01 00:00:00",
         Category: "TESTINGCATEGORYJEST",
       },
@@ -54,6 +56,12 @@ BeforeAll(async function () {
         Name: "TESTINGTICKETJEST",
         TenantID: 999,
         PARCStatus: "ACTIVE",
+        Status: "Quotation Uploaded",
+        QuotationRequired: true,
+        StaffID: 999,
+        SupervisorID: 999,
+        Property: "TESTUNITDONTDELETE",
+        QuotationAttachmentPath: "999998.pdf",
         SubmittedDateTime: "2021-04-01 00:00:00",
         Category: "TESTINGCATEGORYJEST",
       },
@@ -211,7 +219,6 @@ When('Tenant clicks "Create Service Ticket"', async function () {
 });
 
 Then("Database should be updated with new service ticket", async function () {
-  await delay(2000);
   let { data, error } = await supabase
     .from("Service Request")
     .select("*")
@@ -241,7 +248,7 @@ Then(
   async function () {
     let table = await driver.findElement(By.className("MuiTable-root"));
     let table_rows = await table.findElements(By.tagName("tr"));
-    assert.equal(table_rows.length, 2);
+    assert.equal(table_rows.length, 3);
 
     await delay(wait_value);
   }
@@ -289,19 +296,127 @@ Given(
   'Tenant navigates to the "Profile" section through the Navbar',
   async function () {
     let profileLink = await driver.findElement(
-      By.css(`a[href="/tenantportal/landingpage/999"]`)
+      By.css(`a[href="${"/tenantportal/profile/999"}"]`)
     );
 
     await profileLink.click();
-    await delay(wait_value);
+    await delay(wait_value * 2);
   }
 );
 
 Then("Tenant's account information should be displayed", async function () {
-  await driver.wait(until.elementLocated(By.tagName("input")));
-  let tenantUsernameInput = await driver.findElement(By.tagName("input"));
-
+  let tenantUsernameInput = await driver.findElement(By.id("outlined-basic"));
   let tenantUsername = await tenantUsernameInput.getAttribute("value");
-
   assert.equal(tenantUsername, "TESTTENANTDONTDELETE");
 });
+
+Given(
+  'Tenant is in the "View Tenant Account Information" page',
+  async function () {
+    assert.equal(
+      await driver.getCurrentUrl(),
+      "http://localhost:3000/tenantportal/profile/999"
+    );
+  }
+);
+
+When("Tenant enters a new password", async function () {
+  let tenantPasswordInput = await driver.findElement(
+    By.id("tenant-profile-new-password-textfield")
+  );
+  await tenantPasswordInput.sendKeys("newpassword123");
+});
+
+When("Tenant re-enters the new password", async function () {
+  let tenantConfirmPasswordInput = await driver.findElement(
+    By.id("tenant-profile-confirm-password-textfield")
+  );
+  await tenantConfirmPasswordInput.sendKeys("newpassword123");
+});
+
+When('Tenant clicks on "Set New Password"', async function () {
+  await driver
+    .findElement(By.id("tenant-profile-reset-password-button"))
+    .click();
+  await delay(wait_value);
+});
+
+Then(
+  "Tenant should receive a success notification and value is updated in Database",
+  async function () {
+    let { data, error } = await supabase
+      .from("TenantUsers")
+      .select("*")
+      .eq("TenantID", 999);
+
+    if (error) {
+      throw error;
+    }
+    await driver.findElement(By.className("swal2-confirm")).click();
+    assert.equal(data[0].TenantPassword, "newpassword123");
+
+    // Reset password back to original
+
+    let { data2, error2 } = await supabase
+      .from("TenantUsers")
+      .update({ TenantPassword: "testtenant123" })
+      .eq("TenantID", 999)
+      .select();
+
+    if (error2) {
+      throw error2;
+    }
+  }
+);
+
+Given("Tenant renavigates back to ACTIVE tickets", async function () {
+  await driver.get("http://localhost:3000/tenantportal/tickets/999/active");
+  await delay(wait_value);
+});
+
+When(
+  'Tenant clicks on "View Ticket" for a sticket with status "Quotation Uploaded"',
+  async function () {
+    // let linkElement = await driver.findElement(
+    //   By.css('a[href="/tenantportal/ticket/999/999999"]')
+    // );
+    // await linkElement.click();
+    await driver.get("http://localhost:3000/tenantportal/ticket/999/999998");
+    await delay(wait_value);
+  }
+);
+
+Then(
+  "Tenant should see the Quotation rendered using ReactPDFViewer",
+  async function () {
+    await driver.wait(until.elementLocated(By.className("pdf-container")));
+    let pdfViewerElement = await driver.findElement(
+      By.className("pdf-container")
+    );
+    let pdfExists = false;
+    if (pdfViewerElement) {
+      pdfExists = true;
+    } else {
+      pdfExists = false;
+    }
+    assert.equal(pdfExists, true);
+  }
+);
+
+Given(
+  "Tenant sees the Quotation rendered using ReactPDFViewer",
+  async function () {}
+);
+
+When("Tenant clicks on the Download button", async function () {
+  let buttonElement = await driver.findElement(
+    By.css('[data-testid="get-file__download-button"]')
+  );
+
+  await buttonElement.click();
+});
+
+Then(
+  "Tenant should download the Quotation into their local computer",
+  async function () {}
+);

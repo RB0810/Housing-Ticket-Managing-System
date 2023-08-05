@@ -33,11 +33,11 @@ Feature: Tenant Portal Functionality
         When Tenant enters a new password
         When Tenant re-enters the new password
         And Tenant clicks on "Set New Password"
-        Then Tenant should receive a success notification
+        Then Tenant should receive a success notification and value is updated in Database
 
     Scenario: View Quotation
-        Given Ticket status is Quotation uploaded
-        And Tenant clicks on "View Ticket"
+        Given Tenant renavigates back to ACTIVE tickets
+        When Tenant clicks on "View Ticket" for a sticket with status "Quotation Uploaded"
         Then Tenant should see the Quotation rendered using ReactPDFViewer
 
     Scenario: Download Quotation
@@ -46,8 +46,7 @@ Feature: Tenant Portal Functionality
         Then Tenant should download the Quotation into their local computer
 
     Scenario: Accept Quotation
-        Given Tenant status is "Quotation Uploaded"
-        When Tenant clicks on "Accept Quotation"
+        Given Tenant clicks on "Accept Quotation"
         Then Ticket status should change to Quotation Accepted
 
     Scenario: Reject Quotation
