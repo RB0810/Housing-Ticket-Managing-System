@@ -41,6 +41,19 @@ class StaffAccount extends Account {
   }
 
   async createAccount() {
+    console.log("i came here");
+
+    if(this.buildingID === ""){
+      this.buildingID = 999;
+    }
+
+    console.log(this.username);
+    console.log(this.email);
+    console.log(this.password);
+    console.log(this.rePassword);
+    console.log(this.phone);
+    console.log(this.buildingID);
+
     const validationError = this.validateFields();
     if (validationError) {
       throw new Error(validationError);
@@ -55,6 +68,7 @@ class StaffAccount extends Account {
     };
 
     try {
+      console.log("I came here too")
       await this.accountManager.createStaffAccount(staff);
       return "Staff Account Created!";
     } catch (error) {

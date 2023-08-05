@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import "../../styles/createaccount.css";
 import StaffAccount from "../../objects/StaffAccount";
@@ -56,6 +57,9 @@ const CreateStaffAcc = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    console.log("button clicked");
+    console.log("username", username);
+
     const staffAccount = new StaffAccount();
     staffAccount.username = username;
     staffAccount.email = email;
@@ -81,19 +85,22 @@ const CreateStaffAcc = () => {
     }
   };
 
+  console.log(buildingOptions);
+
   return (
-    <div className="ticket-creation-page">
+    <div data-testid="create-staff-acc-mock" className="ticket-creation-page">
       <h1 className="wlcText">Create Staff Account</h1>
       <form onSubmit={handleSubmit} className="create-staff-acc-form">
             <Grid container spacing={1}>
               <Grid item xs = {12}>
                 <div className="create-staff-acc-col25">
                   <label 
-                  htmlFor="username"
+                  htmlFor="create-staff-username-textfield"
                   className="create-staff-acc-label"
                   >Staff Username</label>
                 </div>
                   <TextField 
+                  data-testid="create-staff-username-textfield"
                   className="create-staff-acc-textfield"
                   id="create-staff-username-textfield" 
                   variant="outlined" 
@@ -104,11 +111,12 @@ const CreateStaffAcc = () => {
               <Grid item xs = {12}>
                 <div className="create-staff-acc-col25">
                   <label 
-                  htmlFor="email"
+                  htmlFor="create-staff-email-textfield"
                   className="create-staff-acc-label"
                   >Staff Email</label>
                 </div>
                   <TextField 
+                  data-testid="create-staff-email-textfield"
                   className="create-staff-acc-textfield"
                   id="create-staff-email-textfield"
                   variant="outlined" 
@@ -119,11 +127,12 @@ const CreateStaffAcc = () => {
               <Grid item xs = {12}>
                 <div className="create-staff-acc-col25">
                   <label 
-                  htmlFor="password"
+                  htmlFor="create-staff-password-textfield"
                   className="create-staff-acc-label"
                   >Enter Password</label>
                 </div>
                   <TextField 
+                  data-testid="create-staff-password-textfield"
                   className="create-staff-acc-textfield"
                   id="create-staff-password-textfield" 
                   variant="outlined" 
@@ -134,11 +143,12 @@ const CreateStaffAcc = () => {
               <Grid item xs = {12}>
                 <div className="create-staff-acc-col25">
                   <label 
-                  htmlFor="rePassword"
+                  htmlFor="create-staff-repassword-textfield"
                   className="create-staff-acc-label"
                   >Re-enter Password</label>
                 </div>
                   <TextField 
+                  data-testid="create-staff-repassword-textfield"
                   className="create-staff-acc-textfield"
                   id="create-staff-repassword-textfield"
                   variant="outlined" 
@@ -149,11 +159,12 @@ const CreateStaffAcc = () => {
               <Grid item xs = {12}>
                 <div className="create-staff-acc-col25">
                   <label 
-                  htmlFor="phone"
+                  htmlFor="create-staff-phone-number-textfield"
                   className="create-staff-acc-label"
                   >Staff Phone Number</label>
                 </div>
                   <TextField 
+                  data-testid="create-staff-phone-number-textfield"
                   className="create-staff-acc-textfield"
                   id="create-staff-phone-number-textfield"
                   variant="outlined" 
@@ -164,7 +175,7 @@ const CreateStaffAcc = () => {
               <Grid item xs = {12}>
                 <div className="create-staff-acc-col25">
                   <label 
-                  htmlFor="buildingID"
+                  htmlFor="create-staff-building-id-select"
                   className="create-staff-acc-label"
                   >Select Building</label>
                 </div>
@@ -173,6 +184,7 @@ const CreateStaffAcc = () => {
                 className="create-staff-acc-textfield"
                 value={buildingID}
                 variant='outlined'
+                inputProps={{ "data-testid": "create-staff-building-id-select" }}
                 onChange={(e) => setBuildingID(e.target.value)}
                 input={<OutlinedInput />}>
                   {buildingOptions.map((building) => (
@@ -187,6 +199,7 @@ const CreateStaffAcc = () => {
               </Grid>
               <Grid item xs = {12}>
                 <Button
+                data-testid="create-staff-submit-button"
                 id="create-staff-submit-button"
                 onClick={handleSubmit}
                 variant="contained"
