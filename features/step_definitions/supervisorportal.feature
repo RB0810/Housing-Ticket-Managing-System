@@ -3,7 +3,7 @@ Feature: Supervisor Portal
     Given I am on the Supervisor Portal login page
     When I enter valid credentials
     And click on the login button
-    Then I should be redirected to Supervisor portal landing page (and receive successful login alert)
+    Then I should be redirected to Supervisor portal landing page
 
   Scenario: Go to Create Tenant account
     Given I am at the Supervisor Portal landing page

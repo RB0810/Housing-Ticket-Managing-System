@@ -1,8 +1,9 @@
 const { Given, When, Then, After, BeforeAll, AfterAll } = require("@cucumber/cucumber");
-const { Builder, By, Key, until, Select } = require("selenium-webdriver");
+const { Builder, By, Key, until, Select} = require("selenium-webdriver");
 const assert = require("assert");
 const chrome = require("selenium-webdriver/chrome");
 const { createClient } = require("@supabase/supabase-js");
+const { func } = require("fast-check");
 
 
 // supabase client
@@ -14,145 +15,115 @@ let driver;
 
 // TODO: create a new tenant account for testing
 // create new tickets for supervisor account
-BeforeAll(async function () {
-    let { data, error } = await supabase // Create a new ticket
-      .from("Service Request")
-      .insert([
-        {
-          ServiceRequestID: 999990,
-          Name: "TESTINGTICKETJEST",
-          TenantID: 999,
-          PARCStatus: "PENDING",
-          SubmittedDateTime: "2021-04-01 00:00:00",
-          Category: "TESTINGCATEGORYJEST",
-        },
-      ])
-      .select();
-    if (error) {
-      throw error;
-    } else {
-      console.log("Created a new PENDING ticket for testing.");
-    }
-  
-    let { data2, error2 } = await supabase // Create a new ticket
-      .from("Service Request")
-      .insert([
-        {
-          ServiceRequestID: 999991,
-          Name: "TESTINGTICKETJEST",
-          TenantID: 999,
-          PARCStatus: "ACTIVE",
-          SubmittedDateTime: "2021-04-01 00:00:00",
-          Category: "TESTINGCATEGORYJEST",
-        },
-      ])
-      .select();
-    if (error2) {
-      throw error2;
-    } else {
-      console.log("Created a new ACTIVE ticket for testing.");
-    }
-  
-    let { data3, error3 } = await supabase // Create a new ticket
-      .from("Service Request")
-      .insert([
-        {
-          ServiceRequestID: 999992,
-          Name: "TESTINGTICKETJEST",
-          TenantID: 999,
-          PARCStatus: "CLOSED",
-          SubmittedDateTime: "2021-04-01 00:00:00",
-          Category: "TESTINGCATEGORYJEST",
-        },
-      ])
-      .select();
-    if (error3) {
-      throw error3;
-    } else {
-      console.log("Created a new CLOSED ticket for testing.");
-    }
-  
-  });
+// BeforeAll(async function () {
+//     let { data, error } = await supabase // Create a new ticket
+//       .from("Service Request")
+//       .insert([
+//         {
+//           ServiceRequestID: 999990,
+//           Name: "TESTINGTICKETJEST",
+//           TenantID: 999,
+//           PARCStatus: "PENDING",
+//           SubmittedDateTime: "2021-04-01 00:00:00",
+//           Category: "TESTINGCATEGORYJEST",
+//         },
+//       ])
+//       .select();
+//     if (error) {
+//       throw error;
+//     } else {
+//       console.log("Created a new PENDING ticket for testing.");
+//     }
 
+//     let { data2, error2 } = await supabase // Create a new ticket
+//       .from("Service Request")
+//       .insert([
+//         {
+//           ServiceRequestID: 999991,
+//           Name: "TESTINGTICKETJEST",
+//           TenantID: 999,
+//           PARCStatus: "ACTIVE",
+//           SubmittedDateTime: "2021-04-01 00:00:00",
+//           Category: "TESTINGCATEGORYJEST",
+//         },
+//       ])
+//       .select();
+//     if (error2) {
+//       throw error2;
+//     } else {
+//       console.log("Created a new ACTIVE ticket for testing.");
+//     }
 
-  AfterAll(async function () {
-    let { data, error } = await supabase // Delete Created Tickets
-      .from("Service Request")
-      .delete()
-      .match({ ServiceRequestID: 999990 });
-    if (error) {
-      throw error;
-    } else {
-      console.log("Deleted PENDING ticket for testing.");
-    }
-  
-    let { data2, error2 } = await supabase // Delete Created Tickets
-      .from("Service Request")
-      .delete()
-      .match({ ServiceRequestID: 999991 });
-    if (error2) {
-      throw error2;
-    } else {
-      console.log("Deleted ACTIVE ticket for testing.");
-    }
-  
-    let { data3, error3 } = await supabase // Delete Created Tickets
-      .from("Service Request")
-      .delete()
-      .match({ ServiceRequestID: 999992 });
-    if (error3) {
-      throw error3;
-    } else {
-      console.log("Deleted CLOSED ticket for testing.");
-    }
+//     let { data3, error3 } = await supabase // Create a new ticket
+//       .from("Service Request")
+//       .insert([
+//         {
+//           ServiceRequestID: 999992,
+//           Name: "TESTINGTICKETJEST",
+//           TenantID: 999,
+//           PARCStatus: "CLOSED",
+//           SubmittedDateTime: "2021-04-01 00:00:00",
+//           Category: "TESTINGCATEGORYJEST",
+//         },
+//       ])
+//       .select();
+//     if (error3) {
+//       throw error3;
+//     } else {
+//       console.log("Created a new CLOSED ticket for testing.");
+//     }
 
-    driver.quit();
-    });
+//   });
 
 Given('I am on the Supervisor Portal login page', async function () {
-    driver = await new Builder()
-        .forBrowser("chrome")
-        .setChromeOptions(new chrome.Options())
-        .build();
+  driver = await new Builder()
+    .forBrowser("chrome")
+    .setChromeOptions(new chrome.Options())
+    .build();
 
-    await driver.get("http://localhost:3000/landlordlogin");
+  await driver.get("http://localhost:3000/landlordlogin");
 });
 
 When('I enter valid credentials', async function () {
-    const emailfield = await driver.findElement(By.id("landlord-login-email-textfield"))
-    emailfield.sendKeys("testsupervisor@gmail.com")
+  const emailfield = await driver.findElement(By.id("landlord-login-email-textfield"))
+  emailfield.sendKeys("testsupervisor@gmail.com")
 
-    const passwordfield = await driver.findElement(By.id("landlord-login-password-textfield"))
-    passwordfield.sendKeys("testsupervisor123")
+  const passwordfield = await driver.findElement(By.id("landlord-login-password-textfield"))
+  passwordfield.sendKeys("testsupervisor123")
 });
 
 When('click on the login button', async function () {
-    let login_button = await driver.findElement(By.id("landlord-login-button"))
-    login_button.click();
+  let login_button = await driver.findElement(By.id("landlord-login-button"))
+  login_button.click();
 });
 
 Then('I should be redirected to Supervisor portal landing page \\(and receive successful login alert)', async function () {
-    assert.equal(
-        await driver.getCurrentUrl(),
-        "http://localhost:3000/supervisorportal/landingpage/999"
-    );
+  driver.wait(until.urlIs("http://localhost:3000/supervisorportal/landingpage/999"), 10000);
+  assert.equal(
+    await driver.getCurrentUrl(),
+    "http://localhost:3000/supervisorportal/landingpage/999"
+  );
 });
 
-// Given('I am at the Supervisor Portal landing page', async function () {
-//     await driver.get("http://localhost:3000/supervisorportal/landingpage/999");
-// });
+Given('I am at the Supervisor Portal landing page', async function () {
+  assert.equal(
+    await driver.getCurrentUrl(),
+    "http://localhost:3000/supervisorportal/landingpage/999"
+  );
+});
 
-// When('I click on create tenant account', async function () {
-//     let create_tenant_button = await driver.findElement(By.id("create-tenant-button"))
-//     create_tenant_button.click();
-// });
+When('I click on create tenant account', async function () {
+  await driver.wait(until.elementLocated(By.id("create-tenant-button")), 1000);
+  const create_tenant_button = await driver.findElement(By.id("create-tenant-button"));
+  create_tenant_button.click();
+});
 
-// Then('I should be redirected to the Create Tenant Account page', async function () {
-//     assert.equal(
-//         await driver.getCurrentUrl(),
-//         "http://localhost:3000/supervisorportal/createtennantacc/999"
-//     );
-// });
+Then('I should be redirected to the Create Tenant Account page', async function () {
+  assert.equal(
+    await driver.getCurrentUrl(),
+    "http://localhost:3000/supervisorportal/createtennantacc/999"
+  );
+});
 
 // Given('I am in the Create Tenant account page', async function () {
 //     assert.equal(
@@ -422,3 +393,39 @@ Then('I should be redirected to Supervisor portal landing page \\(and receive su
 //     // Write code here that turns the phrase above into concrete actions
 //     return 'pending';
 // });
+
+
+AfterAll(async function () {
+
+  try {
+    let { data, error } = await supabase // Delete Created Tickets
+      .from("Service Request")
+      .delete()
+      .match({ ServiceRequestID: 999990 });
+    console.log("Deleted PENDING ticket for testing.");
+  } catch (error) {
+    console.log(error);
+  }
+
+  try {
+    let { data2, error2 } = await supabase // Delete Created Tickets
+      .from("Service Request")
+      .delete()
+      .match({ ServiceRequestID: 999991 });
+    console.log("Deleted ACTIVE ticket for testing.");
+  } catch (error) {
+    console.log(error);
+  }
+
+  try {
+    let { data3, error3 } = await supabase // Delete Created Tickets
+      .from("Service Request")
+      .delete()
+      .match({ ServiceRequestID: 999992 });
+    console.log("Deleted CLOSED ticket for testing.");
+  } catch (error) {
+    console.log(error);
+  }
+
+  driver.quit();
+});
