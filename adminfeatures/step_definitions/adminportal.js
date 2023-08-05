@@ -20,7 +20,7 @@ function formatDate(date) {
   var mm = String(date.getMonth() + 1); 
   var yyyy = date.getFullYear();
 
-  return mm + '/' + dd + '/' + yyyy; // Now in MM/DD/YYYY format
+  return mm + '/' + dd + '/' + yyyy; 
 }
 
 async function querySupabaseForCredentials(email) {
