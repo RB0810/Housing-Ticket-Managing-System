@@ -18,7 +18,7 @@ const BasicTicketDetails = (ticket) => {
         <Grid item xs={12}>
           <TextField
           className="basicticketdetails-textfield"
-          id="outlined-basic"
+          id="basic-ticket-details-status-textfield"
           label='Status'
           variant="filled"
           value={ticket.ticket.Status}

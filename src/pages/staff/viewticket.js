@@ -414,7 +414,7 @@ const ViewTicketStaff = () => {
       return (
         <div>
           {/* Attention!! */}
-          <input type="file" onChange={handleFileChange} />
+          <input type="file" id="staff-portal-upload-quotation-input" onChange={handleFileChange} />
         </div>
         
       );
@@ -492,7 +492,7 @@ const ViewTicketStaff = () => {
                 className="viewticket-select"
                 value={quotationRequired}
                 onChange={handleQuotationRequiredChange}>
-                <option value={true} id='yes'> Yes</option>
+                <option value={true} id='yes'>Yes</option>
                 <option value={false} id='no'>No</option>
                 </select>
                 

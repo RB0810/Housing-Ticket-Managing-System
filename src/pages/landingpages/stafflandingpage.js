@@ -52,7 +52,7 @@ export default function StaffLandingPage() {
   return (
     <div>
       <div className="card-container">
-        <button id='button-pending-tickets' className="card" onClick={handleButtonClickPending}>
+        <button className="card" id='button-pending-tickets' onClick={handleButtonClickPending}>
           <img src="/pendingticket.png" alt="Card" className="card-image" />
           <div>
             <button>Pending Tickets</button>
