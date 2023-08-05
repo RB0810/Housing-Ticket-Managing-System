@@ -555,6 +555,31 @@ const ViewTicketTenant = () => {
     );
   }
 
+  if (status === "Ticket Rejected") {
+    return (
+      <div>
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <div className="view-ticvket-special-div">
+                <TextField
+                className="view-ticket-textfield"
+                multiline='true'
+                id="view-ticket-reject-reason-textfield"
+                label='Reason for Reject'
+                variant="filled"
+                value={serviceTicket.FeedbackComments}/>
+              </div>
+            </Grid>
+          </Grid>
+        </Grid>
+      </div>
+    );
+  }
+
   if (status === "Ticket Assigned") {
     return (
       <div>
@@ -627,24 +652,26 @@ const ViewTicketTenant = () => {
 
   if (status === "Quotation Rejected") {
     return (
-      <div>
+      <div class="ticket-grid">
         <Grid container spacing={1} columns={10}>
           <Grid item xs={4}>
             <Grid item xs={12}>
               <BasicTicketDetails ticket={serviceTicket} />
             </Grid>
+            <p></p>
+            <Grid item xs={12}>
+              <TextField
+              className="view-ticket-textfield"
+              id="outlined-basic"
+              multiline='true'
+              label ="Reason for Rejection"
+              variant="filled"
+              value={serviceTicket.FeedbackComments}
+              InputProps={{readOnly: true,}}/>
+            </Grid>
             <Grid item xs={12}>
               <AssignedToCard staff={staff} />
             </Grid>
-          </Grid>
-          <Grid item xs={4}>
-            <TextField
-              className="view-ticket-textfield"
-              id="view-ticket-reason-reject-textfield"
-              multiline='true'
-              label='Reason for Reject Quotation'
-              variant="filled"
-              value={serviceTicket.FeedbackComments}/>
           </Grid>
           <Grid item xs={6}>
             <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
@@ -761,29 +788,29 @@ const ViewTicketTenant = () => {
             <Grid item xs={12}>
               <BasicTicketDetails ticket={serviceTicket} />
             </Grid>
+            <p></p>
+            <Grid item xs={12}>
+              <TextField
+              className="view-ticket-textfield"
+              id="outlined-basic"
+              multiline='true'
+              label ="Reason for Rejection"
+              variant="filled"
+              value={serviceTicket.FeedbackComments}
+              InputProps={{readOnly: true,}}/>
+            </Grid>
             <Grid item xs={12}>
               <AssignedToCard staff={staff} />
             </Grid>
-            <Grid item xs={12}>
-              {quotationRequired && (
-                <div class="quotation">
-                  <DisplayQuotation
-                    ServiceRequestID={serviceTicket.ServiceRequestID}
-                  />
-                </div>
-              )}
-            </Grid>
-            <Grid item xs={12}>
-              <div className="view-ticvket-special-div">
-                <TextField
-                className="view-ticket-textfield"
-                multiline='true'
-                id="view-ticket-reject-reason-textfield"
-                label='Reason for Reject'
-                variant="filled"
-                value={serviceTicket.FeedbackComments}/>
+          </Grid>
+          <Grid item xs={6}>
+            {quotationRequired && (
+              <div class="quotation">
+                <DisplayQuotation
+                  ServiceRequestID={serviceTicket.ServiceRequestID}
+                />
               </div>
-            </Grid>
+            )}
           </Grid>
         </Grid>
       </div>
