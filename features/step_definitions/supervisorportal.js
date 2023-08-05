@@ -5,19 +5,35 @@ const chrome = require("selenium-webdriver/chrome");
 const { async } = require("q");
 
 // supabase client
-
-import { createClient } from '@supabase/supabase-js'
-
 const supabaseUrl = 'https://mnfsjgaziftztwiarlys.supabase.co'
 require('dotenv').config(); // Load variables from .env file
 const supabaseKey = process.env.SUPABASE_KEY
 const supabase = createClient(supabaseUrl, supabaseKey)
 
+// TODO: create a new tenant account for testing
+// create new tickets for supervisor account
+BeforeAll(async function () {
+    let { data, error } = await supabase // Create a new ticket
+      .from("Service Request")
+      .insert([
+        {
+          ServiceRequestID: 999999,
+          Name: "TESTINGTICKETJEST",
+          TenantID: 999,
+          PARCStatus: "PENDING",
+          SubmittedDateTime: "2021-04-01 00:00:00",
+          Category: "TESTINGCATEGORYJEST",
+        },
+      ])
+      .select();
+    if (error) {
+      throw error;
+    } else {
+      console.log("Created a new PENDING ticket for testing.");
+    }
+});
+
 let driver;
-
-// get todays date and store in today date
-const today_date = new Date();
-
 
 Given('I am on the Supervisor Portal login page', async function () {
     driver = await new Builder()
@@ -51,10 +67,7 @@ Then('I should be redirected to Supervisor portal landing page \\(and receive su
 });
 
 Given('I am at the Supervisor Portal landing page', async function () {
-    assert.equal(
-        await driver.getCurrentUrl(),
-        "http://localhost:3000/supervisorportal/landingpage/999"
-      );
+    await driver.get("http://localhost:3000/supervisorportal/landingpage/999");
 });
 
 When('I click on create tenant account', async function () {
@@ -120,23 +133,20 @@ Then('a new Tenant account is created and the credentials are recorded in the su
 });
 
 Given('that I am on the Supevisor Portal Landing page', async function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+    await driver.get('http://localhost:3000/supervisorportal/landingpage/999')
 });
 
 When('I click on Pending tickets', async function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+    const view_pending_tickets_button = await driver.findElement(By.id("view-pending"))
+    view_pending_tickets_button.click();
 });
 
 Then('I am redirected to the view ticket page', async function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+    assert.equal(driver.getCurrentUrl(), 'http://localhost:3000/supervisorportal/tickets/999/pending');
 });
 
 Given('that I am in the View Tickets \\(Pending) page', async function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+    await driver.get('http://localhost:3000/supervisorportal/tickets/999/pending');
 });
 
 When('there are pending tickets', async function () {
@@ -150,13 +160,11 @@ Then('the tickets are displayed', async function () {
 });
 
 Given('that I am in the View Tickets \\(Pending) page', async function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+    driver.get('http://localhost:3000/supervisorportal/tickets/999/pending')
 });
 
 When('I click on View Ticket', async function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+    // click on view ticket button in first row
 });
 
 Then('I am redirected to the View ticket page for that ticket', async function () {
