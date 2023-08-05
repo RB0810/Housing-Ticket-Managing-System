@@ -65,6 +65,10 @@ const CreateStaffAcc = () => {
       Swal.fire({
         icon: "success",
         title: "Staff Account created successfully!",
+        customClass: {
+          container: 'createStaffAcc'
+        },
+        id: 'createStaffAcc'
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();

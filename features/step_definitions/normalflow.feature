@@ -10,7 +10,7 @@ Feature: Sequence Diagram Flow
         Then a new supervisor account is created and the credentials are recorded in the supabase table  
 
     Scenario: Create Staff account
-        Given I am in the Admin Portal landing page 
+        Given I am in the Create Staff account page 
         When I fill in all required details
         Then a new Staff account is created and the credentials are recorded in the supabase table 
   
