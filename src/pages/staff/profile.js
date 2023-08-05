@@ -70,10 +70,10 @@ const StaffProfile = () => {
           Swal.fire({
             icon: "success",
             title: "Password changed successfully!",
-            customClass:{
-              className: "staff-profile-password-changed",
-            }
-            id: "staff-profile-password-changed"
+            customClass: {
+              container: "staff-profile-password-changed-swal",
+            },
+            id: "staff-profile-password-changed-swal"
           }).then((result) => {
             if (result.isConfirmed) {
               window.location.reload();

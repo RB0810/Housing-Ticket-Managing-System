@@ -88,7 +88,7 @@ let driver;
 
     Then('A password reset alert pop-up is shown', async function () {
       // Write code here that turns the phrase above into concrete actions
-      const sweetAlert = await driver.wait(until.elementLocated(By.className("staff-profile-password-changed")), 10000);
+      const sweetAlert = await driver.wait(until.elementLocated(By.className("staff-profile-password-changed-swal")), 10000);
       const okButton = await sweetAlert.findElement(By.css('.swal2-confirm'));
       await okButton.click();
       driver.quit();
