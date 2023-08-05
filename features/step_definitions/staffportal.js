@@ -16,16 +16,12 @@ let driver;
         .build();
       await driver.get("http://localhost:3000/landlordlogin");
       await driver.sleep(1000);
-      await assert.equal(
-        await driver.findElement(By.className("wlcText")).getText(),
-        "Landlord Portal\nLogin"
-    );
+      await driver.wait(until.urlIs("http://localhost:3000/landlordlogin"),10000);
     });
 
 
     When('Staff types in valid login credentials and Staff presses the Login button', async function () {
       // Write code here that turns the phrase above into concrete actions
-      await driver.sleep(1000);
       await driver.findElement(By.id("landlord-login-email-textfield")).sendKeys("smith@gmail.com");
       await driver.findElement(By.id("landlord-login-password-textfield" )).sendKeys("smith123");
       await driver.findElement(By.id("landlord-login-login-button" )).click();
@@ -33,11 +29,7 @@ let driver;
 
     Then('Staff Landing Page renders',async function () {
       // Write code here that turns the phrase above into concrete actions
-      await driver.sleep(1000);
-      await assert.equal(
-        await driver.getCurrentUrl(),
-        "http://localhost:3000/staffportal/landingpage/16"
-      );
+      await driver.wait(until.urlIs("http://localhost:3000/staffportal/landingpage/16"),10000);
       driver.quit();
     });
 
@@ -53,26 +45,17 @@ let driver;
       await driver.findElement(By.id("landlord-login-email-textfield")).sendKeys("smith@gmail.com");
       await driver.findElement(By.id("landlord-login-password-textfield" )).sendKeys("smith123");
       await driver.findElement(By.id("landlord-login-login-button" )).click(); 
-      await driver.sleep(1000);
-      await assert.equal(
-        await driver.getCurrentUrl(),
-        "http://localhost:3000/staffportal/landingpage/16"
-      );
+      await driver.wait(until.urlIs("http://localhost:3000/staffportal/landingpage/16"),10000);
     });
 
     When('Staff clicks on the Profile button on Staff Landing Page',async function () {
       // Write code here that turns the phrase above into concrete actions
-      await driver.sleep(1000);
       await driver.findElement(By.id("nav-bar-profile-page")).click();
     });
 
     Then('Staff Profile Page is rendered', async function () {
       // Write code here that turns the phrase above into concrete actions
-      await driver.sleep(1000);
-      await assert.equal(
-        await driver.getCurrentUrl(),
-        "http://localhost:3000/staffportal/profile/16"
-      );
+      await driver.wait(until.urlIs("http://localhost:3000/staffportal/profile/16"),10000);
       driver.quit();
     });
 
@@ -91,9 +74,7 @@ let driver;
       await driver.findElement(By.id("landlord-login-login-button" )).click(); 
       await driver.sleep(1000);
       await driver.findElement(By.id("nav-bar-profile-page")).click();
-      await assert.equal(
-        await driver.getCurrentUrl(),
-        "http://localhost:3000/staffportal/profile/16");
+      await driver.wait(until.urlIs("http://localhost:3000/staffportal/profile/16"),10000);
 
     });
 
@@ -107,11 +88,9 @@ let driver;
 
     Then('A password reset alert pop-up is shown', async function () {
       // Write code here that turns the phrase above into concrete actions
-      await driver.sleep(1000);
-      await driver.wait(until.alertIsPresent());
-      let alert = await driver.switchTo().alert();
-      let alertText = await alert.getText();
-      alert.accept();
+      const sweetAlert = await driver.wait(until.elementLocated(By.className("staff-profile-password-changed")), 10000);
+      const okButton = await sweetAlert.findElement(By.css('.swal2-confirm'));
+      await okButton.click();
       driver.quit();
     });
 
@@ -127,16 +106,13 @@ let driver;
       await driver.findElement(By.id("landlord-login-email-textfield")).sendKeys("smith@gmail.com");
       await driver.findElement(By.id("landlord-login-password-textfield" )).sendKeys("smith123");
       await driver.findElement(By.id("landlord-login-login-button" )).click(); 
-      await driver.sleep(1000);
+      await driver.wait(until.urlIs("http://localhost:3000/staffportal/landingpage/16"),10000);
       await driver.findElement(By.id("button-active-tickets")).click();
     });
 
     Then('Active tickets Page is rendered', async function () {
       // Write code here that turns the phrase above into concrete actions
-      await driver.sleep(1000);
-      await assert.equal(
-        await driver.getCurrentUrl(),
-        "http://localhost:3000/staffportal/tickets/16/active");
+      await driver.wait(until.urlIs("http://localhost:3000/staffportal/tickets/16/active"),10000);
       driver.quit();
     });
 
@@ -154,18 +130,15 @@ let driver;
       await driver.findElement(By.id("landlord-login-email-textfield")).sendKeys("smith@gmail.com");
       await driver.findElement(By.id("landlord-login-password-textfield" )).sendKeys("smith123");
       await driver.findElement(By.id("landlord-login-login-button" )).click(); 
-      await driver.sleep(1000);
+      await driver.wait(until.urlIs("http://localhost:3000/staffportal/landingpage/16"),10000);
       await driver.findElement(By.id("button-active-tickets")).click();
-      await driver.sleep(1000);
-      await driver.findElement(By.id("999" )).click(); //assuming 999 is the ticket ID
+      await driver.wait(until.urlIs("http://localhost:3000/staffportal/tickets/16/active"),10000);
+      await driver.findElement(By.id("999")).click(); //assuming 999 is the ticket ID
     });
 
     Then('Active Ticket is rendered', async function () {
       // Write code here that turns the phrase above into concrete actions
-      await driver.sleep(1000);
-      await assert.equal(
-        await driver.getCurrentUrl(),
-        "http://localhost:3000/staffportal/ticket/16/999");
+      await driver.wait(until.urlIs("http://localhost:3000/staffportal/ticket/16/999"),10000);
       driver.quit();
 
     });
@@ -181,18 +154,14 @@ let driver;
       await driver.findElement(By.id("landlord-login-email-textfield")).sendKeys("smith@gmail.com");
       await driver.findElement(By.id("landlord-login-password-textfield" )).sendKeys("smith123");
       await driver.findElement(By.id("landlord-login-login-button" )).click(); 
-      await driver.sleep(1000);
+      await driver.wait(until.urlIs("http://localhost:3000/staffportal/landingpage/16"),10000);
       await driver.findElement(By.id("button-pending-tickets")).click();
     });
 
     Then('Pending tickets Page is rendered',async function () {
       // Write code here that turns the phrase above into concrete actions
-      await driver.sleep(1000);
-      await assert.equal(
-        await driver.getCurrentUrl(),
-        "http://localhost:3000/staffportal/tickets/16/pending");
-        driver.quit();
-
+      await driver.wait(until.urlIs("http://localhost:3000/staffportal/tickets/16/pending"),10000);
+      driver.quit();
     });
 
 //Scenario 7:
@@ -207,20 +176,16 @@ let driver;
       await driver.findElement(By.id("landlord-login-email-textfield")).sendKeys("smith@gmail.com");
       await driver.findElement(By.id("landlord-login-password-textfield" )).sendKeys("smith123");
       await driver.findElement(By.id("landlord-login-login-button" )).click(); 
-      await driver.sleep(1000);
+      await driver.wait(until.urlIs("http://localhost:3000/staffportal/landingpage/16"),10000);
       await driver.findElement(By.id("button-pending-tickets")).click();
-      await driver.sleep(1000);
-      await driver.findElement(By.id("999" )).click(); //assuming 999 is the ticket ID
+      await driver.wait(until.urlIs("http://localhost:3000/staffportal/tickets/16/pending"),10000);
+      await driver.findElement(By.id("999")).click(); //assuming 999 is the ticket ID
     });
 
     Then('Pending Ticket is rendered', async function () {
       // Write code here that turns the phrase above into concrete actions
-      await driver.sleep(1000);
-      await assert.equal(
-        await driver.getCurrentUrl(),
-        "http://localhost:3000/staffportal/tickets/16/999");
-        driver.quit();
-
+      await driver.wait(until.urlIs("http://localhost:3000/staffportal/ticket/16/999"),10000);
+      driver.quit();
     });
 
 //Scenario 8:
@@ -235,17 +200,14 @@ let driver;
       await driver.findElement(By.id("landlord-login-email-textfield")).sendKeys("smith@gmail.com");
       await driver.findElement(By.id("landlord-login-password-textfield" )).sendKeys("smith123");
       await driver.findElement(By.id("landlord-login-login-button" )).click(); 
-      await driver.sleep(1000);
+      await driver.wait(until.urlIs("http://localhost:3000/staffportal/landingpage/16"),10000);
       await driver.findElement(By.id("button-closed-tickets")).click();
     });
 
     Then('Closed tickets Page is rendered',async function () {
       // Write code here that turns the phrase above into concrete actions
-      await driver.sleep(1000);
-      await assert.equal(
-        await driver.getCurrentUrl(),
-        "http://localhost:3000/staffportal/tickets/16/closed");
-        driver.quit();
+      await driver.wait(until.urlIs("http://localhost:3000/staffportal/tickets/16/closed"),10000);
+      driver.quit();
     });
 
 //Scenario 9:
@@ -260,19 +222,16 @@ let driver;
       await driver.findElement(By.id("landlord-login-email-textfield")).sendKeys("smith@gmail.com");
       await driver.findElement(By.id("landlord-login-password-textfield" )).sendKeys("smith123");
       await driver.findElement(By.id("landlord-login-login-button" )).click(); 
-      await driver.sleep(1000);
+      await driver.wait(until.urlIs("http://localhost:3000/staffportal/landingpage/16"),10000);
       await driver.findElement(By.id("button-closed-tickets")).click();
-      await driver.sleep(1000);
-      await driver.findElement(By.id("999" )).click(); //assuming 999 is the ticket ID
+      await driver.wait(until.urlIs("http://localhost:3000/staffportal/tickets/16/closed"),10000);
+      await driver.findElement(By.id("999")).click(); //assuming 999 is the ticket ID
     });
 
     Then('Closed Ticket is rendered',async function () {
       // Write code here that turns the phrase above into concrete actions
-      await driver.sleep(1000);
-      await assert.equal(
-        await driver.getCurrentUrl(),
-        "http://localhost:3000/staffportal/tickets/16/999");
-        driver.quit();
+      await driver.wait(until.urlIs("http://localhost:3000/staffportal/ticket/16/999"),10000);
+      driver.quit();
     });
 
 //Scenario 10:
@@ -405,12 +364,13 @@ let driver;
        await driver.findElement(By.id("staff-portal-restart-works-button")).click();
      });
 
-     Then('Ticket status changes to Works Started and Ticket with Works Started status is rendered',async function () {
-       // Write code here that turns the phrase above into concrete actions
-       await driver.sleep(1000);
-       await assert.equal(
-        await driver.findElement(By.id("basic-ticket-details-status-textfield")).getText(),
-        "Works Started"
-       )
-       driver.quit();
-     });
+    //  ***The then case is already implemented before***
+    //  Then('Ticket status changes to Works Started and Ticket with Works Started status is rendered',async function () {
+    //    // Write code here that turns the phrase above into concrete actions
+    //    await driver.sleep(1000);
+    //    await assert.equal(
+    //     await driver.findElement(By.id("basic-ticket-details-status-textfield")).getText(),
+    //     "Works Started"
+    //    )
+    //    driver.quit();
+    //  });

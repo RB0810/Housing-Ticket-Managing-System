@@ -5,7 +5,6 @@ import Authentication from "../../managers/authentication";
 import Cookies from "js-cookie";
 import {Button, Grid, TextField} from '@mui/material'
 import Swal from "sweetalert2";
-import { SHA256 } from "crypto-js";
 
 const StaffProfile = () => {
   const { StaffID } = useParams();
@@ -24,11 +23,8 @@ const StaffProfile = () => {
       console.log('Unauthorized');
       navigate("/unauthorize");
     } else {
-      const userIdAsString = String(StaffID);
-      // Use SHA-256 to hash the userId
-      const hashedUserId = SHA256(userIdAsString).toString();
       // Check if the user's ID and type match the expected values (e.g., StaffID and "Staff")
-      if (userId === hashedUserId && type === "Staff") {
+      if (Number(userId) === parseInt(StaffID) && type === "Staff") {
         // Proceed with rendering the component
         console.log('Authorized');
       } else {
@@ -74,8 +70,10 @@ const StaffProfile = () => {
           Swal.fire({
             icon: "success",
             title: "Password changed successfully!",
-            showConfirmButton: true,
-            confirmButtonColor: "#707c4f"
+            customClass:{
+              className: "staff-profile-password-changed",
+            }
+            id: "staff-profile-password-changed"
           }).then((result) => {
             if (result.isConfirmed) {
               window.location.reload();
@@ -221,14 +219,14 @@ const StaffProfile = () => {
       </div>
       <hr></hr>
       <div className="staff-profile-row">
-        <Button
+        <Link to={`/`}>
+          <Button
             id="staff-portal-logout-button"
             variant="contained"
-            onClick={logout}
             className="staff-profile-button">
               Logout
           </Button>
-        
+        </Link>
       </div>
       
 
