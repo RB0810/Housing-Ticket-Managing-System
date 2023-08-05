@@ -636,15 +636,17 @@ const ViewTicketTenant = () => {
             <Grid item xs={12}>
               <AssignedToCard staff={staff} />
             </Grid>
-          </Grid>
-          <Grid item xs={4}>
-            <TextField
-              className="view-ticket-textfield"
-              id="view-ticket-reason-reject-textfield"
-              multiline='true'
-              label='Reason for Reject Quotation'
-              variant="filled"
-              value={serviceTicket.FeedbackComments}/>
+            <Grid item xs={12}>
+              <div className="view-ticvket-special-div">
+                <TextField
+                className="view-ticket-textfield"
+                id="view-ticket-reason-reject-textfield"
+                multiline='true'
+                label='Reason for Reject Quotation'
+                variant="filled"
+                value={serviceTicket.FeedbackComments}/>
+              </div>
+            </Grid>
           </Grid>
           <Grid item xs={6}>
             <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
