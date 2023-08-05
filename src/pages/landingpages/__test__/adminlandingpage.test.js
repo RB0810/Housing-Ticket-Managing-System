@@ -5,6 +5,9 @@ import AdminLandingPage from "../adminlandingpage";
 import CreateSupervisor from "../../admin/createsupervisoracc";
 import CreateStaffAcc from "../../admin/createstaffacc";
 import ManageAccount from "../../admin/manageacc";
+import Cookies from 'js-cookie';
+jest.mock('js-cookie');
+
 
 const MockGoToAdmin= ()=>{
     return (
@@ -28,6 +31,19 @@ const MockGoToAdmin= ()=>{
 //   }));
 
 describe("Admin landingpage should send Admin to the right page",()=>{
+    beforeEach(() => {
+        Cookies.get.mockImplementation((key) => {
+        switch (key) {
+            case 'userId':
+            return '123';  // The ID must match with AdminID
+            case 'type':
+            return 'Admin';  // The user type must be "Admin"
+            default:
+            return null;
+        }
+        });
+    });
+
     test("Go to manageaccount", ()=>{
         render(<MockGoToAdmin/>)
         const manageaccount = screen.getByText("Manage Accounts")

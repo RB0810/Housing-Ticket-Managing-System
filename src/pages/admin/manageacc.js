@@ -5,9 +5,11 @@ import BuildingCard from "../../components/BuildingCard";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { Grid } from "@mui/material";
+import { SHA256 } from "crypto-js";
 
 const ManageAccount = () => {
   const [buildings, setBuildings] = useState([]);
+  const [loading, setLoading] = useState(true); // New loading state
   const { AdminID } = useParams();
   const accountManager = new AccountManager();
   const navigate = useNavigate();
@@ -17,16 +19,14 @@ const ManageAccount = () => {
     const type = Cookies.get('type');
 
     if (!userId || !type) {
-      // If any of the required cookies are missing, redirect to the login page
       console.log('Unauthorized');
       navigate("/unauthorize");
     } else {
-      // Check if the user's ID and type match the expected values (e.g., TenantID and "tenant")
-      if (Number(userId) === parseInt(AdminID) && type === "Admin") {
-        // Proceed with rendering the component
+      const userIdAsString = String(AdminID);
+      const hashedUserId = SHA256(userIdAsString).toString();
+      if (userId === hashedUserId && type === "Admin") {
         console.log('Authorized');
       } else {
-        // If not authorized, display "Unauthorized access" message
         console.log('Unauthorized');
         navigate("/unauthorize");
       }
@@ -38,6 +38,7 @@ const ManageAccount = () => {
       try {
         const buildingsData = await accountManager.getBuildingsandSupervisors();
         setBuildings(buildingsData);
+        setLoading(false); // Set loading to false once data is fetched
       } catch (error) {
         console.error("Error fetching buildings:", error);
       }
@@ -49,20 +50,22 @@ const ManageAccount = () => {
   return (
     <div>
       <h1>Manage Accounts</h1>
-      <Grid container spacing={1}>
-        {buildings.map((building) => (
-          <Grid item xs={6}>
-            <Link
-              key={building.BuildingID}
-              to={`/adminportal/manageacc/${AdminID}/building/${building.BuildingID}`}
-            >
-                <BuildingCard building={building}/>
-            </Link>
-          </Grid>
-          
-        ))}
-      </Grid>
-      
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <Grid container spacing={1}>
+          {buildings.map((building) => (
+            <Grid item xs={6}>
+              <Link
+                key={building.BuildingID}
+                to={`/adminportal/manageacc/${AdminID}/building/${building.BuildingID}`}
+              >
+                <BuildingCard building={building} />
+              </Link>
+            </Grid>
+          ))}
+        </Grid>
+      )}
     </div>
   );
 };

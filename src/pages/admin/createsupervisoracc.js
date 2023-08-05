@@ -5,6 +5,7 @@ import Cookies from "js-cookie";
 import { useParams, useNavigate } from "react-router";
 import { Grid,TextField, Button } from "@mui/material";
 import Swal from "sweetalert2";
+import { SHA256 } from "crypto-js";
 
 const CreateSupervisor = () => {
   const [formError, setFormError] = useState(null);
@@ -28,8 +29,11 @@ const CreateSupervisor = () => {
       console.log('Unauthorized');
       navigate("/unauthorize");
     } else {
+      const userIdAsString = String(AdminID);
+      // Use SHA-256 to hash the userId
+      const hashedUserId = SHA256(userIdAsString).toString();
       // Check if the user's ID and type match the expected values (e.g., TenantID and "tenant")
-      if (Number(userId) === parseInt(AdminID) && type === "Admin") {
+      if (userId === hashedUserId && type === "Admin") {
         // Proceed with rendering the component
         console.log('Authorized');
       } else {
@@ -58,6 +62,8 @@ const CreateSupervisor = () => {
       Swal.fire({
         icon: "success",
         title: "Supervisor Account created successfully!",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f"
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();

@@ -7,11 +7,13 @@ import "./../../styles/createticket.css";
 import NotificationManager from "../../managers/notificationmanager";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
+import { SHA256 } from "crypto-js";
 import TextField from '@mui/material/TextField';
 import Box from "@mui/material/Box";
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { Button, Grid } from "@mui/material";
+import { green } from "@mui/material/colors";
 
 const CreateTicket = () => {
   const navigate = useNavigate();
@@ -36,8 +38,11 @@ const CreateTicket = () => {
       console.log('Unauthorized');
       navigate("/unauthorize");
     } else {
+      const userIdAsString = String(TenantID);
+      // Use SHA-256 to hash the userId
+      const hashedUserId = SHA256(userIdAsString).toString();
       // Check if the user's ID and type match the expected values (e.g., TenantID and "tenant")
-      if (Number(userId) === parseInt(TenantID) && type === "Tenant") {
+      if (userId === hashedUserId && type === "Tenant") {
         // Proceed with rendering the component
         console.log('Authorized');
       } else {
@@ -104,6 +109,8 @@ const CreateTicket = () => {
         // }
         Swal.fire({
           icon: "success",
+          showConfirmButton: true,
+          confirmButtonColor: "#707c4f",
           title: "Ticket submitted successfully!",
         }).then((result) => {
           if (result.isConfirmed) {
@@ -113,6 +120,8 @@ const CreateTicket = () => {
     } catch (error) {
       Swal.fire({
         icon: "error",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f",
         title: "Error submitting ticket",
       });
     } finally {

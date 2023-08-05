@@ -6,16 +6,17 @@
     margin: 0 -1rem;
     padding: 0 1rem;
     justify-content: center;
+    
 }
 
-.page-card {
+/* .page-card {
     flex: 0 0 auto;
     background-color: white;
     border: 1px solid hsl(0, 0%, 85%);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 1rem;
     margin-right: 1rem;
-}
+} */
 
 /* On mouse-over, add a deeper shadow */
 .page-card:hover {
@@ -28,7 +29,6 @@
 }
 
 .card-heading {
-    font-family: Montserrat;
     font-size: 24px;
     font-style: normal;
     font-weight: 700;
@@ -36,22 +36,23 @@
     letter-spacing: 0.1px;
 }
 
-.login-button {
-    background-color: #0780FE;
-    padding: 15px 30px;
-    border-radius: 12px;
-    border-radius: 10px;
-
-    color: white;
-    font-family: Montserrat;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 28px;
-    letter-spacing: 0.2px;
-    text-decoration: none;
+.login-button{
+    width: 40%;
 }
 
-.login-button:hover {
-    background-color: #0A66D9;
+.page-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+    border: 1px solid hsl(0, 0%, 85%);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    margin-right: 1rem;
 }
+
+.card-image {
+    width: 50%;
+    height: auto; 
+}
+
