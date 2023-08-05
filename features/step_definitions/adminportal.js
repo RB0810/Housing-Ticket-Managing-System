@@ -15,6 +15,14 @@ const capabilities = Capabilities.chrome();
 capabilities.set('chromeOptions', { "w3c": false });
 const driver = new Builder().withCapabilities(capabilities).build();
 
+function formatDate(date) {
+  var dd = String(date.getDate());
+  var mm = String(date.getMonth() + 1); 
+  var yyyy = date.getFullYear();
+
+  return mm + '/' + dd + '/' + yyyy; // Now in MM/DD/YYYY format
+}
+
 async function querySupabaseForCredentials(email) {
   const { data, error } = await supabase
     .from('SupervisorUsers')
@@ -146,47 +154,90 @@ When("I click on a specific card", async function () {
 });
 
 Then("I see Building details", async function () {
-  // const buildingID = '999'
+  const buildingID = '999'
 
-  // // Fetch info from Buildings
-  // let { data: buildingData, error: buildingError } = await supabase
-  //   .from('Buildings')
-  //   .select('*')
-  //   .eq('BuildingID', buildingID);
-  // // Handle errors from Buildings fetch
-  // if (buildingError) {
-  //   throw buildingError;
-  // }
+  // Fetch info from StaffUsers
+  let { data: staffEmailData, error: staffEmailError } = await supabase
+    .from('StaffUsers')
+    .select('StaffEmail')
+    .eq('StaffID', buildingID);
+  if (staffEmailError) {
+    throw staffEmailError;
+  }
 
-  // // Fetch info from StaffUsers
-  // let { data: staffData, error: staffError } = await supabase
-  //   .from('StaffUsers')
-  //   .select('*')
-  //   .eq('BuildingID', buildingID);
-  // // Handle errors from StaffUsers fetch
-  // if (staffError) {
-  //   throw staffError;
-  // }
+  let { data: staffPhoneData, error: staffPhoneError } = await supabase
+    .from('StaffUsers')
+    .select('StaffPhone')
+    .eq('StaffID', buildingID);
+  if (staffPhoneError) {
+    throw staffPhoneError;
+  }
 
-  // // Fetch info from SupervisorUsers
-  // let { data: supervisorData, error: supervisorError } = await supabase
-  //   .from('SupervisorUsers')
-  //   .select('*')
-  //   .eq('BuildingID', buildingID);
-  // // Handle errors from SupervisorUsers fetch
-  // if (supervisorError) {
-  //   throw supervisorError;
-  // }
 
-  // // Fetch info from TenantUsers
-  // let { data: tenantData, error: tenantError } = await supabase
-  //   .from('TenantUsers')
-  //   .select('*')
-  //   .eq('BuildingID', buildingID);
-  // // Handle errors from TenantUsers fetch
-  // if (tenantError) {
-  //   throw tenantError;
-  // }
+  // Fetch info from TenantUsers
+  let { data: tenantEmailData, error: tenantEmailError } = await supabase
+    .from('TenantUsers')
+    .select('TenantEmail')
+    .eq('TenantID', buildingID);
+  if (tenantEmailError) {
+    throw tenantEmailError;
+  }
+
+  let { data: tenantPhoneData, error: tenantPhoneError } = await supabase
+    .from('TenantUsers')
+    .select('TenantPhone')
+    .eq('TenantID', buildingID);
+  if (tenantPhoneError) {
+    throw tenantPhoneError;
+  }
+
+  let { data: leaseCommData, error: leaseCommError } = await supabase
+    .from('Lease')
+    .select('CommenceDate')
+    .eq('LeaseID', buildingID);
+  if (leaseCommError) {
+    throw leaseCommError;
+  }
+
+  let { data: leaseTermData, error: leaseTermError } = await supabase
+    .from('Lease')
+    .select('TerminationDate')
+    .eq('LeaseID', buildingID);
+  if (leaseTermError) {
+    throw leaseTermError;
+  }
+
+  let { data: leaseRentData, error: leaseRentError } = await supabase
+    .from('Lease')
+    .select('MonthlyRental')
+    .eq('LeaseID', buildingID);
+  if (leaseRentError) {
+    throw leaseRentError;
+  }
+
+  let { data: leaseTradeData, error: leaseTradeError } = await supabase
+    .from('Lease')
+    .select('TradeType')
+    .eq('LeaseID', buildingID);
+  if (leaseTradeError) {
+    throw leaseTradeError;
+  }
+
+  let { data: leaseAreaData, error: leaseAreaError } = await supabase
+    .from('Lease')
+    .select('AreaInSqMeters')
+    .eq('LeaseID', buildingID);
+  if (leaseAreaError) {
+    throw leaseAreaError;
+  }
+
+  let { data: unitData, error: unitError } = await supabase
+    .from('Unit')
+    .select('UnitNumber')
+    .eq('UnitID', buildingID);
+  if (unitError) {
+    throw unitError;
+  }
 
   const staffEmailElement = await driver.wait(until.elementLocated(By.id("999-staffemail")), 10000);
   const staffPhoneElement = await driver.wait(until.elementLocated(By.id("999-staffphone")), 5000);
@@ -210,17 +261,21 @@ Then("I see Building details", async function () {
   const area = await areaElement.getAttribute('value');
   const unit = await unitElement.getAttribute('value');
 
-  // Validate that the values match
-  expect(staffEmail).to.equal("teststaff@gmail.com");
-  expect(staffPhone).to.equal("12345678");
-  expect(tenantEmail).to.equal("testtenant@gmail.com");
-  expect(tenantPhone).to.equal("12345678");
-  expect(commdate).to.equal("8/2/2023");
-  expect(termdate).to.equal("7/2/2026");
-  expect(rent).to.equal("1000");
-  expect(biz).to.equal("TESTLEASEDONTDELETE");
-  expect(area).to.equal("1000");
-  expect(unit).to.equal("TESTUNITDONTDELETE");
+  const formCommDate = formatDate(new Date(leaseCommData[0].CommenceDate))
+  const formTermDate = formatDate(new Date(leaseTermData[0].TerminationDate))
+  console.log("formcommdate " + formCommDate )
+  console.log("commdate " + commdate)
+
+  expect(staffEmail).to.equal(staffEmailData[0].StaffEmail.toString());
+  expect(staffPhone).to.equal(staffPhoneData[0].StaffPhone.toString());
+  expect(tenantEmail).to.equal(tenantEmailData[0].TenantEmail.toString());
+  expect(tenantPhone).to.equal(tenantPhoneData[0].TenantPhone.toString());
+  expect(commdate).to.equal(formCommDate);
+  expect(termdate).to.equal(formTermDate);
+  expect(rent).to.equal(leaseRentData[0].MonthlyRental.toString());
+  expect(biz).to.equal(leaseTradeData[0].TradeType.toString());
+  expect(area).to.equal(leaseAreaData[0].AreaInSqMeters.toString());
+  expect(unit).to.equal(unitData[0].UnitNumber.toString());
   
 });
 
