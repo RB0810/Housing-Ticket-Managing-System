@@ -10,6 +10,7 @@ import UploadQuotation from "../../components/UploadQuotation";
 import DisplayQuotation from "../../components/DisplayQuotation";
 import supabase from "../../config/supabaseClient";
 import Swal from "sweetalert2";
+import { SHA256 } from "crypto-js";
 import NotificationManager from "../../managers/notificationmanager";
 import { Grid,Button,TextField,MenuItem, Select, OutlinedInput } from "@mui/material";
 
@@ -50,8 +51,11 @@ const ViewTicketStaff = () => {
       console.log('Unauthorized');
       navigate("/unauthorize");
     } else {
+      const userIdAsString = String(StaffID);
+      // Use SHA-256 to hash the userId
+      const hashedUserId = SHA256(userIdAsString).toString();
       // Check if the user's ID and type match the expected values (e.g., StaffID and "Staff")
-      if (Number(userId) === parseInt(StaffID) && type === "Staff") {
+      if (userId === hashedUserId && type === "Staff") {
         // Proceed with rendering the component
         console.log('Authorized');
       } else {
@@ -98,7 +102,9 @@ const ViewTicketStaff = () => {
         setFetchError("This ticket is EMPTY!");
         Swal.fire({
           icon: "error",
-          title: "Ticket is empty"
+          title: "Ticket is empty",
+          showConfirmButton: true,
+          confirmButtonColor: "#707c4f"
         });
         setServiceTicket();
       } else {
@@ -160,7 +166,9 @@ const ViewTicketStaff = () => {
 
       Swal.fire({
         icon: "success",
-        title: "Update Quotation successful"
+        title: "Update Quotation successful",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f"
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -169,7 +177,9 @@ const ViewTicketStaff = () => {
     } catch (error) {
       Swal.fire({
         icon: "error",
-        title: "Error in continue for quotation upload"
+        title: "Error in continue for quotation upload",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f"
       });
     }
   };
@@ -190,7 +200,9 @@ const ViewTicketStaff = () => {
       // }
       Swal.fire({
         icon: "success",
-        title: "Update Quotation successful"
+        title: "Update Quotation successful",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f"
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -199,7 +211,9 @@ const ViewTicketStaff = () => {
     } catch (error) {
       Swal.fire({
         icon: "error",
-        title: "Quotation reupload error"
+        title: "Quotation reupload error",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f"
       });
     }
   };
@@ -224,7 +238,9 @@ const ViewTicketStaff = () => {
       // Perform any additional actions or display a success message
       Swal.fire({
         icon: "success",
-        title: "Works started"
+        title: "Works started",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f"
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -234,7 +250,9 @@ const ViewTicketStaff = () => {
       // Handle errors appropriately
       Swal.fire({
         icon: "error",
-        title: "Update failed"
+        title: "Update failed",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f"
       });
     }
   };
@@ -259,7 +277,9 @@ const ViewTicketStaff = () => {
       // Perform any additional actions or display a success message
       Swal.fire({
         icon: "success",
-        title: "Update successful"
+        title: "Update successful",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f"
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -269,7 +289,9 @@ const ViewTicketStaff = () => {
       // Handle errors appropriately
       Swal.fire({
         icon: "error",
-        title: "Update failed"
+        title: "Update failed",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f"
       });
     }
   };
@@ -302,6 +324,8 @@ const ViewTicketStaff = () => {
           icon: "error",
           title: "Oops...",
           text: "Something went wrong!",
+          showConfirmButton: true,
+          confirmButtonColor: "#707c4f"
         });
         return { error };
       }
@@ -320,7 +344,9 @@ const ViewTicketStaff = () => {
         Swal.fire({
           // Display error alert
           icon: "error",
-          title: "Error uploading Quotation"
+          title: "Error uploading Quotation",
+          showConfirmButton: true,
+          confirmButtonColor: "#707c4f"
         });
         return { error: updateError };
       }
@@ -329,7 +355,9 @@ const ViewTicketStaff = () => {
       Swal.fire({
         // Display success alert
         icon: "success",
-        title: "Quotation Uploaded"
+        title: "Quotation Uploaded",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f"
       });
       return { data: updateData };
     } catch (error) {
@@ -339,6 +367,8 @@ const ViewTicketStaff = () => {
         icon: "error",
         title: "Oops...",
         text: "Something went wrong!",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f"
       });
       return { error };
     }
@@ -362,14 +392,18 @@ const ViewTicketStaff = () => {
       if (error) {
         Swal.fire({
           icon: "error",
-          title: "Error downloading file"
+          title: "Error downloading file",
+          showConfirmButton: true,
+          confirmButtonColor: "#707c4f"
         });
         return;
       }
     } catch (error) {
       Swal.fire({
         icon: "error",
-        title: "Error downloading file"
+        title: "Error downloading file",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f"
       });
     }
   };

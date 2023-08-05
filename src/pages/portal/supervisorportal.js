@@ -3,6 +3,7 @@ import { Routes, Route, useParams, Link, useNavigate } from "react-router-dom";
 import TicketManager from "../../managers/ticketmanager";
 import "../../styles/ticketportal.css";
 import Cookies from "js-cookie";
+import { SHA256 } from "crypto-js";
 
 // material ui
 import Table from '@mui/material/Table';
@@ -50,8 +51,11 @@ export default function SupervisorPortal() {
       console.log('Unauthorized');
       navigate("/unauthorize");
     } else {
+      const userIdAsString = String(SupervisorID);
+      // Use SHA-256 to hash the userId
+      const hashedUserId = SHA256(userIdAsString).toString();
       // Check if the user's ID and type match the expected values (e.g., SupervisorID and "Supervisor")
-      if (Number(userId) === parseInt(SupervisorID) && type === "Supervisor") {
+      if (userId === hashedUserId && type === "Supervisor") {
         // Proceed with rendering the component
         console.log('Authorized');
       } else {

@@ -28,9 +28,9 @@ export default function LandingPage() {
   return (
     <>
       <div className="LandingPage-row">
-        <div className="tenant-card"><LandingPageCard imageSrc="tenantLandingPageimg.png" altText="Tenant" heading="Tenant Account" path="/tenantlogin" /></div>
-        <div className="landlord-card"><LandingPageCard imageSrc="landlordLandingPageimg.png" altText="Landlord" heading="Landlord Account" path="/landlordlogin" /></div>
-        <div className="admin-card"><LandingPageCard imageSrc="adminLandingPageimg.png" altText="Admin" heading="Admin Account" path="/adminlogin" /></div>
+        <div className="tenant-card"><LandingPageCard imageSrc="tenantlogin.png" altText="Tenant" heading="Tenant Account" path="/tenantlogin" /></div>
+        <div className="landlord-card"><LandingPageCard imageSrc="landlordlogin.png" altText="Landlord" heading="Landlord Account" path="/landlordlogin" /></div>
+        <div className="admin-card"><LandingPageCard imageSrc="adminlogin.png" altText="Admin" heading="Admin Account" path="/adminlogin" /></div>
       </div>
     </>)
 }
