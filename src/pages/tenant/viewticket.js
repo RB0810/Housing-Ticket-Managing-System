@@ -330,12 +330,27 @@ const ViewTicketTenant = () => {
         "Quotation Accepted"
       );
 
+      let currentDate = new Date();
+      let timezoneOffset = currentDate.getTimezoneOffset() * 60000;
+      let localTime = new Date(currentDate - timezoneOffset);
+      let submittedDateTime = localTime
+        .toISOString()
+        .replace("T", " ")
+        .slice(0, -5);
+
+      const updateQuotationAcceptDate = ticketManager.updateTicket(
+        parseInt(serviceTicket.ServiceRequestID),
+        "QuotationAcceptanceDate",
+        submittedDateTime
+      );
+
       //const sendNotif = notificationmanager.QuotationAcceptNotif(serviceTicket.ServiceRequestID);
 
       // Execute all promises concurrently using Promise.all
       await Promise.all([
         updateQuotationAcceptedByTenantPromise,
         updateStatusPromise,
+        updateQuotationAcceptDate,
         //sendNotif,
       ]);
 

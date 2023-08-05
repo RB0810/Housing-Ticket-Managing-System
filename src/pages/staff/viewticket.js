@@ -619,6 +619,7 @@ const ViewTicketStaff = () => {
             <Grid item xs={12}>
               <BasicTicketDetails ticket={serviceTicket} />
             </Grid>
+            <p></p>
             <Grid item xs ={12}>
               <Button 
               className="view-ticket-button"
