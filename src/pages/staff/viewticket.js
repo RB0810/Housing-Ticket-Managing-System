@@ -24,7 +24,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 const ViewTicketStaff = () => {
   const ticketManager = new TicketManager();
   const accountManager = new AccountManager();
-  //const notificationmanager = new NotificationManager();
+  const notificationmanager = new NotificationManager();
   let { ServiceRequestID } = useParams();
   const [serviceTicket, setServiceTicket] = useState([]);
   const [tenant, setTenant] = useState([]);
@@ -152,16 +152,16 @@ const ViewTicketStaff = () => {
         "ACTIVE"
       );
 
-      // const sendNotif = notificationmanager.QuotationUploadNotif(
-      //   serviceTicket.ServiceRequestID
-      // );
+      const sendNotif = notificationmanager.QuotationUploadNotif(
+        serviceTicket.ServiceRequestID
+      );
 
       //Execute all promises concurrently using Promise.all
       await Promise.all([
         updateQuotationRequiredPromise,
         updateStatusPromise,
         updatePARCStatusPromise,
-        //sendNotif,
+        sendNotif,
       ]);
 
       Swal.fire({
@@ -191,13 +191,13 @@ const ViewTicketStaff = () => {
         "Status",
         "Quotation Uploaded"
       );
-      // try {
-      //   await notificationmanager.QuotationUploadNotif(
-      //     serviceTicket.ServiceRequestID
-      //   );
-      // } catch (error) {
-      //   console.log(error);
-      // }
+      try {
+        await notificationmanager.QuotationUploadNotif(
+          serviceTicket.ServiceRequestID
+        );
+      } catch (error) {
+        console.log(error);
+      }
       Swal.fire({
         icon: "success",
         title: "Update Quotation successful",
@@ -227,13 +227,13 @@ const ViewTicketStaff = () => {
         "Works Started"
       );
 
-      // try {
-      //   await notificationmanager.WorksStartedNotif(
-      //     serviceTicket.ServiceRequestID
-      //   );
-      // } catch (error) {
-      //   console.log(error);
-      // }
+      try {
+        await notificationmanager.WorksStartedNotif(
+          serviceTicket.ServiceRequestID
+        );
+      } catch (error) {
+        console.log(error);
+      }
 
       // Perform any additional actions or display a success message
       Swal.fire({
@@ -266,13 +266,13 @@ const ViewTicketStaff = () => {
         "Works Ended"
       );
 
-      // try {
-      //   await notificationmanager.WorksEndedNotif(
-      //     serviceTicket.ServiceRequestID
-      //   );
-      // } catch (error) {
-      //   console.log(error);
-      // }
+      try {
+        await notificationmanager.WorksEndedNotif(
+          serviceTicket.ServiceRequestID
+        );
+      } catch (error) {
+        console.log(error);
+      }
 
       // Perform any additional actions or display a success message
       Swal.fire({

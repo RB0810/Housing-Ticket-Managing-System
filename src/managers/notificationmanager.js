@@ -344,6 +344,40 @@ class NotificationManager{
     }
   }
 
+  async TicketRejectedNotif(ticketID, rejectComments){
+    emailjs.init("w8QvO03M79syyzy63");
+    let { data: ticketDetails } = await supabase
+      .from("Service Request")
+      .select("*")
+      .eq("ServiceRequestID", parseInt(ticketID));
+
+    const body = `Ticket ${ticketDetails[0].ServiceRequestID}, ${ticketDetails[0].Name} has been rejected by Supervisor.
+    Reason: ${rejectComments}.`;
+
+    const tenantID = ticketDetails[0].TenantID;
+
+    let { data: tenantDetails } = await supabase
+      .from("TenantUsers")
+      .select("*")
+      .eq("TenantID", tenantID);
+
+    const emailParams = {
+        to_email: tenantDetails[0].TenantEmail,
+        message: body,
+      };
+    console.log(emailParams);
+    try {
+      const response = await emailjs.send(
+        "service_nklr1zv",
+        "template_776mx6q",
+        emailParams
+      );
+      console.log("Email sent successfully!", response);
+    } catch (error) {
+      console.error("Error sending email:", error);
+    }
+  }
+
   async sendOTP(TypeUpper, UserID, body){
     const { data, error } = await supabase
       .from(`${TypeUpper}Users`)

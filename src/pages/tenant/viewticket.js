@@ -21,7 +21,7 @@ import "./../../styles/viewticket.css";
 const ViewTicketTenant = () => {
   const ticketManager = new TicketManager();
   const accountManager = new AccountManager();
-  //const notificationmanager = new NotificationManager();
+  const notificationmanager = new NotificationManager();
   let { ServiceRequestID } = useParams();
   let navigate = useNavigate();
   const [serviceTicket, setServiceTicket] = useState([]);
@@ -344,14 +344,14 @@ const ViewTicketTenant = () => {
         submittedDateTime
       );
 
-      //const sendNotif = notificationmanager.QuotationAcceptNotif(serviceTicket.ServiceRequestID);
+      const sendNotif = notificationmanager.QuotationAcceptNotif(serviceTicket.ServiceRequestID);
 
       // Execute all promises concurrently using Promise.all
       await Promise.all([
         updateQuotationAcceptedByTenantPromise,
         updateStatusPromise,
         updateQuotationAcceptDate,
-        //sendNotif,
+        sendNotif,
       ]);
 
       Swal.fire({
@@ -396,14 +396,14 @@ const ViewTicketTenant = () => {
           rejectComments
         );
 
-      //const sendNotif = notificationmanager.QuotationRejectNotif(serviceTicket.ServiceRequestID, rejectComments);
+      const sendNotif = notificationmanager.QuotationRejectNotif(serviceTicket.ServiceRequestID, rejectComments);
 
       // Execute all promises concurrently using Promise.all
       await Promise.all([
         updateStatusPromise,
         updateQuotationAcceptedPromise,
         updateFeedbackCommentsPromise,
-        //sendNotif,
+        sendNotif,
       ]);
 
       Swal.fire({
@@ -466,9 +466,9 @@ const ViewTicketTenant = () => {
         "Feedback Submitted"
       );
 
-      // const sendNotif = notificationmanager.FeedbackSubmittedNotif(
-      //  serviceTicket.ServiceRequestID, rating, successComments
-      //  );
+      const sendNotif = notificationmanager.FeedbackSubmittedNotif(
+       serviceTicket.ServiceRequestID, rating, successComments
+       );
 
       // Execute all promises concurrently using Promise.all
       await Promise.all([
@@ -476,7 +476,7 @@ const ViewTicketTenant = () => {
         updateFeedbackCommentsPromise,
         updatePARCStatusPromise,
         updateStatusPromise,
-        //sendNotif,
+        sendNotif,
       ]);
 
       Swal.fire({
@@ -517,13 +517,13 @@ const ViewTicketTenant = () => {
         "Works Rejected"
       );
 
-      //const sendNotif = notificationmanager.WorksRejectNotif(serviceTicket.ServiceRequestID, rejectComments);
+      const sendNotif = notificationmanager.WorksRejectNotif(serviceTicket.ServiceRequestID, rejectComments);
 
       // Execute all promises concurrently using Promise.all
       await Promise.all([
         updateFeedbackCommentsPromise,
         rejectWorksPromise,
-        //sendNotif
+        sendNotif
       ]);
 
       Swal.fire({
