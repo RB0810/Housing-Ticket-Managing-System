@@ -324,6 +324,17 @@ const ViewTicketSupervisor = () => {
               <BasicTicketDetails ticket={serviceTicket} />
             </Grid>
             <Grid item xs={12}>
+              <div className="view-ticvket-special-div">
+                <TextField
+                className="view-ticket-textfield"
+                multiline='true'
+                id="view-ticket-reject-reason-textfield"
+                label='Reason for Reject'
+                variant="filled"
+                value={serviceTicket.FeedbackComments}/>
+              </div>
+            </Grid>
+            <Grid item xs={12}>
               <SubmittedByCard tenant={tenant} />
             </Grid>
           </Grid>
@@ -352,7 +363,7 @@ const ViewTicketSupervisor = () => {
     );
   }
 
-  if (status === "Quotation Uploaded" || status === "Quotation Accepted" || status === "Quotation Rejected") {
+  if (status === "Quotation Uploaded" || status === "Quotation Accepted") {
     return (
       <div>
         <Grid container spacing={1} columns={10}>
@@ -375,13 +386,81 @@ const ViewTicketSupervisor = () => {
     );
   }
 
-  if (status === "Works Started" || status === "Works Ended" || status === "Works Rejected") {
+  if (status === "Quotation Rejected"){
     return (
       <div>
         <Grid container spacing={1} columns={10}>
           <Grid item xs ={4}>
             <Grid item xs={12}>
               <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <div className="view-ticvket-special-div">
+                <TextField
+                className="view-ticket-textfield"
+                multiline='true'
+                id="view-ticket-reject-reason-textfield"
+                label='Reason for Reject'
+                variant="filled"
+                value={serviceTicket.FeedbackComments}/>
+              </div>
+            </Grid>
+            <Grid item xs={12}>
+              <SubmittedByCard tenant={tenant} /> 
+            </Grid>
+            <Grid item xs={12}>
+              <AssignedToCard staff={staff} />
+            </Grid>
+          </Grid>
+          <Grid item xs ={6}>
+            <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+          </Grid>
+        </Grid>
+      </div>
+    );
+  }
+
+  if (status === "Works Started" || status === "Works Ended") {
+    return (
+      <div>
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs ={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <SubmittedByCard tenant={tenant} /> 
+            </Grid>
+            <Grid item xs={12}>
+              <AssignedToCard staff={staff} />
+            </Grid>
+          </Grid>
+          <Grid item xs ={6}>
+            <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+          </Grid>
+        </Grid>
+      </div>
+    );
+  }
+
+  if (status === "Works Rejected") {
+    return (
+      <div>
+        <Grid container spacing={1} columns={10}>
+          <Grid item xs ={4}>
+            <Grid item xs={12}>
+              <BasicTicketDetails ticket={serviceTicket} />
+            </Grid>
+            <Grid item xs={12}>
+              <div className="view-ticvket-special-div">
+                <TextField
+                className="view-ticket-textfield"
+                multiline='true'
+                id="view-ticket-reject-reason-textfield"
+                label='Reason for Reject'
+                variant="filled"
+                value={serviceTicket.FeedbackComments}/>
+              </div>
             </Grid>
             <Grid item xs={12}>
               <SubmittedByCard tenant={tenant} /> 
@@ -407,16 +486,16 @@ const ViewTicketSupervisor = () => {
               <BasicTicketDetails ticket={serviceTicket} />
             </Grid>
             <Grid item xs={12}>
-              <SubmittedByCard tenant={tenant} /> 
-            </Grid>
-            <Grid item xs={12}>
-              <AssignedToCard staff={staff} />
-            </Grid>
-            <Grid item xs={12}>
             <ViewFinalFeedbackDetails
               rating={serviceTicket.FeedbackRating}
               comments={serviceTicket.FeedbackComments}
             />
+            </Grid>
+            <Grid item xs={12}>
+              <SubmittedByCard tenant={tenant} /> 
+            </Grid>
+            <Grid item xs={12}>
+              <AssignedToCard staff={staff} />
             </Grid>
           </Grid>
           <Grid item xs ={6}>
