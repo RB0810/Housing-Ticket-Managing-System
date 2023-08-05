@@ -380,7 +380,7 @@ const ViewTicketStaff = () => {
       return (
         <div>
           {/* Attention!! */}
-          <input type="file" onChange={handleFileChange} />
+          <input type="file" id="staff-portal-upload-quotation-input" onChange={handleFileChange} />
         </div>
         
       );
@@ -459,7 +459,7 @@ const ViewTicketStaff = () => {
                 className="viewticket-select"
                 value={quotationRequired}
                 onChange={handleQuotationRequiredChange}>
-                <option value={true} id='yes'> Yes</option>
+                <option value={true} id='yes'>Yes</option>
                 <option value={false} id='no'>No</option>
                 </select>
                 
@@ -651,7 +651,7 @@ const ViewTicketStaff = () => {
               InputProps={{readOnly: true,}}/>
             </Grid>
             <Grid item xs ={12}>
-              <Button onClick={handleStartWorks} variant="contained">
+              <Button onClick={handleStartWorks} id="staff-portal-restart-works-button" variant="contained">
                 Restart Works
               </Button>
             </Grid>
