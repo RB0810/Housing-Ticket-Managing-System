@@ -1,8 +1,7 @@
-const { Given, When, Then, After, BeforeAll } = require("@cucumber/cucumber");
+const { Given, When, Then, After, BeforeAll, AfterAll } = require("@cucumber/cucumber");
 const { Builder, By, Key, until, Select } = require("selenium-webdriver");
 const assert = require("assert");
 const chrome = require("selenium-webdriver/chrome");
-const { async } = require("q");
 const { createClient } = require("@supabase/supabase-js");
 
 
@@ -11,6 +10,8 @@ const supabaseUrl = 'https://mnfsjgaziftztwiarlys.supabase.co'
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1uZnNqZ2F6aWZ0enR3aWFybHlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODY4MjkwODgsImV4cCI6MjAwMjQwNTA4OH0.Mrvmdish7OlO5-m1WIZTNwVFUnEcF7aoHE53ZVwiOY8'
 const supabase = createClient(supabaseUrl, supabaseKey)
 
+let driver;
+
 // TODO: create a new tenant account for testing
 // create new tickets for supervisor account
 BeforeAll(async function () {
@@ -18,7 +19,7 @@ BeforeAll(async function () {
       .from("Service Request")
       .insert([
         {
-          ServiceRequestID: 999999,
+          ServiceRequestID: 999990,
           Name: "TESTINGTICKETJEST",
           TenantID: 999,
           PARCStatus: "PENDING",
@@ -37,7 +38,7 @@ BeforeAll(async function () {
       .from("Service Request")
       .insert([
         {
-          ServiceRequestID: 999998,
+          ServiceRequestID: 999991,
           Name: "TESTINGTICKETJEST",
           TenantID: 999,
           PARCStatus: "ACTIVE",
@@ -56,7 +57,7 @@ BeforeAll(async function () {
       .from("Service Request")
       .insert([
         {
-          ServiceRequestID: 999997,
+          ServiceRequestID: 999992,
           Name: "TESTINGTICKETJEST",
           TenantID: 999,
           PARCStatus: "CLOSED",
@@ -73,7 +74,39 @@ BeforeAll(async function () {
   });
 
 
-let driver;
+  AfterAll(async function () {
+    let { data, error } = await supabase // Delete Created Tickets
+      .from("Service Request")
+      .delete()
+      .match({ ServiceRequestID: 999990 });
+    if (error) {
+      throw error;
+    } else {
+      console.log("Deleted PENDING ticket for testing.");
+    }
+  
+    let { data2, error2 } = await supabase // Delete Created Tickets
+      .from("Service Request")
+      .delete()
+      .match({ ServiceRequestID: 999991 });
+    if (error2) {
+      throw error2;
+    } else {
+      console.log("Deleted ACTIVE ticket for testing.");
+    }
+  
+    let { data3, error3 } = await supabase // Delete Created Tickets
+      .from("Service Request")
+      .delete()
+      .match({ ServiceRequestID: 999992 });
+    if (error3) {
+      throw error3;
+    } else {
+      console.log("Deleted CLOSED ticket for testing.");
+    }
+
+    driver.quit();
+    });
 
 Given('I am on the Supervisor Portal login page', async function () {
     driver = await new Builder()
@@ -164,11 +197,6 @@ When('click on the Create Tenant Account button', async function () {
 
 Then('a new Tenant account is created and the credentials are recorded in the supabase table', async function () {
 
-    let { data: TenantUsers, error } = await supabase
-        .from('TenantUsers')
-        .select('*')
-
-    // code for checking if the tenant account is created
 
 });
 
