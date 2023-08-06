@@ -44,15 +44,15 @@ const ViewTicketTenant = () => {
   const [successComments, setSuccessComments] = useState("");
   const [rating, setRating] = useState(0);
 
-  const {TenantID} = useParams();
+  const { TenantID } = useParams();
 
   useEffect(() => {
-    const userId = Cookies.get('userId');
-    const type = Cookies.get('type');
+    const userId = Cookies.get("userId");
+    const type = Cookies.get("type");
 
     if (!userId || !type) {
       // If any of the required cookies are missing, redirect to the login page
-      console.log('Unauthorized');
+      console.log("Unauthorized");
       navigate("/unauthorize");
     } else {
       const userIdAsString = String(TenantID);
@@ -61,10 +61,10 @@ const ViewTicketTenant = () => {
       // Check if the user's ID and type match the expected values (e.g., TenantID and "tenant")
       if (userId === hashedUserId && type === "Tenant") {
         // Proceed with rendering the component
-        console.log('Authorized');
+        console.log("Authorized");
       } else {
         // If not authorized, display "Unauthorized access" message
-        console.log('Unauthorized');
+        console.log("Unauthorized");
         navigate("/unauthorize");
       }
     }
@@ -125,7 +125,7 @@ const ViewTicketTenant = () => {
         icon: "success",
         title: "Ticket deleted",
         showConfirmButton: true,
-        confirmButtonColor: "#707c4f"
+        confirmButtonColor: "#707c4f",
       });
       navigate(`/tenantportal/landingpage/${serviceTicket.TenantID}`);
       // Probably need to redirect to main page here
@@ -135,7 +135,7 @@ const ViewTicketTenant = () => {
         title: "Error in deleting Quotation",
         showConfirmButton: true,
         confirmButtonColor: "#707c4f",
-        text: error.message
+        text: error.message,
       });
     }
   };
@@ -160,7 +160,7 @@ const ViewTicketTenant = () => {
           icon: "error",
           title: "Error downloading file",
           showConfirmButton: true,
-          confirmButtonColor: "#707c4f"
+          confirmButtonColor: "#707c4f",
         });
         return;
       }
@@ -169,7 +169,7 @@ const ViewTicketTenant = () => {
         icon: "error",
         title: "Error downloading file",
         showConfirmButton: true,
-        confirmButtonColor: "#707c4f"
+        confirmButtonColor: "#707c4f",
       });
     }
   };
@@ -190,34 +190,37 @@ const ViewTicketTenant = () => {
             <Grid container spacing={1}>
               <Grid item xs={12}>
                 <TextField
-                className="view-ticket-textfield"
-                id="view-ticket-reject-reason-textfield"
-                multiline='true'
-                label='Reason for Reject'
-                variant="filled"
-                onChange={(e) => setRejectComments(e.target.value)}
-                value={rejectComments}/>
+                  className="view-ticket-textfield"
+                  id="view-ticket-reject-reason-textfield"
+                  multiline="true"
+                  label="Reason for Reject"
+                  variant="filled"
+                  onChange={(e) => setRejectComments(e.target.value)}
+                  value={rejectComments}
+                />
               </Grid>
               <Grid item xs={12}>
                 <Button
-                id="view-ticket-reject-reason-submit-button"
-                variant="contained"
-                type="submit"
-                className="view-ticket-button">
+                  id="view-ticket-reject-reason-submit-button"
+                  variant="contained"
+                  type="submit"
+                  className="view-ticket-button"
+                >
                   Submit
                 </Button>
               </Grid>
               <Grid item xs={12}>
                 <Button
-                id="view-ticket-reject-reason-cancel-button"
-                variant="contained"
-                className="view-ticket-button"
-                onClick={handleCancel}>
+                  id="view-ticket-reject-reason-cancel-button"
+                  variant="contained"
+                  className="view-ticket-button"
+                  onClick={handleCancel}
+                >
                   Cancel
                 </Button>
               </Grid>
             </Grid>
-          </form>   
+          </form>
         </div>
       );
     }
@@ -242,29 +245,32 @@ const ViewTicketTenant = () => {
               <Grid container spacing={1}>
                 <Grid item xs={12}>
                   <TextField
-                  className="view-ticket-textfield"
-                  id="view-ticket-feedback-textfield"
-                  multiline='true'
-                  label='Comment'
-                  variant="filled"
-                  onChange={(e) => setSuccessComments(e.target.value)}
-                  value={successComments}/>
+                    className="view-ticket-textfield"
+                    id="view-ticket-feedback-textfield"
+                    multiline="true"
+                    label="Comment"
+                    variant="filled"
+                    onChange={(e) => setSuccessComments(e.target.value)}
+                    value={successComments}
+                  />
                 </Grid>
                 <Grid item xs={12}>
                   <Button
-                  id="view-ticket-submit-feedback-button"
-                  variant="contained"
-                  type="submit"
-                  className="view-ticket-button">
+                    id="view-ticket-submit-feedback-button"
+                    variant="contained"
+                    type="submit"
+                    className="view-ticket-button"
+                  >
                     Submit Feedback
                   </Button>
                 </Grid>
                 <Grid item xs={12}>
                   <Button
-                  id="view-ticket-cancel-feedback-button"
-                  variant="contained"
-                  className="view-ticket-button"
-                  onClick={handleCancel}>
+                    id="view-ticket-cancel-feedback-button"
+                    variant="contained"
+                    className="view-ticket-button"
+                    onClick={handleCancel}
+                  >
                     Cancel
                   </Button>
                 </Grid>
@@ -281,29 +287,32 @@ const ViewTicketTenant = () => {
               <Grid container spacing={1}>
                 <Grid item xs={12}>
                   <TextField
-                  className="view-ticket-textfield"
-                  id="view-ticket-reject-reason-textfield"
-                  multiline='true'
-                  label='Reason'
-                  variant="filled"
-                  onChange={(e) => setRejectComments(e.target.value)}
-                  value={rejectComments}/>
+                    className="view-ticket-textfield"
+                    id="view-ticket-reject-reason-textfield"
+                    multiline="true"
+                    label="Reason"
+                    variant="filled"
+                    onChange={(e) => setRejectComments(e.target.value)}
+                    value={rejectComments}
+                  />
                 </Grid>
                 <Grid item xs={12}>
                   <Button
-                  id="view-ticket-submit-reject-reason-button"
-                  variant="contained"
-                  type="submit"
-                  className="view-ticket-button">
+                    id="view-ticket-submit-reject-reason-button"
+                    variant="contained"
+                    type="submit"
+                    className="view-ticket-button"
+                  >
                     Submit Feedback
                   </Button>
                 </Grid>
                 <Grid item xs={12}>
                   <Button
-                  id="view-ticket-cancel-reject-reason-textfield"
-                  variant="contained"
-                  className="view-ticket-button"
-                  onClick={handleCancel}>
+                    id="view-ticket-cancel-reject-reason-textfield"
+                    variant="contained"
+                    className="view-ticket-button"
+                    onClick={handleCancel}
+                  >
                     Cancel
                   </Button>
                 </Grid>
@@ -358,7 +367,7 @@ const ViewTicketTenant = () => {
         icon: "success",
         title: "Quotation accepted",
         showConfirmButton: true,
-        confirmButtonColor: "#707c4f"
+        confirmButtonColor: "#707c4f",
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -370,7 +379,7 @@ const ViewTicketTenant = () => {
         title: "Error accepting Quotation",
         showConfirmButton: true,
         confirmButtonColor: "#707c4f",
-        text: error.message
+        text: error.message,
       });
     }
   };
@@ -410,7 +419,7 @@ const ViewTicketTenant = () => {
         icon: "success",
         title: "Quotation rejected",
         showConfirmButton: true,
-        confirmButtonColor: "#707c4f"
+        confirmButtonColor: "#707c4f",
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -422,7 +431,7 @@ const ViewTicketTenant = () => {
         title: "Reject Quotation error",
         showConfirmButton: true,
         confirmButtonColor: "#707c4f",
-        text: error.message
+        text: error.message,
       });
     }
   };
@@ -483,7 +492,7 @@ const ViewTicketTenant = () => {
         icon: "success",
         title: "Feedback submitted",
         showConfirmButton: true,
-        confirmButtonColor: "#707c4f"
+        confirmButtonColor: "#707c4f",
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -495,7 +504,7 @@ const ViewTicketTenant = () => {
         title: "Error in submitting feedback",
         showConfirmButton: true,
         confirmButtonColor: "#707c4f",
-        text: error.message
+        text: error.message,
       });
     }
   };
@@ -530,7 +539,7 @@ const ViewTicketTenant = () => {
         icon: "success",
         title: "Feedback submitted",
         showConfirmButton: true,
-        confirmButtonColor: "#707c4f"
+        confirmButtonColor: "#707c4f",
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -542,7 +551,7 @@ const ViewTicketTenant = () => {
         title: "Error in submitting feedback",
         showConfirmButton: true,
         confirmButtonColor: "#707c4f",
-        text: error.message
+        text: error.message,
       });
     }
   };
@@ -557,10 +566,11 @@ const ViewTicketTenant = () => {
             </Grid>
             <Grid item xs={12}>
               <Button
-              id="view-ticket-delete-ticket-button"
-              onClick={() => handleDeleteTicket()}
-              variant="contained"
-              className="view-ticket-button">
+                id="view-ticket-delete-ticket-button"
+                onClick={() => handleDeleteTicket()}
+                variant="contained"
+                className="view-ticket-button"
+              >
                 Delete Ticket
               </Button>
             </Grid>
@@ -581,12 +591,13 @@ const ViewTicketTenant = () => {
             <Grid item xs={12}>
               <div className="view-ticvket-special-div">
                 <TextField
-                className="view-ticket-textfield"
-                multiline='true'
-                id="view-ticket-reject-reason-textfield"
-                label='Reason for Reject'
-                variant="filled"
-                value={serviceTicket.FeedbackComments}/>
+                  className="view-ticket-textfield"
+                  multiline="true"
+                  id="view-ticket-reject-reason-textfield"
+                  label="Reason for Reject"
+                  variant="filled"
+                  value={serviceTicket.FeedbackComments}
+                />
               </div>
             </Grid>
           </Grid>
@@ -626,22 +637,26 @@ const ViewTicketTenant = () => {
             <Grid item xs={12}>
               {showQuotationButtons && (
                 <div class="button-group">
-                  <Grid container spacing={1} >
+                  <Grid container spacing={1}>
                     <Grid item xs={12}>
                       <Button
-                      id="view-ticket-accept-quotation-button"
-                      variant="contained"
-                      onClick={() => handleAcceptQuotation()}
-                      className="view-ticket-button">
+                        id="view-ticket-accept-quotation-button"
+                        variant="contained"
+                        onClick={() => handleAcceptQuotation()}
+                        className="view-ticket-button"
+                      >
                         Accept Quotation
                       </Button>
                     </Grid>
                     <Grid item xs={12}>
                       <Button
-                      id="view-ticket-accept-quotation-button"
-                      variant="contained"
-                      className="view-ticket-button"
-                      onClick={() => handleQuotationAcceptRejectClick("reject")}>
+                        id="view-ticket-reject-quotation-button"
+                        variant="contained"
+                        className="view-ticket-button"
+                        onClick={() =>
+                          handleQuotationAcceptRejectClick("reject")
+                        }
+                      >
                         Reject Quotation
                       </Button>
                     </Grid>
@@ -653,12 +668,12 @@ const ViewTicketTenant = () => {
           </Grid>
           <Grid item xs={6}>
             {quotationRequired && (
-                <div class="quotation">
-                  <DisplayQuotation
-                    ServiceRequestID={serviceTicket.ServiceRequestID}
-                  />
-                </div>
-              )}
+              <div class="quotation">
+                <DisplayQuotation
+                  ServiceRequestID={serviceTicket.ServiceRequestID}
+                />
+              </div>
+            )}
           </Grid>
         </Grid>
       </div>
@@ -676,20 +691,23 @@ const ViewTicketTenant = () => {
             <p></p>
             <Grid item xs={12}>
               <TextField
-              className="view-ticket-textfield"
-              id="outlined-basic"
-              multiline='true'
-              label ="Reason for Rejection"
-              variant="filled"
-              value={serviceTicket.FeedbackComments}
-              InputProps={{readOnly: true,}}/>
+                className="view-ticket-textfield"
+                id="outlined-basic"
+                multiline="true"
+                label="Reason for Rejection"
+                variant="filled"
+                value={serviceTicket.FeedbackComments}
+                InputProps={{ readOnly: true }}
+              />
             </Grid>
             <Grid item xs={12}>
               <AssignedToCard staff={staff} />
             </Grid>
           </Grid>
           <Grid item xs={6}>
-            <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+            <DisplayQuotation
+              ServiceRequestID={serviceTicket.ServiceRequestID}
+            />
           </Grid>
         </Grid>
       </div>
@@ -709,7 +727,9 @@ const ViewTicketTenant = () => {
             </Grid>
           </Grid>
           <Grid item xs={6}>
-          <DisplayQuotation ServiceRequestID={serviceTicket.ServiceRequestID} />
+            <DisplayQuotation
+              ServiceRequestID={serviceTicket.ServiceRequestID}
+            />
           </Grid>
         </Grid>
       </div>
@@ -759,19 +779,21 @@ const ViewTicketTenant = () => {
                   <Grid container spacing={1} columnSpacing={0}>
                     <Grid item xs={12}>
                       <Button
-                      id="view-ticket-feedback-button"
-                      variant="contained"
-                      onClick={() => handleFeedbackClick("feedback")}
-                      className="view-ticket-button">
+                        id="view-ticket-feedback-button"
+                        variant="contained"
+                        onClick={() => handleFeedbackClick("feedback")}
+                        className="view-ticket-button"
+                      >
                         Give Feedback
                       </Button>
                     </Grid>
                     <Grid item xs={12}>
                       <Button
-                      id="view-ticket-reject-button"
-                      variant="contained"
-                      className="view-ticket-button"
-                      onClick={() => handleFeedbackClick("reject")}>
+                        id="view-ticket-reject-button"
+                        variant="contained"
+                        className="view-ticket-button"
+                        onClick={() => handleFeedbackClick("reject")}
+                      >
                         Not Satisfied
                       </Button>
                     </Grid>
@@ -806,13 +828,14 @@ const ViewTicketTenant = () => {
             <p></p>
             <Grid item xs={12}>
               <TextField
-              className="view-ticket-textfield"
-              id="outlined-basic"
-              multiline='true'
-              label ="Reason for Rejection"
-              variant="filled"
-              value={serviceTicket.FeedbackComments}
-              InputProps={{readOnly: true,}}/>
+                className="view-ticket-textfield"
+                id="outlined-basic"
+                multiline="true"
+                label="Reason for Rejection"
+                variant="filled"
+                value={serviceTicket.FeedbackComments}
+                InputProps={{ readOnly: true }}
+              />
             </Grid>
             <Grid item xs={12}>
               <AssignedToCard staff={staff} />
@@ -845,8 +868,8 @@ const ViewTicketTenant = () => {
             </Grid>
             <Grid item xs={12}>
               <ViewFinalFeedbackDetails
-              rating={serviceTicket.FeedbackRating}
-              comments={serviceTicket.FeedbackComments}
+                rating={serviceTicket.FeedbackRating}
+                comments={serviceTicket.FeedbackComments}
               />
             </Grid>
           </Grid>
@@ -864,8 +887,6 @@ const ViewTicketTenant = () => {
             )}
           </Grid>
         </Grid>
-
-        
       </div>
     );
   }
