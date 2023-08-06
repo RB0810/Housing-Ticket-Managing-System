@@ -346,7 +346,7 @@ export default function StaffPortal() {
                     <Link to={`${getViewTicketsRoute()}/${StaffID}/${ticket.ServiceRequestID}`}>
                       <Button 
                       variant="contained" 
-                      id={ticket.id}>
+                      id={ticket.Name}>
                         View Ticket
                       </Button>
                     </Link>

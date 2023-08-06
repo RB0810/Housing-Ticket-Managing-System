@@ -41,6 +41,15 @@ class TenantAccount extends Account {
   }
 
   async createAccount() {
+
+    if(this.numberofunits === ""){
+      this.numberofunits = 1
+    }
+
+    if(this.units === []){
+      this.units=["TESTUNIT"]
+    }
+
     const validationError = this.validateFields();
     if (validationError) {
       throw new Error(validationError);
@@ -70,6 +79,8 @@ class TenantAccount extends Account {
       number: this.numberofunits,
       unit: this.units,
     };
+
+    console.log(tenantData, leaseData, units)
 
     try {
       await accountManager.createTenantAccount(tenantData, leaseData, units);

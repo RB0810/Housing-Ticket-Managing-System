@@ -35,18 +35,33 @@ function setup(){
     }
 
 describe("Testing if routing works for supervisor portal",()=>{
+        // beforeEach(() => {
+        //     Cookies.get.mockImplementation((key) => {
+        //     switch (key) {
+        //         case 'userId':
+        //         return '123';  // The ID must match with TenantID
+        //         case 'type':
+        //         return 'Tenant';  // The user type must be "Tenant"
+        //         default:
+        //         return null;
+        //     }
+        //     });
+        // });
+
         beforeEach(() => {
+            const SHA256 = require('crypto-js').SHA256;
+            console.log('After test is called');
             Cookies.get.mockImplementation((key) => {
-            switch (key) {
+              switch (key) {
                 case 'userId':
-                return '123';  // The ID must match with TenantID
+                  return SHA256('123').toString(); // The ID must match with TenantID
                 case 'type':
-                return 'Tenant';  // The user type must be "Tenant"
+                  return 'Tenant'; // The user type must be "Tenant"
                 default:
-                return null;
-            }
+                  return null;
+              }
             });
-        });
+          });
     
         test("Test if can route to pending tickets",async ()=>{
             const {router} = setup()

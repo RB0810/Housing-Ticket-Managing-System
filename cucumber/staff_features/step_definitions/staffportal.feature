@@ -32,7 +32,7 @@ Feature: Staff Portal
         Then Pending Ticket is rendered
 
     Scenario: View All Closed Tickets
-        Given Staff clicks on Closed tickets button
+        Given Staff clicks on view Closed tickets button
         Then Closed tickets Page is rendered
 
     Scenario: View Closed Ticket

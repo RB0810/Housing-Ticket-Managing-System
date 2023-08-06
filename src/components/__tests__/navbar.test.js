@@ -32,8 +32,7 @@ describe("We test if the navigation bar directs users to the selected pages",()=
         fireEvent.click(housing)
         expect(screen.getByText("Tenant Account")).toBeInTheDocument()
     })
-
-    test("Click Landlord Login brings you to Landlord Login Page", ()=>{
+    test("Click on Landlord login brings you to the landing page",()=>{
         render(<MockNavBar/>)
         const landlord = screen.getByText("Landlord Login")
         fireEvent.click(landlord)

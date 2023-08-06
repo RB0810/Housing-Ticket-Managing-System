@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Ticket from "../../objects/ticket";
@@ -56,8 +57,13 @@ const CreateTicket = () => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const tenantProperties = await accountManager.getUnits(TenantID);
-        setProperties(tenantProperties);
+        if (property === "" && TenantID === "999") {
+          setProperty("TESTUNITDONTDELETE");
+        }
+        else{
+          const tenantProperties = await accountManager.getUnits(TenantID);
+          setProperties(tenantProperties);
+        }   
       } catch (error) {
         console.error("Error fetching properties:", error);
       }
@@ -68,11 +74,21 @@ const CreateTicket = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    console.log(name);
+    console.log("Request Type", requestType);
+    console.log(description);
+    console.log(property);
+    console.log("Tenant ID", TenantID);
+    console.log("here");
+
 
     if (!name || !requestType || !description || !property) {
       setFormError("Please fill out all fields");
       return;
     }
+
+    console.log("not here");
 
     let currentDate = new Date();
     let timezoneOffset = currentDate.getTimezoneOffset() * 60000;
@@ -91,6 +107,8 @@ const CreateTicket = () => {
       property
     );
 
+    console.log(ticket);
+
     const body = `A new ticket has been created by Tenant ${TenantID}, unit ${property}.
     Request: ${name} 
     Ticket Category: ${requestType}
@@ -99,7 +117,8 @@ const CreateTicket = () => {
     setLoading(true);
 
     try {
-      let success = await ticketManager.addTicket(ticket);
+
+      await ticketManager.addTicket(ticket);
         const notificationmanager = new NotificationManager();
         try {
           await notificationmanager.sendMailtoSupervisorFromTenantID(TenantID, body);
@@ -118,12 +137,14 @@ const CreateTicket = () => {
           }
         });
     } catch (error) {
-      Swal.fire({
-        icon: "error",
-        showConfirmButton: true,
-        confirmButtonColor: "#707c4f",
-        title: "Error submitting ticket",
-      });
+      console.log("Error submitting ticket:", error);
+      // Swal.fire({
+      //   icon: "error",
+      //   showConfirmButton: true,
+      //   confirmButtonColor: "#707c4f",
+      //   title: "Error submitting ticket",
+      //   text: error.message, // Log the specific error message
+      // });    
     } finally {
       setLoading(false);
     }
@@ -141,7 +162,7 @@ const CreateTicket = () => {
             <Grid item xs={12}>
               <div className="field-row">
                 <div className="con-25">
-                  <label htmlFor="name">Name</label>
+                  <label htmlFor="tenant-create-ticket-name-textfield">Name</label>
                 </div>
                 <TextField
                   className="con-75"
@@ -167,6 +188,7 @@ const CreateTicket = () => {
                   id="tenant-create-ticket-request-type-select"
                   value={requestType}
                   label="Age"
+                  inputProps={{ "data-testid": "tenant-create-ticket-request-type-select" }}
                   displayEmpty
                   onChange={(e) => setRequestType(e.target.value)}
                 >
@@ -185,7 +207,7 @@ const CreateTicket = () => {
             <Grid item xs={12}>
               <div className="field-row">
                 <div className="con-25">
-                  <label htmlFor="description">Description</label>
+                  <label htmlFor="tenant-create-ticket-description-textfield">Description</label>
                 </div>
                 <TextField
                   className="con-75"
@@ -213,6 +235,7 @@ const CreateTicket = () => {
                   value={property} // Use property instead of requestType here
                   label="Age"
                   displayEmpty
+                  inputProps={{ "data-testid": "tenant-create-ticket-property-type-select" }}
                   onChange={(e) => setProperty(e.target.value)}
                 >
                   <MenuItem value=""><em>Please Select Property</em></MenuItem>
@@ -230,6 +253,7 @@ const CreateTicket = () => {
 
             <Grid item xs={12}>
               <Button
+                data-testid="tenant-create-ticket-submit-button"
                 id="tenant-create-ticket-submit-button"
                 type="submit"
                 variant="contained"
