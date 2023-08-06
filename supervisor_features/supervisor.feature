@@ -18,11 +18,14 @@ Scenario: Create Tenant account
     Scenario: Click on Pending tickets
         When I click on Pending tickets
         Then I am redirected to the view pending tickets page
+        And I should see the list of pending tickets
 
     Scenario: Click on Active tickets
         When I click on Active tickets
         Then I am redirected to the view active tickets page
+        And I should see the list of active tickets
 
     Scenario: Click on Closed tickets
         When I click on Closed tickets
         Then I am redirected to the view closed tickets page
+        And I should see the list of closed tickets

@@ -13,99 +13,100 @@ let driver;
 
 // create new tickets for supervisor account
 BeforeAll(async function () {
-    // supervisor does not need to see tickets created for testing
 
-    // let { data, error } = await supabase // Create a new ticket
-    //     .from("Service Request")
-    //     .insert([
-    //         {
-    //             ServiceRequestID: 999990,
-    //             Name: "TESTINGTICKETJEST",
-    //             TenantID: 999,
-    //             PARCStatus: "PENDING",
-    //             SubmittedDateTime: "2021-04-01 00:00:00",
-    //             Category: "TESTINGCATEGORYJEST",
-    //         },
-    //     ])
-    //     .select();
-    // if (error) {
-    //     throw error;
-    // } else {
-    //     console.log("Created a new PENDING ticket for testing.");
-    // }
+    let { data, error } = await supabase // Create a new ticket
+        .from("Service Request")
+        .insert([
+            {
+                ServiceRequestID: 999990,
+                Name: "TESTINGTICKETJEST",
+                TenantID : 999,
+                SupervisorID: 999,
+                PARCStatus: "PENDING",
+                SubmittedDateTime: "2021-04-01 00:00:00",
+                Category: "TESTINGCATEGORYJEST",
+            },
+        ])
+        .select();
+    if (error) {
+        throw error;
+    } else {
+        console.log("Created a new PENDING ticket for testing.");
+    }
 
-    // let { data2, error2 } = await supabase // Create a new ticket
-    //     .from("Service Request")
-    //     .insert([
-    //         {
-    //             ServiceRequestID: 999991,
-    //             Name: "TESTINGTICKETJEST",
-    //             TenantID: 999,
-    //             PARCStatus: "ACTIVE",
-    //             SubmittedDateTime: "2021-04-01 00:00:00",
-    //             Category: "TESTINGCATEGORYJEST",
-    //         },
-    //     ])
-    //     .select();
-    // if (error2) {
-    //     throw error2;
-    // } else {
-    //     console.log("Created a new ACTIVE ticket for testing.");
-    // }
+    let { data2, error2 } = await supabase // Create a new ticket
+        .from("Service Request")
+        .insert([
+            {
+                ServiceRequestID: 999991,
+                Name: "TESTINGTICKETJEST",
+                TenantID : 999,
+                SupervisorID: 999,
+                PARCStatus: "ACTIVE",
+                SubmittedDateTime: "2021-04-01 00:00:00",
+                Category: "TESTINGCATEGORYJEST",
+            },
+        ])
+        .select();
+    if (error2) {
+        throw error2;
+    } else {
+        console.log("Created a new ACTIVE ticket for testing.");
+    }
 
-    // let { data3, error3 } = await supabase // Create a new ticket
-    //     .from("Service Request")
-    //     .insert([
-    //         {
-    //             ServiceRequestID: 999992,
-    //             Name: "TESTINGTICKETJEST",
-    //             TenantID: 999,
-    //             PARCStatus: "CLOSED",
-    //             SubmittedDateTime: "2021-04-01 00:00:00",
-    //             Category: "TESTINGCATEGORYJEST",
-    //         },
-    //     ])
-    //     .select();
-    // if (error3) {
-    //     throw error3;
-    // } else {
-    //     console.log("Created a new CLOSED ticket for testing.");
-    // }
+    let { data3, error3 } = await supabase // Create a new ticket
+        .from("Service Request")
+        .insert([
+            {
+                ServiceRequestID: 999992,
+                Name: "TESTINGTICKETJEST",
+                TenantID : 999,
+                SupervisorID: 999,
+                PARCStatus: "CLOSED",
+                SubmittedDateTime: "2021-04-01 00:00:00",
+                Category: "TESTINGCATEGORYJEST",
+            },
+        ])
+        .select();
+    if (error3) {
+        throw error3;
+    } else {
+        console.log("Created a new CLOSED ticket for testing.");
+    }
 });
 
 
 AfterAll(async function () {
-    // supervisor does not need to see the tickets created for testing
 
-    // let { data, error } = await supabase // Delete Created Tickets
-    //     .from("Service Request")
-    //     .delete()
-    //     .match({ ServiceRequestID: 999990 });
-    // if (error) {
-    //     throw error;
-    // } else {
-    //     console.log("Deleted PENDING ticket for testing.");
-    // }
+    let { data, error } = await supabase // Delete Created Tickets
+        .from("Service Request")
+        .delete()
+        .match({ ServiceRequestID: 999990 });
+    if (error) {
+        throw error;
+    } else {
+        console.log("Deleted PENDING ticket for testing.");
+    }
 
-    // let { data2, error2 } = await supabase // Delete Created Tickets
-    //     .from("Service Request")
-    //     .delete()
-    //     .match({ ServiceRequestID: 999991 });
-    // if (error2) {
-    //     throw error2;
-    // } else {
-    //     console.log("Deleted ACTIVE ticket for testing.");
-    // }
+    let { data2, error2 } = await supabase // Delete Created Tickets
+        .from("Service Request")
+        .delete()
+        .match({ ServiceRequestID: 999991 });
+    if (error2) {
+        throw error2;
+    } else {
+        console.log("Deleted ACTIVE ticket for testing.");
+    }
 
-    // let { data3, error3 } = await supabase // Delete Created Tickets
-    //     .from("Service Request")
-    //     .delete()
-    //     .match({ ServiceRequestID: 999992 });
-    // if (error3) {
-    //     throw error3;
-    // } else {
-    //     console.log("Deleted CLOSED ticket for testing.");
-    // }
+    let { data3, error3 } = await supabase // Delete Created Tickets
+        .from("Service Request")
+        .delete()
+        .match({ ServiceRequestID: 999992 });
+    if (error3) {
+        throw error3;
+    } else {
+        console.log("Deleted CLOSED ticket for testing.");
+    }
 
     const { error4 } = await supabase
         .from('TenantUsers')
@@ -231,6 +232,12 @@ Then('I am redirected to the view pending tickets page', async function () {
     assert.equal(await driver.getCurrentUrl(), "http://localhost:3000/supervisorportal/tickets/999/pending");
 });
 
+Then('I should see the list of pending tickets', async function () {
+    await driver.wait(until.elementLocated(By.className("MuiTable-root")), 3000);
+    let table = await driver.findElement(By.className("MuiTable-root"));
+    let table_rows = await table.findElements(By.tagName("tr"));
+    assert.equal(table_rows.length, 2);
+  });
 
 When('I click on Active tickets', async function () {
     await driver.get("http://localhost:3000/supervisorportal/landingpage/999");
@@ -245,6 +252,13 @@ Then('I am redirected to the view active tickets page', async function () {
     assert.equal(await driver.getCurrentUrl(), "http://localhost:3000/supervisorportal/tickets/999/active");
 });
 
+Then('I should see the list of active tickets', async function () {
+    await driver.wait(until.elementLocated(By.className("MuiTable-root")), 3000);
+    let table = await driver.findElement(By.className("MuiTable-root"));
+    let table_rows = await table.findElements(By.tagName("tr"));
+    assert.equal(table_rows.length, 2);
+  });
+
 When('I click on Closed tickets', async function () {
     await driver.get("http://localhost:3000/supervisorportal/landingpage/999");
     assert.equal(await driver.getCurrentUrl(), "http://localhost:3000/supervisorportal/landingpage/999");
@@ -252,6 +266,13 @@ When('I click on Closed tickets', async function () {
     let closed_tickets_button = await driver.findElement(By.id("view-closed"))
     await closed_tickets_button.click();
 });
+
+Then('I should see the list of closed tickets', async function () {
+    await driver.wait(until.elementLocated(By.className("MuiTable-root")), 3000);
+    let table = await driver.findElement(By.className("MuiTable-root"));
+    let table_rows = await table.findElements(By.tagName("tr"));
+    assert.equal(table_rows.length, 2);
+  });
 
 Then('I am redirected to the view closed tickets page', async function () {
     await driver.wait(until.urlIs("http://localhost:3000/supervisorportal/tickets/999/closed"), 1000);
