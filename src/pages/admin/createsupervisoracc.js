@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import "../../styles/createaccount.css";
 import SupervisorAccount from "../../objects/SupervisorAccount";
@@ -81,7 +82,7 @@ const CreateSupervisor = () => {
             <Grid container spacing={1}>
               <Grid item xs = {12}>
               <div className="create-supervisor-acc-col25">
-                <label htmlFor="username">Supervisor Username:</label>
+                <label htmlFor="create-supervisor-username-textfield">Supervisor Username:</label>
               </div>
                 <TextField 
                 className="create-supervisor-acc-textfield"
@@ -93,7 +94,7 @@ const CreateSupervisor = () => {
               </Grid>
               <Grid item xs = {12}>
               <div className="create-supervisor-acc-col25">
-                <label htmlFor="email">Supervisor Email:</label>
+                <label htmlFor="create-supervisor-email-textfield">Supervisor Email:</label>
               </div>
                 <TextField 
                 className="create-supervisor-acc-textfield"
@@ -105,7 +106,7 @@ const CreateSupervisor = () => {
               </Grid>
               <Grid item xs = {12}>
               <div className="create-supervisor-acc-col25">
-                <label htmlFor="password">Enter Password:</label>
+                <label htmlFor="create-supervisor-password-textfield">Enter Password:</label>
               </div>
                 <TextField 
                 className="create-supervisor-acc-textfield"
@@ -117,7 +118,7 @@ const CreateSupervisor = () => {
               </Grid>
               <Grid item xs = {12}>
               <div className="create-supervisor-acc-col25">
-                <label htmlFor="rePassword">Re-enter Password:</label>
+                <label htmlFor="create-supervisor-repassword-textfield">Re-enter Password:</label>
               </div>
                 <TextField 
                 className="create-supervisor-acc-textfield"
@@ -129,7 +130,7 @@ const CreateSupervisor = () => {
               </Grid>
               <Grid item xs = {12}>
               <div className="create-supervisor-acc-col25">
-                <label htmlFor="phone">Supervisor Phone:</label>
+                <label htmlFor="create-supervisor-phone-number-textfield">Supervisor Phone:</label>
               </div>
                 <TextField 
                 className="create-supervisor-acc-textfield"
@@ -141,7 +142,7 @@ const CreateSupervisor = () => {
               </Grid>
               <Grid item xs = {12}>
               <div className="create-supervisor-acc-col25">
-                <label htmlFor="buildingName">Building Name:</label>
+                <label htmlFor="create-supervisor-building-name-textfield">Building Name:</label>
               </div>
                 <TextField 
                 className="create-supervisor-acc-textfield"
@@ -153,7 +154,7 @@ const CreateSupervisor = () => {
               </Grid>
               <Grid item xs = {12}>
               <div className="create-supervisor-acc-col25">
-                <label htmlFor="buildingAddress">Building Address:</label>
+                <label htmlFor="create-supervisor-building-address-textfield">Building Address:</label>
               </div>
                 <TextField 
                 className="create-supervisor-acc-textfield"
@@ -165,7 +166,7 @@ const CreateSupervisor = () => {
               </Grid>
               <Grid item xs = {12}>
               <div className="create-supervisor-acc-col25">
-                <label htmlFor="postalCode">Postal Code:</label>
+                <label htmlFor="create-supervisor-postal-code-textfield">Postal Code:</label>
               </div>
                 <TextField 
                 className="create-supervisor-acc-textfield"
@@ -177,6 +178,7 @@ const CreateSupervisor = () => {
               </Grid>
               <Grid item xs = {12}>
                 <Button
+                data-testid="create-supervisor-submit-button"
                 id="create-supervisor-submit-button"
                 onClick={handleSubmit}
                 variant="contained"
