@@ -1,6 +1,6 @@
 import "jsdom-global/register";
 import React from "react";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import CreateStaffAcc from "./createstaffacc"; 
 import supabase from "../../config/supabaseClient"; 
@@ -40,6 +40,17 @@ describe("CreateStaffAcc Component", () => {
 
     // Simulate the form submission
     fireEvent.click(screen.getByTestId("create-staff-submit-button"));
+
+    await waitFor(
+      async () => {
+        const { data } = await supabase.from("StaffUsers").select("*");
+        const newStaff = data.find(
+          (staff) => !originalStaffData.some((original) => original.StaffID === staff.StaffID)
+        );
+        return newStaff;
+      },
+      { interval: 1000, timeout: 10000 }
+    );
 
     const { data: updatedStaffData } = await supabase.from("StaffUsers").select("*");
     // After insertion the length should increase to 1
