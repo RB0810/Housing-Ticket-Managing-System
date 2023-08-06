@@ -1,4 +1,4 @@
-const { Given, When, Then, After, BeforeAll, AfterAll } = require("@cucumber/cucumber");
+const { Given, When, Then, BeforeAll, AfterAll } = require("@cucumber/cucumber");
 const { Builder, By, Key, until, Select } = require("selenium-webdriver");
 const assert = require("assert");
 const chrome = require("selenium-webdriver/chrome");
@@ -7,7 +7,7 @@ const { createClient } = require("@supabase/supabase-js");
 // supabase client
 const supabaseUrl = 'https://mnfsjgaziftztwiarlys.supabase.co'
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1uZnNqZ2F6aWZ0enR3aWFybHlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODY4MjkwODgsImV4cCI6MjAwMjQwNTA4OH0.Mrvmdish7OlO5-m1WIZTNwVFUnEcF7aoHE53ZVwiOY8'
-const supabase = createClient(supabaseUrl, supabaseKey)
+const supabase = createClient(supabaseUrl, supabaseKey, { persistSession: false });
 
 let driver;
 
@@ -122,16 +122,17 @@ When('I enter valid credentials', async function () {
     emailfield.sendKeys("testsupervisor@gmail.com")
     const passwordfield = await driver.findElement(By.id("landlord-login-password-textfield"))
     passwordfield.sendKeys("testsupervisor123")
+    console.log(driver.getCurrentUrl())
 });
 
 When('click on the login button', async function () {
     let login_button = await driver.findElement(By.id("landlord-login-button"))
     login_button.click();
-    driver.wait(until.urlIs("http://localhost:3000/supervisorportal/landingpage/999"), 10000);
 });
 
 Then('I should be redirected to Supervisor portal landing page', async function () {
-    driver.wait(until.urlIs("http://localhost:3000/supervisorportal/landingpage/999"), 10000);
+    const expected_url = "http://localhost:3000/supervisorportal/landingpage/999"
+    await driver.wait(until.urlIs(expected_url), 1000);
     assert.equal(
         await driver.getCurrentUrl(),
         "http://localhost:3000/supervisorportal/landingpage/999");
@@ -144,61 +145,100 @@ Given('I am at the Supervisor Portal landing page', async function () {
         "http://localhost:3000/supervisorportal/landingpage/999");
 });
 
-When('I click on Create Tenant Account', function () {
-    driver.wait(until.elementLocated(By.id("create-tenant-account-button")), 10000);
-    let create_tenant_account_button = driver.findElement(By.id("create-tenant-account-button"))
-    create_tenant_account_button.click();
+When('I click on Create Tenant Account', async function () {
+    await driver.wait(until.elementLocated(By.id("create-tenant-button")), 1000);
+    let create_tenant_account_button = driver.findElement(By.id("create-tenant-button"))
+    await create_tenant_account_button.click();
 });
 
 
-Then('I should be redirected to the Create Tenant Account page', function () {
+Then('I should be redirected to the Create Tenant Account page', async function () {
+    await driver.wait(until.urlIs("http://localhost:3000/supervisorportal/createtennantacc/999"), 1000);
+    assert.equal(await driver.getCurrentUrl(), "http://localhost:3000/supervisorportal/createtennantacc/999");
+});
+
+
+Given('I am in the Create Tenant account page', async function () {
+    assert.equal(
+        await driver.getCurrentUrl(),
+        "http://localhost:3000/supervisorportal/createtennantacc/999"
+    );
+});
+
+When('I fill in all required Tenant details', async function () {
+    const usernamefield = await driver.findElement(By.id("supervisor-portal-create-tenant-username-textfield"));
+    usernamefield.sendKeys('testtenant998');
+    const emailfield = await driver.findElement(By.id("supervisor-portal-create-tenant-email-textfield"));
+    emailfield.sendKeys('testtenant998@gmail.com');
+    const passwordfield = await driver.findElement(By.id("supervisor-portal-create-tenant-password-textfield"));
+    passwordfield.sendKeys('password123');
+    const confirmpasswordfield = await driver.findElement(By.id("supervisor-portal-create-tenant-repassword-textfield"));
+    confirmpasswordfield.sendKeys('password123');
+    const phonefield = await driver.findElement(By.id("supervisor-portal-create-tenant-phone-number-textfield"));
+    phonefield.sendKeys('3757');
+    const tradetypefield = await driver.findElement(By.id("supervisor-portal-create-tenant-trade-type-textfield"));
+    tradetypefield.sendKeys('test trade');
+    const monthlyrentalfield = await driver.findElement(By.id("supervisor-portal-create-monthly-rent-textfield"));
+    monthlyrentalfield.sendKeys('999');
+    const commencementdatefield = await driver.findElement(By.id("supervisor-portal-create-tenant-commencement-date-textfield"));
+    commencementdatefield.sendKeys('2023-08-05');
+    const terminationdatefield = await driver.findElement(By.id("supervisor-portal-create-tenant-termination-date-textfield"));
+    terminationdatefield.sendKeys('2023-08-06');
+    const unitareatextfield = await driver.findElement(By.id("supervisor-portal-create-tenant-unit-area-textfield"));
+    unitareatextfield.sendKeys('999');
+    const numberofunitstextfield = await driver.findElement(By.id("supervisor-portal-create-tenant-number-of-units-textfield"));
+    numberofunitstextfield.sendKeys('1');
+    const unitnumbertextfield = await driver.findElement(By.id("0"));
+    unitnumbertextfield.sendKeys("test unit 999");
+
+});
+
+When('I click on the Create Tenant Account button', async function () {
+    await driver.wait(until.elementLocated(By.id("supervisor-portal-create-tenant-submit-button")), 1000);
+    let create_tenant_button = await driver.findElement(By.id("supervisor-portal-create-tenant-submit-button"))
+    create_tenant_button.click();
+});
+
+Then('I should receive a Tenant account created successfully alert', function () {
     // Write code here that turns the phrase above into concrete actions
     return 'pending';
 });
 
-
-Given('that I am on the Supevisor Portal Landing page', function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+When('I click on Pending tickets', async function () {
+    await driver.get("http://localhost:3000/supervisorportal/landingpage/999");
+    await driver.wait(until.elementLocated(By.id("view-pending")), 1000);
+    let pending_tickets_button = await driver.findElement(By.id("view-pending"))
+    await pending_tickets_button.click();
 });
 
-When('I click on Pending tickets', function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
-});
-
-Then('I am redirected to the view ticket page', function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+Then('I am redirected to the view pending tickets page', async function () {
+    await driver.wait(until.urlIs("http://localhost:3000/supervisorportal/tickets/999/pending"), 1000);
+    assert.equal(await driver.getCurrentUrl(), "http://localhost:3000/supervisorportal/tickets/999/pending");
 });
 
 
-Given('that I am on the Supervisor Portal Landing page', function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+When('I click on Active tickets', async function () {
+    await driver.get("http://localhost:3000/supervisorportal/landingpage/999");
+    assert.equal(await driver.getCurrentUrl(), "http://localhost:3000/supervisorportal/landingpage/999");
+    await driver.wait(until.elementLocated(By.id("view-active")), 1000);
+    let active_tickets_button = await driver.findElement(By.id("view-active"))
+    await active_tickets_button.click();
 });
 
-When('I click on Active tickets', function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+Then('I am redirected to the view active tickets page', async function () {
+    await driver.wait(until.urlIs("http://localhost:3000/supervisorportal/tickets/999/active"), 1000);
+    assert.equal(await driver.getCurrentUrl(), "http://localhost:3000/supervisorportal/tickets/999/active");
 });
 
-Then('I am redirected to the view ticket page', function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+When('I click on Closed tickets', async function () {
+    await driver.get("http://localhost:3000/supervisorportal/landingpage/999");
+    assert.equal(await driver.getCurrentUrl(), "http://localhost:3000/supervisorportal/landingpage/999");
+    await driver.wait(until.elementLocated(By.id("view-closed")), 1000);
+    let closed_tickets_button = await driver.findElement(By.id("view-closed"))
+    await closed_tickets_button.click();
 });
 
-Given('that I am on the Supevisor Portal Landing page', function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
-});
-
-When('I click on Closed tickets', function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
-});
-
-Then('I am redirected to the view ticket page', function () {
-    // Write code here that turns the phrase above into concrete actions
-    return 'pending';
+Then('I am redirected to the view closed tickets page', async function () {
+    await driver.wait(until.urlIs("http://localhost:3000/supervisorportal/tickets/999/closed"), 1000);
+    assert.equal(await driver.getCurrentUrl(), "http://localhost:3000/supervisorportal/tickets/999/closed");
 });
