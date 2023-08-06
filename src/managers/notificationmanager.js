@@ -1,6 +1,7 @@
 import emailjs from "emailjs-com";
 import supabase from "../config/supabaseClient";
 
+const toEmail = process.env.REACT_APP_EMAIL;
 
 class NotificationManager{
   async handleSendEmail(emailParams){
@@ -33,7 +34,7 @@ class NotificationManager{
         .eq("SupervisorID", supervisorID)
 
     const emailParams = {
-        to_email: supervisor[0].SupervisorEmail,
+        to_email: toEmail, //supervisor[0].SupervisorEmail,
         message: body,
       };
     console.log("I am here");
@@ -68,7 +69,7 @@ class NotificationManager{
       .eq("StaffID", staffID);
 
     const emailParams = {
-        to_email: staffDetails[0].StaffEmail,
+        to_email: toEmail, //staffDetails[0].StaffEmail,
         message: body,
       };
     console.log("I am here");
@@ -104,7 +105,7 @@ class NotificationManager{
       .eq("StaffID", staffID);
 
     const emailParams = {
-        to_email: staffDetails[0].StaffEmail,
+        to_email: toEmail, //staffDetails[0].StaffEmail,
         message: body,
       };
     console.log("I am here");
@@ -140,7 +141,7 @@ class NotificationManager{
       .eq("StaffID", staffID);
 
     const emailParams = {
-        to_email: staffDetails[0].StaffEmail,
+        to_email: toEmail, //staffDetails[0].StaffEmail,
         message: body,
       };
     console.log("I am here");
@@ -184,7 +185,7 @@ class NotificationManager{
       .eq("SupervisorID", supervisorID);
 
     const emailParams = {
-        to_email: [staffDetails[0].StaffEmail, supervisorDetails[0].SupervisorEmail],
+        to_email: toEmail, //[staffDetails[0].StaffEmail, supervisorDetails[0].SupervisorEmail],
         message: body,
       };
     console.log("I am here");
@@ -220,7 +221,7 @@ class NotificationManager{
       .eq("StaffID", staffID);
 
     const emailParams = {
-        to_email: staffDetails[0].StaffEmail,
+        to_email: toEmail, //staffDetails[0].StaffEmail,
         message: body,
       };
     console.log("I am here");
@@ -256,7 +257,7 @@ class NotificationManager{
       .eq("TenantID", tenantID);
 
     const emailParams = {
-        to_email: tenantDetails[0].TenantEmail,
+        to_email: toEmail, //tenantDetails[0].TenantEmail,
         message: body,
       };
     console.log("I am here");
@@ -291,7 +292,7 @@ class NotificationManager{
       .eq("TenantID", tenantID);
 
     const emailParams = {
-        to_email: tenantDetails[0].TenantEmail,
+        to_email: toEmail, //tenantDetails[0].TenantEmail,
         message: body,
       };
     console.log("I am here");
@@ -327,11 +328,78 @@ class NotificationManager{
       .eq("TenantID", tenantID);
 
     const emailParams = {
-        to_email: tenantDetails[0].TenantEmail,
+        to_email: toEmail, //tenantDetails[0].TenantEmail,
         message: body,
       };
     console.log("I am here");
     console.log(emailParams);
+    try {
+      const response = await emailjs.send(
+        "service_nklr1zv",
+        "template_776mx6q",
+        emailParams
+      );
+      console.log("Email sent successfully!", response);
+    } catch (error) {
+      console.error("Error sending email:", error);
+    }
+  }
+
+  async TicketRejectedNotif(ticketID, rejectComments){
+    emailjs.init("w8QvO03M79syyzy63");
+    let { data: ticketDetails } = await supabase
+      .from("Service Request")
+      .select("*")
+      .eq("ServiceRequestID", parseInt(ticketID));
+
+    const body = `Ticket ${ticketDetails[0].ServiceRequestID}, ${ticketDetails[0].Name} has been rejected by Supervisor.
+    Reason: ${rejectComments}.`;
+
+    const tenantID = ticketDetails[0].TenantID;
+
+    let { data: tenantDetails } = await supabase
+      .from("TenantUsers")
+      .select("*")
+      .eq("TenantID", tenantID);
+
+    const emailParams = {
+        to_email: toEmail, //tenantDetails[0].TenantEmail,
+        message: body,
+      };
+    console.log(emailParams);
+    try {
+      const response = await emailjs.send(
+        "service_nklr1zv",
+        "template_776mx6q",
+        emailParams
+      );
+      console.log("Email sent successfully!", response);
+    } catch (error) {
+      console.error("Error sending email:", error);
+    }
+  }
+
+  async sendOTP(TypeUpper, UserID, body){
+    const { data, error } = await supabase
+      .from(`${TypeUpper}Users`)
+      .select(`${TypeUpper}Email`)
+      .eq(`${TypeUpper}ID`, UserID);
+
+    if (error) {
+      throw error;
+    }
+
+    const user = data[0];
+    const emailID = user[`${TypeUpper}Email`];
+    console.log(emailID);
+
+    const emailParams = {
+      to_email: toEmail, //emailID,
+      message: body,
+    };
+
+    emailjs.init("w8QvO03M79syyzy63");
+
     try {
       const response = await emailjs.send(
         "service_nklr1zv",

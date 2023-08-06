@@ -19,7 +19,7 @@ import { Grid, Button, Select, MenuItem, OutlinedInput, TextField} from "@mui/ma
 const ViewTicketSupervisor = () => {
   const accountManager = new AccountManager();
   const ticketManager = new TicketManager();
-  //const notificationmanager = new NotificationManager();
+  const notificationmanager = new NotificationManager();
   let { ServiceRequestID } = useParams();
   const [serviceTicket, setServiceTicket] = useState([]);
   const [tenant, setTenant] = useState([]);
@@ -121,13 +121,13 @@ const ViewTicketSupervisor = () => {
 
       console.log(ServiceRequestID);
 
-      //const sendNotif = notificationmanager.TicketAssignNotif(ServiceRequestID, selectedStaff);
+      const sendNotif = notificationmanager.TicketAssignNotif(ServiceRequestID, selectedStaff);
 
       // Execute all promises concurrently using Promise.all
       await Promise.all([
         assignTicketPromise,
         updateStatusPromise,
-        //sendNotif
+        sendNotif
       ]);
 
       Swal.fire({
@@ -169,12 +169,14 @@ const ViewTicketSupervisor = () => {
         rejectComments
       );
 
+      const sendNotif = notificationmanager.TicketRejectedNotif(ServiceRequestID, rejectComments);
+
       // Execute all promises concurrently using Promise.all
       await Promise.all([
         rejectTicketPromise,
         updateStatusPromise,
         rejectTicketCommentsPromise,
-        //sendNotif
+        sendNotif
       ]);
       Swal.fire({
         icon: "success",

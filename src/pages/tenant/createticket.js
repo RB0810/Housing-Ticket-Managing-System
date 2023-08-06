@@ -117,14 +117,15 @@ const CreateTicket = () => {
     setLoading(true);
 
     try {
+
       await ticketManager.addTicket(ticket);
-        // const notificationmanager = new NotificationManager();
-        // try {
-        //   await notificationmanager.sendMailtoSupervisorFromTenantID(TenantID, body);
-        //   console.log("Mail sent");
-        // } catch (error) {
-        //   console.error("Mail sending error:", error);
-        // }
+        const notificationmanager = new NotificationManager();
+        try {
+          await notificationmanager.sendMailtoSupervisorFromTenantID(TenantID, body);
+          console.log("Mail sent");
+        } catch (error) {
+          console.error("Mail sending error:", error);
+        }
         Swal.fire({
           icon: "success",
           showConfirmButton: true,
