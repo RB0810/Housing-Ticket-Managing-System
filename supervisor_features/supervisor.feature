@@ -9,7 +9,7 @@ Feature: Supervisor Portal navigation
         When I click on Create Tenant Account
         Then I should be redirected to the Create Tenant Account page
 
-Scenario: Create Tenant account
+    Scenario: Create Tenant account
         Given I am in the Create Tenant account page
         When I fill in all required Tenant details
         And I click on the Create Tenant Account button
@@ -29,3 +29,9 @@ Scenario: Create Tenant account
         When I click on Closed tickets
         Then I am redirected to the view closed tickets page
         And I should see the list of closed tickets
+
+    Scenario: Assign Staff to ticket
+        When I view pending ticket
+        And I view the pending ticket details
+        And I assign a staff member to the ticket
+        Then I should receive a ticket assigned successfully alert

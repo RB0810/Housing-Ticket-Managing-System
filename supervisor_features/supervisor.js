@@ -20,11 +20,14 @@ BeforeAll(async function () {
             {
                 ServiceRequestID: 999990,
                 Name: "TESTINGTICKETJEST",
-                TenantID : 999,
+                TenantID: 999,
                 SupervisorID: 999,
+                Category: "Toilet",
                 PARCStatus: "PENDING",
+                Status: "Awaiting Review",
                 SubmittedDateTime: "2021-04-01 00:00:00",
                 Category: "TESTINGCATEGORYJEST",
+                Property: "TESTUNITDONTDELETE",
             },
         ])
         .select();
@@ -40,7 +43,7 @@ BeforeAll(async function () {
             {
                 ServiceRequestID: 999991,
                 Name: "TESTINGTICKETJEST",
-                TenantID : 999,
+                TenantID: 999,
                 SupervisorID: 999,
                 PARCStatus: "ACTIVE",
                 SubmittedDateTime: "2021-04-01 00:00:00",
@@ -60,7 +63,7 @@ BeforeAll(async function () {
             {
                 ServiceRequestID: 999992,
                 Name: "TESTINGTICKETJEST",
-                TenantID : 999,
+                TenantID: 999,
                 SupervisorID: 999,
                 PARCStatus: "CLOSED",
                 SubmittedDateTime: "2021-04-01 00:00:00",
@@ -111,7 +114,7 @@ AfterAll(async function () {
     const { error4 } = await supabase
         .from('TenantUsers')
         .delete()
-        .match({'TenantEmail': 'deletemetesttenant@gmail.com'})
+        .match({ 'TenantEmail': 'deletemetesttenant@gmail.com' })
     if (error4) {
         throw error4;
     } else {
@@ -237,7 +240,7 @@ Then('I should see the list of pending tickets', async function () {
     let table = await driver.findElement(By.className("MuiTable-root"));
     let table_rows = await table.findElements(By.tagName("tr"));
     assert.equal(table_rows.length, 2);
-  });
+});
 
 When('I click on Active tickets', async function () {
     await driver.get("http://localhost:3000/supervisorportal/landingpage/999");
@@ -257,7 +260,7 @@ Then('I should see the list of active tickets', async function () {
     let table = await driver.findElement(By.className("MuiTable-root"));
     let table_rows = await table.findElements(By.tagName("tr"));
     assert.equal(table_rows.length, 2);
-  });
+});
 
 When('I click on Closed tickets', async function () {
     await driver.get("http://localhost:3000/supervisorportal/landingpage/999");
@@ -272,9 +275,44 @@ Then('I should see the list of closed tickets', async function () {
     let table = await driver.findElement(By.className("MuiTable-root"));
     let table_rows = await table.findElements(By.tagName("tr"));
     assert.equal(table_rows.length, 2);
-  });
+});
 
 Then('I am redirected to the view closed tickets page', async function () {
     await driver.wait(until.urlIs("http://localhost:3000/supervisorportal/tickets/999/closed"), 1000);
     assert.equal(await driver.getCurrentUrl(), "http://localhost:3000/supervisorportal/tickets/999/closed");
+});
+
+
+When('I view pending ticket', async function () {
+    await driver.get("http://localhost:3000/supervisorportal/tickets/999/pending");
+    await driver.wait(until.urlIs("http://localhost:3000/supervisorportal/tickets/999/pending"), 2000);
+    assert.equal(await driver.getCurrentUrl(), "http://localhost:3000/supervisorportal/tickets/999/pending");
+});
+
+When('I view the pending ticket details', async function () {
+    await driver.wait(until.elementLocated(By.id("999990-button")), 1000);
+    let view_ticket_button = await driver.findElement(By.id("999990-button"))
+    await view_ticket_button.click();
+    await driver.wait(until.urlIs("http://localhost:3000/supervisorportal/ticket/999/999990"), 2000);
+    assert.equal(await driver.getCurrentUrl(), "http://localhost:3000/supervisorportal/ticket/999/999990");
+});
+
+
+When('I assign a staff member to the ticket', async function () {
+    await driver.wait(until.elementLocated(By.id("supervisor-portal-building-ID-select")), 2000);
+    let staff_select = await driver.findElement(By.id("supervisor-portal-building-ID-select"));
+    await staff_select.click();
+    await driver.wait(until.elementLocated(By.id("999")), 2000);
+    let staff_option = await driver.findElement(By.id("999"));
+    await staff_option.click();
+    await driver.wait(until.elementLocated(By.id("assignstaff-button")), 2000);
+    let assign_staff_button = await driver.findElement(By.id("assignstaff-button"));
+    await assign_staff_button.click();
+});
+
+
+Then('I should receive a ticket assigned successfully alert', async function () {
+    await driver.wait(until.elementLocated(By.className("swal2-confirm swal2-styled swal2-default-outline")), 2000);
+    let alert_button = await driver.findElement(By.className("swal2-confirm swal2-styled swal2-default-outline"))
+    alert_button.click();
 });
