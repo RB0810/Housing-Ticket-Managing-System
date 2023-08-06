@@ -74,7 +74,7 @@ describe("Create Tenant Component", () => {
       checkCondition();
     });
 
-  test("should create a new ticket", async () => {
+  test("should create tenant account", async () => {
 
     jest.setTimeout(90000);
 
