@@ -1,6 +1,8 @@
 import emailjs from "emailjs-com";
 import supabase from "../config/supabaseClient";
+require('dotenv').config();
 
+const toEmail = process.env.EMAIL;
 
 class NotificationManager{
   async handleSendEmail(emailParams){
@@ -33,7 +35,7 @@ class NotificationManager{
         .eq("SupervisorID", supervisorID)
 
     const emailParams = {
-        to_email: supervisor[0].SupervisorEmail,
+        to_email: toEmail, //supervisor[0].SupervisorEmail,
         message: body,
       };
     console.log("I am here");
@@ -68,7 +70,7 @@ class NotificationManager{
       .eq("StaffID", staffID);
 
     const emailParams = {
-        to_email: staffDetails[0].StaffEmail,
+        to_email: toEmail, //staffDetails[0].StaffEmail,
         message: body,
       };
     console.log("I am here");
@@ -104,7 +106,7 @@ class NotificationManager{
       .eq("StaffID", staffID);
 
     const emailParams = {
-        to_email: staffDetails[0].StaffEmail,
+        to_email: toEmail, //staffDetails[0].StaffEmail,
         message: body,
       };
     console.log("I am here");
@@ -140,7 +142,7 @@ class NotificationManager{
       .eq("StaffID", staffID);
 
     const emailParams = {
-        to_email: staffDetails[0].StaffEmail,
+        to_email: toEmail, //staffDetails[0].StaffEmail,
         message: body,
       };
     console.log("I am here");
@@ -184,7 +186,7 @@ class NotificationManager{
       .eq("SupervisorID", supervisorID);
 
     const emailParams = {
-        to_email: [staffDetails[0].StaffEmail, supervisorDetails[0].SupervisorEmail],
+        to_email: toEmail, //[staffDetails[0].StaffEmail, supervisorDetails[0].SupervisorEmail],
         message: body,
       };
     console.log("I am here");
@@ -220,7 +222,7 @@ class NotificationManager{
       .eq("StaffID", staffID);
 
     const emailParams = {
-        to_email: staffDetails[0].StaffEmail,
+        to_email: toEmail, //staffDetails[0].StaffEmail,
         message: body,
       };
     console.log("I am here");
@@ -256,7 +258,7 @@ class NotificationManager{
       .eq("TenantID", tenantID);
 
     const emailParams = {
-        to_email: tenantDetails[0].TenantEmail,
+        to_email: toEmail, //tenantDetails[0].TenantEmail,
         message: body,
       };
     console.log("I am here");
@@ -291,7 +293,7 @@ class NotificationManager{
       .eq("TenantID", tenantID);
 
     const emailParams = {
-        to_email: tenantDetails[0].TenantEmail,
+        to_email: toEmail, //tenantDetails[0].TenantEmail,
         message: body,
       };
     console.log("I am here");
@@ -327,7 +329,7 @@ class NotificationManager{
       .eq("TenantID", tenantID);
 
     const emailParams = {
-        to_email: tenantDetails[0].TenantEmail,
+        to_email: toEmail, //tenantDetails[0].TenantEmail,
         message: body,
       };
     console.log("I am here");
@@ -362,7 +364,7 @@ class NotificationManager{
       .eq("TenantID", tenantID);
 
     const emailParams = {
-        to_email: tenantDetails[0].TenantEmail,
+        to_email: toEmail, //tenantDetails[0].TenantEmail,
         message: body,
       };
     console.log(emailParams);
@@ -393,7 +395,7 @@ class NotificationManager{
     console.log(emailID);
 
     const emailParams = {
-      to_email: emailID,
+      to_email: toEmail, //emailID,
       message: body,
     };
 
