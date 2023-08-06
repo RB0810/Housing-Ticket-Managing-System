@@ -1,11 +1,9 @@
-const { Given, When, Then } = require("@cucumber/cucumber");
-const { Builder, By, Key, until, Select, Browser, WebDriverWait,TimeUnit,wait, sleep, Alert, BeforeAll, AfterAll} = require("selenium-webdriver");
+const { Given, When, Then, Before, After, BeforeAll, AfterAll, } = require("@cucumber/cucumber");
+const { Builder, By, Key, until, Select, Browser, WebDriverWait,TimeUnit,wait, sleep} = require("selenium-webdriver");
 const assert = require("assert");
 const chrome = require("selenium-webdriver/chrome");
 const { async } = require("q");
 const { file } = require("@babel/types");
-
-let driver;
 
 BeforeAll(async function () {
   let { data, error } = await supabase // Create a new ticket
