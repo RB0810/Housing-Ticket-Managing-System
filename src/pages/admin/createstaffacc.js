@@ -94,6 +94,7 @@ const CreateStaffAcc = () => {
                   >Staff Username</label>
                 </div>
                   <TextField 
+                  data-testid="username-field"
                   className="create-staff-acc-textfield"
                   id="create-staff-username-textfield" 
                   variant="outlined" 
@@ -109,6 +110,7 @@ const CreateStaffAcc = () => {
                   >Staff Email</label>
                 </div>
                   <TextField 
+                  data-testid="staff-field"
                   className="create-staff-acc-textfield"
                   id="create-staff-email-textfield"
                   variant="outlined" 
@@ -123,7 +125,8 @@ const CreateStaffAcc = () => {
                   className="create-staff-acc-label"
                   >Enter Password</label>
                 </div>
-                  <TextField 
+                  <TextField
+                  data-testid="password-field"
                   className="create-staff-acc-textfield"
                   id="create-staff-password-textfield" 
                   variant="outlined" 
@@ -139,6 +142,7 @@ const CreateStaffAcc = () => {
                   >Re-enter Password</label>
                 </div>
                   <TextField 
+                  data-testid="renter-field"
                   className="create-staff-acc-textfield"
                   id="create-staff-repassword-textfield"
                   variant="outlined" 
@@ -154,6 +158,7 @@ const CreateStaffAcc = () => {
                   >Staff Phone Number</label>
                 </div>
                   <TextField 
+                  data-testid="staff-phone"
                   className="create-staff-acc-textfield"
                   id="create-staff-phone-number-textfield"
                   variant="outlined" 
@@ -169,6 +174,7 @@ const CreateStaffAcc = () => {
                   >Select Building</label>
                 </div>
                 <Select
+                data-testid="create-staff-building-id-select"
                 id="create-staff-building-id-select"
                 className="create-staff-acc-textfield"
                 value={buildingID}
@@ -187,6 +193,7 @@ const CreateStaffAcc = () => {
               </Grid>
               <Grid item xs = {12}>
                 <Button
+                data-testid="create-staff-submit-button"
                 id="create-staff-submit-button"
                 onClick={handleSubmit}
                 variant="contained"
