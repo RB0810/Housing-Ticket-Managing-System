@@ -1,11 +1,127 @@
 const { Given, When, Then } = require("@cucumber/cucumber");
-const { Builder, By, Key, until, Select, Browser, WebDriverWait,TimeUnit,wait, sleep, Alert} = require("selenium-webdriver");
+const { Builder, By, Key, until, Select, Browser, WebDriverWait,TimeUnit,wait, sleep, Alert, BeforeAll, AfterAll} = require("selenium-webdriver");
 const assert = require("assert");
 const chrome = require("selenium-webdriver/chrome");
 const { async } = require("q");
 const { file } = require("@babel/types");
 
 let driver;
+
+BeforeAll(async function () {
+  let { data, error } = await supabase // Create a new ticket
+    .from("Service Request")
+    .insert([
+      {
+        ServiceRequestID: 999999,
+        Name: "TESTINGTICKETJEST",
+        TenantID: 999,
+        PARCStatus: "PENDING",
+        Status: "Quotation Uploaded",
+        SubmittedDateTime: "2021-04-01 00:00:00",
+        Category: "TESTINGCATEGORYJEST",
+      },
+    ])
+    .select();
+  if (error) {
+    throw error;
+  } else {
+    console.log("Created a new PENDING ticket for testing.");
+  }
+
+  let { data2, error2 } = await supabase // Create a new ticket
+    .from("Service Request")
+    .insert([
+      {
+        ServiceRequestID: 999998,
+        Name: "TESTINGTICKETJEST",
+        TenantID: 999,
+        PARCStatus: "ACTIVE",
+        Status: "Quotation Uploaded",
+        QuotationRequired: true,
+        StaffID: 999,
+        SupervisorID: 999,
+        Property: "TESTUNITDONTDELETE",
+        QuotationAttachmentPath: "999998.pdf",
+        SubmittedDateTime: "2021-04-01 00:00:00",
+        Category: "TESTINGCATEGORYJEST",
+      },
+    ])
+    .select();
+  if (error2) {
+    throw error2;
+  } else {
+    console.log("Created a new ACTIVE ticket for testing.");
+  }
+
+  let { data3, error3 } = await supabase // Create a new ticket
+    .from("Service Request")
+    .insert([
+      {
+        ServiceRequestID: 999997,
+        Name: "TESTINGTICKETJEST",
+        TenantID: 999,
+        PARCStatus: "CLOSED",
+        SubmittedDateTime: "2021-04-01 00:00:00",
+        Category: "TESTINGCATEGORYJEST",
+      },
+    ])
+    .select();
+  if (error3) {
+    throw error3;
+  } else {
+    console.log("Created a new CLOSED ticket for testing.");
+  }
+});
+
+AfterAll(async function () {
+  let { data, error } = await supabase // Delete Created Tickets
+    .from("Service Request")
+    .delete()
+    .match({ ServiceRequestID: 999999 });
+  if (error) {
+    throw error;
+  } else {
+    console.log("Deleted PENDING ticket for testing.");
+  }
+
+  let { data2, error2 } = await supabase // Delete Created Tickets
+    .from("Service Request")
+    .delete()
+    .match({ ServiceRequestID: 999998 });
+  if (error2) {
+    throw error2;
+  } else {
+    console.log("Deleted ACTIVE ticket for testing.");
+  }
+
+  let { data3, error3 } = await supabase // Delete Created Tickets
+    .from("Service Request")
+    .delete()
+    .match({ ServiceRequestID: 999997 });
+  if (error3) {
+    throw error3;
+  } else {
+    console.log("Deleted CLOSED ticket for testing.");
+  }
+
+  let { data4, error4 } = await supabase // Delete Created Tickets
+    .from("Service Request")
+    .delete()
+    .match({ Name: "DELETEME" });
+  if (error4) {
+    throw error;
+  } else {
+    console.log("Deleted created ticket for testing.");
+  }
+
+  // Then do cleanup of files
+  const files = fs.readdirSync(downloadPath);
+  for (const file of files) {
+    fs.unlinkSync(path.join(downloadPath, file));
+  }
+
+  driver.quit();
+});
 
   //Scenario 1:
     Given('Staff is on Landlord Login Page and Landlord Portal Login Page loads', async function () {
