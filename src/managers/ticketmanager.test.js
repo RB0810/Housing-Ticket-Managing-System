@@ -114,7 +114,7 @@ describe("TicketManager all test cases", () => {
   });
 
   // Negative test cases
-  test("Creating a new ticket with invalid TenantID should return false", async () => {
+  test("Negative Test Case : Creating a new ticket with invalid TenantID should return false", async () => {
     const ticket = new Ticket(
       "TESTINGTICKETSTATUS",
       "hello",
@@ -127,12 +127,12 @@ describe("TicketManager all test cases", () => {
     expect(added).toEqual(false);
   });
 
-  test("Getting a non-existent ticket should return false", async () => {
+  test("Negative Test Case : Getting a non-existent ticket should return false", async () => {
     const retrieved = await ticketManager.getTicket(999999);
     expect(retrieved).toEqual(false);
   });
 
-  test("Updating a non-existent ticket should return false", async () => {
+  test("Negative Test Case : Updating a non-existent ticket should return false", async () => {
     const updated = await ticketManager.updateTicket(
       999999,
       "Status",
@@ -141,12 +141,12 @@ describe("TicketManager all test cases", () => {
     expect(updated).toEqual(false);
   });
 
-  test("Deleting a non-existent ticket should return false", async () => {
+  test("Negative Test Case : Deleting a non-existent ticket should return false", async () => {
     const deleted = await ticketManager.deleteTicket(999999);
     expect(deleted).toEqual(false);
   });
 
-  test("Assigning ticket to non-existent staff should return false", async () => {
+  test("Negative Test Case : Assigning ticket to non-existent staff should return false", async () => {
     const assigned = await ticketManager.assignTicket(999999, 999999);
     expect(assigned).toEqual(false);
   });
