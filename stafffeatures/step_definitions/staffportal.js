@@ -26,7 +26,8 @@ BeforeAll(async function () {
         TenantID: 999,
         StaffID: 999,
         SupervisorID: 999,
-        Status: "TICKET ASSIGNED",
+        QuotationRequired: null,
+        Status: "Ticket Assigned",
         PARCStatus: "PENDING",
         SubmittedDateTime: "2021-04-01 00:00:00",
         Category: "TESTINGCATEGORYJEST",
@@ -423,8 +424,12 @@ AfterAll(async function () {
 
      When('Staff sets quotation required to yes and Staff clicks on upload button and chooses a file to upload and Staff clicks submit button',async function () {
        // Write code here that turns the phrase above into concrete actions
-       const file = "C:\\Users\\Abel Lee\\Desktop\\SUTD\\Term 5\\View My Weekly Schedule.pdf"
-       await driver.findElement(By.id("staff-portal-upload-quotation-input")).sendKeys(file);
+      //  const file = "C:\\Users\\Abel Lee\\Desktop\\SUTD\\Term 5\\View My Weekly Sch
+      //  await driver.findElement(By.id("staff-portal-upload-quotation-input")).sendKeys(file);
+      await driver.sleep(1000);
+       let fileInput = await driver.findElement(By.id("staff-portal-upload-quotation-input")); // Provide the local path of the file to be uploaded. 
+       const filePath = '../uploadedfile/testfile.pdf'; // Set the file path in the file input field. 
+       await fileInput.sendKeys(filePath);
        await driver.findElement(By.id("staff-portal-submit-quotation-button")).click();
       });
 
