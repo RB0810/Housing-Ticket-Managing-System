@@ -3,11 +3,11 @@ Feature: Supervisor Portal
     Given I am on the Supervisor Portal login page
     When I enter valid credentials
     And click on the login button
-    Then I should be redirected to Supervisor portal landing page (and receive successful login alert)
+    Then I should be redirected to Supervisor portal landing page
 
   Scenario: Go to Create Tenant account
     Given I am at the Supervisor Portal landing page
-    When I click on "Create Tenant Account"
+    When I click on Create Tenant Account
     Then I should be redirected to the Create Tenant Account page 
 
   Scenario: Create Tenant account
@@ -53,7 +53,6 @@ Feature: Supervisor Portal
     And PARC status changed to CLOSED 
     And ticket status changed to ticket rejected
     Then 
-
   
   Scenario: Click on Active tickets 
     Given that I am on the Supervisor Portal Landing page
