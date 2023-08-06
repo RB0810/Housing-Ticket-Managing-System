@@ -13,7 +13,7 @@ BeforeAll(async function () {
     .insert([
       {
         ServiceRequestID: 696969,
-        Name: "STAFFPORTALTESTING",
+        Name: "STAFFPORTALTESTING-PENDING",
         TenantID: 999,
         StaffID: 999,
         SupervisorID: 999,
@@ -35,7 +35,7 @@ BeforeAll(async function () {
     .insert([
       {
         ServiceRequestID: 696968,
-        Name: "TESTINGTICKETJEST",
+        Name: "STAFFPORTALTESTING-ACTIVE",
         TenantID: 999,
         PARCStatus: "ACTIVE",
         Status: "Quotation Uploaded",
@@ -59,9 +59,10 @@ BeforeAll(async function () {
     .from("Service Request")
     .insert([
       {
-        ServiceRequestID: 999997,
-        Name: "TESTINGTICKETJEST",
+        ServiceRequestID: 696967,
+        Name: "STAFFPORTALTESTING-CLOSED",
         TenantID: 999,
+        StaffID: 999,
         PARCStatus: "CLOSED",
         SubmittedDateTime: "2021-04-01 00:00:00",
         Category: "TESTINGCATEGORYJEST",
@@ -79,7 +80,7 @@ AfterAll(async function () {
   let { data, error } = await supabase // Delete Created Tickets
     .from("Service Request")
     .delete()
-    .match({ ServiceRequestID: 999999 });
+    .match({ ServiceRequestID: 696969 });
   if (error) {
     throw error;
   } else {
@@ -89,7 +90,7 @@ AfterAll(async function () {
   let { data2, error2 } = await supabase // Delete Created Tickets
     .from("Service Request")
     .delete()
-    .match({ ServiceRequestID: 999998 });
+    .match({ ServiceRequestID: 696968 });
   if (error2) {
     throw error2;
   } else {
@@ -99,7 +100,7 @@ AfterAll(async function () {
   let { data3, error3 } = await supabase // Delete Created Tickets
     .from("Service Request")
     .delete()
-    .match({ ServiceRequestID: 999997 });
+    .match({ ServiceRequestID: 696967 });
   if (error3) {
     throw error3;
   } else {
@@ -251,12 +252,12 @@ AfterAll(async function () {
       await driver.wait(until.urlIs("http://localhost:3000/staffportal/landingpage/16"),10000);
       await driver.findElement(By.id("button-active-tickets")).click();
       await driver.wait(until.urlIs("http://localhost:3000/staffportal/tickets/16/active"),10000);
-      await driver.findElement(By.id("999")).click(); //assuming 999 is the ticket ID
+      await driver.findElement(By.id("STAFFPORTALTESTING-ACTIVE")).click(); //assuming 696969 is the ticket ID
     });
 
     Then('Active Ticket is rendered', async function () {
       // Write code here that turns the phrase above into concrete actions
-      await driver.wait(until.urlIs("http://localhost:3000/staffportal/ticket/16/999"),10000);
+      await driver.wait(until.urlIs("http://localhost:3000/staffportal/ticket/16/696968"),10000);
       driver.quit();
 
     });
@@ -297,12 +298,12 @@ AfterAll(async function () {
       await driver.wait(until.urlIs("http://localhost:3000/staffportal/landingpage/16"),10000);
       await driver.findElement(By.id("button-pending-tickets")).click();
       await driver.wait(until.urlIs("http://localhost:3000/staffportal/tickets/16/pending"),10000);
-      await driver.findElement(By.id("999")).click(); //assuming 999 is the ticket ID
+      await driver.findElement(By.id("STAFFPORTALTESTING-PENDING")).click(); //assuming 999 is the ticket ID
     });
 
     Then('Pending Ticket is rendered', async function () {
       // Write code here that turns the phrase above into concrete actions
-      await driver.wait(until.urlIs("http://localhost:3000/staffportal/ticket/16/999"),10000);
+      await driver.wait(until.urlIs("http://localhost:3000/staffportal/ticket/16/696969"),10000);
       driver.quit();
     });
 
@@ -343,12 +344,12 @@ AfterAll(async function () {
       await driver.wait(until.urlIs("http://localhost:3000/staffportal/landingpage/16"),10000);
       await driver.findElement(By.id("button-closed-tickets")).click();
       await driver.wait(until.urlIs("http://localhost:3000/staffportal/tickets/16/closed"),10000);
-      await driver.findElement(By.id("999")).click(); //assuming 999 is the ticket ID
+      await driver.findElement(By.id("STAFFPORTALTESTING-CLOSED")).click(); //assuming 999 is the ticket ID
     });
 
     Then('Closed Ticket is rendered',async function () {
       // Write code here that turns the phrase above into concrete actions
-      await driver.wait(until.urlIs("http://localhost:3000/staffportal/ticket/16/999"),10000);
+      await driver.wait(until.urlIs("http://localhost:3000/staffportal/ticket/16/696967"),10000);
       driver.quit();
     });
 
