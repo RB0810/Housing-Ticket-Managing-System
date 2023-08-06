@@ -12,11 +12,13 @@ BeforeAll(async function () {
     .from("Service Request")
     .insert([
       {
-        ServiceRequestID: 999999,
-        Name: "TESTINGTICKETJEST",
+        ServiceRequestID: 696969,
+        Name: "STAFFPORTALTESTING",
         TenantID: 999,
+        StaffID: 999,
+        SupervisorID: 999,
+        Status: "TICKET ASSIGNED",
         PARCStatus: "PENDING",
-        Status: "Quotation Uploaded",
         SubmittedDateTime: "2021-04-01 00:00:00",
         Category: "TESTINGCATEGORYJEST",
       },
@@ -32,7 +34,7 @@ BeforeAll(async function () {
     .from("Service Request")
     .insert([
       {
-        ServiceRequestID: 999998,
+        ServiceRequestID: 696968,
         Name: "TESTINGTICKETJEST",
         TenantID: 999,
         PARCStatus: "ACTIVE",
@@ -41,7 +43,7 @@ BeforeAll(async function () {
         StaffID: 999,
         SupervisorID: 999,
         Property: "TESTUNITDONTDELETE",
-        QuotationAttachmentPath: "999998.pdf",
+        QuotationAttachmentPath: "696968.pdf",
         SubmittedDateTime: "2021-04-01 00:00:00",
         Category: "TESTINGCATEGORYJEST",
       },
