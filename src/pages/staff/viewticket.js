@@ -104,7 +104,11 @@ const ViewTicketStaff = () => {
           icon: "error",
           title: "Ticket is empty",
           showConfirmButton: true,
-          confirmButtonColor: "#707c4f"
+          confirmButtonColor: "#707c4f",
+          customClass: {
+            container: "view-ticket-ticket-empty-swal",
+          },
+          id: "view-ticket-ticket-empty-swal"
         });
         setServiceTicket();
       } else {
@@ -168,7 +172,11 @@ const ViewTicketStaff = () => {
         icon: "success",
         title: "Update Quotation successful",
         showConfirmButton: true,
-        confirmButtonColor: "#707c4f"
+        confirmButtonColor: "#707c4f",
+        customClass: {
+          container: "view-ticket-update-quotation-swal",
+        },
+        id: "view-ticket-update-quotation-swal"
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -179,7 +187,11 @@ const ViewTicketStaff = () => {
         icon: "error",
         title: "Error in continue for quotation upload",
         showConfirmButton: true,
-        confirmButtonColor: "#707c4f"
+        confirmButtonColor: "#707c4f",
+        customClass: {
+          container: "view-ticket-update-quotation-swal",
+        },
+        id: "view-ticket-update-quotation-swal"
       });
     }
   };
@@ -202,7 +214,11 @@ const ViewTicketStaff = () => {
         icon: "success",
         title: "Update Quotation successful",
         showConfirmButton: true,
-        confirmButtonColor: "#707c4f"
+        confirmButtonColor: "#707c4f",
+        customClass: {
+          container: "view-ticket-update-quotation-success-swal",
+        },
+        id: "view-ticket-update-quotation-success-swal"
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -212,6 +228,10 @@ const ViewTicketStaff = () => {
       Swal.fire({
         icon: "error",
         title: "Quotation reupload error",
+        customClass: {
+          container: "view-ticket-update-quotation-failure-swal",
+        },
+        id: "view-ticket-update-quotation-failure-swal",
         showConfirmButton: true,
         confirmButtonColor: "#707c4f"
       });
@@ -240,7 +260,11 @@ const ViewTicketStaff = () => {
         icon: "success",
         title: "Works started",
         showConfirmButton: true,
-        confirmButtonColor: "#707c4f"
+        confirmButtonColor: "#707c4f",
+        customClass: {
+          container: "view-ticket-works-started-swal",
+        },
+        id: "view-ticket-works-started-swal"
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -252,7 +276,11 @@ const ViewTicketStaff = () => {
         icon: "error",
         title: "Update failed",
         showConfirmButton: true,
-        confirmButtonColor: "#707c4f"
+        confirmButtonColor: "#707c4f",
+        customClass: {
+          container: "view-ticket-works-started-swal",
+        },
+        id: "view-ticket-works-started-swal"
       });
     }
   };
@@ -279,7 +307,11 @@ const ViewTicketStaff = () => {
         icon: "success",
         title: "Update successful",
         showConfirmButton: true,
-        confirmButtonColor: "#707c4f"
+        confirmButtonColor: "#707c4f",
+        customClass: {
+          container: "view-ticket-works-ended-swal",
+        },
+        id: "view-ticket-works-ended-swal"
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -291,7 +323,11 @@ const ViewTicketStaff = () => {
         icon: "error",
         title: "Update failed",
         showConfirmButton: true,
-        confirmButtonColor: "#707c4f"
+        confirmButtonColor: "#707c4f",
+        customClass: {
+          container: "view-ticket-works-ended-swal",
+        },
+        id: "view-ticket-works-ended-swal"
       });
     }
   };
@@ -325,7 +361,11 @@ const ViewTicketStaff = () => {
           title: "Oops...",
           text: "Something went wrong!",
           showConfirmButton: true,
-          confirmButtonColor: "#707c4f"
+          confirmButtonColor: "#707c4f",
+          customClass: {
+            container: "view-ticket-upload-file-error-swal",
+          },
+          id: "view-ticket-upload-file-error-swal"
         });
         return { error };
       }
@@ -346,7 +386,11 @@ const ViewTicketStaff = () => {
           icon: "error",
           title: "Error uploading Quotation",
           showConfirmButton: true,
-          confirmButtonColor: "#707c4f"
+          confirmButtonColor: "#707c4f",
+          customClass: {
+            container: "view-ticket-update-quotation-swal",
+          },
+          id: "view-ticket-update-quotation-swal"
         });
         return { error: updateError };
       }
@@ -357,7 +401,11 @@ const ViewTicketStaff = () => {
         icon: "success",
         title: "Quotation Uploaded",
         showConfirmButton: true,
-        confirmButtonColor: "#707c4f"
+        confirmButtonColor: "#707c4f",
+        customClass: {
+          container: "view-ticket-update-quotation-swal",
+        },
+        id: "view-ticket-update-quotation-swal"
       });
       return { data: updateData };
     } catch (error) {
@@ -368,7 +416,11 @@ const ViewTicketStaff = () => {
         title: "Oops...",
         text: "Something went wrong!",
         showConfirmButton: true,
-        confirmButtonColor: "#707c4f"
+        confirmButtonColor: "#707c4f",
+        customClass: {
+          container: "view-ticket-update-quotation-swal",
+        },
+        id: "view-ticket-update-quotation-swal"
       });
       return { error };
     }
@@ -394,7 +446,11 @@ const ViewTicketStaff = () => {
           icon: "error",
           title: "Error downloading file",
           showConfirmButton: true,
-          confirmButtonColor: "#707c4f"
+          confirmButtonColor: "#707c4f",
+          customClass: {
+            container: "view-ticket-download-file-swal",
+          },
+          id: "view-ticket-download-file--swal"
         });
         return;
       }
@@ -403,7 +459,11 @@ const ViewTicketStaff = () => {
         icon: "error",
         title: "Error downloading file",
         showConfirmButton: true,
-        confirmButtonColor: "#707c4f"
+        confirmButtonColor: "#707c4f",
+        customClass: {
+          container: "view-ticket-download-file-swal",
+        },
+        id: "view-ticket-download-file--swal"
       });
     }
   };

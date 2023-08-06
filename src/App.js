@@ -13,7 +13,7 @@ import TenantPortal from "./pages/portal/tenantportal";
 import SupervisorPortal from "./pages/portal/supervisorportal";
 import StaffPortal from "./pages/portal/staffportal";
 import ViewTicketTenant from "./pages/tenant/viewticket";
-import ViewTicketSupervisor from "./pages/supervisor/viewticket"
+import ViewTicketSupervisor from "./pages/supervisor/viewticket";
 import ViewTicketStaff from "./pages/staff/viewticket";
 import AdminLandingPage from "./pages/landingpages/adminlandingpage";
 import SupervisorLandingPage from "./pages/landingpages/supervisorlandingpage";
@@ -31,21 +31,21 @@ import StaffProfile from "./pages/staff/profile";
 import UnauthorizedAccess from "./pages/unauthorized_access";
 
 // MUI themes
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 
 const theme = createTheme({
   palette: {
-    mode: 'light',
+    mode: "light",
     primary: {
-      main: '#707c4f',
+      main: "#707c4f",
     },
     secondary: {
-      main: '#b7b09c',
+      main: "#b7b09c",
     },
   },
   typography: {
-    fontFamily: 'Montserrat',
+    fontFamily: "Montserrat",
   },
 });
 
@@ -54,44 +54,101 @@ function App() {
 
   return (
     <>
-    <ThemeProvider theme={theme}>
-      <CssBaseline enableColorScheme />
-      <Routes>
-        <Route path="/*" element={<Navbar />} />
-        <Route path="/tenantportal/*" element={<TenantNavbar />} />
-        <Route path="/supervisorportal/*" element={<SupervisorNavbar />} />
-        <Route path="/staffportal/*" element={<StaffNavbar />} />
-        <Route path="/adminportal/*" element={<AdminNavbar />} />
-      </Routes>
-
-      <div className="container">
+      <ThemeProvider theme={theme}>
+        <CssBaseline enableColorScheme />
         <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/tenantlogin" element={<TenantLogin />} />
-          <Route path="/landlordlogin" element={<LandlordLogin />} />
-          <Route path="/adminlogin" element={<AdminLogin />} />
-          <Route path="/tenantportal/ticket/:TenantID/:ServiceRequestID" element={<ViewTicketTenant />} />
-          <Route path="/supervisorportal/ticket/:SupervisorID/:ServiceRequestID" element={<ViewTicketSupervisor />} />
-          <Route path="/staffportal/ticket/:StaffID/:ServiceRequestID" element={<ViewTicketStaff />} />
-          <Route path="/tenantportal/tickets/:TenantID/:PARCStatus" element={<TenantPortal />} />
-          <Route path="/staffportal/tickets/:StaffID/:PARCStatus" element={<StaffPortal />} />
-          <Route path="/supervisorportal/tickets/:SupervisorID/:PARCStatus" element={<SupervisorPortal />} />
-          <Route path="/supervisorportal/createtennantacc/:SupervisorID" element={<CreateTenantAcc />} />
-          <Route path="/tenantportal/createticket/:TenantID" element={<CreateTicket />} />
-          <Route path="/supervisorportal/landingpage/:SupervisorID" element={<SupervisorLandingPage />} />
-          <Route path="/staffportal/landingpage/:StaffID" element={<StaffLandingPage />} />
-          <Route path="/tenantportal/landingpage/:TenantID" element={<TenantLandingPage />} />
-          <Route path="/adminportal/landingpage/:AdminID" element={<AdminLandingPage />} />
-          <Route path="/adminportal/createsupervisoracc/:AdminID" element={<CreateSupervisor />} />
-          <Route path="/adminportal/createstaffacc/:AdminID" element={<CreateStaffAcc />} />
-          <Route path="/adminportal/manageacc/:AdminID" element={<ManageAccount />} />
-          <Route path="/adminportal/manageacc/:AdminID/building/:BuildingID" element={<BuildingDetailsPage />} />
-          <Route path="/tenantportal/profile/:TenantID" element={<TenantProfile />} />
-          <Route path="/supervisorportal/profile/:SupervisorID" element={<SupervisorProfile />} />
-          <Route path="/staffportal/profile/:StaffID" element={<StaffProfile />} />
-          <Route path="/unauthorize" element={<UnauthorizedAccess />} />
+          <Route path="/*" element={<Navbar />} />
+          <Route path="/tenantportal/*" element={<TenantNavbar />} />
+          <Route path="/supervisorportal/*" element={<SupervisorNavbar />} />
+          <Route path="/staffportal/*" element={<StaffNavbar />} />
+          <Route path="/adminportal/*" element={<AdminNavbar />} />
+        </Routes>
+
+        <div className="container">
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/tenantlogin" element={<TenantLogin />} />
+            <Route path="/landlordlogin" element={<LandlordLogin />} />
+            <Route path="/adminlogin" element={<AdminLogin />} />
+            <Route
+              path="/tenantportal/ticket/:TenantID/:ServiceRequestID"
+              element={<ViewTicketTenant />}
+            />
+            <Route
+              path="/supervisorportal/ticket/:SupervisorID/:ServiceRequestID"
+              element={<ViewTicketSupervisor />}
+            />
+            <Route
+              path="/staffportal/ticket/:StaffID/:ServiceRequestID"
+              element={<ViewTicketStaff />}
+            />
+            <Route
+              path="/tenantportal/tickets/:TenantID/:PARCStatus"
+              element={<TenantPortal />}
+            />
+            <Route
+              path="/staffportal/tickets/:StaffID/:PARCStatus"
+              element={<StaffPortal />}
+            />
+            <Route
+              path="/supervisorportal/tickets/:SupervisorID/:PARCStatus"
+              element={<SupervisorPortal />}
+            />
+            <Route
+              path="/supervisorportal/createtennantacc/:SupervisorID"
+              element={<CreateTenantAcc />}
+            />
+            <Route
+              path="/tenantportal/createticket/:TenantID"
+              element={<CreateTicket />}
+            />
+            <Route
+              path="/supervisorportal/landingpage/:SupervisorID"
+              element={<SupervisorLandingPage />}
+            />
+            <Route
+              path="/staffportal/landingpage/:StaffID"
+              element={<StaffLandingPage />}
+            />
+            <Route
+              path="/tenantportal/landingpage/:TenantID"
+              element={<TenantLandingPage />}
+            />
+            <Route
+              path="/adminportal/landingpage/:AdminID"
+              element={<AdminLandingPage />}
+            />
+            <Route
+              path="/adminportal/createsupervisoracc/:AdminID"
+              element={<CreateSupervisor />}
+            />
+            <Route
+              path="/adminportal/createstaffacc/:AdminID"
+              element={<CreateStaffAcc />}
+            />
+            <Route
+              path="/adminportal/manageacc/:AdminID"
+              element={<ManageAccount />}
+            />
+            <Route
+              path="/adminportal/manageacc/:AdminID/building/:BuildingID"
+              element={<BuildingDetailsPage />}
+            />
+            <Route
+              path="/tenantportal/profile/:TenantID"
+              element={<TenantProfile />}
+            />
+            <Route
+              path="/supervisorportal/profile/:SupervisorID"
+              element={<SupervisorProfile />}
+            />
+            <Route
+              path="/staffportal/profile/:StaffID"
+              element={<StaffProfile />}
+            />
+            <Route path="/unauthorize" element={<UnauthorizedAccess />} />
           </Routes>
-      </div>
+        </div>
       </ThemeProvider>
     </>
   );

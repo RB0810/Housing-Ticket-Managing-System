@@ -2,7 +2,7 @@ const { Given, When, Then } = require("@cucumber/cucumber");
 const { Builder, By, Key, until, Select } = require("selenium-webdriver");
 const assert = require("assert");
 const chrome = require("selenium-webdriver/chrome");
-const { expect } = require('chai')
+
 
 let driver;
 

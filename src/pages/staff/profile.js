@@ -75,7 +75,11 @@ const StaffProfile = () => {
             icon: "success",
             title: "Password changed successfully!",
             showConfirmButton: true,
-            confirmButtonColor: "#707c4f"
+            confirmButtonColor: "#707c4f",
+            customClass: {
+              container: "staff-profile-password-changed-swal",
+            },
+            id: "staff-profile-password-changed-swal"
           }).then((result) => {
             if (result.isConfirmed) {
               window.location.reload();
@@ -221,14 +225,15 @@ const StaffProfile = () => {
       </div>
       <hr></hr>
       <div className="staff-profile-row">
-        <Button
+        <Link to={`/`}>
+          <Button
             id="staff-portal-logout-button"
             variant="contained"
             onClick={logout}
             className="staff-profile-button">
               Logout
           </Button>
-        
+        </Link>
       </div>
       
 
