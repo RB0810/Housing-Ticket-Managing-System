@@ -100,7 +100,7 @@ const CreateStaffAcc = () => {
                   >Staff Username</label>
                 </div>
                   <TextField 
-                  data-testid="create-staff-username-textfield"
+                  data-testid="username-field"
                   className="create-staff-acc-textfield"
                   id="create-staff-username-textfield" 
                   variant="outlined" 
@@ -116,7 +116,7 @@ const CreateStaffAcc = () => {
                   >Staff Email</label>
                 </div>
                   <TextField 
-                  data-testid="create-staff-email-textfield"
+                  data-testid="staff-field"
                   className="create-staff-acc-textfield"
                   id="create-staff-email-textfield"
                   variant="outlined" 
@@ -131,8 +131,8 @@ const CreateStaffAcc = () => {
                   className="create-staff-acc-label"
                   >Enter Password</label>
                 </div>
-                  <TextField 
-                  data-testid="create-staff-password-textfield"
+                  <TextField
+                  data-testid="password-field"
                   className="create-staff-acc-textfield"
                   id="create-staff-password-textfield" 
                   variant="outlined" 
@@ -148,7 +148,7 @@ const CreateStaffAcc = () => {
                   >Re-enter Password</label>
                 </div>
                   <TextField 
-                  data-testid="create-staff-repassword-textfield"
+                  data-testid="renter-field"
                   className="create-staff-acc-textfield"
                   id="create-staff-repassword-textfield"
                   variant="outlined" 
@@ -164,7 +164,7 @@ const CreateStaffAcc = () => {
                   >Staff Phone Number</label>
                 </div>
                   <TextField 
-                  data-testid="create-staff-phone-number-textfield"
+                  data-testid="staff-phone"
                   className="create-staff-acc-textfield"
                   id="create-staff-phone-number-textfield"
                   variant="outlined" 
@@ -180,6 +180,7 @@ const CreateStaffAcc = () => {
                   >Select Building</label>
                 </div>
                 <Select
+                data-testid="create-staff-building-id-select"
                 id="create-staff-building-id-select"
                 className="create-staff-acc-textfield"
                 value={buildingID}

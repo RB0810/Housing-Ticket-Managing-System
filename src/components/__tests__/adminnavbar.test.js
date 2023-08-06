@@ -54,18 +54,35 @@ const MockNavBar2= ()=>{
 
 
 describe("Testing if routing works for the admin navbar",()=>{
+
     beforeEach(() => {
+        const SHA256 = require('crypto-js').SHA256;
+        console.log('After test is called');
         Cookies.get.mockImplementation((key) => {
-        switch (key) {
+          switch (key) {
             case 'userId':
-            return '123';  // The ID must match with TenantID
+              return SHA256('123').toString(); // The ID must match with StaffID
             case 'type':
-            return 'Admin';  // The user type must be "Tenant"
+              return 'Admin'; // The user type must be "Admin"
             default:
-            return null;
-        }
+              return null;
+          }
         });
-    });
+      });
+
+    // beforeEach(() => {
+    //     Cookies.get.mockImplementation((key) => {
+    //     switch (key) {
+    //         case 'userId':
+    //         return '123';  // The ID must match with TenantID
+    //         case 'type':
+    //         return 'Admin';  // The user type must be "Tenant"
+    //         default:
+    //         return null;
+    //     }
+    //     });
+    // });
+
 
         test("Test if can route to Admin Portal",async ()=>{
             render(<MockNavBar/>)
