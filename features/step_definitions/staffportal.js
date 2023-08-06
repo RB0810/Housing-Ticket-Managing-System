@@ -4,6 +4,17 @@ const assert = require("assert");
 const chrome = require("selenium-webdriver/chrome");
 const { async } = require("q");
 const { file } = require("@babel/types");
+const { createClient } = require("@supabase/supabase-js");
+const fs = require("fs");
+const path = require("path");
+
+// Setup Supabase for Testing
+const supabaseUrl = "https://mnfsjgaziftztwiarlys.supabase.co";
+const supabaseKey =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1uZnNqZ2F6aWZ0enR3aWFybHlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODY4MjkwODgsImV4cCI6MjAwMjQwNTA4OH0.Mrvmdish7OlO5-m1WIZTNwVFUnEcF7aoHE53ZVwiOY8";
+
+const supabase = createClient(supabaseUrl, supabaseKey);
+// const downloadPath = path.join(__dirname, "testdownloadsdir"); // Set up the test directory
 
 BeforeAll(async function () {
   let { data, error } = await supabase // Create a new ticket
@@ -115,11 +126,11 @@ AfterAll(async function () {
     console.log("Deleted created ticket for testing.");
   }
 
-  // Then do cleanup of files
-  const files = fs.readdirSync(downloadPath);
-  for (const file of files) {
-    fs.unlinkSync(path.join(downloadPath, file));
-  }
+  // // Then do cleanup of files
+  // const files = fs.readdirSync(downloadPath);
+  // for (const file of files) {
+  //   fs.unlinkSync(path.join(downloadPath, file));
+  // }
 
   driver.quit();
 });
