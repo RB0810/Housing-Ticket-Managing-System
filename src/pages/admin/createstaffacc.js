@@ -4,7 +4,6 @@ import StaffAccount from "../../objects/StaffAccount";
 import { useParams, useNavigate } from "react-router";
 import Cookies from "js-cookie";
 import {Grid,TextField,MenuItem,Select,OutlinedInput,Button} from '@mui/material';
-import Swal from "sweetalert2";
 
 const CreateStaffAcc = () => {
   const [formError, setFormError] = useState(null);
@@ -62,18 +61,7 @@ const CreateStaffAcc = () => {
 
     try {
       const message = await staffAccount.createAccount();
-      Swal.fire({
-        icon: "success",
-        title: "Staff Account created successfully!",
-        customClass: {
-          container: 'createStaffAcc'
-        },
-        id: 'createStaffAcc'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location.reload();
-        }
-      });
+      setFormError(message);
     } catch (error) {
       setFormError(error.message);
     }
@@ -93,7 +81,7 @@ const CreateStaffAcc = () => {
                 </div>
                   <TextField 
                   className="create-staff-acc-textfield"
-                  id="create-staff-username-textfield" 
+                  id="outlined-basic" 
                   variant="outlined" 
                   type="text"
                   value={username}
@@ -108,7 +96,7 @@ const CreateStaffAcc = () => {
                 </div>
                   <TextField 
                   className="create-staff-acc-textfield"
-                  id="create-staff-email-textfield"
+                  id="outlined-basic" 
                   variant="outlined" 
                   type="email"
                   value={email}
@@ -123,7 +111,7 @@ const CreateStaffAcc = () => {
                 </div>
                   <TextField 
                   className="create-staff-acc-textfield"
-                  id="create-staff-password-textfield" 
+                  id="outlined-basic" 
                   variant="outlined" 
                   type="password"
                   value={password}
@@ -138,7 +126,7 @@ const CreateStaffAcc = () => {
                 </div>
                   <TextField 
                   className="create-staff-acc-textfield"
-                  id="create-staff-repassword-textfield"
+                  id="outlined-basic" 
                   variant="outlined" 
                   type="password"
                   value={rePassword}
@@ -153,7 +141,7 @@ const CreateStaffAcc = () => {
                 </div>
                   <TextField 
                   className="create-staff-acc-textfield"
-                  id="create-staff-phone-number-textfield"
+                  id="outlined-basic" 
                   variant="outlined" 
                   type="tel"
                   value={phone}
@@ -164,10 +152,10 @@ const CreateStaffAcc = () => {
                   <label 
                   htmlFor="buildingID"
                   className="create-staff-acc-label"
-                  >Select Building</label>
+                  >Building ID</label>
                 </div>
                 <Select
-                id="create-staff-building-id-select"
+                id="buildingID"
                 className="create-staff-acc-textfield"
                 value={buildingID}
                 variant='outlined'
@@ -176,8 +164,7 @@ const CreateStaffAcc = () => {
                   {buildingOptions.map((building) => (
                     <MenuItem
                     key={building.id} 
-                    value={building.id}
-                    id={building.id}>
+                    value={building.id}>
                     {building.name},{building.address}
                     </MenuItem>
                   ))}
@@ -185,7 +172,6 @@ const CreateStaffAcc = () => {
               </Grid>
               <Grid item xs = {12}>
                 <Button
-                id="create-staff-submit-button"
                 onClick={handleSubmit}
                 variant="contained"
                 className="create-staff-acc-button">

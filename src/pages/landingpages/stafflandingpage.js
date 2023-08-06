@@ -3,6 +3,7 @@ import '../../styles/landlordlandingpage.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { useEffect } from 'react';
+import { SHA256 } from 'crypto-js';
 
 export default function StaffLandingPage() {
   const navigate = useNavigate();
@@ -18,8 +19,11 @@ export default function StaffLandingPage() {
       console.log('Unauthorized');
       navigate("/unauthorize");
     } else {
+      const userIdAsString = String(StaffID);
+      // Use SHA-256 to hash the userId
+      const hashedUserId = SHA256(userIdAsString).toString();
       // Check if the user's ID and type match the expected values (e.g., StaffID and "Staff")
-      if (Number(userId) === parseInt(StaffID) && type === "Staff") {
+      if (userId === hashedUserId && type === "Staff") {
         // Proceed with rendering the component
         console.log('Authorized');
       } else {
@@ -48,7 +52,7 @@ export default function StaffLandingPage() {
   return (
     <div>
       <div className="card-container">
-        <button id='button-pending-tickets' className="card" onClick={handleButtonClickPending}>
+        <button className="card" id='button-pending-tickets' onClick={handleButtonClickPending}>
           <img src="/pendingticket.png" alt="Card" className="card-image" />
           <div>
             <button>Pending Tickets</button>

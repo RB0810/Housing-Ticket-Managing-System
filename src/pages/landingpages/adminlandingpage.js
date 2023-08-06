@@ -3,6 +3,7 @@ import '../../styles/adminlandingpage.css';
 import { useNavigate,useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { useEffect } from 'react';
+import { SHA256 } from 'crypto-js';
 
 export default function AdminLandingPage() {
   const navigate = useNavigate();
@@ -17,8 +18,11 @@ export default function AdminLandingPage() {
       console.log('Unauthorized');
       navigate("/unauthorize");
     } else {
+      const userIdAsString = String(AdminID);
+      // Use SHA-256 to hash the userId
+      const hashedUserId = SHA256(userIdAsString).toString();
       // Check if the user's ID and type match the expected values (e.g., AdminID and "admin")
-      if (Number(userId) === parseInt(AdminID) && type === "Admin") {
+      if (userId === hashedUserId && type === "Admin") {
         // Proceed with rendering the component
         console.log('Authorized');
       } else {

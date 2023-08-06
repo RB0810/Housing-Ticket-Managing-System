@@ -4,7 +4,6 @@ import SupervisorAccount from "../../objects/SupervisorAccount";
 import Cookies from "js-cookie";
 import { useParams, useNavigate } from "react-router";
 import { Grid,TextField, Button } from "@mui/material";
-import Swal from "sweetalert2";
 
 const CreateSupervisor = () => {
   const [formError, setFormError] = useState(null);
@@ -55,18 +54,7 @@ const CreateSupervisor = () => {
 
     try {
       const message = await supervisorAccount.createAccount();
-      Swal.fire({
-        icon: "success",
-        title: "Supervisor Account created successfully!",
-        customClass: {
-          container: 'createSupervisorAcc'
-        },
-        id: 'createSupervisorAcc'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location.reload();
-        }
-      });
+      setFormError(message);
     } catch (error) {
       setFormError(error.message);
     }
@@ -83,7 +71,7 @@ const CreateSupervisor = () => {
               </div>
                 <TextField 
                 className="create-supervisor-acc-textfield"
-                id="create-supervisor-username-textfield"
+                id="outlined-basic" 
                 variant="outlined" 
                 type="text"
                 value={username}
@@ -95,7 +83,7 @@ const CreateSupervisor = () => {
               </div>
                 <TextField 
                 className="create-supervisor-acc-textfield"
-                id="create-supervisor-email-textfield"
+                id="outlined-basic" 
                 variant="outlined" 
                 type="email"
                 value={email}
@@ -107,7 +95,7 @@ const CreateSupervisor = () => {
               </div>
                 <TextField 
                 className="create-supervisor-acc-textfield"
-                id="create-supervisor-password-textfield"
+                id="outlined-basic" 
                 variant="outlined" 
                 type="password"
                 value={password}
@@ -119,7 +107,7 @@ const CreateSupervisor = () => {
               </div>
                 <TextField 
                 className="create-supervisor-acc-textfield"
-                id="create-supervisor-repassword-textfield"
+                id="outlined-basic" 
                 variant="outlined" 
                 type="password"
                 value={rePassword}
@@ -131,7 +119,7 @@ const CreateSupervisor = () => {
               </div>
                 <TextField 
                 className="create-supervisor-acc-textfield"
-                id="create-supervisor-phone-number-textfield"
+                id="outlined-basic" 
                 variant="outlined" 
                 type="text"
                 value={phone}
@@ -143,7 +131,7 @@ const CreateSupervisor = () => {
               </div>
                 <TextField 
                 className="create-supervisor-acc-textfield"
-                id="create-supervisor-building-name-textfield"
+                id="outlined-basic" 
                 variant="outlined" 
                 type="text"
                 value={buildingName}
@@ -155,7 +143,7 @@ const CreateSupervisor = () => {
               </div>
                 <TextField 
                 className="create-supervisor-acc-textfield"
-                id="create-supervisor-building-address-textfield"
+                id="outlined-basic" 
                 variant="outlined" 
                 type="text"
                 value={buildingAddress}
@@ -167,7 +155,7 @@ const CreateSupervisor = () => {
               </div>
                 <TextField 
                 className="create-supervisor-acc-textfield"
-                id="create-supervisor-postal-code-textfield"
+                id="outlined-basic" 
                 variant="outlined" 
                 type="text"
                 value={postalCode}
@@ -175,7 +163,6 @@ const CreateSupervisor = () => {
               </Grid>
               <Grid item xs = {12}>
                 <Button
-                id="create-supervisor-submit-button"
                 onClick={handleSubmit}
                 variant="contained"
                 className="create-supervisor-acc-button">

@@ -5,6 +5,7 @@ import "./../../../src/styles/createtenantacc.css"
 import Cookies from "js-cookie";
 import {Button, Grid, TextField} from '@mui/material'
 import Swal from "sweetalert2";
+import { SHA256 } from "crypto-js";
 
 const CreateTenantAcc = () => {
   const [tenantUsername, setTenantUsername] = useState("");
@@ -32,8 +33,11 @@ const CreateTenantAcc = () => {
       console.log('Unauthorized');
       navigate("/unauthorize");
     } else {
+      const userIdAsString = String(SupervisorID);
+      // Use SHA-256 to hash the userId
+      const hashedUserId = SHA256(userIdAsString).toString();
       // Check if the user's ID and type match the expected values (e.g., SupervisorID and "Supervisor")
-      if (Number(userId) === parseInt(SupervisorID) && type === "Supervisor") {
+      if (userId === hashedUserId && type === "Supervisor") {
         // Proceed with rendering the component
         console.log('Authorized');
       } else {
@@ -79,6 +83,8 @@ const CreateTenantAcc = () => {
       Swal.fire({
         icon: "success",
         title: "Tenant Account created successfully!",
+        showConfirmButton: true,
+        confirmButtonColor: "#707c4f"
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
