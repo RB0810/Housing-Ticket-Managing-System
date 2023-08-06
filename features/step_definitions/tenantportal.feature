@@ -1,87 +1,64 @@
-Feature: Tenant portal 
-    Scenario: Log into Tenant Portal
-        Given I am on the Tenant Portal login page
-        When I enter valid credentials
-        And click on the login button
-        Then I should be redirected to Tenant portal landing page (and receive successful login alert)
+  Feature: Tenant Portal Functionality
 
-    Scenario: Go to create ticket page
-        Given I am in the Tenant portal landing page
-        When I click on create ticket 
-        Then I am redirected to the create ticket page
-    
-    Scenario: Create Ticket 
-        Given I am in the create ticket page
-        When I enter all ticket details
-        And click on create service ticket 
-        Then a ticket is created and recorded in Supabase (wih success notification)
+    Scenario: Login to Tenant Account
+        Given Tenant has loaded the login page for Tenant Portal
+        When Tenant enters valid account credentials
+        And Tenant clicks "login" button
+        Then Tenant should be redirected to the Tenant home page
 
-    Scenario: Go to Profile
-        Given I am in the Tenant Portal Landing Page 
-        When click on Profile in the NavBar
-        Then I am redirected to the Profile page 
-    
+    Scenario: Create new service ticket
+        Given Tenant clicks on "Create Ticket"
+        When Tenant fills in the required information
+        When Tenant clicks "Create Service Ticket"
+        Then Database should be updated with new service ticket
+
+    Scenario: View all pending tickets
+        Given Tenant clicks on "View Pending Tickets"
+        Then Tenant should see all pending tickets in a table format
+
+    Scenario: View all active tickets
+        Given Tenant clicks on "View Active Tickets"
+        Then Tenant should see all active tickets in a table format
+
+    Scenario: View all closed tickets
+        Given Tenant clicks on "View Closed Tickets"
+        Then Tenant should see all closed tickets in a table format
+
+    Scenario: View Tenant Account Information
+        Given Tenant navigates to the "Profile" section through the Navbar
+        Then Tenant's account information should be displayed
+
     Scenario: Set new password
-        Given I am in the Tenant profile page 
-        When I enter a New Password 
-        And I fill in the same password in Confirm Password
-        And I click Set Password 
-        Then my new password is recorded in the Supabase tab;e
+        Given Tenant is in the "View Tenant Account Information" page
+        When Tenant enters a new password
+        When Tenant re-enters the new password
+        And Tenant clicks on "Set New Password"
+        Then Tenant should receive a success notification and value is updated in Database
 
-    Scenario: Go to Pending tickets 
-        Given that I am on the Tenant Portal Landing page
-        When I click on Pending tickets 
-        Then I am redirected to the view ticket page
+    Scenario: View Quotation
+        Given Tenant renavigates back to ACTIVE tickets
+        When Tenant clicks on "View Ticket" for a sticket with status "Quotation Uploaded"
+        Then Tenant should see the Quotation rendered using ReactPDFViewer
 
-    Scenario: View all Pending tickets 
-        Given that I am in the View Tickets (Pending) page
-        When there are pending tickets 
-        Then the tickets are displayed 
-    
-    Scenario: View Pending ticket 
-        Given that I am in the View Tickets (Pending) page
-        When I click on View Ticket
-        Then I am redirected to the View ticket page for that ticket 
-    
-    Scenario: Click on Active tickets 
-        Given that I am on the Tenant Portal Landing page
-        When I click on Active tickets 
-        Then I am redirected to the view ticket page 
-    
-    Scenario: View all Active tickets 
-        Given that I am in the View Tickets (Active) page
-        When there are Active tickets 
-        Then the tickets are displayed 
-    
-    Scenario: View Active ticket 
-        Given that I am in the View Tickets (Active) page
-        When I click on View Ticket
-        Then I am redirected to the View ticket page for that ticket 
+    Scenario: Download Quotation
+        Given Tenant sees the Quotation rendered using ReactPDFViewer
+        When Tenant clicks on the Download button
+        Then Tenant should download the Quotation into their local computer
 
-    Scenario: Click on Closed tickets 
-        Given that I am on the Tenant Portal Landing page
-        When I click on Closed tickets 
-        Then I am redirected to the view ticket page 
+    Scenario: Accept Quotation
+        Given Tenant clicks on "Accept Quotation"
+        Then Ticket status should change to "Quotation Accepted"
 
-    Scenario: View all closed tickets 
-        Given that I am in the View Tickets (Closed) page
-        When there are closed tickets 
-        Then the tickets are displayed 
-    
-    Scenario: View closed ticket 
-        Given that I am in the View Tickets (Closed) page
-        When I click on View Ticket
-        Then I am redirected to the View ticket page for that ticket
-    
-    Scenario: Creating a Supervisor account
-        Given I am logged in as an admin
-        When I navigate to the Supervisor creation page
-        And fill in the required Supervisor details
-        And click on the submit button to create Supervisor
-        Then the Supervisor account should be created successfully
+    Scenario: Reject Quotation
+        Given Tenant clicks on "Reject Quotation"
+        Then Ticket status should change to "Quotation Rejected"
 
-    Scenario: Creating a Staff account
-        When I navigate to the Staff creation page
-        And fill in the required Staff details
-        And click on the submit button to create Staff
-        Then the Staff account should be created successfully
+    Scenario: Submit feedback survey
+        Given Ticket status is "Works Ended"
+        When Tenant fills in the feedback survey
+        When Tenant submits the feedback
+        Then Ticket Status should change to "Feedback Submitted"
+
+    Scenario: Reject work
+        Given Tenant clicks on "Reject Work"
+        Then Ticket status should change to "Work Rejected"

@@ -54,7 +54,14 @@ const CreateSupervisor = () => {
 
     try {
       const message = await supervisorAccount.createAccount();
-      setFormError(message);
+      Swal.fire({
+        icon: "success",
+        title: "Supervisor Account created successfully!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
     } catch (error) {
       setFormError(error.message);
     }
