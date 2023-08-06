@@ -174,9 +174,9 @@ const ViewTicketStaff = () => {
         showConfirmButton: true,
         confirmButtonColor: "#707c4f",
         customClass: {
-          container: "view-ticket-update-quotation-success-swal",
+          container: "view-ticket-update-quotation-swal",
         },
-        id: "view-ticket-update-quotation-success-swal"
+        id: "view-ticket-update-quotation-swal"
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
@@ -189,9 +189,9 @@ const ViewTicketStaff = () => {
         showConfirmButton: true,
         confirmButtonColor: "#707c4f",
         customClass: {
-          container: "view-ticket-update-quotation-failure-swal",
+          container: "view-ticket-update-quotation-swal",
         },
-        id: "view-ticket-update-quotation-failure-swal"
+        id: "view-ticket-update-quotation-swal"
       });
     }
   };
@@ -388,9 +388,9 @@ const ViewTicketStaff = () => {
           showConfirmButton: true,
           confirmButtonColor: "#707c4f",
           customClass: {
-            container: "view-ticket-update-file-path-error-swal",
+            container: "view-ticket-update-quotation-swal",
           },
-          id: "view-ticket-update-file-path-error-swal"
+          id: "view-ticket-update-quotation-swal"
         });
         return { error: updateError };
       }
@@ -403,9 +403,9 @@ const ViewTicketStaff = () => {
         showConfirmButton: true,
         confirmButtonColor: "#707c4f",
         customClass: {
-          container: "view-ticket-update-file-path-success-swal",
+          container: "view-ticket-update-quotation-swal",
         },
-        id: "view-ticket-update-file-path-success-swal"
+        id: "view-ticket-update-quotation-swal"
       });
       return { data: updateData };
     } catch (error) {
@@ -418,9 +418,9 @@ const ViewTicketStaff = () => {
         showConfirmButton: true,
         confirmButtonColor: "#707c4f",
         customClass: {
-          container: "view-ticket-upload-file-error-swal",
+          container: "view-ticket-update-quotation-swal",
         },
-        id: "view-ticket-upload-file-error-swal"
+        id: "view-ticket-update-quotation-swal"
       });
       return { error };
     }

@@ -426,18 +426,26 @@ AfterAll(async function () {
        // Write code here that turns the phrase above into concrete actions
       //  const file = "C:\\Users\\Abel Lee\\Desktop\\SUTD\\Term 5\\View My Weekly Sch
       //  await driver.findElement(By.id("staff-portal-upload-quotation-input")).sendKeys(file);
-      await driver.sleep(1000);
-       let fileInput = await driver.findElement(By.id("staff-portal-upload-quotation-input")); // Provide the local path of the file to be uploaded. 
-       const filePath = '../uploadedfile/testfile.pdf'; // Set the file path in the file input field. 
-       await fileInput.sendKeys(filePath);
-       await driver.findElement(By.id("staff-portal-submit-quotation-button")).click();
+        await driver.sleep(1000);
+        let fileInput = await driver.findElement(By.id("staff-portal-upload-quotation-input")); // Provide the local path of the file to be uploaded. 
+        const filePath = path.resolve(__dirname,"testfile.pdf");
+        await fileInput.sendKeys(filePath);
+        const sweetAlert = await driver.wait(until.elementLocated(By.className("view-ticket-update-quotation-swal")), 10000);
+        const okButton = await sweetAlert.findElement(By.css('.swal2-confirm'));
+        await okButton.click();
+        await driver.sleep(1000);
+        await driver.findElement(By.id("staff-portal-submit-quotation-button")).click();
       });
 
      Then('Ticket status is changed to Quotation Uploaded and Quotation is rendered in View Ticket Page and Ticket with Quotation Uploaded status is rendered',async function () {
        // Write code here that turns the phrase above into concrete actions
+       const sweetAlert = await driver.wait(until.elementLocated(By.className("view-ticket-update-quotation-swal")), 10000);
+        const okButton = await sweetAlert.findElement(By.css('.swal2-confirm'));
+        await okButton.click();
+        await driver.sleep(1000);
        await assert.equal(
-        await driver.findElement(By.id("basic-ticket-details-status-textfield")).getAttribute("value"),
-        "Quotation Uploaded"
+         await driver.findElement(By.id("basic-ticket-details-status-textfield")).getAttribute("value"),
+         "Quotation Uploaded"
        )
      });
 
