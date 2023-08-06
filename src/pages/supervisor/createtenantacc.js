@@ -123,7 +123,7 @@ const CreateTenantAcc = () => {
       <form onSubmit={handleSubmit} className="create-tenant-acc-form">
         <div className="create-tenant-acc-row">
           <div className="create-tenant-acc-col-25">
-            <label className="create-tenant-acc-label">Tenant Username:</label>
+            <label htmlFor="supervisor-portal-create-tenant-username-textfield" className="create-tenant-acc-label">Tenant Username:</label>
           </div>
           
           <div className="create-tenant-acc-col-75">
@@ -144,7 +144,7 @@ const CreateTenantAcc = () => {
         
         <div className="create-tenant-acc-row">
           <div className="create-tenant-acc-col-25">
-            <label className="create-tenant-acc-label">Tenant Email:</label>
+            <label htmlFor="supervisor-portal-create-tenant-email-textfield" className="create-tenant-acc-label">Tenant Email:</label>
           </div>
           
           <div className="create-tenant-acc-col-75">
@@ -165,7 +165,7 @@ const CreateTenantAcc = () => {
         
         <div className="create-tenant-acc-row">
           <div className="create-tenant-acc-col-25">
-            <label className="create-tenant-acc-label">Password:</label>
+            <label htmlFor="supervisor-portal-create-tenant-password-textfield" className="create-tenant-acc-label">Password:</label>
           </div>
           
           <div className="create-tenant-acc-col-75">
@@ -186,7 +186,7 @@ const CreateTenantAcc = () => {
         
         <div className="create-tenant-acc-row">
           <div className="create-tenant-acc-col-25">
-            <label className="create-tenant-acc-label">Re-enter Password:</label>
+            <label htmlFor="supervisor-portal-create-tenant-repassword-textfield" className="create-tenant-acc-label">Re-enter Password:</label>
           </div>
           
           <div className="create-tenant-acc-col-75">
@@ -206,7 +206,7 @@ const CreateTenantAcc = () => {
         
         <div className="create-tenant-acc-row">
           <div className="create-tenant-acc-col-25">
-            <label className="create-tenant-acc-label">Tenant Phone:</label>
+            <label htmlFor="supervisor-portal-create-tenant-phone-number-textfield" className="create-tenant-acc-label">Tenant Phone:</label>
           </div>
           
           <div className="create-tenant-acc-col-75">
@@ -226,7 +226,7 @@ const CreateTenantAcc = () => {
         
         <div className="create-tenant-acc-row">
           <div className="create-tenant-acc-col-25">
-            <label className="create-tenant-acc-label">Trade Type:</label>
+            <label htmlFor="supervisor-portal-create-tenant-trade-type-textfield" className="create-tenant-acc-label">Trade Type:</label>
           </div>
           
           <div className="create-tenant-acc-col-75">
@@ -246,7 +246,7 @@ const CreateTenantAcc = () => {
         
         <div className="create-tenant-acc-row">
           <div className="create-tenant-acc-col-25">
-            <label className="create-tenant-acc-label">Monthly Rental:</label>
+            <label htmlFor="supervisor-portal-create-monthly-rent-textfield" className="create-tenant-acc-label">Monthly Rental:</label>
           </div>
           
           <div className="create-tenant-acc-col-75">
@@ -266,7 +266,7 @@ const CreateTenantAcc = () => {
         
         <div className="create-tenant-acc-row">
           <div className="create-tenant-acc-col-25">
-            <label className="create-tenant-acc-label">Lease Commencement Date:</label>
+            <label htmlFor="supervisor-portal-create-tenant-commencement-date-textfield" className="create-tenant-acc-label">Lease Commencement Date:</label>
           </div>
           
           <div className="create-tenant-acc-col-75">
@@ -286,7 +286,7 @@ const CreateTenantAcc = () => {
         
         <div className="create-tenant-acc-row">
           <div className="create-tenant-acc-col-25">
-            <label className="create-tenant-acc-label">Lease Termination Date:</label>
+            <label htmlFor="supervisor-portal-create-tenant-termination-date-textfield" className="create-tenant-acc-label">Lease Termination Date:</label>
           </div>
           
           <div className="create-tenant-acc-col-75">
@@ -306,7 +306,7 @@ const CreateTenantAcc = () => {
         
         <div className="create-tenant-acc-row">
           <div className="create-tenant-acc-col-25">
-            <label className="create-tenant-acc-label">Area (in Sq Meters):</label>
+            <label htmlFor="supervisor-portal-create-tenant-unit-area-textfield" className="create-tenant-acc-label">Area (in Sq Meters):</label>
           </div>
           
           <div className="create-tenant-acc-col-75">
@@ -329,7 +329,7 @@ const CreateTenantAcc = () => {
         
         <div className="create-tenant-acc-row">
           <div className="create-tenant-acc-col-25">
-            <label className="create-tenant-acc-label">Number of Units:</label>
+            <label htmlFor="supervisor-portal-create-tenant-number-of-units-textfield" className="create-tenant-acc-label">Number of Units:</label>
           </div>
           
           <div className="create-tenant-acc-col-75">
@@ -353,11 +353,11 @@ const CreateTenantAcc = () => {
         
         <div className="create-tenant-acc-row">
           <div className="create-tenant-acc-col-25">
-          <label className="create-tenant-acc-label">Unit:</label>
+          <label htmlFor="create-tenant-account-unit-grid" className="create-tenant-acc-label">Unit:</label>
         </div>
         
         <div className="create-tenant-acc-col-75">
-          <Grid container spacing={1}>
+          <Grid container spacing={1} id="create-tenant-account-unit-grid">
             {renderUnitFields()}
           </Grid>
         </div>
@@ -367,6 +367,7 @@ const CreateTenantAcc = () => {
           <Grid container spacing={1}>
             <Grid item xs = {12}>
               <Button
+              data-testid="supervisor-portal-create-tenant-submit-button"
               id="supervisor-portal-create-tenant-submit-button" 
               variant="contained"
               className="create-tenant-acc-button"
