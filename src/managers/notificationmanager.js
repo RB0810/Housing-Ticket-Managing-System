@@ -1,8 +1,7 @@
 import emailjs from "emailjs-com";
 import supabase from "../config/supabaseClient";
-require('dotenv').config();
 
-const toEmail = process.env.EMAIL;
+const toEmail = process.env.REACT_APP_EMAIL;
 
 class NotificationManager{
   async handleSendEmail(emailParams){
