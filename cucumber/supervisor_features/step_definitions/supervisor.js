@@ -3,6 +3,7 @@ const { Builder, By, Key, until, Select } = require("selenium-webdriver");
 const assert = require("assert");
 const chrome = require("selenium-webdriver/chrome");
 const { createClient } = require("@supabase/supabase-js");
+const { urlIs } = require("selenium-webdriver/lib/until");
 
 // supabase client
 const supabaseUrl = 'https://mnfsjgaziftztwiarlys.supabase.co'
