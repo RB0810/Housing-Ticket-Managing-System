@@ -8,6 +8,9 @@ jest.mock("emailjs-com", () => ({
 
 describe("Sending Notifications", () => {
   let notificationManager;
+  let PublicKey;
+  let ServiceID;
+  let Template;
 
   beforeAll(() => {
     notificationManager = new NotificationManager();
@@ -38,13 +41,17 @@ describe("Sending Notifications", () => {
     // Call the function and await its response
     await notificationManager.handleSendEmail(emailParams);
 
+    PublicKey = "_MZEl_HwYyb8X78QO";
+    ServiceID = "service_7n9ni8h";
+    Template = "template_1ywp398";
+
     // Expect that emailjs.init was called with your API key
-    expect(emailjs.init).toHaveBeenCalledWith("w8QvO03M79syyzy63");
+    expect(emailjs.init).toHaveBeenCalledWith(PublicKey);
 
     // Expect that emailjs.send was called with the correct parameters
     expect(emailjs.send).toHaveBeenCalledWith(
-      "service_nklr1zv",
-      "template_776mx6q",
+      ServiceID,
+      Template,
       emailParams
     );
 

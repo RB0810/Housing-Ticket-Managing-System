@@ -27,7 +27,7 @@ describe("Authentication all test cases", () => {
     await authentication.loginAuth(event);
 
     // Replace 'expectedUserID' with the expected user ID after successful login
-    expect(window.location.href).toBe("/supervisorportal/landingpage/999");
+    expect(window.location.href).toBe("/twofactorauth/supervisor/999");
   });
 
   test("loginAuth should throw an error on invalid credentials", async () => {

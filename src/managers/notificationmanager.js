@@ -1,16 +1,19 @@
 import emailjs from "emailjs-com";
 import supabase from "../config/supabaseClient";
 
-const toEmail = process.env.REACT_APP_EMAIL;
+const toEmail = "tohhylucas@gmail.com";
+const PublicKey = "_MZEl_HwYyb8X78QO";
+const ServiceID = "service_7n9ni8h";
+const Template = "template_1ywp398";
 
 class NotificationManager{
   async handleSendEmail(emailParams){
-    emailjs.init("w8QvO03M79syyzy63");
+    emailjs.init(PublicKey);
 
     try {
       const response = await emailjs.send(
-        "service_nklr1zv",
-        "template_776mx6q",
+        ServiceID,
+        Template,
         emailParams
       );
       console.log("Email sent successfully!", response);
@@ -20,7 +23,7 @@ class NotificationManager{
   };
 
   async sendMailtoSupervisorFromTenantID(tenantID, body){
-    emailjs.init("w8QvO03M79syyzy63");
+    emailjs.init(PublicKey);
     let { data: supervisorID } = await supabase
       .from("TenantUsers")
       .select("UnderSupervisor")
@@ -41,8 +44,8 @@ class NotificationManager{
     console.log(emailParams);
     try {
       const response = await emailjs.send(
-        "service_nklr1zv",
-        "template_776mx6q",
+        ServiceID,
+        Template,
         emailParams
       );
       console.log("Email sent successfully!", response);
@@ -52,7 +55,7 @@ class NotificationManager{
   };
 
   async QuotationAcceptNotif(ticketID){
-    emailjs.init("w8QvO03M79syyzy63");
+    emailjs.init(PublicKey);
     let { data: ticketDetails } = await supabase
       .from("Service Request")
       .select("*")
@@ -76,8 +79,8 @@ class NotificationManager{
     console.log(emailParams);
     try {
       const response = await emailjs.send(
-        "service_nklr1zv",
-        "template_776mx6q",
+        ServiceID,
+        Template,
         emailParams
       );
       console.log("Email sent successfully!", response);
@@ -87,7 +90,7 @@ class NotificationManager{
   }
 
   async QuotationRejectNotif(ticketID, rejectComments){
-    emailjs.init("w8QvO03M79syyzy63");
+    emailjs.init(PublicKey);
     let { data: ticketDetails } = await supabase
       .from("Service Request")
       .select("*")
@@ -112,8 +115,8 @@ class NotificationManager{
     console.log(emailParams);
     try {
       const response = await emailjs.send(
-        "service_nklr1zv",
-        "template_776mx6q",
+        ServiceID,
+        Template,
         emailParams
       );
       console.log("Email sent successfully!", response);
@@ -123,7 +126,7 @@ class NotificationManager{
   }
 
   async WorksRejectNotif(ticketID, rejectComments){
-    emailjs.init("w8QvO03M79syyzy63");
+    emailjs.init(PublicKey);
     let { data: ticketDetails } = await supabase
       .from("Service Request")
       .select("*")
@@ -148,8 +151,8 @@ class NotificationManager{
     console.log(emailParams);
     try {
       const response = await emailjs.send(
-        "service_nklr1zv",
-        "template_776mx6q",
+        ServiceID,
+        Template,
         emailParams
       );
       console.log("Email sent successfully!", response);
@@ -159,7 +162,7 @@ class NotificationManager{
   }
 
   async FeedbackSubmittedNotif(ticketID, rating, successComments){
-    emailjs.init("w8QvO03M79syyzy63");
+    emailjs.init(PublicKey);
     let { data: ticketDetails } = await supabase
       .from("Service Request")
       .select("*")
@@ -192,8 +195,8 @@ class NotificationManager{
     console.log(emailParams);
     try {
       const response = await emailjs.send(
-        "service_nklr1zv",
-        "template_776mx6q",
+        ServiceID,
+        Template,
         emailParams
       );
       console.log("Email sent successfully!", response);
@@ -203,7 +206,7 @@ class NotificationManager{
   }
 
   async TicketAssignNotif(ticketID, staffID){
-    emailjs.init("w8QvO03M79syyzy63");
+    emailjs.init(PublicKey);
     let { data: ticketDetails } = await supabase
       .from("Service Request")
       .select("*")
@@ -228,8 +231,8 @@ class NotificationManager{
     console.log(emailParams);
     try {
       const response = await emailjs.send(
-        "service_nklr1zv",
-        "template_776mx6q",
+        ServiceID,
+        Template,
         emailParams
       );
       console.log("Email sent successfully!", response);
@@ -239,7 +242,7 @@ class NotificationManager{
   }
 
   async QuotationUploadNotif(ticketID){
-    emailjs.init("w8QvO03M79syyzy63");
+    emailjs.init(PublicKey);
     let { data: ticketDetails } = await supabase
       .from("Service Request")
       .select("*")
@@ -264,8 +267,8 @@ class NotificationManager{
     console.log(emailParams);
     try {
       const response = await emailjs.send(
-        "service_nklr1zv",
-        "template_776mx6q",
+        ServiceID,
+        Template,
         emailParams
       );
       console.log("Email sent successfully!", response);
@@ -275,7 +278,7 @@ class NotificationManager{
   }
 
   async WorksStartedNotif(ticketID){
-    emailjs.init("w8QvO03M79syyzy63");
+    emailjs.init(PublicKey);
     let { data: ticketDetails } = await supabase
       .from("Service Request")
       .select("*")
@@ -299,8 +302,8 @@ class NotificationManager{
     console.log(emailParams);
     try {
       const response = await emailjs.send(
-        "service_nklr1zv",
-        "template_776mx6q",
+        ServiceID,
+        Template,
         emailParams
       );
       console.log("Email sent successfully!", response);
@@ -310,7 +313,7 @@ class NotificationManager{
   }
 
   async WorksEndedNotif(ticketID){
-    emailjs.init("w8QvO03M79syyzy63");
+    emailjs.init(PublicKey);
     let { data: ticketDetails } = await supabase
       .from("Service Request")
       .select("*")
@@ -335,8 +338,8 @@ class NotificationManager{
     console.log(emailParams);
     try {
       const response = await emailjs.send(
-        "service_nklr1zv",
-        "template_776mx6q",
+        ServiceID,
+        Template,
         emailParams
       );
       console.log("Email sent successfully!", response);
@@ -346,7 +349,7 @@ class NotificationManager{
   }
 
   async TicketRejectedNotif(ticketID, rejectComments){
-    emailjs.init("w8QvO03M79syyzy63");
+    emailjs.init(PublicKey);
     let { data: ticketDetails } = await supabase
       .from("Service Request")
       .select("*")
@@ -369,8 +372,8 @@ class NotificationManager{
     console.log(emailParams);
     try {
       const response = await emailjs.send(
-        "service_nklr1zv",
-        "template_776mx6q",
+        ServiceID,
+        Template,
         emailParams
       );
       console.log("Email sent successfully!", response);
@@ -398,12 +401,12 @@ class NotificationManager{
       message: body,
     };
 
-    emailjs.init("w8QvO03M79syyzy63");
+    emailjs.init(PublicKey);
 
     try {
       const response = await emailjs.send(
-        "service_nklr1zv",
-        "template_776mx6q",
+        ServiceID,
+        Template,
         emailParams
       );
       console.log("Email sent successfully!", response);
