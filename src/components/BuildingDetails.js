@@ -24,7 +24,7 @@ const BuildingDetails = ({ building }) => {
               <Grid item xs = {12}>
                 <TextField 
                 className="building-details-textfield"
-                id="outlined-basic" 
+                id={staffMember.StaffID + "-staffemail"} 
                 label="Email" 
                 variant="filled" 
                 defaultValue={staffMember.StaffEmail}
@@ -33,7 +33,7 @@ const BuildingDetails = ({ building }) => {
               <Grid item xs = {12}>
                 <TextField 
                 className="building-details-textfield"
-                id="outlined-basic" 
+                id={staffMember.StaffID + "-staffphone"}
                 label="Phone Number" 
                 variant="filled" 
                 defaultValue={staffMember.StaffPhone}
@@ -63,7 +63,7 @@ const BuildingDetails = ({ building }) => {
                   <Grid item xs = {12}>
                     <TextField 
                     className="building-details-textfield"
-                    id="outlined-basic" 
+                    id={tenantData.TenantID + "-tenantemail"}
                     label="Email" 
                     variant="filled" 
                     defaultValue={tenantData.TenantEmail}
@@ -72,7 +72,7 @@ const BuildingDetails = ({ building }) => {
                   <Grid item xs = {12}>
                     <TextField 
                     className="building-details-textfield"
-                    id="outlined-basic" 
+                    id={tenantData.TenantID + "-tenantphone"}
                     label="Phone Number" 
                     variant="filled" 
                     defaultValue={tenantData.TenantPhone}
@@ -88,7 +88,7 @@ const BuildingDetails = ({ building }) => {
                       <Grid item xs = {12}>
                         <TextField 
                         className="building-details-textfield"
-                        id="outlined-basic" 
+                        id={tenantData.TenantID + "-commdate"}
                         label="Commence Date" 
                         variant="filled" 
                         defaultValue={new Date(tenantData.LeaseDetails.CommenceDate).toLocaleDateString()}
@@ -97,7 +97,7 @@ const BuildingDetails = ({ building }) => {
                       <Grid item xs = {12}>
                         <TextField 
                         className="building-details-textfield"
-                        id="outlined-basic" 
+                        id={tenantData.TenantID + "-termdate"} 
                         label="Termination Date" 
                         variant="filled" 
                         defaultValue={new Date(tenantData.LeaseDetails.TerminationDate).toLocaleDateString()}
@@ -106,7 +106,7 @@ const BuildingDetails = ({ building }) => {
                       <Grid item xs = {12}>
                         <TextField 
                         className="building-details-textfield"
-                        id="outlined-basic" 
+                        id={tenantData.TenantID + "-rent"} 
                         label="Monthly Rental" 
                         variant="filled" 
                         defaultValue={tenantData.LeaseDetails.MonthlyRental}
@@ -115,7 +115,7 @@ const BuildingDetails = ({ building }) => {
                       <Grid item xs = {12}>
                         <TextField 
                         className="building-details-textfield"
-                        id="outlined-basic" 
+                        id={tenantData.TenantID + "-biz"}
                         label="Business Type" 
                         variant="filled" 
                         defaultValue={tenantData.LeaseDetails.TradeType}
@@ -124,7 +124,7 @@ const BuildingDetails = ({ building }) => {
                       <Grid item xs = {12}>
                         <TextField 
                         className="building-details-textfield"
-                        id="outlined-basic" 
+                        id={tenantData.TenantID + "-area"}
                         label="Area" 
                         variant="filled" 
                         defaultValue={tenantData.LeaseDetails.AreaInSqMeters}
@@ -133,7 +133,7 @@ const BuildingDetails = ({ building }) => {
                       <Grid item xs = {12}>
                         <TextField 
                         className="building-details-textfield"
-                        id="outlined-basic" 
+                        id={tenantData.TenantID + "-unit"}
                         label="Units" 
                         variant="filled" 
                         defaultValue={tenantData.Units.map((unit) => unit.UnitNumber).join(', ')}

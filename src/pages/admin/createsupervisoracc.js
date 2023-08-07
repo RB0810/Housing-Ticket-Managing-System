@@ -40,7 +40,11 @@ const CreateSupervisor = () => {
         icon: "success",
         title: "Supervisor Account created successfully!",
         showConfirmButton: true,
-        confirmButtonColor: "#707c4f"
+        confirmButtonColor: "#707c4f",
+        customClass: {
+          container: 'createSupervisorAcc'
+        },
+        id: 'createSupervisorAcc'
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();

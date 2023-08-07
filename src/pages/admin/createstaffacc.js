@@ -49,7 +49,11 @@ const CreateStaffAcc = () => {
         icon: "success",
         title: "Staff Account created successfully!",
         showConfirmButton: true,
-        confirmButtonColor: "#707c4f"
+        confirmButtonColor: "#707c4f",
+        customClass: {
+          container: 'createStaffAcc'
+        },
+        id: 'createStaffAcc'
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.reload();
