@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import AccountManager from "../../managers/accountmanager";
 import BuildingCard from "../../components/BuildingCard";
-import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { Grid } from "@mui/material";
-import { SHA256 } from "crypto-js";
+
 
 const ManageAccount = () => {
   const [buildings, setBuildings] = useState([]);
@@ -13,25 +12,6 @@ const ManageAccount = () => {
   const { AdminID } = useParams();
   const accountManager = new AccountManager();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const userId = Cookies.get('userId');
-    const type = Cookies.get('type');
-
-    if (!userId || !type) {
-      console.log('Unauthorized');
-      navigate("/unauthorize");
-    } else {
-      const userIdAsString = String(AdminID);
-      const hashedUserId = SHA256(userIdAsString).toString();
-      if (userId === hashedUserId && type === "Admin") {
-        console.log('Authorized');
-      } else {
-        console.log('Unauthorized');
-        navigate("/unauthorize");
-      }
-    }
-  }, [navigate, AdminID]);
 
   useEffect(() => {
     const fetchBuildings = async () => {

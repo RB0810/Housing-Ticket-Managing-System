@@ -10,31 +10,6 @@ export default function TenantLandingPage() {
   const { TenantID } = useParams();
   var status = "";
 
-  useEffect(() => {
-    const userId = Cookies.get('userId');
-    const type = Cookies.get('type');
-
-    if (!userId || !type) {
-      // If any of the required cookies are missing, redirect to the login page
-      console.log('Unauthorized');
-      navigate("/unauthorize");
-    } else {
-      const userIdAsString = String(TenantID);
-      // Use SHA-256 to hash the userId
-      const hashedUserId = SHA256(userIdAsString).toString();
-      console.log(hashedUserId)
-      // Check if the user's ID and type match the expected values (e.g., TenantID and "tenant")
-      if (userId === hashedUserId && type === "Tenant") {
-        // Proceed with rendering the component
-        console.log('Authorized');
-      } else {
-        // If not authorized, display "Unauthorized access" message
-        console.log('Unauthorized');
-        navigate("/unauthorize");
-      }
-    }
-  }, [navigate, TenantID]);
-
   const handleButtonClickPending = () => {
     status = "pending";
     navigate(`/tenantportal/tickets/${TenantID}/${status}`);

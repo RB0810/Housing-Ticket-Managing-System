@@ -20,30 +20,6 @@ const SupervisorProfile = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userId = Cookies.get('userId');
-    const type = Cookies.get('type');
-
-    if (!userId || !type) {
-      // If any of the required cookies are missing, redirect to the login page
-      console.log('Unauthorized');
-      navigate("/unauthorize");
-    } else {
-      const userIdAsString = String(SupervisorID);
-      // Use SHA-256 to hash the userId
-      const hashedUserId = SHA256(userIdAsString).toString();
-      // Check if the user's ID and type match the expected values (e.g., SupervisorID and "Supervisor")
-      if (userId === hashedUserId && type === "Supervisor") {
-        // Proceed with rendering the component
-        console.log('Authorized');
-      } else {
-        // If not authorized, display "Unauthorized access" message
-        console.log('Unauthorized');
-        navigate("/unauthorize");
-      }
-    }
-  }, [navigate, SupervisorID]);
-
-  useEffect(() => {
     const fetchSupervisorDetails = async () => {
       try {
         const supervisorDetails = await accountManager.getSupervisorDetails(SupervisorID);

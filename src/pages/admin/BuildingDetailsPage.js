@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import AccountManager from "../../managers/accountmanager";
 import BuildingDetails from "../../components/BuildingDetails";
-import Cookies from "js-cookie";
-import { SHA256 } from "crypto-js";
 
 const BuildingDetailsPage = () => {
   const [buildingDetails, setBuildingDetails] = useState(null);
@@ -12,25 +10,6 @@ const BuildingDetailsPage = () => {
   const { AdminID } = useParams();
   const accountManager = new AccountManager();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const userId = Cookies.get('userId');
-    const type = Cookies.get('type');
-
-    if (!userId || !type) {
-      console.log('Unauthorized');
-      navigate("/unauthorize");
-    } else {
-      const userIdAsString = String(AdminID);
-      const hashedUserId = SHA256(userIdAsString).toString();
-      if (userId === hashedUserId && type === "Admin") {
-        console.log('Authorized');
-      } else {
-        console.log('Unauthorized');
-        navigate("/unauthorize");
-      }
-    }
-  }, [navigate, AdminID]);
 
   useEffect(() => {
     const fetchBuildingDetails = async () => {
