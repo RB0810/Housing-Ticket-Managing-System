@@ -328,7 +328,7 @@ Then("I see Building details", async function () {
 
     assert.equal(
         await staffEmail,
-        staffEmailData[0].StaffEmail.toString()
+        staffEmailData[0].StaffEmail
     );
     assert.equal(
         await staffPhone,
@@ -336,7 +336,7 @@ Then("I see Building details", async function () {
     );
     assert.equal(
         await tenantEmail,
-        tenantEmailData[0].TenantEmail.toString()
+        tenantEmailData[0].TenantEmail
     );
     assert.equal(
         await commdate,
@@ -348,15 +348,15 @@ Then("I see Building details", async function () {
     );
     assert.equal(
         await tenantPhone,
-        tenantPhoneData[0].StaffPhone.toString()
+        tenantPhoneData[0].TenantPhone.toString()
     );
     assert.equal(
         await rent,
-        leaseRentData[0].MonthlyRental.toString()
+        leaseRentData[0].MonthlyRental
     );
     assert.equal(
         await biz,
-        leaseTradeData[0].TradeType.toString()
+        leaseTradeData[0].TradeType
     );
     assert.equal(
         await area,
