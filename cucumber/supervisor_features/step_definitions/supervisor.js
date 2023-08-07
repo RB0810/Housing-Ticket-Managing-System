@@ -3,6 +3,7 @@ const { Builder, By, Key, until, Select } = require("selenium-webdriver");
 const assert = require("assert");
 const chrome = require("selenium-webdriver/chrome");
 const { createClient } = require("@supabase/supabase-js");
+const { urlIs } = require("selenium-webdriver/lib/until");
 
 // supabase client
 const supabaseUrl = 'https://mnfsjgaziftztwiarlys.supabase.co'
@@ -20,7 +21,7 @@ BeforeAll(async function () {
             {
                 ServiceRequestID: 999990,
                 Name: "TESTINGTICKETJEST",
-                TenantID: 999,
+                TenantID: 106,
                 SupervisorID: 999,
                 Category: "Toilet",
                 PARCStatus: "PENDING",
@@ -43,7 +44,7 @@ BeforeAll(async function () {
             {
                 ServiceRequestID: 999991,
                 Name: "TESTINGTICKETJEST",
-                TenantID: 999,
+                TenantID: 106,
                 SupervisorID: 999,
                 PARCStatus: "ACTIVE",
                 SubmittedDateTime: "2021-04-01 00:00:00",
@@ -63,7 +64,7 @@ BeforeAll(async function () {
             {
                 ServiceRequestID: 999992,
                 Name: "TESTINGTICKETJEST",
-                TenantID: 999,
+                TenantID: 106,
                 SupervisorID: 999,
                 PARCStatus: "CLOSED",
                 SubmittedDateTime: "2021-04-01 00:00:00",
