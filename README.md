@@ -1,10 +1,10 @@
 # Getting Started with the Housing Portal
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-Before using the application, please ensure to create your own Supabase URL and key as well as provide your email in a .env file. The format of the .env file is as follows :
-REACT_APP_SUPABASE_KEY = {insert key here}
-REACT_APP_SUPABASE_URL = {insert url here}
-REACT_APP_EMAIL = {insert email here}
+Before using the application, please ensure to create your own Supabase URL and key as well as provide your email in a .env file. The format of the .env file is as follows :\
+REACT_APP_SUPABASE_KEY = {insert key here}\
+REACT_APP_SUPABASE_URL = {insert url here}\
+REACT_APP_EMAIL = {insert email here}\
 
 ## Available Scripts
 
