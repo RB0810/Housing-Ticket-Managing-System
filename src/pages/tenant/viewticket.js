@@ -407,14 +407,6 @@ const ViewTicketTenant = () => {
 
       const sendNotif = notificationmanager.QuotationRejectNotif(serviceTicket.ServiceRequestID, rejectComments);
 
-      // Execute all promises concurrently using Promise.all
-      await Promise.all([
-        updateStatusPromise,
-        updateQuotationAcceptedPromise,
-        updateFeedbackCommentsPromise,
-        sendNotif,
-      ]);
-
       Swal.fire({
         icon: "success",
         title: "Quotation rejected",
@@ -425,6 +417,16 @@ const ViewTicketTenant = () => {
           window.location.reload();
         }
       });
+
+      // Execute all promises concurrently using Promise.all
+      await Promise.all([
+        updateStatusPromise,
+        updateQuotationAcceptedPromise,
+        updateFeedbackCommentsPromise,
+        sendNotif,
+      ]);
+
+      
     } catch (error) {
       Swal.fire({
         icon: "error",
