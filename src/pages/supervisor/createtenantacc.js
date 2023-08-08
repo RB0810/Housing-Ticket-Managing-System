@@ -40,6 +40,8 @@ const CreateTenantAcc = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    console.log("button clicked")
+
     const tenantAccount = new TenantAccount();
     tenantAccount.username = tenantUsername;
     tenantAccount.email = tenantEmail;
@@ -81,6 +83,7 @@ const CreateTenantAcc = () => {
               <TextField 
               type="text"
               key={i}
+              data-testid={i}
               className="create-tenant-acc-textfield"
               id= {i}
               variant="outlined" 

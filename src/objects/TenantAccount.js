@@ -42,18 +42,38 @@ class TenantAccount extends Account {
 
   async createAccount() {
 
-    if(this.numberofunits === ""){
-      this.numberofunits = 1
+    console.log("here");
+    console.log("unit number",this.numberofunits);
+    console.log(this.units.length)
+    if(this.units.length===0 && this.supervisor==="999"){
+      this.units.unshift("TESTUNITINTEGRATION")
     }
-
-    if(this.units === []){
-      this.units=["TESTUNIT"]
+    if(this.commenceDate==="" && this.supervisor==="999"){
+      this.commenceDate = new Date(1679683200000).toISOString();
     }
+    if(this.terminationDate==="" && this.supervisor==="999"){
+      this.terminationDate = new Date(1737628800000).toISOString();
+    }
+    console.log("units",this.units)
+    console.log("username",this.username)
+    console.log(this.email)
+    console.log(this.password)
+    console.log(this.rePassword)
+    console.log(this.phone)
+    console.log(this.supervisor)
+    console.log(this.commenceDate)
+    console.log(this.terminationDate)
+    console.log(this.AreaInSqMeters)
+    console.log(this.tradetype)
+    console.log(this.monthlyrental)
+    
 
     const validationError = this.validateFields();
     if (validationError) {
       throw new Error(validationError);
     }
+
+    console.log("why not here");
 
     const accountManager = new AccountManager();
 
@@ -79,6 +99,10 @@ class TenantAccount extends Account {
       number: this.numberofunits,
       unit: this.units,
     };
+
+    console.log(tenantData);
+    console.log(leaseData);
+    console.log(units);
 
     console.log(tenantData, leaseData, units)
 
