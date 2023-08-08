@@ -159,7 +159,6 @@ const CreateStaffAcc = () => {
                   >Select Building</label>
                 </div>
                 <Select
-                data-testid="create-staff-building-id-select"
                 id="create-staff-building-id-select"
                 className="create-staff-acc-textfield"
                 value={buildingID}
