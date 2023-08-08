@@ -57,13 +57,8 @@ const CreateTicket = () => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        if (property === "" && TenantID === "999") {
-          setProperty("TESTUNITDONTDELETE");
-        }
-        else{
           const tenantProperties = await accountManager.getUnits(TenantID);
-          setProperties(tenantProperties);
-        }   
+          setProperties(tenantProperties); 
       } catch (error) {
         console.error("Error fetching properties:", error);
       }
