@@ -31,8 +31,18 @@ To begin testing, you can switch to the above branch which will be the testing b
 ### `npx jest file_path_of_test`
 For unit and integration testing, locate the .test.js files for each manager to run the unit tests/integration tests individually. 
 
-### `npm test`
-To run ALL unit and integration tests.
+For the unit tests of our manager, you can run:
+Ticket Manager: npx jest src/managers/ticketmanager.test.js
+Notification Manager: npx jest src/managers/notificationmanager.test.js
+Authentication Manager: npx jest src/managers/authentication.test.js
+Account Manager: npx jest src/managers/accountmanager.test.js
+
+For the unit tests of our UI components, you can run:
+
+For the integration tests, you can run:
 
 ### `npx cucumber-js file_path_of_feature`
 For system testing, locate the .feature files of each portal. This uses Selenium to run the system tests of each portal.
+
+We also have some fuzzing tests. 
+You can run:
