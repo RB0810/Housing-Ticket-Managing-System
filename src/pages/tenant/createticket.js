@@ -52,15 +52,12 @@ const CreateTicket = () => {
     console.log(description);
     console.log(property);
     console.log("Tenant ID", TenantID);
-    console.log("here");
 
 
-    if (!name || !requestType || !description || !property) {
+    if (!name || !requestType || !description) {
       setFormError("Please fill out all fields");
       return;
     }
-
-    console.log("not here");
 
     let currentDate = new Date();
     let timezoneOffset = currentDate.getTimezoneOffset() * 60000;
