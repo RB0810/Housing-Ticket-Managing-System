@@ -21,13 +21,15 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 ## Testing Scripts
 
-In the project directory, there are various tests you can run. Since 2FA and cookies are optional implmenetations was done immediately after Client Meeting, the tests mainly focus on the function of the portal based on the requirements stipulated by client as must-haves. 
+In the project directory, there are various tests you can run. S
+
+ince 2FA and cookies are optional implmenetations that were done immediately after Client Meeting, the tests mainly focus on the function of the portal based on the requirements stipulated by client as must-haves. 
 
 ### `git checkout system-tests-without-2fa`
 To begin testing, you can switch to the above branch which will be the testing branch for all required features which will include all unit tests, integration tests as well as system tests.
 
 ### `npx jest file_path_of_test`
-For unit testing, locate the .test.js files for each manager to run the unit tests/integration tests individually. 
+For unit and integration testing, locate the .test.js files for each manager to run the unit tests/integration tests individually. 
 
 ### `npm test`
 To run ALL unit and integration tests.
