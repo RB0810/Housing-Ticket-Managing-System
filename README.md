@@ -1,6 +1,8 @@
 # Getting Started with the Housing Portal
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+If you are evaluating this project and you wish to run it, please insert the .env file from the eDimension submission into the root of the folder before starting the project. However, Supabase has an expiry date so please do contact us if you require to test this demo once again for us to reactivate the Supabase.
+
 Before using the application, please ensure to create your own Supabase URL and key as well as provide your email in a .env file. The format of the .env file is as follows :\
 REACT_APP_SUPABASE_KEY = {insert key here}\
 REACT_APP_SUPABASE_URL = {insert url here}\
