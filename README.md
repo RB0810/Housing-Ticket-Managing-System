@@ -21,9 +21,6 @@ This ensures that all dependencies are installed correctly. This should be done 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-To run our fuzzing test:
-
-
 ## Testing Scripts
 
 In the project directory, there are various tests you can run. 
@@ -43,8 +40,8 @@ For the unit tests of our managers, you can run:
 <li>Account Manager: npx jest src/managers/accountmanager.test.js </li>
 <br>
 For the unit tests of our UI components, you can run:
-<li>Navbars: </li>
-<li>Landing Pages: </li>
+<li>Navbars: npm test -- --testPathPattern=navbar --verbose </li>
+<li>Landing Pages: npm test -- --testPathPattern=landingpage --verbose</li>
 <br>
 For the integration tests, you can run:
 <li>npx jest src/pages/admin/createstaffacc.test.js</li>
@@ -60,4 +57,7 @@ You can run:
 <li>Supervisor Portal: npx cucumber-js cucumber/supervisor_features/step_definitions/supervisor.feature</li>
 <li>Staff Portal: npx cucumber-js cucumber/staff_features/step_definitions/staffportal.feature</li>
 <li>Admin Portal: npx cucumber-js cucumber/admin_features/step_definitions/adminportal.feature</li>
+
+### `npm test fuzzing.test.js`
+For fuzzing tests
 
