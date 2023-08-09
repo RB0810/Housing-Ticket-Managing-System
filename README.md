@@ -39,9 +39,7 @@ For the unit tests of our managers, you can run:
 <li>Authentication Manager: npx jest src/managers/authentication.test.js</li> 
 <li>Account Manager: npx jest src/managers/accountmanager.test.js </li>
 <br>
-For the unit tests of our UI components, you can run:
-<li>Navbars: npm test -- --testPathPattern=navbar --verbose </li>
-<li>Landing Pages: npm test -- --testPathPattern=landingpage --verbose</li>
+
 <br>
 For the integration tests, you can run:
 <li>npx jest src/pages/admin/createstaffacc.test.js</li>
@@ -49,6 +47,11 @@ For the integration tests, you can run:
 <li>npx jest src/pages/supervisor/createtenantacc.test.js</li>
 <li>npx jest src/pages/tenant/createticketacc.test.js</li>
 <br>
+
+### `npm test -- --testPathPattern={component} --verbose`
+For the unit tests of our UI components, you can run:
+<li>Navbars: npm test -- --testPathPattern=navbar --verbose </li>
+<li>Landing Pages: npm test -- --testPathPattern=landingpage --verbose</li>
 
 ### `npx cucumber-js file_path_of_feature`
 For system testing, locate the .feature files of each portal. This uses Selenium to run the system tests of each portal. 
