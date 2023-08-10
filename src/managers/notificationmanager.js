@@ -1,7 +1,7 @@
 import emailjs from "emailjs-com";
 import supabase from "../config/supabaseClient";
 
-const toEmail = "tohhylucas@gmail.com";
+const toEmail = process.env.REACT_APP_EMAIL;
 const PublicKey = "_MZEl_HwYyb8X78QO";
 const ServiceID = "service_7n9ni8h";
 const Template = "template_1ywp398";
