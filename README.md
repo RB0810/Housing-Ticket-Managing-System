@@ -1,70 +1,61 @@
-# Getting Started with Create React App
-
+# Getting Started with the Housing Portal
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+Before using the application, please ensure to create your own Supabase URL and key as well as provide your email in a .env file. The format of the .env file is as follows :\
+REACT_APP_SUPABASE_KEY = {insert key here}\
+REACT_APP_SUPABASE_URL = {insert url here}\
+REACT_APP_EMAIL = {insert email here}
 
 ## Available Scripts
 
 In the project directory, you can run:
+
+### `npm install`
+
+This ensures that all dependencies are installed correctly. This should be done after cloning the repository.
 
 ### `npm start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+To run our fuzzing test:
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Testing Scripts
 
-### `npm run build`
+In the project directory, there are various tests you can run. 
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Since 2FA and cookies are optional implmenetations that were done immediately after Client Meeting, the tests mainly focus on the function of the portal based on the requirements stipulated by client as must-haves. 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### `git checkout system-tests-without-2fa`
+To begin testing, you can switch to the above branch which will be the testing branch for all required features which will include all unit tests, integration tests as well as system tests.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### `npx jest file_path_of_test`
+For unit and integration testing, locate the .test.js files for each manager to run the unit tests/integration tests individually. 
+<br>
+For the unit tests of our managers, you can run: 
+<li>Ticket Manager: npx jest src/managers/ticketmanager.test.js</li>
+<li>Notification Manager: npx jest src/managers/notificationmanager.test.js</li> 
+<li>Authentication Manager: npx jest src/managers/authentication.test.js</li> 
+<li>Account Manager: npx jest src/managers/accountmanager.test.js </li>
+<br>
+For the unit tests of our UI components, you can run:
+<li>Navbars: </li>
+<li>Landing Pages: </li>
+<br>
+For the integration tests, you can run:
+<li>npx jest src/pages/admin/createstaffacc.test.js</li>
+<li>npx jest src/pages/admin/createsupervisoracc.test.js</li>
+<li>npx jest src/pages/supervisor/createtenantacc.test.js</li>
+<li>npx jest src/pages/tenant/createticketacc.test.js</li>
+<br>
 
-### `npm run eject`
+### `npx cucumber-js file_path_of_feature`
+For system testing, locate the .feature files of each portal. This uses Selenium to run the system tests of each portal. 
+You can run:
+<li>Tenant Portal: npx cucumber-js cucumber/tenant_features/step_definitions/tenantportal.feature</li>
+<li>Supervisor Portal: npx cucumber-js cucumber/supervisor_features/step_definitions/supervisor.feature</li>
+<li>Staff Portal: npx cucumber-js cucumber/staff_features/step_definitions/staffportal.feature</li>
+<li>Admin Portal: npx cucumber-js cucumber/admin_features/step_definitions/adminportal.feature</li>
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
