@@ -1,4 +1,7 @@
 # Getting Started with the Housing Portal
+
+Video running all our tests (unit, integration, system): https://drive.google.com/file/d/16l9bP1fM4XSBiMBeptEYecRTo2n68cPC/view
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 If you are evaluating this project and you wish to run it, please insert the .env file from the eDimension submission into the root of the folder before starting the project. However, Supabase has an expiry date so please do contact us if you require to test this demo once again for us to reactivate the Supabase.
